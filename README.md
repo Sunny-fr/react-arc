@@ -8,7 +8,7 @@ Set of components to manage collection or model from a REST service
 
 ###config
 
-```
+```json
 {
   "name": "portfolio",
   "uppercaseName": "PORTFOLIO",
@@ -21,12 +21,12 @@ Set of components to manage collection or model from a REST service
 
 ###component
 
-```
+```javascript
 
 import React,{Component}  from 'react'
 import config from './config.json'
 import {connect} from 'react-redux'
-import {AbstractCollectionComponent, mixerConnector} from 'unicorn/ARC'
+import {AbstractCollectionComponent, mixerConnector} from 'react-arc'
 
 class PorfolioItem extends Component {
     render(){
@@ -59,10 +59,10 @@ export default mixerConnector(connect, config)(PorfolioComponent)
 
 ###store
 
-```
+```javascript
 
 //DEMO COMPONENT ABSTRACT REDUX
-import {mixerStore} from '../../lib/ARC'
+import {mixerStore} from 'react-arc'
 import configPortfolio from './somewhere/config.json'
 
 const reducers = {
