@@ -1,30 +1,38 @@
-import React,{Component}  from 'react'
-import config from './config.json'
+import React, {Component}  from 'react'
+import config from '../config.json'
 import {connect} from 'react-redux'
-import {AbstractCollectionComponent, mixerConnector} from '../../../lib/ARC'
+import {AbstractCollectionComponent, mixerConnector} from '../../../../lib'
+
+const shorten = (str) => str.length > 12 ? str.substr(0,12) + '...' : str
 
 class PorfolioItem extends Component {
-    render(){
+    render() {
         const {item} = this.props
-        const style = {maxHeight: 80}
-        return (<div>
-            <h3>{item.title}</h3>
-            <div>
-                {item.images.map(image => <img key={image.id} src={image.path} style={style} />)}
-            </div>
-        </div>)
+        return !item.images[0].path ? null : ( <div className="col-sm-4 col-md-3">
+                <div className="thumbnail">
+                    <img src={item.images[0].path} alt={item.title} style={{}}/>
+                    <div className="caption">
+                        <h3>{shorten(item.title)}</h3>
+                        <p>...</p>
+                        <p>
+                            {item.tags.slice(0,3).map(tag=>(<span style={{marginRight:3}} key={tag.id} className="label label-primary">{tag.title}</span>))}
+                        </p>
+                    </div>
+                </div>
+            </div>)
     }
 }
 class PorfolioComponent extends AbstractCollectionComponent {
     static defaultProps = {
         ARCConfig: config
     }
-    render(){
+
+    render() {
         if (!this.isLoaded()) return (<div>loading....</div>)
-        const items = this.getCollection().map(item=><PorfolioItem key={item.id} item={item} />)
-        return(<ul>
+        const items = this.getCollection().map(item => <PorfolioItem key={item.id} item={item}/>)
+        return (<div className="row">
             {items}
-        </ul>)
+        </div>)
     }
 }
 

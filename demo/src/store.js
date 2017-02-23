@@ -3,8 +3,8 @@ import thunk from "redux-thunk"
 import promise from "redux-promise-middleware"
 
 //DEMO COMPONENT ABSTRACT REDUX
-import {mixerStore} from '../../lib/ARC'
-import configPortfolio from './AbstractReduxComponent/config.json'
+import {mixerStore} from '../../lib'
+import configPortfolio from './portfolio/config.json'
 
 const middleware = applyMiddleware(
     promise(),

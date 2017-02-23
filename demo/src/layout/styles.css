@@ -1,2 +1,4 @@
-/* TODO CHANGE TO SASS */
 @import "~bootstrap/dist/css/bootstrap.css";
+body {
+    padding-top:40px
+}
