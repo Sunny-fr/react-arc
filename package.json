@@ -1,8 +1,8 @@
 {
-  "name": "unicorn",
-  "version": "1.0.0",
-  "description": "Javascript Tools & Components",
-  "main": "index.js",
+  "name": "react-arc",
+  "version": "0.1.0",
+  "description": "React Abstract Redux Component",
+  "main": "lib/index.js",
   "scripts": {
     "compile": "babel --presets es2015,stage-0 -d lib/ src/",
     "prepublish": "npm run compile",
@@ -39,14 +39,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Carrefour-Group/unicorn.git"
+    "url": "git+https://github.com/Sunny-fr/react-arc.git"
   },
   "author": "Alaa El Helw",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/Sunny-fr/unicorn/issues"
+    "url": "https://github.com/Sunny-fr/react-arc/issues"
   },
-  "homepage": "https://github.com/Carrefour-Group/unicorn#readme",
+  "homepage": "https://github.com/Sunny-fr/react-arc#readme",
   "devDependencies": {
     "ava": "^0.16.0",
     "babel": "^6.5.2",
