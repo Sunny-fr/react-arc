@@ -43,6 +43,7 @@
   },
   "author": "Alaa El Helw",
   "license": "ISC",
+  "keywords": ["react", "redux"],
   "bugs": {
     "url": "https://github.com/Sunny-fr/react-arc/issues"
   },
