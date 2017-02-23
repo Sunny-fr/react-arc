@@ -1,0 +1,8 @@
+{
+  "name": "portfolio",
+  "uppercaseName": "PORTFOLIO",
+  "paths": {
+    "item": "http://api.sunny.fr/api/project/{id}",
+    "list": "http://api.sunny.fr/api/project"
+  }
+}
