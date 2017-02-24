@@ -16,8 +16,8 @@ export class ReduxActionsList {
         this.config = options.config || config
     }
 
-    decorate = (str) => {
-        return interpolate(str, this.config)
+    decorate = (str, options) => {
+        return interpolate(str, options || this.config)
     }
 
     /** EDITING **/
