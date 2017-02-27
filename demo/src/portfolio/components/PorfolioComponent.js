@@ -29,6 +29,10 @@ class PorfolioComponent extends AbstractCollectionComponent {
     }
 
     render() {
+        if (this.gotError()) {
+            console.log(this.getMetas('error'))
+            return (<div className="alert alert-danger" role="alert">...mmm, something wrong happened...</div>)
+        }
         if (!this.isLoaded()) return (<div>loading....</div>)
         const items = this.getCollection().map(item => <PorfolioItem key={item.id} item={item}/>)
         return (<div className="row">
