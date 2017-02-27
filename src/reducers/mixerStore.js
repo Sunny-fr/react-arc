@@ -6,7 +6,7 @@ import {config as baseConfig} from '../components/AbstractComponent'
 // returns a reducer
 
 export function mixerStore(options) {
-    const config = options && options.config ? options.config : baseConfig
+    const config = options && options.config  ? options.config : baseConfig
 
     /* GENERATED WITH CASTER */
     /* REDUCER STRUCTURE */
@@ -61,7 +61,7 @@ export function mixerStore(options) {
         switch (action.type) {
 
             case decorate('RESET_{uppercaseName}S') : {
-                return {...defaultState}
+                return {...defaultState, collection: {...defaultState.collection}, temp:{metas: {...defaultModel.metas, loaded: false}, model: {...defaultModel.model}} }
             }
 
             case decorate('FETCH_{uppercaseName}S') : {
@@ -77,19 +77,22 @@ export function mixerStore(options) {
             }
 
             case decorate('FETCH_{uppercaseName}') : {
-                const newState = {...state}
+                const collection = {...state.collection}
                 const key = keyGen(action.payload.params)
-                if (!state.collection[key]) {
-                    newState.collection[key] = {...defaultModel, metas: {...defaultModel.metas, fetching: true}}
+                if (!collection[key]) {
+                    collection[key] = {...defaultModel, metas: {...defaultModel.metas, fetching: true}}
                 } else {
-                    newState.collection[key] = Object.assign({}, newState.collection[key], {
+                    collection[key] = Object.assign({}, collection[key], {
                         metas: {
                             ...defaultModel.metas,
                             fetching: true
                         }
                     })
                 }
-                return newState
+                return {
+                    ...state,
+                    collection
+                }
             }
 
             case decorate('FETCH_{uppercaseName}_REJECTED') : {
@@ -143,7 +146,7 @@ export function mixerStore(options) {
             case decorate('SAVE_{uppercaseName}') : {
                 const key = keyGen(action.payload.params)
                 const prev = !key ? state.temp : previousItem(key)
-                const updated = {...prev, metas: {...prev.metas, saving: true}}
+                const updated = {...prev, metas: {...prev.metas, error: null, saving: true}}
                 if (!key) {
                     //model is new
                     return {...state, temp: updated}
