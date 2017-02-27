@@ -3,6 +3,7 @@ import config from '../config.json'
 import {connect} from 'react-redux'
 import {Link, withRouter} from 'react-router'
 import {AbstractFormModelComponent, mixerConnector} from '../../../../lib'
+import Loader from '../containers/Loader'
 
 
 function FormRow(props) {
@@ -26,11 +27,11 @@ class PorfolioEditItemComponent extends AbstractFormModelComponent {
 
     render() {
 
-        if (!this.isLoaded()) return (<div>loading....</div>)
+        if (!this.isLoaded()) return (<Loader />)
 
         const model = this.getModel()
 
-        return ( <div>
+        return ( <div className="paper animated fadeIn" style={{padding:20}}>
             <h3>Edit {model.title}</h3>
             {this.gotError() ? <div className="alert alert-danger" role="alert">...mmm, something wrong happened...</div> : null }
             <form className="form-horizontal">

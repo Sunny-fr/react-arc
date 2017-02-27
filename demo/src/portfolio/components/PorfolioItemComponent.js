@@ -3,6 +3,7 @@ import config from '../config.json'
 import {connect} from 'react-redux'
 import {Link} from 'react-router'
 import {AbstractModelComponent, mixerConnector} from '../../../../lib'
+import Loader from '../containers/Loader'
 
 const shorten = (str) => str.length > 12 ? str.substr(0,12) + '...' : str
 
@@ -16,7 +17,7 @@ class PorfolioItemComponent extends AbstractModelComponent {
             console.log(this.getMetas('error'))
             return (<div className="alert alert-danger" role="alert">...mmm, something wrong happened...</div>)
         }
-        if (!this.isLoaded()) return (<div>loading....</div>)
+        if (!this.isLoaded()) return (<Loader />)
 
         const model = this.getModel()
 
@@ -31,8 +32,8 @@ class PorfolioItemComponent extends AbstractModelComponent {
                         </div>
                     </div>
                 </div>
-                <div className="thumbnail">
-                    <img src={model.images[0].path} alt={model.title}/>
+                <div className="thumbnail paper animated fadeIn">
+                    <Link to={'/' + model.id}><img src={model.images[0].path} alt={model.title}/></Link>
                     <div className="caption">
                         <h3>{shorten(model.title)}</h3>
                         <div dangerouslySetInnerHTML={{__html: model.description}} />
