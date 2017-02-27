@@ -44,18 +44,17 @@ export class ReduxActionsList {
     }
 
     /**  SAVE **/
-    save(data, params) {
+    save(data, params, method = 'put') {
         return (dispatch) => {
-            dispatch({type: this.decorate('SAVE_{uppercaseName}'), payload: {data}})
-            const method = 'put'
+            dispatch({type: this.decorate('SAVE_{uppercaseName}'), payload: {data, params}})
             const url = this.decorate(this.config.paths.item, params)
-            axios[method](url, data).then(response => {
+            axios[method.toLowerCase()](url, data).then(response => {
                 dispatch({
                     type: this.decorate('SAVE_{uppercaseName}_FULFILLED'),
-                    payload: {params: data, data: response.data}
+                    payload: {params, data: response.data}
                 })
             }).catch((error) => {
-                dispatch({type: this.decorate('SAVE_{uppercaseName}_REJECTED'), payload: {error, data}})
+                dispatch({type: this.decorate('SAVE_{uppercaseName}_REJECTED'), payload: {error, data, params}})
             })
         }
     }
@@ -68,10 +67,10 @@ export class ReduxActionsList {
             axios.delete(url).then(response => {
                 dispatch({
                     type: this.decorate('DELETE_{uppercaseName}_FULFILLED'),
-                    payload: {params: data, data: response.data}
+                    payload: {params, data: response.data}
                 })
             }).catch((error) => {
-                dispatch({type: this.decorate('DELETE_{uppercaseName}_REJECTED'), payload: {error, data}})
+                dispatch({type: this.decorate('DELETE_{uppercaseName}_REJECTED'), payload: {error, data, params}})
             })
         }
     }

@@ -1,4 +1,7 @@
-export {AbstractCollectionComponent, AbstractModelComponent, AbstractFormModelComponent} from './components/AbstractComponent'
+export AbstractComponent from './components/AbstractComponent'
+export AbstractCollectionComponent from './components/AbstractCollectionComponent'
+export AbstractModelComponent from './components/AbstractModelComponent'
+export AbstractFormModelComponent from './components/AbstractFormModelComponent'
 export {ReduxActionsList} from './actions/ReduxActionsList'
 export {mixerStore} from './reducers/mixerStore'
 export {mixerConnector} from './mixerConnector'

@@ -146,7 +146,7 @@ export function mixerStore(options) {
             case decorate('SAVE_{uppercaseName}') : {
                 const key = keyGen(action.payload.params)
                 const prev = !key ? state.temp : previousItem(key)
-                const updated = {...prev, metas: {...prev.metas, saving: true}}
+                const updated = {...prev, metas: {...prev.metas, error: null, saving: true}}
                 if (!key) {
                     //model is new
                     return {...state, temp: updated}
