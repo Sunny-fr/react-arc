@@ -4,6 +4,13 @@ export function flatten(node) {
     return Object.keys(node).map(nodeName => node[nodeName].model)
 }
 
+export function extractParams( props = [], source = {}) {
+    return props.reduce((params, prop) => ({
+        ...params,
+        [prop]: source[prop]
+    }), {})
+}
+
 export function interpolate(str, params) {
     const keys = Object.keys(params);
     return keys.reduce((prev, current) => {
@@ -76,9 +83,9 @@ export class ReduxActionsList {
     }
 
     /** LISTS **/
-    fetchAll() {
+    fetchAll(params = {}) {
         return (dispatch) => {
-            const url = this.config.paths.list
+            const url = this.decorate(this.config.paths.collection, params)
             dispatch({type: this.decorate('FETCH_{uppercaseName}S'), payload: {}})
             axios.get(url)
                 .then((response) => {

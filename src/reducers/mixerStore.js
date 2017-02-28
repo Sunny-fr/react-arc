@@ -1,4 +1,4 @@
-import {interpolate} from '../actions/ReduxActionsList'
+import {interpolate, extractParams} from '../actions/ReduxActionsList'
 import {config as baseConfig} from '../components/AbstractComponent'
 
 
@@ -6,7 +6,7 @@ import {config as baseConfig} from '../components/AbstractComponent'
 // returns a reducer
 
 export function mixerStore(options) {
-    const config = options && options.config  ? options.config : baseConfig
+    const config = options && options.config ? options.config : baseConfig
 
     /* GENERATED WITH CASTER */
     /* REDUCER STRUCTURE */
@@ -25,9 +25,11 @@ export function mixerStore(options) {
         }
 
 
+
     function mapModels(list) {
         return list.reduce((prev, current) => {
-            prev[current.id] = Object.assign({}, defaultModel, {
+            const key = interpolate(null, extractParams(config.modelProps, current))
+            prev[key] = Object.assign({}, defaultModel, {
                 model: current,
                 metas: {...defaultModel.metas, loaded: true, valid: true}
             })
@@ -61,11 +63,15 @@ export function mixerStore(options) {
         switch (action.type) {
 
             case decorate('RESET_{uppercaseName}S') : {
-                return {...defaultState, collection: {...defaultState.collection}, temp:{metas: {...defaultModel.metas, loaded: false}, model: {...defaultModel.model}} }
+                return {
+                    ...defaultState,
+                    collection: {...defaultState.collection},
+                    temp: {metas: {...defaultModel.metas, loaded: false}, model: {...defaultModel.model}}
+                }
             }
 
             case decorate('FETCH_{uppercaseName}S') : {
-                return {...state, loaded:false, fetching: true}
+                return {...state, loaded: false, fetching: true}
             }
 
             case decorate('FETCH_{uppercaseName}S_FULFILLED') : {

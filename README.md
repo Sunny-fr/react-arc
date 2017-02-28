@@ -1,4 +1,4 @@
-#ARC 0.1.0
+#ARC 0.1.3
 
 React Abstract Redux Component
 
@@ -11,15 +11,23 @@ Live demo : http://sunny.fr/react-arc
 
 ###config
 
-```json
-{
-  "name": "portfolio",
-  "uppercaseName": "PORTFOLIO",
-  "paths": {
-    "item": "http://api.sunny.fr/api/project/{id}",
-    "list": "http://api.sunny.fr/api/project"
-  }
+```javascript
+
+//EXAMPLE CONFIG
+export const config = {
+    name: 'something',
+    //used in reducers
+    uppercaseName: 'SOMETHING',
+    // useful to map objects in collection
+    modelProps: ['id'],
+    // for paging for example
+    collectionProps: ['size','page'],
+    paths: {
+        item: '/some/url/{id}',
+        collection: '/some/url'
+    }
 }
+
 ```
 
 ###component

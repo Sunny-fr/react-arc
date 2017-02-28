@@ -1,5 +1,5 @@
 import React from 'react'
-import {flatten} from '../actions/ReduxActionsList'
+import {flatten, extractParams} from '../actions/ReduxActionsList'
 import AbstractComponent from './AbstractComponent'
 
 
@@ -10,7 +10,7 @@ export class AbstractCollectionComponent extends AbstractComponent {
     }
 
     fetch = () => {
-        this.props.dispatch(this.actions.fetchAll())
+        this.props.dispatch(this.actions.fetchAll(extractParams(this.ARCConfig.collectionProps, this.props)))
     }
 
     getCollection() {
@@ -23,7 +23,7 @@ export class AbstractCollectionComponent extends AbstractComponent {
     }
 
     isLoaded (){
-        return this.props.collectionLoaded
+        return this.props.loaded
     }
 
     componentWillMount (){

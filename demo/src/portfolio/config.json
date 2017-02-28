@@ -1,8 +1,10 @@
 {
   "name": "portfolio",
   "uppercaseName": "PORTFOLIO",
+  "modelProps": ["id"],
+  "collectionProps": ["size","page"],
   "paths": {
     "item": "http://api.sunny.fr/api/project/{id}",
-    "list": "http://api.sunny.fr/api/project"
+    "collection": "http://api.sunny.fr/api/project"
   }
 }
