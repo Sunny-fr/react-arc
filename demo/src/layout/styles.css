@@ -48,6 +48,9 @@ h3 {
 }
 
 .thumbnail {
+    max-width: 750px;
+    margin-left: auto;
+    margin-right: auto;
     border: 0;
     border-radius: 2px;
     padding: 0;

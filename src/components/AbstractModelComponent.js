@@ -1,15 +1,20 @@
 import React from 'react'
-import {interpolate} from '../actions/ReduxActionsList'
+import {interpolate, extractParams} from '../actions/ReduxActionsList'
 import AbstractComponent from './AbstractComponent'
 
 export class AbstractModelComponent extends AbstractComponent {
 
-    /** CUSTOMIZE HERE **/
+    _hasRequiredParams = (props) => {
+        const requiredProps = this.ARCConfig.modelProps
+        return requiredProps.reduce((valid, prop) => (valid === true && props[prop] ? valid : false)
+            , true)
+    }
+
+    /** CUSTOMIZE HERE FOR ADVANCED USAGE **/
     getParams = (props) => {
         const source = props || this.props
-        //if (!source.id) return null
-        const {id} = source
-        return !id ? null : { id }
+        if (!this._hasRequiredParams(source)) return null
+        return extractParams(this.ARCConfig.modelProps, source)
     }
 
     /* ACTIONS */
@@ -29,7 +34,7 @@ export class AbstractModelComponent extends AbstractComponent {
         return !this.getKey(props)
     }
 
-    getKey(props){
+    getKey(props) {
         const params = this.getParams(props || this.props)
         return !params ? null : interpolate(null, params)
     }
@@ -47,7 +52,7 @@ export class AbstractModelComponent extends AbstractComponent {
         return !!this.getMetas('error', props || this.props)
     }
 
-    isFetching(props){
+    isFetching(props) {
         return this.getMetas('fetching', props)
     }
 
@@ -55,7 +60,7 @@ export class AbstractModelComponent extends AbstractComponent {
         return !(!this._getModel(props) || !this.getMetas('loaded', props))
     }
 
-    canUpdate(_props){
+    canUpdate(_props) {
         const props = _props || this.props
         //console.log(this.getKey(props),'is new',this.isNew(props), 'is loaded',this.isLoaded(props), 'is fetching', this.isFetching(props), 'issued',  this.gotError(props))
         return !this.isNew(props) && !this.isLoaded(props) && !this.isFetching(props) && !this.gotError(props)

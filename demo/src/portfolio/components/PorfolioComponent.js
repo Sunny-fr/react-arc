@@ -30,7 +30,7 @@ class PorfolioComponent extends AbstractCollectionComponent {
 
     render() {
         if (this.gotError()) {
-            console.log(this.getMetas('error'))
+            console.error(this.gotError())
             return (<div className="alert alert-danger" role="alert">...mmm, something wrong happened...</div>)
         }
         if (!this.isLoaded()) return (<Loader />)

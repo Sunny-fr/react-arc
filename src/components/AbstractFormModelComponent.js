@@ -5,7 +5,7 @@ export class AbstractFormModelComponent  extends AbstractModelComponent {
 
     componentDidUpdate() {
         /** CUSTOMIZE HERE **/
-        if (this.props.forward) {
+        if (this.getMetas('forward')) {
             this.resetTempModel()
             if (typeof this.onSave !== 'undefined') this.onSave()
             //const {id} = this.getModel()
