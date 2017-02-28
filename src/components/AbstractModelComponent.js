@@ -57,6 +57,7 @@ export class AbstractModelComponent extends AbstractComponent {
     }
 
     isLoaded(props) {
+        if (this.isNew(props)) return true;
         return !(!this._getModel(props) || !this.getMetas('loaded', props))
     }
 
