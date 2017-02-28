@@ -74,7 +74,7 @@ export class AbstractModelComponent extends AbstractComponent {
         //fetch once :
         //if (this.canUpdate()) this.fetch(this.getParams())
         //always refetch
-        this.fetch(this.getParams())
+        if (!this.isNew(props)) this.fetch(this.getParams())
     }
 }
 
