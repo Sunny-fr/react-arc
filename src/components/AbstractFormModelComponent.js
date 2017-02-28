@@ -1,25 +1,29 @@
 import React from 'react'
 import AbstractModelComponent from './AbstractModelComponent'
 
-export class AbstractFormModelComponent  extends AbstractModelComponent {
+export class AbstractFormModelComponent extends AbstractModelComponent {
 
     componentDidUpdate() {
-        /** CUSTOMIZE HERE **/
         if (this.getMetas('forward')) {
             this.resetTempModel()
-            if (typeof this.onSave !== 'undefined') this.onSave()
-            //const {id} = this.getModel()
+            this.onSave()
         }
     }
 
-    constructor (props){
+    constructor(props) {
         super(props)
         this.silentState = {
             edited: {} // Not pristines :-)
         }
     }
 
-    /* ACTIONS */
+    /** PUBLIC/MEANT TO BE OVERRIDDEN **/
+
+    onSubmit() { }
+
+    onSave() { }
+
+    /** ACTIONS **/
 
     edit = (model) => {
         this.props.dispatch(this.actions.edit(model, this.getParams()))
@@ -28,16 +32,16 @@ export class AbstractFormModelComponent  extends AbstractModelComponent {
     submit = () => {
         const isNew = this.isNew()
         const model = this.getModel()
-        const params = isNew ? this.getParams(model.id) : this.getParams()
-        this.props.dispatch(this.actions.save(model, params, isNew ? 'post': 'put'))
-        if (typeof this.onSubmit !== 'undefined') this.onSubmit()
+        const params = isNew ? this.getParams(model) : this.getParams()
+        this.props.dispatch(this.actions.save(model, params, isNew ? 'post' : 'put'))
+        this.onSubmit()
     }
 
     resetTempModel = () => {
         this.props.dispatch(this.actions.resetTemp())
     }
 
-    /* ACTIONS */
+    /** END ACTIONS **/
 
     setSilentState = (data) => {
         this.silentState = Object.assign({}, this.silentState, data)
