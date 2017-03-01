@@ -5,6 +5,7 @@ import {Link, withRouter} from 'react-router'
 import {AbstractFormModelComponent, mixerConnector} from '../../../../lib'
 import Loader from '../containers/Loader'
 import Toolbar from '../containers/Toolbar'
+import Toast from '../containers/Toast'
 
 
 function FormRow(props) {
@@ -44,7 +45,7 @@ class PorfolioEditItemComponent extends AbstractFormModelComponent {
                         </div>
                     </div>
                 </Toolbar>
-
+                {this.isSyncing() ? <Toast>syncing...</Toast> : null}
                 <div className="paper sizing animated fadeIn" style={{padding: 20}}>
                     <h3>Edit {model.title}</h3>
                     {this.gotError() ? <div className="alert alert-danger" role="alert">...mmm, something wrong
@@ -55,7 +56,7 @@ class PorfolioEditItemComponent extends AbstractFormModelComponent {
                                    onChange={(e) => this.changeProp('title', e.target.value)}/>
                         </FormRow>
                         <FormRow name="description">
-                    <textarea rows="10" className="form-control" name="description" value={model.description}
+                        <textarea rows="10" className="form-control" name="description" value={model.description}
                               onChange={(e) => this.changeProp('description', e.target.value)}/>
                         </FormRow>
                         <FormRow>
