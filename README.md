@@ -1,4 +1,4 @@
-#ARC 0.1.7
+#ARC 0.1.8
 
 React Abstract Redux Component
 
@@ -16,15 +16,24 @@ Live demo : http://sunny.fr/react-arc
 //EXAMPLE CONFIG
 export const config = {
     name: 'something',
-    //used in reducers
+    //used in the reducers
     uppercaseName: 'SOMETHING',
     // useful to map objects in collection
     modelProps: ['id'],
-    // for paging for example
+    // can be an empty list (might be usefull if you need paging...)
     collectionProps: ['size','page'],
+    // path to your rest server
     paths: {
-        item: '/some/url/{id}',
-        collection: '/some/url'
+        item: '/some/url',
+        collection: '/some/other/url'
+    },
+    /** OPTIONAL **/
+    //methods
+    methods: {
+        create: 'POST',
+        update: 'PUT',
+        delete: 'DELETE',
+        read:   'GET'
     }
 }
 
