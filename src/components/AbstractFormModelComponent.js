@@ -4,7 +4,7 @@ import AbstractModelComponent from './AbstractModelComponent'
 export class AbstractFormModelComponent extends AbstractModelComponent {
 
     componentDidUpdate() {
-        if (this.getMetas('forward')) {
+        if (this.getMetas('saved')) {
             const created = this.getModel()
             this.resetTempModel()
             this.onSave(created)

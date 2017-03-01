@@ -17,7 +17,7 @@ export function mixerStore(options) {
     /* REDUCER STRUCTURE */
 
     const defaultModel =  {
-            metas: {loaded: false, fetching: false, valid: false, saving: false, deleting: false, forward: false},
+            metas: {loaded: false, fetching: false, valid: false, saving: false, deleting: false, saved: false},
             model: {...defaultModelObject}
         }
 
@@ -154,7 +154,7 @@ export function mixerStore(options) {
             case decorate('SAVE_{uppercaseName}') : {
                 const key = keyGen(action.payload.params)
                 const prev = action.payload.create ? state.temp : previousItem(key)
-                const updated = {...prev, metas: {...prev.metas, error: null, saving: true}}
+                const updated = {...prev, metas: {...prev.metas, error: null, saving: true, saved: false}}
                 if (action.payload.create) {
                     //model is new
                     return {...state, temp: updated}
@@ -167,7 +167,7 @@ export function mixerStore(options) {
             case decorate('SAVE_{uppercaseName}_REJECTED') : {
                 const key = keyGen(action.payload.params)
                 const prev = action.payload.create ? state.temp : previousItem(key)
-                const updated = {...prev, metas: {...prev.metas, error: action.payload.error, saving: false}}
+                const updated = {...prev, metas: {...prev.metas, error: action.payload.error, saving: false, saved: false}}
                 if (action.payload.create) {
                     //model is new
                     return {...state, temp: updated}
@@ -185,7 +185,7 @@ export function mixerStore(options) {
                 const prev = action.payload.create ? state.temp : previousItem(key)
                 const updated = {
                     ...prev,
-                    metas: {...prev.metas, saving: false, forward: action.payload.create},
+                    metas: {...prev.metas, saving: false, saved: true},
                     model: action.payload.data
                 }
                 if (action.payload.create) {
