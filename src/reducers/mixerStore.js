@@ -151,9 +151,9 @@ export function mixerStore(options) {
 
             case decorate('SAVE_{uppercaseName}') : {
                 const key = keyGen(action.payload.params)
-                const prev = !key ? state.temp : previousItem(key)
+                const prev = action.payload.create ? state.temp : previousItem(key)
                 const updated = {...prev, metas: {...prev.metas, error: null, saving: true}}
-                if (!key) {
+                if (action.payload.create) {
                     //model is new
                     return {...state, temp: updated}
                 } else {
@@ -164,9 +164,9 @@ export function mixerStore(options) {
 
             case decorate('SAVE_{uppercaseName}_REJECTED') : {
                 const key = keyGen(action.payload.params)
-                const prev = !key ? state.temp : previousItem(key)
+                const prev = action.payload.create ? state.temp : previousItem(key)
                 const updated = {...prev, metas: {...prev.metas, error: action.payload.error, saving: false}}
-                if (!key) {
+                if (action.payload.create) {
                     //model is new
                     return {...state, temp: updated}
                 } else {
@@ -180,13 +180,13 @@ export function mixerStore(options) {
 
             case decorate('SAVE_{uppercaseName}_FULFILLED') : {
                 const key = keyGen(action.payload.params)
-                const prev = !key ? state.temp : previousItem(key)
+                const prev = action.payload.create ? state.temp : previousItem(key)
                 const updated = {
                     ...prev,
                     metas: {...prev.metas, saving: false, forward: !key},
                     model: action.payload.data
                 }
-                if (!key) {
+                if (action.payload.create) {
                     //model is new
                     return {...state, temp: updated}
                 } else {
