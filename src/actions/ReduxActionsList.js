@@ -48,15 +48,17 @@ export class ReduxActionsList {
     /**  SAVE **/
     save(data, params, create = false) {
         return (dispatch) => {
-            dispatch({type: this.decorate('SAVE_{uppercaseName}'), payload: {data, params}})
-            const url = this.decorate(this.config.paths.item, params)
-            axios[create ? this.methods.create : this.methods.update](url, data).then(response => {
+            dispatch({type: this.decorate('SAVE_{uppercaseName}'), payload: {data, params, create}})
+            const method = create ? this.methods.create : this.methods.update
+            //TODO remove magic ?
+            const url = this.decorate(this.config.paths.item, method === 'post' ? {} : params)
+            axios[method](url, data).then(response => {
                 dispatch({
                     type: this.decorate('SAVE_{uppercaseName}_FULFILLED'),
-                    payload: {params, data: response.data}
+                    payload: {params, data: response.data, create}
                 })
             }).catch((error) => {
-                dispatch({type: this.decorate('SAVE_{uppercaseName}_REJECTED'), payload: {error, data, params}})
+                dispatch({type: this.decorate('SAVE_{uppercaseName}_REJECTED'), payload: {error, data, params, create}})
             })
         }
     }
