@@ -34,6 +34,10 @@ export const config = {
         update: 'PUT',
         delete: 'DELETE',
         read:   'GET'
+    },
+    //default model
+    defaultModel: {
+        name: 'New Title'
     }
 }
 
