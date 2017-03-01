@@ -1,10 +1,11 @@
 import React from 'react'
 import {ReduxActionsList} from '../actions/ReduxActionsList'
+import defaultConfig from '../defaultConfig'
 
 export class AbstractComponent extends React.Component {
     constructor(props) {
         super(props)
-        this.ARCConfig = {...props.ARCConfig}
+        this.ARCConfig = {...defaultConfig, ...props.ARCConfig}
         this.actions = new ReduxActionsList({config: this.ARCConfig})
     }
     render() {

@@ -5,11 +5,20 @@ export const config = {
     uppercaseName: 'SOMETHING',
     // useful to map objects in collection
     modelProps: ['id'],
-    // for paging for example
+    // can be empty (might be usefull if you need paging...)
     collectionProps: ['size','page'],
+    // path to your rest server
     paths: {
         item: '/some/url',
         collection: '/some/other/url'
+    },
+    /** OPTIONAL **/
+    //methods
+    methods: {
+        create: 'POST',
+        update: 'PUT',
+        delete: 'DELETE',
+        read:   'GET'
     }
 }
 

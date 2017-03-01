@@ -1,5 +1,6 @@
-import {interpolate, extractParams} from '../actions/ReduxActionsList'
+import {interpolate, extractParams} from '../utils'
 import {config as baseConfig} from '../components/AbstractComponent'
+import defaultConfig from '../defaultConfig'
 
 
 // MIXER
@@ -7,16 +8,17 @@ import {config as baseConfig} from '../components/AbstractComponent'
 
 export function mixerStore(options) {
     const config = options && options.config ? options.config : baseConfig
+    const extendedConfig = {...defaultConfig, ...config}
 
     /* GENERATED WITH CASTER */
     /* REDUCER STRUCTURE */
 
-    const defaultModel = config.defaultModel || {
+    const defaultModel = extendedConfig.defaultModel || {
             metas: {loaded: false, fetching: false, valid: false, saving: false, deleting: false, forward: false},
             model: {}
         }
 
-    const defaultState = config.defaultState || {
+    const defaultState = extendedConfig.defaultState || {
             collection: {},
             temp: {metas: {...defaultModel.metas, loaded: false}, model: {...defaultModel.model}},
             fetching: false,
@@ -28,7 +30,7 @@ export function mixerStore(options) {
 
     function mapModels(list) {
         return list.reduce((prev, current) => {
-            const key = interpolate(null, extractParams(config.modelProps, current))
+            const key = interpolate(null, extractParams(extendedConfig.modelProps, current))
             prev[key] = Object.assign({}, defaultModel, {
                 model: current,
                 metas: {...defaultModel.metas, loaded: true, valid: true}
@@ -50,13 +52,11 @@ export function mixerStore(options) {
         }
 
         function update(item, key) {
-            const collection = {...state.collection}
-            collection[key] = item
-            return collection
+            return {...state.collection, [key]: item}
         }
 
         function decorate(str) {
-            return interpolate(str, config)
+            return interpolate(str, extendedConfig)
         }
 
 
