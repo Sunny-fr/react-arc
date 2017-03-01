@@ -33,7 +33,7 @@ export class AbstractFormModelComponent extends AbstractModelComponent {
         const isNew = this.isNew()
         const model = this.getModel()
         const params = isNew ? this.getParams(model) : this.getParams()
-        this.props.dispatch(this.actions.save(model, params, isNew ? 'post' : 'put'))
+        this.props.dispatch(this.actions.save(model, params, isNew))
         this.onSubmit()
     }
 
