@@ -19,7 +19,9 @@ export const config = {
         update: 'PUT',
         delete: 'DELETE',
         read:   'GET'
-    }
+    },
+    //default model : {name:'', description:'', tags: []}
+    defaultModel : {}
 }
 
 export default config
