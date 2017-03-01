@@ -5,6 +5,7 @@ import {Link} from 'react-router'
 import {AbstractModelComponent, mixerConnector} from '../../../../lib'
 import Loader from '../containers/Loader'
 import Toolbar from '../containers/Toolbar'
+import Toast from '../containers/Toast'
 
 const shorten = (str) => str.length > 12 ? str.substr(0,12) + '...' : str
 
@@ -22,6 +23,8 @@ class PorfolioItemComponent extends AbstractModelComponent {
 
         const model = this.getModel()
 
+        console.log('is s', this.getMetas())
+
         return ( <div>
                 <Toolbar>
                     <div className="row">
@@ -33,13 +36,15 @@ class PorfolioItemComponent extends AbstractModelComponent {
                         </div>
                     </div>
                 </Toolbar>
+                {this.isSyncing() ? <Toast>syncing...</Toast> : null}
                 <div className="thumbnail sizing paper animated fadeIn">
                     <Link to={'/edit/' + model.id}><img src={model.images[0].path} alt={model.title}/></Link>
                     <div className="caption">
                         <h3>{shorten(model.title)}</h3>
-                        <div dangerouslySetInnerHTML={{__html: model.description}} />
+                        {/*<div dangerouslySetInnerHTML={{__html: model.description}} />*/}
+                        <p>{model.description}</p>
                         <p>
-                            {model.tags.map(tag=>(<span style={{marginRight:3}} key={tag} className="label label-primary">{tag}</span>))}
+                            {model.tags.map(tag =>(<span style={{marginRight:3}} key={tag.id || tag} className="label label-primary">{tag.title || tag}</span>))}
                         </p>
                     </div>
                 </div>

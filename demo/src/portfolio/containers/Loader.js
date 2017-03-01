@@ -1,6 +1,6 @@
 import React from 'react'
 
-export function Loader (){
-    return (<div className="loader">loading</div> )
+export function Loader (props){
+    return (<div className="loader">{props.children || 'loading'}</div> )
 }
 export default Loader

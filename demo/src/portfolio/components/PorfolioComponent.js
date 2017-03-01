@@ -5,6 +5,7 @@ import {Link} from 'react-router'
 import {AbstractCollectionComponent, mixerConnector} from '../../../../lib'
 import Loader from '../containers/Loader'
 import Toolbar from '../containers/Toolbar'
+import Toast from '../containers/Toast'
 
 const shorten = (str) => str.length > 25 ? str.substr(0, 25) + '...' : str
 
@@ -43,6 +44,7 @@ class PorfolioComponent extends AbstractCollectionComponent {
                     <button className="btn btn-block btn-primary">create</button>
                 </Link>
             </Toolbar>
+            {this.isSyncing() ? <Toast>syncing...</Toast> : null}
             {items}
         </div>)
     }

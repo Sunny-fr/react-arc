@@ -26,7 +26,7 @@ export function mixerStore(options) {
             temp: {metas: {...defaultModel.metas, loaded: false}, model: {...defaultModel.model}},
             fetching: false,
             loaded: false,
-            error: null,
+            error: null
         }
 
 
@@ -73,7 +73,7 @@ export function mixerStore(options) {
             }
 
             case decorate('FETCH_{uppercaseName}S') : {
-                return {...state, loaded: false, fetching: true}
+                return {...state , fetching: true}
             }
 
             case decorate('FETCH_{uppercaseName}S_FULFILLED') : {
@@ -92,7 +92,7 @@ export function mixerStore(options) {
                 } else {
                     collection[key] = Object.assign({}, collection[key], {
                         metas: {
-                            ...defaultModel.metas,
+                            ...collection[key].metas,
                             fetching: true
                         }
                     })
@@ -107,7 +107,7 @@ export function mixerStore(options) {
                 const collection = {...state.collection}
                 const key = keyGen(action.payload.params)
                 collection[key] = {
-                    metas: {loaded: false, fetching: false, valid: false, error: action.payload.error},
+                    metas: {...collection[key].metas, loaded: false, fetching: false, valid: false, error: action.payload.error},
                     model: {...defaultModel.model}
                 }
                 return {
@@ -119,7 +119,7 @@ export function mixerStore(options) {
             case decorate('FETCH_{uppercaseName}_FULFILLED') : {
                 const collection = {...state.collection}
                 const key = keyGen(action.payload.params)
-                collection[key] = {metas: {loaded: true, fetching: false, valid: true}, model: action.payload.data}
+                collection[key] = {metas: {...collection[key].metas, loaded: true, fetching: false, valid: true}, model: action.payload.data}
                 return {
                     ...state,
                     collection
@@ -185,7 +185,7 @@ export function mixerStore(options) {
                 const prev = action.payload.create ? state.temp : previousItem(key)
                 const updated = {
                     ...prev,
-                    metas: {...prev.metas, saving: false, forward: !key},
+                    metas: {...prev.metas, saving: false, forward: action.payload.create},
                     model: action.payload.data
                 }
                 if (action.payload.create) {

@@ -83,7 +83,7 @@ export class ReduxActionsList {
     fetchAll(params = {}) {
         return (dispatch) => {
             const url = this.decorate(this.config.paths.collection, params)
-            dispatch({type: this.decorate('FETCH_{uppercaseName}S'), payload: {}})
+            dispatch({type: this.decorate('FETCH_{uppercaseName}S'), payload: {params}})
             axios[this.methods.read](url)
                 .then((response) => {
                     dispatch({
