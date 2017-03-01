@@ -4,6 +4,7 @@ import {connect} from 'react-redux'
 import {Link, withRouter} from 'react-router'
 import {AbstractFormModelComponent, mixerConnector} from '../../../../lib'
 import Loader from '../containers/Loader'
+import Toolbar from '../containers/Toolbar'
 
 
 function FormRow(props) {
@@ -19,7 +20,7 @@ class PorfolioEditItemComponent extends AbstractFormModelComponent {
         ARCConfig: config
     }
 
-    onSave = () =>{
+    onSave = () => {
         // successful
         const {id} = this.getModel()
         this.props.router.push('/' + (id || ''))
@@ -30,27 +31,46 @@ class PorfolioEditItemComponent extends AbstractFormModelComponent {
         if (!this.isLoaded()) return (<Loader />)
 
         const model = this.getModel()
+        const isNew = this.isNew()
 
-        return ( <div className="paper animated fadeIn" style={{padding:20}}>
-            <h3>Edit {model.title}</h3>
-            {this.gotError() ? <div className="alert alert-danger" role="alert">...mmm, something wrong happened...</div> : null }
-            <form className="form-horizontal">
-                <FormRow name="title">
-                    <input className="form-control" name="title" value={model.title}
-                           onChange={(e) => this.changeProp('title', e.target.value)}/>
-                </FormRow>
-                <FormRow name="description">
+        return (
+            <div>
+                <Toolbar>
+                    <div className="row">
+                        <div className="col-sm-6 col-md-6">
+                            <Link to={isNew ? '/' : '/view/' + model.id}>
+                                <button className="btn btn-default">back</button>
+                            </Link>
+                        </div>
+                    </div>
+                </Toolbar>
+
+                <div className="paper sizing animated fadeIn" style={{padding: 20}}>
+                    <h3>Edit {model.title}</h3>
+                    {this.gotError() ? <div className="alert alert-danger" role="alert">...mmm, something wrong
+                            happened...</div> : null }
+                    <form className="form-horizontal">
+                        <FormRow name="title">
+                            <input className="form-control" name="title" value={model.title}
+                                   onChange={(e) => this.changeProp('title', e.target.value)}/>
+                        </FormRow>
+                        <FormRow name="description">
                     <textarea rows="10" className="form-control" name="description" value={model.description}
                               onChange={(e) => this.changeProp('description', e.target.value)}/>
-                </FormRow>
-                <FormRow>
-                    <div className="text-right">
-                        <Link to={'/' + model.id}><button type="submit" className="btn btn-default">Cancel</button></Link>
-                        <button type="button" onClick={this.submit} style={{marginLeft: '10px'}}  className="btn btn-primary">Save</button>
-                    </div>
-                </FormRow>
-            </form>
-        </div>)
+                        </FormRow>
+                        <FormRow>
+                            <div className="text-right">
+                                <Link to={'/view/' + model.id}>
+                                    <button type="submit" className="btn btn-default">Cancel</button>
+                                </Link>
+                                <button type="button" onClick={this.submit} style={{marginLeft: '10px'}}
+                                        className="btn btn-primary">Save
+                                </button>
+                            </div>
+                        </FormRow>
+                    </form>
+                </div>
+            </div>)
     }
 }
 
