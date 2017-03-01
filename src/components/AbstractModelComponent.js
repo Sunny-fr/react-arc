@@ -52,8 +52,8 @@ export class AbstractModelComponent extends AbstractComponent {
         return !!this.getMetas('error', props || this.props)
     }
 
-    isFetching(props) {
-        return this.getMetas('fetching', props)
+    isSyncing(props) {
+        return this.getMetas('fetching', props || this.props)
     }
 
     isLoaded(props) {
@@ -63,8 +63,8 @@ export class AbstractModelComponent extends AbstractComponent {
 
     canUpdate(_props) {
         const props = _props || this.props
-        //console.log(this.getKey(props),'is new',this.isNew(props), 'is loaded',this.isLoaded(props), 'is fetching', this.isFetching(props), 'issued',  this.gotError(props))
-        return !this.isNew(props) && !this.isLoaded(props) && !this.isFetching(props) && !this.gotError(props)
+        //console.log(this.getKey(props),'is new',this.isNew(props), 'is loaded',this.isLoaded(props), 'is fetching', this.isSyncing(props), 'issued',  this.gotError(props))
+        return !this.isNew(props) && !this.isLoaded(props) && !this.isSyncing(props) && !this.gotError(props)
     }
 
     componentWillReceiveProps(props) {
@@ -72,9 +72,6 @@ export class AbstractModelComponent extends AbstractComponent {
     }
 
     componentWillMount() {
-        //fetch once :
-        //if (this.canUpdate()) this.fetch(this.getParams())
-        //always refetch
         if (!this.isNew(this.props)) this.fetch(this.getParams())
     }
 }
