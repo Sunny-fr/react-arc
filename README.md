@@ -1,4 +1,4 @@
-#ARC 0.1.9
+#ARC 0.1.10
 
 React Abstract Redux Component
 
@@ -44,20 +44,17 @@ export const config = {
 ```javascript
 
 import React,{Component}  from 'react'
-import config from './config.json'
+import config from './somewhere/config.json'
 import {connect} from 'react-redux'
 import {AbstractCollectionComponent, mixerConnector} from 'react-arc'
 
 class PorfolioItem extends Component {
     render(){
         const {item} = this.props
-        const style = {maxHeight: 80}
-        return (<div>
+        return (<li>
             <h3>{item.title}</h3>
-            <div>
-                {item.images.map(image => <img key={image.id} src={image.path} style={style} />)}
-            </div>
-        </div>)
+            <p>{item.description}</p>
+        </li>)
     }
 }
 class PorfolioComponent extends AbstractCollectionComponent {

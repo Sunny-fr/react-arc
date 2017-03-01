@@ -4,6 +4,7 @@ import {connect} from 'react-redux'
 import {Link} from 'react-router'
 import {AbstractModelComponent, mixerConnector} from '../../../../lib'
 import Loader from '../containers/Loader'
+import Toolbar from '../containers/Toolbar'
 
 const shorten = (str) => str.length > 12 ? str.substr(0,12) + '...' : str
 
@@ -22,18 +23,18 @@ class PorfolioItemComponent extends AbstractModelComponent {
         const model = this.getModel()
 
         return ( <div>
-                <div className="toolbar">
+                <Toolbar>
                     <div className="row">
                         <div className="col-sm-6 col-md-6">
                             <Link to={'/'}><button className="btn btn-default">back</button></Link>
                         </div>
                         <div className="col-sm-6 col-md-6 text-right">
-                            <Link to={'/' + model.id + '/edit'}><button className="btn btn-primary pull-right">edit</button></Link>
+                            <Link to={'/edit/' + model.id + ''}><button className="btn btn-primary pull-right">edit</button></Link>
                         </div>
                     </div>
-                </div>
-                <div className="thumbnail paper animated fadeIn">
-                    <Link to={'/' + model.id}><img src={model.images[0].path} alt={model.title}/></Link>
+                </Toolbar>
+                <div className="thumbnail sizing paper animated fadeIn">
+                    <Link to={'/edit/' + model.id}><img src={model.images[0].path} alt={model.title}/></Link>
                     <div className="caption">
                         <h3>{shorten(model.title)}</h3>
                         <div dangerouslySetInnerHTML={{__html: model.description}} />
