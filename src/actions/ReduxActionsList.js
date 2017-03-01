@@ -1,26 +1,21 @@
 import axios from 'axios'
+import {interpolate} from '../utils/index'
 
-export function flatten(node) {
-    return Object.keys(node).map(nodeName => node[nodeName].model)
-}
-
-export function extractParams( props = [], source = {}) {
-    return props.reduce((params, prop) => ({
-        ...params,
-        [prop]: source[prop]
-    }), {})
-}
-
-export function interpolate(str, params) {
-    const keys = Object.keys(params);
-    return keys.reduce((prev, current) => {
-        return prev.replace(new RegExp('{' + current + '}', 'g'), params[current])
-    }, str || keys.map(v => '{' + v + '}').join(':'))
-}
 
 export class ReduxActionsList {
     constructor(options) {
         this.config = options.config || config
+        this.methods = this.setupMethods()
+    }
+
+    setupMethods () {
+        const {methods} = this.config
+        return {
+            create: methods.create.toLowerCase(),
+            read: methods.read.toLowerCase(),
+            update: methods.update.toLowerCase(),
+            delete: methods.delete.toLowerCase()
+        }
     }
 
     decorate = (str, options) => {
@@ -39,7 +34,7 @@ export class ReduxActionsList {
         return (dispatch) => {
             dispatch({type: this.decorate('FETCH_{uppercaseName}'), payload: {params}})
             const url = this.decorate(this.config.paths.item, params)
-            axios.get(url).then(response => {
+            axios[this.methods.read](url).then(response => {
                 dispatch({
                     type: this.decorate('FETCH_{uppercaseName}_FULFILLED'),
                     payload: {data: response.data, params}
@@ -51,11 +46,11 @@ export class ReduxActionsList {
     }
 
     /**  SAVE **/
-    save(data, params, method = 'put') {
+    save(data, params, create = false) {
         return (dispatch) => {
             dispatch({type: this.decorate('SAVE_{uppercaseName}'), payload: {data, params}})
             const url = this.decorate(this.config.paths.item, params)
-            axios[method.toLowerCase()](url, data).then(response => {
+            axios[create ? this.methods.create : this.methods.update](url, data).then(response => {
                 dispatch({
                     type: this.decorate('SAVE_{uppercaseName}_FULFILLED'),
                     payload: {params, data: response.data}
@@ -71,7 +66,7 @@ export class ReduxActionsList {
         return (dispatch) => {
             dispatch({type: this.decorate('DELETE_{uppercaseName}'), payload: {data}})
             const url = this.decorate(this.config.paths.item, params)
-            axios.delete(url).then(response => {
+            axios[this.methods.delete](url).then(response => {
                 dispatch({
                     type: this.decorate('DELETE_{uppercaseName}_FULFILLED'),
                     payload: {params, data: response.data}
@@ -87,7 +82,7 @@ export class ReduxActionsList {
         return (dispatch) => {
             const url = this.decorate(this.config.paths.collection, params)
             dispatch({type: this.decorate('FETCH_{uppercaseName}S'), payload: {}})
-            axios.get(url)
+            axios[this.methods.read](url)
                 .then((response) => {
                     dispatch({
                         type: this.decorate('FETCH_{uppercaseName}S_FULFILLED'),

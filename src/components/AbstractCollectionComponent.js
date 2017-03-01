@@ -1,5 +1,5 @@
 import React from 'react'
-import {flatten, extractParams} from '../actions/ReduxActionsList'
+import {flatten, extractParams} from '../utils'
 import AbstractComponent from './AbstractComponent'
 
 

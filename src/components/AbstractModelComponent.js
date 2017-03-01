@@ -1,5 +1,5 @@
 import React from 'react'
-import {interpolate, extractParams} from '../actions/ReduxActionsList'
+import {interpolate, extractParams} from '../utils'
 import AbstractComponent from './AbstractComponent'
 
 export class AbstractModelComponent extends AbstractComponent {
