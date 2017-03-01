@@ -26,11 +26,12 @@ export class AbstractCollectionComponent extends AbstractComponent {
         return this.props.loaded
     }
 
-    componentWillMount (){
-        if (!this.isLoaded()) this.fetch()
+    isSyncing () {
+        return this.props.fetching
     }
-    componentWillUnmount() {
-        this.props.dispatch(this.actions.reset())
+
+    componentWillMount (){
+        this.fetch()
     }
 }
 export default AbstractCollectionComponent

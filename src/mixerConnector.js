@@ -1,14 +1,16 @@
 import defaultConfig from './defaultConfig'
 export function mixerConnector(connect, config, customMapStateToProps = null) {
     const extendedConfig = {...defaultConfig, ...config}
+    const namespace = extendedConfig.name
     return connect((store) => {
         // Required Props
         const mapStateToProps = (store) => {
             return {
-                tempModel: store[extendedConfig.name].temp,
-                loaded: store[extendedConfig.name].loaded,
-                error: store[extendedConfig.name].error,
-                collection: store[extendedConfig.name].collection
+                tempModel: store[namespace].temp,
+                loaded: store[namespace].loaded,
+                fetching: store[namespace].fetching,
+                error: store[namespace].error,
+                collection: store[namespace].collection
             }
         }
         const optionalStateToProps = customMapStateToProps ? customMapStateToProps(store) : {}

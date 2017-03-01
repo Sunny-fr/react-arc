@@ -7,6 +7,10 @@ body {
     background-color: #E9E9E9;
 }
 
+.animated {
+    animation-duration: 500ms;
+}
+
 .navbar {
     box-shadow: 0 0 10px rgba(0, 0, 0, .4);
     background-color: #FFF;
@@ -21,6 +25,18 @@ h3 {
     font-weight:bold;
     letter-spacing: -1px;
     color:#555;
+}
+.toast {
+    position: fixed;
+    top: 80px;
+    right: 80px;
+    padding: 10px 20px;
+    background-color: #222;
+    box-shadow: 0 15px 10px rgba(0,0,0,.3);
+    border-radius: 3px;
+    color:#FFF;
+    z-index: 1;
+    animation-duration: 100ms;
 }
 .label {
     line-height: 30px;
