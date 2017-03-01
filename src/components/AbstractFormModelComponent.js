@@ -5,8 +5,9 @@ export class AbstractFormModelComponent extends AbstractModelComponent {
 
     componentDidUpdate() {
         if (this.getMetas('forward')) {
+            const created = this.getModel()
             this.resetTempModel()
-            this.onSave()
+            this.onSave(created)
         }
     }
 
@@ -18,8 +19,6 @@ export class AbstractFormModelComponent extends AbstractModelComponent {
     }
 
     /** PUBLIC/MEANT TO BE OVERRIDDEN **/
-
-    onSubmit() { }
 
     onSave() { }
 
@@ -34,7 +33,6 @@ export class AbstractFormModelComponent extends AbstractModelComponent {
         const model = this.getModel()
         const params = isNew ? this.getParams(model) : this.getParams()
         this.props.dispatch(this.actions.save(model, params, isNew))
-        this.onSubmit()
     }
 
     resetTempModel = () => {

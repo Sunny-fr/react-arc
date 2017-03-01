@@ -1,4 +1,4 @@
-#ARC 0.1.10
+#ARC 0.1.11
 
 React Abstract Redux Component
 
@@ -34,6 +34,10 @@ export const config = {
         update: 'PUT',
         delete: 'DELETE',
         read:   'GET'
+    },
+    //default model
+    defaultModel: {
+        name: 'New Title'
     }
 }
 
