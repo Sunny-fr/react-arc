@@ -9,16 +9,19 @@ import defaultConfig from '../defaultConfig'
 export function mixerStore(options) {
     const config = options && options.config ? options.config : baseConfig
     const extendedConfig = {...defaultConfig, ...config}
+    const defaultModelObject = JSON.parse(JSON.stringify(extendedConfig.defaultModel))
+
+
 
     /* GENERATED WITH CASTER */
     /* REDUCER STRUCTURE */
 
-    const defaultModel = extendedConfig.defaultModel || {
+    const defaultModel =  {
             metas: {loaded: false, fetching: false, valid: false, saving: false, deleting: false, forward: false},
-            model: {}
+            model: {...defaultModelObject}
         }
 
-    const defaultState = extendedConfig.defaultState || {
+    const defaultState = {
             collection: {},
             temp: {metas: {...defaultModel.metas, loaded: false}, model: {...defaultModel.model}},
             fetching: false,
@@ -42,7 +45,6 @@ export function mixerStore(options) {
     function keyGen(params) {
         return params ? interpolate(null, params) : null
     }
-
 
     return function reducer(state = defaultState, action) {
 
