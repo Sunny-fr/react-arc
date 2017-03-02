@@ -11,9 +11,7 @@ const history = syncHistoryWithStore(hashHistory, store)
 
 
 import Application from './layout/ApplicationLayout'
-import Portfolio from './portfolio/containers/Portfolio'
-import PortfolioItem from './portfolio/containers/PortfolioItem'
-import PortfolioEditItem from './portfolio/containers/PortfolioEditItem'
+import {Portfolio, PortfolioItem, PortfolioEditItem} from './portfolio'
 
 
 function App() {

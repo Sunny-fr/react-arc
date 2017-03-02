@@ -1,11 +1,12 @@
 import React  from 'react'
 import config from '../config.json'
 import {connect} from 'react-redux'
-import {Link, withRouter} from 'react-router'
+import {Link, hashHistory} from 'react-router'
 import {AbstractFormModelComponent, mixerConnector} from '../../../../lib'
-import Loader from '../containers/Loader'
-import Toolbar from '../containers/Toolbar'
-import Toast from '../containers/Toast'
+import {Loader} from '../../layout/components/loader'
+import {Toolbar} from '../../layout/components/toolbar'
+import {Toast} from '../../layout/components/toast'
+import {Error} from '../../layout/components/error'
 
 
 function FormRow(props) {
@@ -24,7 +25,7 @@ class PorfolioEditItemComponent extends AbstractFormModelComponent {
     onSave = () => {
         // successful
         const {id} = this.getModel()
-        this.props.router.push('/' + (id || ''))
+        hashHistory.push('/view/' + (id || ''))
     }
 
     render() {
@@ -46,10 +47,11 @@ class PorfolioEditItemComponent extends AbstractFormModelComponent {
                     </div>
                 </Toolbar>
                 {this.isSyncing() ? <Toast>syncing...</Toast> : null}
-                <div className="paper sizing animated fadeIn" style={{padding: 20}}>
-                    <h3>Edit {model.title}</h3>
-                    {this.gotError() ? <div className="alert alert-danger" role="alert">...mmm, something wrong
-                            happened...</div> : null }
+                <div className="polaroid detailed sizing animated fadeIn">
+                    <div className="card-title">
+                        <h3>Edit {model.title}</h3>
+                    </div>
+                    {this.getError() ? <Error>...mmm, something wrong happened...</Error> : null }
                     <form className="form-horizontal">
                         <FormRow name="title">
                             <input className="form-control" name="title" value={model.title}
@@ -75,6 +77,4 @@ class PorfolioEditItemComponent extends AbstractFormModelComponent {
     }
 }
 
-const portfolioEditItemWithRouter = withRouter(PorfolioEditItemComponent)
-
-export default mixerConnector(connect, config)(portfolioEditItemWithRouter)
+export default mixerConnector(connect, config)(PorfolioEditItemComponent)

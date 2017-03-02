@@ -1,0 +1,53 @@
+
+@keyframes pulse {
+    0% {
+        left: 0;
+    }
+    50% {
+        left: 95%;
+    }
+    100% {
+        left: 0;
+    }
+}
+
+@keyframes pulseRight {
+    0% {
+        right: 0;
+    }
+    50% {
+        right: 95%;
+    }
+    100% {
+        right: 0;
+    }
+}
+
+.loader {
+    display: block;
+    margin: 40px auto;
+    text-align: center;
+    position: relative;
+    content: 'LOADING';
+    text-transform: uppercase;
+    color: #909090;
+}
+
+.loader:after, .loader:before {
+    content: "";
+    display: block;
+    height: 2px;
+    width: 5%;
+    background-color: #909090;
+    position: absolute;
+}
+
+.loader:after {
+    top: 24px;
+    animation: 4s pulse infinite ease-out;
+}
+
+.loader:before {
+    top: -6px;
+    animation: 4s pulseRight infinite ease-out;
+}

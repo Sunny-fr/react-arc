@@ -6,6 +6,7 @@ import {routerReducer} from 'react-router-redux'
 //DEMO COMPONENT ABSTRACT REDUX
 import {mixerStore} from '../../lib'
 import configPortfolio from './portfolio/config.json'
+import configAlbum from './album/config.json'
 
 const middleware = applyMiddleware(
     promise(),
@@ -18,6 +19,7 @@ const enhancer = composeEnhancers(middleware)
 
 const reducers = {
     portfolio: mixerStore({config:configPortfolio}),
+    album: mixerStore({config:configAlbum}),
     routing: routerReducer
 }
 

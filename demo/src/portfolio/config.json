@@ -5,15 +5,14 @@
     "id"
   ],
   "collectionProps": [
-    "size",
-    "page"
+    "start",
+    "limit"
   ],
   "paths": {
-    "item": "http://api.sunny.fr/api/project/{id}",
-    "collection": "http://api.sunny.fr/api/project"
+    "item": "https://jsonplaceholder.typicode.com/photos/{id}",
+    "collection": "https://jsonplaceholder.typicode.com/photos?_start={start}&_limit={limit}"
   },
   "defaultModel": {
     "title": "unnamed"
-  },
-  "trustStore": true
+  }
 }
