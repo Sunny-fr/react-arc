@@ -17,7 +17,7 @@ export class AbstractCollectionComponent extends AbstractComponent {
         return flatten(this.props.collection)
     }
 
-    gotError(_props) {
+    getError(_props) {
         const props = _props || this.props
         return props.error
     }
