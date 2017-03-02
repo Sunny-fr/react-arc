@@ -1,0 +1,13 @@
+
+.header.navbar {
+    box-shadow: 0 0 10px rgba(0, 0, 0, .4);
+    background-color: #424242;
+    border-bottom: 1px solid #424242;
+    color:#FFF;
+}
+
+.header .navbar-brand {
+    line-height: 30px;
+    height: 60px;
+    color:#FFF;
+}

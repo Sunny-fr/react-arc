@@ -1,0 +1,1 @@
+export {AlbumItem as AlbumItemComponent} from './components/AlbumItemComponent'
