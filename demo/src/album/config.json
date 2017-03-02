@@ -1,0 +1,16 @@
+{
+  "name": "album",
+  "uppercaseName": "ALBUM",
+  "modelProps": [
+    "id"
+  ],
+  "collectionProps": [
+    "start",
+    "limit"
+  ],
+  "paths": {
+    "item": "https://jsonplaceholder.typicode.com/albums/{id}",
+    "collection": "https://jsonplaceholder.typicode.com/albums?_start={start}&_limit={limit}"
+  },
+  "fetchOnce": true
+}

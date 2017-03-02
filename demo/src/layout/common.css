@@ -1,0 +1,85 @@
+@import "~bootstrap/dist/css/bootstrap.css";
+@import "~animate.css/animate.css";
+
+body {
+    color: #343434;
+    padding-top: 60px;
+    background-color: #E9E9E9;
+}
+
+.animated {
+    animation-duration: 500ms;
+}
+
+.btn-float {
+    position: fixed;
+    bottom: 60px;
+    right: 60px;
+    display: block;
+    border-radius: 30px;
+    width: 60px;
+    line-height: 60px;
+    height: 60px;
+    text-align: center;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, .3);
+    z-index: 1;
+    background-color: #2196F3;
+    color: #E9E9E9;
+    padding: 0;
+    text-decoration: none!important;
+    transition: box-shadow 300ms ease-out;
+}
+
+.btn-float:hover {
+    color:#FFF;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, .7);
+}
+
+.btn-float.create:after {
+    content: "+";
+    display: block;
+    width: 60px;
+    height: 60px;
+    top: 0;
+    left: 0;
+    font: 50px 'Helvetica Neue';
+    line-height: 50px;
+    font-style: normal;
+    font-weight: normal;
+    -webkit-font-smoothing: antialiased;
+    transform-origin: 50% 50%;
+    transform: rotateZ(0deg);
+    transition: transform 250ms ease-out;
+}
+
+.btn-float.create:hover:after {
+    transform: rotateZ(180deg);
+}
+
+.label.label-album {
+    line-height: 30px;
+    padding: 4px 8px 4px;
+    background-color: #bdd64d;
+}
+
+.sizing {
+    max-width: 750px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.paper {
+    box-shadow: 0 0 10px rgba(0, 0, 0, .4);
+    background-color: #FFF;
+}
+
+.btn {
+    border: 0;
+    border-radius: 2px;
+    text-transform: uppercase;
+    font-size: 14px;
+    letter-spacing: 1px;
+    line-height: 14px;
+    padding: 8px 10px;
+}
+

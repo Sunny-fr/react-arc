@@ -3,47 +3,48 @@ import config from '../config.json'
 import {connect} from 'react-redux'
 import {Link} from 'react-router'
 import {AbstractCollectionComponent, mixerConnector} from '../../../../lib'
-import Loader from '../containers/Loader'
-import Toolbar from '../containers/Toolbar'
-import Toast from '../containers/Toast'
 
-const shorten = (str) => str.length > 25 ? str.substr(0, 25) + '...' : str
+import {AlbumItemComponent} from '../../album'
+
+/** UI ASSETS **/
+import {Loader} from '../../layout/components/loader'
+import {Toast} from '../../layout/components/toast'
+import {LargeError} from '../../layout/components/error'
+
+const shorten = (str) => str.length > 33 ? str.substr(0, 33) + '...' : str
 
 class PorfolioItem extends Component {
     render() {
         const {item} = this.props
-        return !item.images[0].path ? null : (
-                <div className="thumbnail sizing paper animated fadeIn">
-                    <Link to={'/view/' + item.id}><img src={item.images[0].path} alt={item.title} style={{}}/></Link>
-                    <div className="caption">
-                        <h3>{shorten(item.title)}</h3>
-                        <p>
-                            {item.tags.slice(0, 3).map(tag => (<span style={{marginRight: 3}} key={tag.id}
-                                                                     className="label label-primary">{tag.title}</span>))}
-                        </p>
-                    </div>
-                </div>
-            )
+        return (<div className="polaroid animated fadeIn">
+            <Link to={'/view/' + item.id}>
+                <div className="image-canvas" style={{backgroundImage: 'url(images/image-' + item.id + '.png)'}}/>
+            </Link>
+            <div className="caption">
+                <h3>{shorten(item.title)}</h3>
+                <AlbumItemComponent id={item.albumId}/>
+            </div>
+        </div>)
     }
 }
 class PorfolioComponent extends AbstractCollectionComponent {
     static defaultProps = {
-        ARCConfig: config
+        ARCConfig: config,
+        start: 0,
+        limit: 20
     }
 
     render() {
-        if (this.gotError()) {
-            console.error(this.gotError())
-            return (<div className="alert alert-danger" role="alert">...mmm, something wrong happened...</div>)
+        if (this.getError()) {
+            const error = this.getError()
+            return (<LargeError title={error} children={'...mmm, something wrong happened...'}/>)
         }
         if (!this.isLoaded()) return (<Loader />)
+
         const items = this.getCollection().map(item => <PorfolioItem key={item.id} item={item}/>)
-        return (<div>
-            <Toolbar>
-                <Link to={'/create'}>
-                    <button className="btn btn-block btn-primary">create</button>
-                </Link>
-            </Toolbar>
+
+        return (<div className="portfolio">
+            <Link to={'/create'} className="btn-float create"/>
             {this.isSyncing() ? <Toast>syncing...</Toast> : null}
             {items}
         </div>)

@@ -17,7 +17,7 @@ export class AbstractCollectionComponent extends AbstractComponent {
         return flatten(this.props.collection)
     }
 
-    gotError(_props) {
+    getError(_props) {
         const props = _props || this.props
         return props.error
     }
@@ -30,8 +30,13 @@ export class AbstractCollectionComponent extends AbstractComponent {
         return this.props.fetching
     }
 
+    allowRefetch = (_props) => {
+        const props = _props || this.props
+        return !(this.ARCConfig.fetchOnce && this.isLoaded(props))
+    }
+
     componentWillMount (){
-        this.fetch()
+        if (this.allowRefetch()) this.fetch()
     }
 }
 export default AbstractCollectionComponent

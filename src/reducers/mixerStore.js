@@ -93,7 +93,8 @@ export function mixerStore(options) {
                     collection[key] = Object.assign({}, collection[key], {
                         metas: {
                             ...collection[key].metas,
-                            fetching: true
+                            fetching: true,
+                            saved: false
                         }
                     })
                 }

@@ -1,0 +1,7 @@
+.info {
+    padding: 30px;
+    margin: 20px auto;
+    border-radius: 3px;
+    background-color: #FFF;
+    box-shadow: 0 1px 2px rgba(0,0,0,.3);
+}
