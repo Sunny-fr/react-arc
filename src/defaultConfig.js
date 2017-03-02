@@ -21,7 +21,10 @@ export const config = {
         read:   'GET'
     },
     //default model : {name:'', description:'', tags: []}
-    defaultModel : {}
+    defaultModel : {},
+    // Lazy mode :
+    // will fetch only once and use the first time loaded result
+    fetchOnce: false
 }
 
 export default config
