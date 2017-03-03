@@ -1,5 +1,5 @@
-export function flatten(node) {
-    return Object.keys(node).map(nodeName => node[nodeName].model)
+export function flatten(node, withMetas = false) {
+    return Object.keys(node).map(nodeName => withMetas ? node[nodeName] : node[nodeName].model)
 }
 
 export function extractParams( props = [], source = {}) {
