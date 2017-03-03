@@ -14,8 +14,8 @@ class PorfolioItemComponent extends AbstractModelComponent {
     }
 
     render() {
-        if (this.getError()) {
-            const error = this.getMetas('error')
+        const error = this.getError()
+        if (error) {
             return (<LargeError title={error.response.status} children={'...mmm, something wrong happened...'}/>)
         }
         if (!this.isLoaded()) return (<Loader />)

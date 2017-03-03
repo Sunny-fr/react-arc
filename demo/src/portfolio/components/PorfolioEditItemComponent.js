@@ -66,7 +66,7 @@ class PorfolioEditItemComponent extends AbstractFormModelComponent {
                                 <Link to={'/view/' + model.id}>
                                     <button type="submit" className="btn btn-default">Cancel</button>
                                 </Link>
-                                <button type="button" onClick={this.submit} style={{marginLeft: '10px'}}
+                                <button type="button" onClick={this.save} style={{marginLeft: '10px'}}
                                         className="btn btn-primary">Save
                                 </button>
                             </div>
