@@ -41,10 +41,8 @@ class PorfolioComponent extends AbstractCollectionComponent {
     }
 
     render() {
-        if (this.getError()) {
-            const error = this.getError()
-            return (<LargeError title={'!'} children={error.message}/>)
-        }
+        const error = this.getError()
+        if (error) return (<LargeError title={'!'} children={error.message}/>)
         if (!this.isLoaded()) return (<Loader />)
 
         const items = this.getCollection().map(model => <PorfolioItem remove={this.removeModel} key={model.id} model={model}/>)
