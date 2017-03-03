@@ -84,7 +84,7 @@ export class AbstractModelComponent extends AbstractComponent {
     /* public
      * returns  error */
     getError(props) {
-        return !!this.getMetas('error', props || this.props)
+        return this.getMetas('error', props || this.props)
     }
 
     /* public
