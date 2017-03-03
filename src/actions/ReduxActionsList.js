@@ -64,9 +64,9 @@ export class ReduxActionsList {
     }
 
     /** REMOVE **/
-    remove(data, params) {
+    remove(params) {
         return (dispatch) => {
-            dispatch({type: this.decorate('DELETE_{uppercaseName}'), payload: {data}})
+            dispatch({type: this.decorate('DELETE_{uppercaseName}'), payload: {params}})
             const url = this.decorate(this.config.paths.item, params)
             axios[this.methods.delete](url).then(response => {
                 dispatch({
@@ -74,7 +74,7 @@ export class ReduxActionsList {
                     payload: {params, data: response.data}
                 })
             }).catch((error) => {
-                dispatch({type: this.decorate('DELETE_{uppercaseName}_REJECTED'), payload: {error, data, params}})
+                dispatch({type: this.decorate('DELETE_{uppercaseName}_REJECTED'), payload: {error, params}})
             })
         }
     }

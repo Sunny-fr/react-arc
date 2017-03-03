@@ -3,6 +3,32 @@ import AbstractModelComponent from './AbstractModelComponent'
 
 export class AbstractFormModelComponent extends AbstractModelComponent {
 
+    constructor(props) {
+        super(props)
+        this.silentState = {
+            edited: {} // Not pristines :-)
+        }
+    }
+
+    /** PUBLIC ACTIONS METHODS **/
+    /* private
+     * changes props value */
+    changeProp = (prop, value) => {
+        this._setPristine(prop)
+        this.edit({[prop]: value})
+    }
+
+    /* private
+     * if a prop has been edited */
+    getEditedStatus = (prop) => {
+        return prop ? this.silentState.edited[prop] : this.silentState.edited
+    }
+
+    /** PUBLIC/MEANT TO BE OVERRIDDEN **/
+
+    onSave() { }
+
+
     componentDidUpdate() {
         if (this.getMetas('saved')) {
             const created = this.getModel()
@@ -11,56 +37,22 @@ export class AbstractFormModelComponent extends AbstractModelComponent {
         }
     }
 
-    constructor(props) {
-        super(props)
-        this.silentState = {
-            edited: {} // Not pristines :-)
-        }
-    }
-
-    /** PUBLIC/MEANT TO BE OVERRIDDEN **/
-
-    onSave() { }
-
-    /** ACTIONS **/
-
-    edit = (model) => {
-        this.props.dispatch(this.actions.edit(model, this.getParams()))
-    }
-
-    submit = () => {
-        const isNew = this.isNew()
-        const model = this.getModel()
-        const params = isNew ? this.getParams(model) : this.getParams()
-        this.props.dispatch(this.actions.save(model, params, isNew))
-    }
-
-    resetTempModel = () => {
-        this.props.dispatch(this.actions.resetTemp())
-    }
-
-    /** END ACTIONS **/
-
-    setSilentState = (data) => {
+    /* private
+     * state data but not triggering rerender */
+    _setSilentState = (data) => {
         this.silentState = Object.assign({}, this.silentState, data)
     }
 
-    changeProp = (prop, value) => {
-        this.setPristine(prop)
-        this.edit({[prop]: value})
-    }
-
-    setPristine(prop) {
+    /* private
+     * if a prop has been modified, it will be flagged */
+    _setPristine(prop) {
         const edited = {
             ...this.silentState.edited,
             [prop]: true
         }
-        this.setSilentState({edited})
+        this._setSilentState({edited})
     }
 
-    getEditedStatus = (prop) => {
-        return prop ? this.silentState.edited[prop] : this.silentState.edited
-    }
 
 }
 

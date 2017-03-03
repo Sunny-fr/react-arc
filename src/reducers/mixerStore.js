@@ -204,7 +204,7 @@ export function mixerStore(options) {
             case decorate('DELETE_{uppercaseName}') : {
                 const key = keyGen(action.payload.params)
                 const prev = previousItem(key)
-                const updated = {...prev, metas: {...prev.metas, deleting: true}}
+                const updated = {...prev, metas: {...prev.metas, deleting: true, fetching: true}}
                 const collection = update(updated, key)
                 return {...state, collection}
             }
@@ -212,7 +212,7 @@ export function mixerStore(options) {
             case decorate('DELETE_{uppercaseName}_REJECTED') : {
                 const key = keyGen(action.payload.params)
                 const prev = previousItem(key)
-                const updated = {...prev, metas: {...prev.metas, error: action.payload.error, deleting: false}}
+                const updated = {...prev, metas: {...prev.metas, error: action.payload.error, deleting: false, fetching: false}}
                 const collection = update(updated, key)
                 return {
                     ...state,
