@@ -1,4 +1,4 @@
-#ARC 0.1.14
+#ARC 0.1.15
 
 React Abstract Redux Component
 
@@ -24,8 +24,8 @@ export const config = {
     collectionProps: ['size','page'],
     // path to your rest server
     paths: {
-        item: '/some/url',
-        collection: '/some/other/url'
+        item: '/some/url/{id}',
+        collection: '/some/url?page={page}&size={size}'
     },
     /** OPTIONAL **/
     //methods
