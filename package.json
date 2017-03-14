@@ -1,6 +1,6 @@
 {
   "name": "react-arc",
-  "version": "0.1.16",
+  "version": "0.1.17",
   "description": "React Abstract Redux Component",
   "main": "lib/index.js",
   "scripts": {
