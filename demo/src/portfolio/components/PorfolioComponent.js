@@ -19,7 +19,7 @@ class PorfolioItem extends Component {
 
         // Alternative
         // if we want to provide any visual feedback while we're deleting
-        // const className = "polaroid animated fadeIn" +  (this.props.metas.fetching ? ' disabled': '')
+        // const className = "polaroid animated fadeIn" +  (this.props.fetching ? ' disabled': '')
 
         return (<div className={className}>
             <Link to={'/view/' + model.id}>
