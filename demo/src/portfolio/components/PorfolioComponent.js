@@ -23,7 +23,7 @@ class PorfolioItem extends Component {
 
         return (<div className={className}>
             <Link to={'/view/' + model.id}>
-                <div className="image-canvas" style={{backgroundImage: 'url(images/image-' + model.id + '.png)'}}/>
+                <div className="image-canvas" style={{backgroundImage: 'url(images/image-' + model.id + '.jpg)'}}/>
             </Link>
             <div className="caption">
                 <h3>{(model.title)}</h3>

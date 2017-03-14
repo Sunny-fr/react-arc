@@ -9,7 +9,7 @@ Live demo : http://sunny.fr/react-arc
 
 ## sample code
 
-###config
+### config
 
 ```javascript
 
@@ -31,7 +31,7 @@ export const config = {
 
 ```
 
-###component
+### component
 
 ```javascript
 
@@ -66,7 +66,7 @@ export default mixerConnector(connect, config)(PorfolioComponent)
 
 ```
 
-###store
+### store
 
 ```javascript
 
