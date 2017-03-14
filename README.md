@@ -1,15 +1,15 @@
-#ARC 0.1.17
+#ARC 0.1.18
 
 React Abstract Redux Component
 
-Set of components to manage collection or model from a REST service
+Set of components to manage collections/models from a REST service
 
 Live demo : http://sunny.fr/react-arc
 
 
 ## sample code
 
-###config
+### config
 
 ```javascript
 
@@ -26,31 +26,12 @@ export const config = {
     paths: {
         item: '/some/url/{id}',
         collection: '/some/url?page={page}&size={size}'
-    },
-    /** OPTIONAL **/
-    //methods
-    methods: {
-        create: 'POST',
-        update: 'PUT',
-        delete: 'DELETE',
-        read:   'GET'
-    },
-    //default model
-    defaultModel: {
-        name: 'New Title'
-    },
-    
-    /** EXPERIMENTAL **/
-    // Lazy mode :
-    // will fetch only once and use the first time loaded result
-    fetchOnce: false,
-    // adds custom headers
-    headers: {accept: 'application/json'}
+    }
 }
 
 ```
 
-###component
+### component
 
 ```javascript
 
@@ -85,7 +66,7 @@ export default mixerConnector(connect, config)(PorfolioComponent)
 
 ```
 
-###store
+### store
 
 ```javascript
 
