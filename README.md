@@ -2,7 +2,7 @@
 
 React Abstract Redux Component
 
-Set of components to manage collection or model from a REST service
+Set of components to manage collections/models from a REST service
 
 Live demo : http://sunny.fr/react-arc
 
