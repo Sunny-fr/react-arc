@@ -29,7 +29,7 @@ export const config = {
     // will fetch only once and use the first time loaded result
     fetchOnce: false,
     // adds custom headers
-    headers: {accept: 'application/json'}
+    headers: {}
 }
 
 export default config
