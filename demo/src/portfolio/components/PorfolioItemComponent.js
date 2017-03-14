@@ -40,7 +40,7 @@ class PorfolioItemComponent extends AbstractModelComponent {
             </Toolbar>
             <div className="polaroid detailed sizing animated fadeIn">
                 <Link to={'/edit/' + model.id}>
-                    <img src={/*item.thumbnailUrl*/ 'images/image-' + model.id + '.png'}
+                    <img src={/*item.thumbnailUrl*/ 'images/image-' + model.id + '.jpg'}
                          alt={model.title}/>
                 </Link>
                 <div className="caption">
