@@ -1,4 +1,4 @@
-#ARC 0.1.16
+#ARC 0.1.17
 
 React Abstract Redux Component
 
@@ -38,7 +38,14 @@ export const config = {
     //default model
     defaultModel: {
         name: 'New Title'
-    }
+    },
+    
+    /** EXPERIMENTAL **/
+    // Lazy mode :
+    // will fetch only once and use the first time loaded result
+    fetchOnce: false,
+    // adds custom headers
+    headers: {accept: 'application/json'}
 }
 
 ```

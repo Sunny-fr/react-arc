@@ -5,6 +5,7 @@ import {interpolate} from '../utils/index'
 export class ReduxActionsList {
     constructor(options) {
         this.config = options.config || config
+        this.headers = Object.keys(this.config.headers).length > 0 ? {...this.config.headers} : undefined
         this.methods = this.setupMethods()
     }
 
@@ -33,8 +34,11 @@ export class ReduxActionsList {
     fetchOne(params) {
         return (dispatch) => {
             dispatch({type: this.decorate('FETCH_{uppercaseName}'), payload: {params}})
-            const url = this.decorate(this.config.paths.item, params)
-            axios[this.methods.read](url).then(response => {
+            axios({
+                method: this.methods.read,
+                url: this.decorate(this.config.paths.item, params),
+                headers: this.headers
+            }).then(response => {
                 dispatch({
                     type: this.decorate('FETCH_{uppercaseName}_FULFILLED'),
                     payload: {data: response.data, params}
@@ -52,7 +56,12 @@ export class ReduxActionsList {
             const method = create ? this.methods.create : this.methods.update
             //TODO remove magic ?
             const url = this.decorate(this.config.paths.item, method === 'post' ? {} : params)
-            axios[method](url, data).then(response => {
+            axios({
+                method,
+                url,
+                headers: this.headers,
+                data,
+            }).then(response => {
                 dispatch({
                     type: this.decorate('SAVE_{uppercaseName}_FULFILLED'),
                     payload: {params, data: response.data, create}
@@ -68,7 +77,11 @@ export class ReduxActionsList {
         return (dispatch) => {
             dispatch({type: this.decorate('DELETE_{uppercaseName}'), payload: {params}})
             const url = this.decorate(this.config.paths.item, params)
-            axios[this.methods.delete](url).then(response => {
+            axios({
+                method: this.methods.delete,
+                url,
+                headers: this.headers
+            }).then(response => {
                 dispatch({
                     type: this.decorate('DELETE_{uppercaseName}_FULFILLED'),
                     payload: {params, data: response.data}
@@ -84,8 +97,11 @@ export class ReduxActionsList {
         return (dispatch) => {
             const url = this.decorate(this.config.paths.collection, params)
             dispatch({type: this.decorate('FETCH_{uppercaseName}S'), payload: {params}})
-            axios[this.methods.read](url)
-                .then((response) => {
+            axios({
+                method:this.methods.read,
+                url,
+                headers: this.headers
+            }).then((response) => {
                     dispatch({
                         type: this.decorate('FETCH_{uppercaseName}S_FULFILLED'),
                         payload: {data: response.data}

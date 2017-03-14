@@ -12,6 +12,7 @@ export const config = {
         item: '/some/url',
         collection: '/some/other/url'
     },
+
     /** OPTIONAL **/
     //methods
     methods: {
@@ -22,9 +23,13 @@ export const config = {
     },
     //default model : {name:'', description:'', tags: []}
     defaultModel : {},
+
+    /** EXPERIMENTAL **/
     // Lazy mode :
     // will fetch only once and use the first time loaded result
-    fetchOnce: false
+    fetchOnce: false,
+    // adds custom headers
+    headers: {accept: 'application/json'}
 }
 
 export default config
