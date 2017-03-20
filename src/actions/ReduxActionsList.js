@@ -1,9 +1,10 @@
 import axios from 'axios'
 import {interpolate} from '../utils/index'
+import defaultConfig from '../defaultConfig'
 
 export class ReduxActionsList {
     constructor(options) {
-        this.config = options.config || config
+        this.config = {...defaultConfig, ...(options.config || {}) }
         this.headers = Object.keys(this.config.headers).length > 0 ? {...this.config.headers} : undefined
         this.methods = this.setupMethods()
         this.axios = axios.create()
