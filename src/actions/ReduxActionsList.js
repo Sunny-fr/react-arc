@@ -1,7 +1,6 @@
 import axios from 'axios'
 import {interpolate} from '../utils/index'
 
-
 export class ReduxActionsList {
     constructor(options) {
         this.config = options.config || config
@@ -32,14 +31,19 @@ export class ReduxActionsList {
     }
 
     /** SINGLE ITEM **/
+
+    standAloneFetchOne (params) {
+        return this.axios({
+            method: this.methods.read,
+            url: this.decorate(this.config.paths.item, params),
+            headers: this.headers
+        })
+    }
+
     fetchOne(params) {
         return (dispatch) => {
             dispatch({type: this.decorate('FETCH_{uppercaseName}'), payload: {params}})
-            this.axios({
-                method: this.methods.read,
-                url: this.decorate(this.config.paths.item, params),
-                headers: this.headers
-            }).then(response => {
+            this.standAloneFetchOne(params).then(response => {
                 dispatch({
                     type: this.decorate('FETCH_{uppercaseName}_FULFILLED'),
                     payload: {data: response.data, params}
@@ -51,18 +55,24 @@ export class ReduxActionsList {
     }
 
     /**  SAVE **/
+
+
+    standAloneSave(data, params, create) {
+        const method = create ? this.methods.create : this.methods.update
+        //TODO remove magic ?
+        const url = this.decorate(this.config.paths.item, method === 'post' ? {} : params)
+        return this.axios({
+            method,
+            url,
+            headers: this.headers,
+            data,
+        })
+    }
+
     save(data, params, create = false) {
         return (dispatch) => {
             dispatch({type: this.decorate('SAVE_{uppercaseName}'), payload: {data, params, create}})
-            const method = create ? this.methods.create : this.methods.update
-            //TODO remove magic ?
-            const url = this.decorate(this.config.paths.item, method === 'post' ? {} : params)
-            this.axios({
-                method,
-                url,
-                headers: this.headers,
-                data,
-            }).then(response => {
+            this.standAloneSave(data, params, create).then(response => {
                 dispatch({
                     type: this.decorate('SAVE_{uppercaseName}_FULFILLED'),
                     payload: {params, data: response.data, create}
@@ -74,15 +84,20 @@ export class ReduxActionsList {
     }
 
     /** REMOVE **/
+
+    standAloneRemove (params) {
+        const url = this.decorate(this.config.paths.item, params)
+        return this.axios({
+            method: this.methods.delete,
+            url,
+            headers: this.headers
+        })
+    }
+
     remove(params) {
         return (dispatch) => {
             dispatch({type: this.decorate('DELETE_{uppercaseName}'), payload: {params}})
-            const url = this.decorate(this.config.paths.item, params)
-            this.axios({
-                method: this.methods.delete,
-                url,
-                headers: this.headers
-            }).then(response => {
+            this.standAloneRemove(params).then(response => {
                 dispatch({
                     type: this.decorate('DELETE_{uppercaseName}_FULFILLED'),
                     payload: {params, data: response.data}
@@ -94,15 +109,20 @@ export class ReduxActionsList {
     }
 
     /** LISTS **/
+
+    standAloneFetchAll (params) {
+        const url = this.decorate(this.config.paths.collection, params)
+        return this.axios({
+            method: this.methods.read,
+            url,
+            headers: this.headers
+        })
+    }
+
     fetchAll(params = {}) {
         return (dispatch) => {
-            const url = this.decorate(this.config.paths.collection, params)
             dispatch({type: this.decorate('FETCH_{uppercaseName}S'), payload: {params}})
-            this.axios({
-                method:this.methods.read,
-                url,
-                headers: this.headers
-            }).then((response) => {
+            this.standAloneFetchAll(params).then((response) => {
                     dispatch({
                         type: this.decorate('FETCH_{uppercaseName}S_FULFILLED'),
                         payload: {data: response.data}
