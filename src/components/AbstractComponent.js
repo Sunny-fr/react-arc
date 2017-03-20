@@ -6,7 +6,7 @@ export class AbstractComponent extends React.Component {
     constructor(props) {
         super(props)
         this.ARCConfig = {...defaultConfig, ...props.ARCConfig}
-        this.actions = new ReduxActionsList({config: this.ARCConfig})
+        this.actions = new ReduxActionsList({config: props.ARCConfig})
     }
     render() {
         if (this.gotError()) return null
