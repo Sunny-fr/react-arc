@@ -2,7 +2,6 @@
   "name": "react-arc-demo",
   "version": "1.0.2",
   "private": true,
-  "homepage": "/react-arc/",
   "devDependencies": {
     "react-scripts": "0.8.5"
   },
