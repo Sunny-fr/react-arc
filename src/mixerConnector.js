@@ -15,7 +15,7 @@ export function mixerConnector(connect, config, customMapStateToProps = null) {
         }
         const optionalStateToProps = customMapStateToProps ? customMapStateToProps(store) : {}
         return Object.assign({}, mapStateToProps(store), optionalStateToProps)
-    })
+    }, null, null, {withRef: true})
 }
 
 export default mixerConnector
