@@ -73,7 +73,7 @@ export function mixerStore(options) {
             }
 
             case decorate('FETCH_{uppercaseName}S') : {
-                return {...state , fetching: true}
+                return {...state , fetching: true, error: null}
             }
 
             case decorate('FETCH_{uppercaseName}S_FULFILLED') : {
