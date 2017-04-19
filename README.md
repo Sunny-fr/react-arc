@@ -69,8 +69,6 @@ export default mixerConnector(connect, config)(PorfolioComponent)
 ### store
 
 ```javascript
-
-//DEMO COMPONENT ABSTRACT REDUX
 import {mixerStore} from 'react-arc'
 import configPortfolio from './somewhere/config.json'
 
