@@ -10,7 +10,7 @@ export class AbstractComponent extends React.Component {
     }
     updateARC(config) {
         this.ARCConfig = {...(this.ARCConfig || defaultConfig), ...config}
-        this.actions.updateConfig(this.ARCConfig)
+        if (this.actions) this.actions.updateConfig(this.ARCConfig)
     }
     render() {
         if (this.gotError()) return null
