@@ -9,7 +9,7 @@ export function extractParams( props = [], source = {}) {
     }), {})
 }
 
-function cleanParams (str) {
+export function cleanParams (str) {
     return str.replace(/({[A-z0-9_\-]+})/g, '')
 }
 
