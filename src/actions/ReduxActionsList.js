@@ -5,14 +5,24 @@ import defaultConfig from '../defaultConfig'
 export class ReduxActionsList {
     constructor(options) {
         this.config = {...defaultConfig, ...(options.config || {}) }
-        this.headers = Object.keys(this.config.headers).length > 0 ? {...this.config.headers} : undefined
-        this.methods = this.setupMethods()
+        this.setHeaders()
+        this.setupMethods()
         this.axios = axios.create()
+    }
+
+    setHeaders(){
+        this.headers = Object.keys(this.config.headers).length > 0 ? {...this.config.headers} : undefined
+    }
+
+    updateConfig (config){
+        this.config = {...this.config, ...config}
+        this.setHeaders()
+        this.setupMethods()
     }
 
     setupMethods () {
         const {methods} = this.config
-        return {
+        this.methods = {
             create: methods.create.toLowerCase(),
             read: methods.read.toLowerCase(),
             update: methods.update.toLowerCase(),
