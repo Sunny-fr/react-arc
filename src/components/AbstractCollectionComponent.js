@@ -64,6 +64,8 @@ export class AbstractCollectionComponent extends AbstractComponent {
     /* private
      * performs a fetch if the flag fetchOnce is set to false
      */
+
+    //TODO ADD isFetching check
     _allowRefetch = (_props) => {
         const props = _props || this.props
         return !(this.ARCConfig.fetchOnce && this.isLoaded(props))

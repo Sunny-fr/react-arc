@@ -5,8 +5,12 @@ import defaultConfig from '../defaultConfig'
 export class AbstractComponent extends React.Component {
     constructor(props) {
         super(props)
-        this.ARCConfig = {...defaultConfig, ...props.ARCConfig}
-        this.actions = new ReduxActionsList({config: props.ARCConfig})
+        this.updateARC(props.ARCConfig)
+        this.actions = new ReduxActionsList({config: this.ARCConfig})
+    }
+    updateARC(config) {
+        this.ARCConfig = {...(this.ARCConfig || defaultConfig), ...config}
+        this.actions.updateConfig(this.ARCConfig)
     }
     render() {
         if (this.gotError()) return null
