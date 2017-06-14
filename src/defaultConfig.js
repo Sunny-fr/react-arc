@@ -28,6 +28,8 @@ export const config = {
     // Lazy mode :
     // will fetch only once and use the first time loaded result
     fetchOnce: false,
+    // will refetch when the component will be mounted
+    refetchOnError: false,
     // adds custom headers
     headers: {}
 }

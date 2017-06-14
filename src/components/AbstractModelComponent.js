@@ -138,8 +138,12 @@ export class AbstractModelComponent extends AbstractComponent {
         if (this._canUpdate(props)) this.fetch(this.getParams(props))
     }
 
+    _errorRefetch() {
+        return !(this.ARCConfig.refetchOnError && this.getError())
+    }
+
     componentWillMount() {
-        if (!this.isNew(this.props) && this._allowRefetch()) this.fetch(this.getParams())
+        if (!this.isNew(this.props) && this._allowRefetch() && this._errorRefetch()) this.fetch(this.getParams())
     }
 }
 

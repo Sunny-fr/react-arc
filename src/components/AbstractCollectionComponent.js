@@ -11,8 +11,9 @@ export class AbstractCollectionComponent extends AbstractComponent {
 
     /* public
      * Fetch a collection */
-    fetch = () => {
-        this.props.dispatch(this.actions.fetchAll(extractParams(this.ARCConfig.collectionProps, this.props)))
+    fetch = (newProps) => {
+        const props = newProps || this.props
+        this.props.dispatch(this.actions.fetchAll(extractParams(this.ARCConfig.collectionProps, props)))
     }
 
     /* Models related actions */
