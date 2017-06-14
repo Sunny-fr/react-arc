@@ -139,11 +139,13 @@ export class AbstractModelComponent extends AbstractComponent {
     }
 
     _errorRefetch() {
-        return !(this.ARCConfig.refetchOnError && this.getError())
+        //canRefetchOnerror
+        if (this.ARCConfig.refetchOnError === true && !this.isSyncing() && !this.isLoaded() && !!this.getError()) return true
+        return !this.getError()
     }
 
     componentWillMount() {
-        if (!this.isNew(this.props) && this._allowRefetch() && this._errorRefetch()) this.fetch(this.getParams())
+        if (!this.isNew(this.props) && this._allowRefetch() && !this.isSyncing() && this._errorRefetch()) this.fetch(this.getParams())
     }
 }
 
