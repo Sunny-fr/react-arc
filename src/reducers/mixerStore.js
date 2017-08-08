@@ -33,7 +33,8 @@ export function mixerStore(options) {
 
     function mapModels(list) {
         return list.reduce((prev, current) => {
-            const key = interpolate(null, extractParams(extendedConfig.modelProps, current))
+            const tempKey = interpolate(null, extractParams(extendedConfig.modelProps, current))
+            const key = tempKey || JSON.stringify(current)
             prev[key] = Object.assign({}, defaultModel, {
                 model: current,
                 metas: {...defaultModel.metas, loaded: true, valid: true}
