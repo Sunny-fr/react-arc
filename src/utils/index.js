@@ -20,7 +20,14 @@ export function interpolate(str, params) {
     const stringToDecorate = str || keys.map(v => '{' + v + '}').join(':')
     // it will turn path/to/{id} to path/to/123
     const result = keys.reduce((prev, current) => {
-        return prev.replace(new RegExp('{' + current + '}', 'g'), params[current])
+        const elm_val = params[current]
+        if (Array.isArray(elm_val)) {
+            return prev.replace(
+                new RegExp('{' + current + '}', 'g'),
+                '[' + elm_val.map(item => typeof item === 'object' ?  interpolate(null, item) : item).join('|') + ']'
+            )
+        }
+        return prev.replace(new RegExp('{' + current + '}', 'g'), elm_val)
     }, stringToDecorate )
     // if params are missing we remove them
     // path/to/123/{anotherId} => path/to/123/
