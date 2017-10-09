@@ -1,0 +1,15 @@
+*.iml
+*.idea
+*.idea/*
+*.vscode
+*.vscode/*
+.settings
+.project
+dist
+target
+.DS_Store
+server/tmp
+node_modules
+npm-debug.log*
+demo/build
+package-lock.json
