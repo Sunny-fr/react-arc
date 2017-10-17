@@ -1,6 +1,7 @@
 import React from 'react'
 import {interpolate, extractParams} from '../utils'
 import AbstractComponent from './AbstractComponent'
+import {changedProps} from "../utils/index";
 
 export class AbstractModelComponent extends AbstractComponent {
 
@@ -146,6 +147,17 @@ export class AbstractModelComponent extends AbstractComponent {
 
     componentWillMount() {
         if (!this.isNew(this.props) && this._allowRefetch() && !this.isSyncing() && this._errorRefetch()) this.fetch(this.getParams())
+    }
+
+    shouldComponentUpdate(nextProps){
+        if (!this.isLoaded(this.props) || !this._getModel(nextProps)) return true
+        const propsThatChanged = changedProps(this.props, nextProps)
+        if (propsThatChanged.length === 1 && propsThatChanged.includes('collection')) {
+            const prevModel = this.getModel(this.props)
+            const nextModel = this.getModel(nextProps)
+            return Object.is(prevModel, nextModel)
+        }
+        return true
     }
 }
 
