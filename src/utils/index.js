@@ -13,6 +13,14 @@ export function cleanParams (str) {
     return str.replace(/({[A-z0-9_\-]+})/g, '')
 }
 
+
+export function changedProps (prevProps, nextProps){
+    return Object.keys(nextProps).reduce((state, item)=>{
+        if (Object.is(prevProps[item], nextProps[item])) return state.concat()
+        return state.concat(item)
+    },[])
+}
+
 export function interpolate(str, params) {
     const keys = Object.keys(params);
     // if no string is given we generate one ( params = {foo:'bar', baz:'wth'} will generate {foo}:{baz})
