@@ -2,6 +2,10 @@ import {interpolate, extractParams} from '../utils'
 import {config as baseConfig} from '../components/AbstractComponent'
 import defaultConfig from '../defaultConfig'
 
+const time = () => {
+    return new Date().getTime()
+}
+
 
 // MIXER
 // returns a reducer
@@ -12,23 +16,21 @@ export function mixerStore(options) {
     const defaultModelObject = JSON.parse(JSON.stringify(extendedConfig.defaultModel))
 
 
-
     /* GENERATED WITH CASTER */
     /* REDUCER STRUCTURE */
 
-    const defaultModel =  {
-            metas: {loaded: false, fetching: false, valid: false, saving: false, deleting: false, saved: false},
-            model: {...defaultModelObject}
-        }
+    const defaultModel = {
+        metas: {loaded: false, fetching: false, valid: false, saving: false, deleting: false, saved: false},
+        model: {...defaultModelObject}
+    }
 
     const defaultState = {
-            collection: {},
-            temp: {metas: {...defaultModel.metas, loaded: false}, model: {...defaultModel.model}},
-            fetching: false,
-            loaded: false,
-            error: null
-        }
-
+        collection: {},
+        temp: {metas: {...defaultModel.metas, loaded: false}, model: {...defaultModel.model}},
+        fetching: false,
+        loaded: false,
+        error: null
+    }
 
 
     function mapModels(list) {
@@ -74,28 +76,35 @@ export function mixerStore(options) {
             }
 
             case decorate('FETCH_{uppercaseName}S') : {
-                return {...state , fetching: true, error: null}
+                return {...state, fetching: true, error: null, start: time()}
             }
 
             case decorate('FETCH_{uppercaseName}S_FULFILLED') : {
-                return {...state, fetching: false, loaded: true, collection: mapModels(action.payload.data)}
+                return {
+                    ...state,
+                    fetching: false,
+                    loaded: true,
+                    end: time(),
+                    collection: mapModels(action.payload.data)
+                }
             }
 
             case decorate('FETCH_{uppercaseName}S_REJECTED') : {
-                return {...state, fetching: false, loaded: false, error: action.payload.error}
+                return {...state, fetching: false, loaded: false, end: time(), error: action.payload.error}
             }
 
             case decorate('FETCH_{uppercaseName}') : {
                 const collection = {...state.collection}
                 const key = keyGen(action.payload.params)
                 if (!collection[key]) {
-                    collection[key] = {...defaultModel, metas: {...defaultModel.metas, fetching: true}}
+                    collection[key] = {...defaultModel, metas: {...defaultModel.metas, fetching: true, start: time()}}
                 } else {
                     collection[key] = Object.assign({}, collection[key], {
                         metas: {
                             ...collection[key].metas,
                             fetching: true,
-                            saved: false
+                            saved: false,
+                            start: time()
                         }
                     })
                 }
@@ -109,7 +118,14 @@ export function mixerStore(options) {
                 const collection = {...state.collection}
                 const key = keyGen(action.payload.params)
                 collection[key] = {
-                    metas: {...collection[key].metas, loaded: false, fetching: false, valid: false, error: action.payload.error},
+                    metas: {
+                        ...collection[key].metas,
+                        loaded: false,
+                        fetching: false,
+                        valid: false,
+                        end: time(),
+                        error: action.payload.error
+                    },
                     model: {...defaultModel.model}
                 }
                 return {
@@ -121,7 +137,15 @@ export function mixerStore(options) {
             case decorate('FETCH_{uppercaseName}_FULFILLED') : {
                 const collection = {...state.collection}
                 const key = keyGen(action.payload.params)
-                collection[key] = {metas: {...collection[key].metas, loaded: true, fetching: false, valid: true}, model: action.payload.data}
+                collection[key] = {
+                    metas: {
+                        ...collection[key].metas,
+                        loaded: true,
+                        fetching: false,
+                        end: time(),
+                        valid: true
+                    }, model: action.payload.data
+                }
                 return {
                     ...state,
                     collection
@@ -156,7 +180,10 @@ export function mixerStore(options) {
             case decorate('SAVE_{uppercaseName}') : {
                 const key = keyGen(action.payload.params)
                 const prev = action.payload.create ? state.temp : previousItem(key)
-                const updated = {...prev, metas: {...prev.metas, error: null, saving: true, saved: false}}
+                const updated = {
+                    ...prev,
+                    metas: {...prev.metas, error: null, saving: true, start: time(), saved: false}
+                }
                 if (action.payload.create) {
                     //model is new
                     return {...state, temp: updated}
@@ -169,7 +196,10 @@ export function mixerStore(options) {
             case decorate('SAVE_{uppercaseName}_REJECTED') : {
                 const key = keyGen(action.payload.params)
                 const prev = action.payload.create ? state.temp : previousItem(key)
-                const updated = {...prev, metas: {...prev.metas, error: action.payload.error, saving: false, saved: false}}
+                const updated = {
+                    ...prev,
+                    metas: {...prev.metas, error: action.payload.error, end: time(), saving: false, saved: false}
+                }
                 if (action.payload.create) {
                     //model is new
                     return {...state, temp: updated}
@@ -187,7 +217,7 @@ export function mixerStore(options) {
                 const prev = action.payload.create ? state.temp : previousItem(key)
                 const updated = {
                     ...prev,
-                    metas: {...prev.metas, saving: false, saved: true},
+                    metas: {...prev.metas, saving: false, end: time(), saved: true},
                     model: action.payload.data
                 }
                 if (action.payload.create) {
@@ -205,7 +235,7 @@ export function mixerStore(options) {
             case decorate('DELETE_{uppercaseName}') : {
                 const key = keyGen(action.payload.params)
                 const prev = previousItem(key)
-                const updated = {...prev, metas: {...prev.metas, deleting: true, fetching: true}}
+                const updated = {...prev, metas: {...prev.metas, deleting: true, start: time(), fetching: true}}
                 const collection = update(updated, key)
                 return {...state, collection}
             }
@@ -213,7 +243,10 @@ export function mixerStore(options) {
             case decorate('DELETE_{uppercaseName}_REJECTED') : {
                 const key = keyGen(action.payload.params)
                 const prev = previousItem(key)
-                const updated = {...prev, metas: {...prev.metas, error: action.payload.error, deleting: false, fetching: false}}
+                const updated = {
+                    ...prev,
+                    metas: {...prev.metas, error: action.payload.error, end: time(), deleting: false, fetching: false}
+                }
                 const collection = update(updated, key)
                 return {
                     ...state,
