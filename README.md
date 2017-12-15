@@ -1,10 +1,10 @@
-# ARC 0.1.30
+# ARC 0.1.31
 
 React Abstract Redux Component
 
 Set of components to manage collections/models from a REST service
 
-Live demo : http://sunny.fr/react-arc
+Live demo : http://sunny.fr/toolbox/react-arc
 
 
 ## sample code
