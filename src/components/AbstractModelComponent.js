@@ -153,8 +153,8 @@ export class AbstractModelComponent extends AbstractComponent {
         if (!this.isLoaded(this.props) || !this._getModel(nextProps)) return true
         const propsThatChanged = changedProps(this.props, nextProps)
         if (propsThatChanged.length === 1 && propsThatChanged.includes('collection')) {
-            const prevModel = this.getModel(this.props)
-            const nextModel = this.getModel(nextProps)
+            const prevModel = this._getModel(this.props)
+            const nextModel = this._getModel(nextProps)
             return Object.is(prevModel, nextModel)
         }
         return true
