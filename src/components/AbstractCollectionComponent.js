@@ -11,9 +11,8 @@ export class AbstractCollectionComponent extends AbstractComponent {
 
     /* public
      * Fetch a collection */
-    fetch = (newProps) => {
-        const props = newProps || this.props
-        this.props.dispatch(this.actions.fetchAll(extractParams(this.ARCConfig.collectionProps, props)))
+    fetch = (props) => {
+        this.props.dispatch(this.actions.fetchAll(extractParams(this.ARCConfig.collectionProps, props || this.props)))
     }
 
     /* Models related actions */
@@ -29,6 +28,7 @@ export class AbstractCollectionComponent extends AbstractComponent {
     }
 
     /** PUBLIC METHODS **/
+
     /* public
      * returns a list of models */
     getCollection() {
@@ -44,22 +44,24 @@ export class AbstractCollectionComponent extends AbstractComponent {
     /*  public
      * no errors returns null/false
      * or it will return this axios response */
-    getError(_props) {
-        const props = _props || this.props
-        return props.error
+    getError(props) {
+        const {error} = props || this.props
+        return error
     }
 
     /* public
      * is the collection loaded at least one time ? */
-    isLoaded (){
-        return this.props.loaded
+    isLoaded(props) {
+        const {loaded} = props || this.props
+        return loaded
     }
 
     /* public
      * is there any activity ? loading
      * or syncing (~means that the collection has been loaded once and we're refetching it) */
-    isSyncing () {
-        return this.props.fetching
+    isSyncing(props) {
+        const {fetching} = props || this.props
+        return fetching
     }
 
     /* private
@@ -67,13 +69,13 @@ export class AbstractCollectionComponent extends AbstractComponent {
      */
 
     //TODO ADD isFetching check
-    _allowRefetch = (_props) => {
-        const props = _props || this.props
-        return !(this.ARCConfig.fetchOnce && this.isLoaded(props))
+    _allowRefetch = (props) => {
+        return !(this.ARCConfig.fetchOnce && this.isLoaded(props || this.props))
     }
 
-    componentWillMount (){
+    componentWillMount() {
         if (this._allowRefetch()) this.fetch()
     }
 }
+
 export default AbstractCollectionComponent
