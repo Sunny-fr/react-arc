@@ -2,6 +2,7 @@ import React from 'react'
 import {interpolate, extractParams} from '../utils'
 import AbstractComponent from './AbstractComponent'
 import {changedProps} from "../utils/index";
+import equal from 'deep-equal'
 
 export class AbstractModelComponent extends AbstractComponent {
 
@@ -112,9 +113,8 @@ export class AbstractModelComponent extends AbstractComponent {
     /* private
      * performs a fetch if the flag fetchOnce is set to false
      */
-    _allowRefetch = (_props) => {
-        const props = _props || this.props
-        return !(this.ARCConfig.fetchOnce && this.isLoaded(props))
+    _allowRefetch = (props) => {
+        return !(this.ARCConfig.fetchOnce && this.isLoaded(props || this.props))
     }
 
     /* private
@@ -124,6 +124,7 @@ export class AbstractModelComponent extends AbstractComponent {
         const requiredProps = this.ARCConfig.modelProps
         return requiredProps.reduce((valid, prop) => (valid === true && props[prop] ? valid : false)
             , true)
+
     }
 
     /* private
@@ -155,7 +156,7 @@ export class AbstractModelComponent extends AbstractComponent {
         if (propsThatChanged.length === 1 && propsThatChanged.includes('collection')) {
             const prevModel = this._getModel(this.props)
             const nextModel = this._getModel(nextProps)
-            return Object.is(prevModel, nextModel)
+            return !equal(prevModel, nextModel)
         }
         return true
     }

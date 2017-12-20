@@ -1,6 +1,6 @@
 {
   "name": "react-arc",
-  "version": "0.1.31",
+  "version": "0.1.32",
   "description": "React Abstract Redux Component",
   "main": "lib/index.js",
   "scripts": {
@@ -66,6 +66,7 @@
   },
   "dependencies": {
     "axios": "^0.15.3",
+    "deep-equal": "^1.0.1",
     "react": "^15.4.2"
   }
 }
