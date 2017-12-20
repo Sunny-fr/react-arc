@@ -12,6 +12,8 @@ export function extractParams( props = [], source = {}) {
 }
 
 export function changedProps (prevProps, nextProps){
+    if (!prevProps) return []
+    if (typeof prevProps !== typeof prevProps) return Object.keys(prevProps)
     return Object.keys(nextProps).reduce((state, item)=>{
         if (equal(prevProps[item], nextProps[item])) return state.concat()
         return state.concat(item)
