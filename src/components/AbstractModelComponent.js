@@ -150,15 +150,26 @@ export class AbstractModelComponent extends AbstractComponent {
         if (!this.isNew(this.props) && this._allowRefetch() && !this.isSyncing() && this._errorRefetch()) this.fetch(this.getParams())
     }
 
-    shouldComponentUpdate(nextProps){
-        if (!this.isLoaded(this.props) || !this._getModel(nextProps)) return true
+    shouldComponentUpdate(nextProps, nextState){
+
+        if (typeof nextProps !== typeof this.props || typeof nextState !== typeof this.state) return true
+
         const propsThatChanged = changedProps(this.props, nextProps)
+        const statesThatChanged = changedProps(this.state, nextState)
+
+
+        if (statesThatChanged.length === 0 && propsThatChanged.length === 0 ) return false
+
+        //if (!this.isLoaded(this.props) || !this._getModel(nextProps)) return true
+
         if (propsThatChanged.length === 1 && propsThatChanged.includes('collection')) {
             const prevModel = this._getModel(this.props)
             const nextModel = this._getModel(nextProps)
             return !equal(prevModel, nextModel)
         }
-        return true
+
+
+        return statesThatChanged.length  > 0 || propsThatChanged.length > 0
     }
 }
 
