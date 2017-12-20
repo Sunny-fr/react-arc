@@ -1,3 +1,5 @@
+import equal from 'deep-equal'
+
 export function flatten(node, withMetas = false) {
     return Object.keys(node).map(nodeName => withMetas ? node[nodeName] : node[nodeName].model)
 }
@@ -11,7 +13,7 @@ export function extractParams( props = [], source = {}) {
 
 export function changedProps (prevProps, nextProps){
     return Object.keys(nextProps).reduce((state, item)=>{
-        if (Object.is(prevProps[item], nextProps[item])) return state.concat()
+        if (equal(prevProps[item], nextProps[item])) return state.concat()
         return state.concat(item)
     },[])
 }
