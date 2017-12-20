@@ -169,7 +169,10 @@ export function mixerStore(options) {
                     }
                 } else {
                     const collection = {...state.collection}
-                    collection[key].model = Object.assign({}, collection[key].model, action.payload.data)
+                    collection[key] = {
+                        metas: {...collection[key].metas},
+                        model: Object.assign({}, collection[key].model, action.payload.data)
+                    }
                     return {
                         ...state,
                         collection
