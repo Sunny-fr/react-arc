@@ -15,8 +15,9 @@ Live demo : http://sunny.fr/toolbox/react-arc
 
 //EXAMPLE CONFIG
 export const config = {
+    // reducer name
     name: 'something',
-    //used in the reducers
+    // will be used to decorate every action (singular prefered)
     uppercaseName: 'SOMETHING',
     // useful to map objects in collection
     modelProps: ['id'],
