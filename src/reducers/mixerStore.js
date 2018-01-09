@@ -152,7 +152,7 @@ export function mixerStore(options) {
                 }
             }
 
-            case decorate('RESET_TEMP') : {
+            case decorate('RESET_{uppercaseName}_TEMP') : {
                 return {
                     ...state,
                     temp: {metas: {...defaultModel.metas, loaded: true}, model: {...defaultModel.model}}
