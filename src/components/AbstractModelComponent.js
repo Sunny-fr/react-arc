@@ -122,7 +122,7 @@ export class AbstractModelComponent extends AbstractComponent {
      */
     _hasRequiredParams = (props) => {
         const requiredProps = this.ARCConfig.modelProps
-        return requiredProps.reduce((valid, prop) => (valid === true && props[prop] ? valid : false)
+        return requiredProps.reduce((valid, prop) => (valid === true && typeof props[prop] !== 'undefined' ? valid : false)
             , true)
 
     }
