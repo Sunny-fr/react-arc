@@ -12,4 +12,5 @@ server/tmp
 node_modules
 npm-debug.log*
 demo/build
+demo/src/lib
 package-lock.json

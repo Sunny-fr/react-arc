@@ -4,15 +4,16 @@ import React from 'react';
 import {Provider} from 'react-redux'
 import store from './store'
 
+import Application from './layout/ApplicationLayout'
+import {Portfolio, PortfolioItem, PortfolioEditItem} from './portfolio'
+import {Contact} from './contact/components/Contact'
+
 /** ROUTES DEPENDENCIES **/
 import {Router, Route, hashHistory, IndexRoute} from 'react-router'
 import {syncHistoryWithStore} from 'react-router-redux'
 const history = syncHistoryWithStore(hashHistory, store)
 
 
-import Application from './layout/ApplicationLayout'
-import {Portfolio, PortfolioItem, PortfolioEditItem} from './portfolio'
-import {Contact} from './contact/components/Contact'
 
 
 function App() {

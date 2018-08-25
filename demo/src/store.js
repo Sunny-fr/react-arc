@@ -4,7 +4,7 @@ import promise from "redux-promise-middleware"
 import {routerReducer} from 'react-router-redux'
 
 //DEMO COMPONENT ABSTRACT REDUX
-import {mixerStore} from '../../lib'
+import {mixerStore} from './lib'
 import configPortfolio from './portfolio/config.json'
 import configAlbum from './album/config.json'
 
