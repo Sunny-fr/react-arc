@@ -1,4 +1,4 @@
-# ARC 1.0.0
+# ARC 1.0.1
 
 React Abstract Redux Component
 
