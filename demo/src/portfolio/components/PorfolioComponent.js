@@ -2,7 +2,7 @@ import React, {Component}  from 'react'
 import config from '../config.json'
 import {connect} from 'react-redux'
 import {Link} from 'react-router'
-import {AbstractCollectionComponent, mixerConnector} from '../../../../lib'
+import {AbstractCollectionComponent, mixerConnector} from '../../lib'
 import loadImage from '../../layout/components/image/loadImage'
 
 import {AlbumItemComponent} from '../../album'
