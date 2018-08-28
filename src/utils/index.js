@@ -28,9 +28,9 @@ export function interpolate(str, params) {
     const keys = Object.keys(params);
     // if no string is given we generate one ( params = {foo:'bar', baz:'wth'} will generate {foo}:{baz})
     // it will provide a unique id for models
-    const stringToDecorate = str || keys.map(v => '{' + v + '}').join(':')
+    const stringToDecorate = str || keys.sort().map(v => '{' + v + '}').join(':')
     // it will turn path/to/{id} to path/to/123
-    const result = keys.sort().reduce((prev, current) => {
+    const result = keys.reduce((prev, current) => {
         const elm_val = params[current]
         if (Array.isArray(elm_val)) {
             return prev.replace(
