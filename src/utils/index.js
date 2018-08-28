@@ -30,7 +30,7 @@ export function interpolate(str, params) {
     // it will provide a unique id for models
     const stringToDecorate = str || keys.map(v => '{' + v + '}').join(':')
     // it will turn path/to/{id} to path/to/123
-    const result = keys.reduce((prev, current) => {
+    const result = keys.sort().reduce((prev, current) => {
         const elm_val = params[current]
         if (Array.isArray(elm_val)) {
             return prev.replace(
