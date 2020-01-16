@@ -73,7 +73,7 @@ export class AbstractCollectionComponent extends AbstractComponent {
         return !(this.ARCConfig.fetchOnce && this.isLoaded(props || this.props))
     }
 
-    componentWillMount() {
+    componentDidMount() {
         if (this._allowRefetch()) this.fetch()
     }
 }

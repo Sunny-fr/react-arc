@@ -136,7 +136,7 @@ export class AbstractModelComponent extends AbstractComponent {
         return !this.isNew(props) && !this.isLoaded(props) && !this.isSyncing(props) && !this.getError(props)
     }
 
-    componentWillReceiveProps(props) {
+    componentdidUpdate(props) {
         if (this._canUpdate(props)) this.fetch(this.getParams(props))
     }
 
@@ -146,7 +146,7 @@ export class AbstractModelComponent extends AbstractComponent {
         return !this.getError()
     }
 
-    componentWillMount() {
+    componentDidMount() {
         if (!this.isNew(this.props) && this._allowRefetch() && !this.isSyncing() && this._errorRefetch()) this.fetch(this.getParams())
     }
 

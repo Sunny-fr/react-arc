@@ -1,5 +1,8 @@
 # ARC 1.0.3
 
+
+# BREAKING CHANGES IN PROGRESS USE 1.03 INSTEAD
+
 React Abstract Redux Component
 
 Set of components to manage collections/models from a REST service

@@ -26,15 +26,18 @@ export class AbstractFormModelComponent extends AbstractModelComponent {
 
     /** PUBLIC/MEANT TO BE OVERRIDDEN **/
 
-    onSave() { }
+    onSave() {
+        
+    }
 
 
-    componentDidUpdate() {
+    componentDidUpdate(prevProps, prevState, snapshot) {
         if (this.getMetas('saved')) {
             const created = this.getModel()
             this.resetTempModel()
             this.onSave(created)
         }
+        if (super.componentDidUpdate) super.componentDidUpdate(prevProps, prevState, snapshot );
     }
 
     /* private
@@ -56,4 +59,4 @@ export class AbstractFormModelComponent extends AbstractModelComponent {
 
 }
 
-export default  AbstractFormModelComponent
+export default AbstractFormModelComponent
