@@ -136,7 +136,12 @@ export class AbstractModelComponent extends AbstractComponent {
         return !this.isNew(props) && !this.isLoaded(props) && !this.isSyncing(props) && !this.getError(props)
     }
 
-    componentdidUpdate(props) {
+    static getDerivedStateFromProps(nextProps, prevState){
+        console.log(this._canUpdate(this.props))
+        return nextProps
+    }
+
+    componentDidUpdate(props) {
         if (this._canUpdate(props)) this.fetch(this.getParams(props))
     }
 
@@ -147,7 +152,9 @@ export class AbstractModelComponent extends AbstractComponent {
     }
 
     componentDidMount() {
-        if (!this.isNew(this.props) && this._allowRefetch() && !this.isSyncing() && this._errorRefetch()) this.fetch(this.getParams())
+        if (!this.isNew(this.props) && this._allowRefetch() && !this.isSyncing() && this._errorRefetch()) {
+            this.fetch(this.getParams())
+        }
     }
 
     shouldComponentUpdate(nextProps, nextState){

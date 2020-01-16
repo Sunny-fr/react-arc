@@ -1,4 +1,5 @@
 import defaultConfig from './defaultConfig'
+//import {connect} from 'react-redux'
 export function mixerConnector(connect, config, customMapStateToProps = null) {
     const extendedConfig = {...defaultConfig, ...config}
     const namespace = extendedConfig.name
