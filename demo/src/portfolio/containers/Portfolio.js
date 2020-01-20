@@ -15,7 +15,7 @@ export function Portfolio(props) {
             <p style={{marginTop: '30px'}} className="text-center">
                 <a href="https://github.com/Sunny-fr/react-arc">Github</a> -  <a href="https://www.npmjs.com/package/react-arc">npm</a></p>
         </Info>
-        <PorfolioComponent start={0} limit={20}/>
+        <PorfolioComponent hello={'world'} start={0} limit={20}/>
     </div>)
 }
 

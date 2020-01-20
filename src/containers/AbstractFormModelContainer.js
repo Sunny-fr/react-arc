@@ -1,7 +1,7 @@
 import React from 'react'
-import AbstractModelComponent from './AbstractModelComponent'
+import AbstractModelContainer from './AbstractModelContainer'
 
-export class AbstractFormModelComponent extends AbstractModelComponent {
+export class AbstractFormModelContainer extends AbstractModelContainer {
 
     constructor(props) {
         super(props)
@@ -26,18 +26,17 @@ export class AbstractFormModelComponent extends AbstractModelComponent {
 
     /** PUBLIC/MEANT TO BE OVERRIDDEN **/
 
-    onSave() {
-        
-    }
+    onSave() { }
 
 
-    componentDidUpdate(prevProps, prevState, snapshot) {
+    componentDidUpdate() {
         if (this.getMetas('saved')) {
             const created = this.getModel()
             this.resetTempModel()
             this.onSave(created)
         }
-        if (super.componentDidUpdate) super.componentDidUpdate(prevProps, prevState, snapshot );
+
+        super.componentDidUpdate()
     }
 
     /* private
@@ -59,4 +58,4 @@ export class AbstractFormModelComponent extends AbstractModelComponent {
 
 }
 
-export default AbstractFormModelComponent
+export default  AbstractFormModelContainer
