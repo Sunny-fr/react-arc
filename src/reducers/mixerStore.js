@@ -1,5 +1,5 @@
 import {interpolate, extractParams} from '../utils'
-import {config as baseConfig} from '../components/AbstractComponent'
+//import {config as baseConfig} from '../containers/AbstractContainer'
 import defaultConfig from '../defaultConfig'
 
 const time = () => {
@@ -11,7 +11,7 @@ const time = () => {
 // returns a reducer
 
 export function mixerStore(options) {
-    const config = options && options.config ? options.config : baseConfig
+    const config = options && options.config ? options.config : {}
     const extendedConfig = {...defaultConfig, ...config}
     const defaultModelObject = JSON.parse(JSON.stringify(extendedConfig.defaultModel))
 
@@ -20,13 +20,13 @@ export function mixerStore(options) {
     /* REDUCER STRUCTURE */
 
     const defaultModel = {
-        metas: {loaded: false, fetching: false, valid: false, saving: false, deleting: false, saved: false},
+        metas: {loaded: false, fetching: false, fetchRequested: false, valid: false, saving: false, deleting: false, saved: false},
         model: {...defaultModelObject}
     }
 
     const defaultState = {
         collection: {},
-        temp: {metas: {...defaultModel.metas, loaded: false}, model: {...defaultModel.model}},
+        temp: {metas: {...defaultModel.metas}, model: {...defaultModel.model}},
         fetching: false,
         loaded: false,
         error: null
@@ -67,6 +67,8 @@ export function mixerStore(options) {
 
         switch (action.type) {
 
+            /*** FETCHING COLLECTION ***/
+
             case decorate('RESET_{uppercaseName}S') : {
                 return {
                     ...defaultState,
@@ -93,13 +95,33 @@ export function mixerStore(options) {
                 return {...state, fetching: false, loaded: false, end: time(), error: action.payload.error}
             }
 
+            /*** END FETCHING COLLECTION ***/
+
+            /*** FETCHING MODEL ***/
+
+            case decorate('INIT_{uppercaseName}') : {
+                const collection = {...state.collection}
+                const key = keyGen(action.payload.params)
+
+                const previous = previousItem(key)
+                collection[key] = Object.assign({}, {metas: {...defaultModel.metas, loaded: false}, model: {...defaultModel.model}}, previous)
+
+                return {
+                    ...state,
+                    collection
+                }
+            }
+
             case decorate('FETCH_{uppercaseName}') : {
                 const collection = {...state.collection}
                 const key = keyGen(action.payload.params)
-                if (!collection[key]) {
+
+                const previous = previousItem(key)
+
+                if (!previous) {
                     collection[key] = {...defaultModel, metas: {...defaultModel.metas, fetching: true, start: time()}}
                 } else {
-                    collection[key] = Object.assign({}, collection[key], {
+                    collection[key] = Object.assign({}, previous, {
                         metas: {
                             ...collection[key].metas,
                             fetching: true,
@@ -151,6 +173,8 @@ export function mixerStore(options) {
                     collection
                 }
             }
+
+            /*** END FETCHING MODEL ***/
 
             case decorate('RESET_{uppercaseName}_TEMP') : {
                 return {

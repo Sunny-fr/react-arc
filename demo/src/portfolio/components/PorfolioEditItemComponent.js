@@ -2,7 +2,7 @@ import React  from 'react'
 import config from '../config.json'
 import {connect} from 'react-redux'
 import {Link, hashHistory} from 'react-router'
-import {AbstractFormModelComponent, mixerConnector} from '../../lib'
+import {AbstractModelContainer, mixerConnector} from '../../lib'
 import {Loader} from '../../layout/components/loader'
 import {Toolbar} from '../../layout/components/toolbar'
 import {Toast} from '../../layout/components/toast'
@@ -17,7 +17,7 @@ function FormRow(props) {
     </div>)
 }
 
-class PorfolioEditItemComponent extends AbstractFormModelComponent {
+class PortfolioEditItemComponent extends AbstractModelContainer {
     static defaultProps = {
         ARCConfig: config
     }
@@ -77,4 +77,4 @@ class PorfolioEditItemComponent extends AbstractFormModelComponent {
     }
 }
 
-export default mixerConnector(connect, config)(PorfolioEditItemComponent)
+export default mixerConnector(connect, config)(PortfolioEditItemComponent)

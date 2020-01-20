@@ -4,23 +4,23 @@ import defaultConfig from '../defaultConfig'
 
 export class ReduxActionsList {
     constructor(options) {
-        this.config = {...defaultConfig, ...(options.config || {}) }
+        this.config = {...defaultConfig, ...(options.config || {})}
         this.setHeaders()
         this.setupMethods()
         this.axios = axios.create()
     }
 
-    setHeaders(){
+    setHeaders() {
         this.headers = Object.keys(this.config.headers).length > 0 ? {...this.config.headers} : undefined
     }
 
-    updateConfig (config){
+    updateConfig(config) {
         this.config = {...this.config, ...config}
         this.setHeaders()
         this.setupMethods()
     }
 
-    setupMethods () {
+    setupMethods() {
         const {methods} = this.config
         this.methods = {
             create: methods.create.toLowerCase(),
@@ -31,7 +31,7 @@ export class ReduxActionsList {
     }
 
     decorate = (str, options) => {
-        return interpolate(str, options || this.config)
+        return interpolate(str, options || this.config)
     }
 
     /** EDITING **/
@@ -43,7 +43,7 @@ export class ReduxActionsList {
 
     /** SINGLE ITEM **/
 
-    standAloneFetchOne (params) {
+    standAloneFetchOne(params) {
         return this.axios({
             method: this.methods.read,
             url: this.decorate(this.config.paths.item, params),
@@ -51,8 +51,21 @@ export class ReduxActionsList {
         })
     }
 
+    init(params) {
+        return (dispatch) => {
+            dispatch({type: this.decorate('INIT_{uppercaseName}'), payload: {params}})
+        }
+    }
+
+    requestFetchOne(params) {
+        return (dispatch) => {
+            dispatch({type: this.decorate('FETCH_REQUESTED_{uppercaseName}'), payload: {params}})
+        }
+    }
+
     fetchOne(params) {
         return (dispatch) => {
+            //console.log(this.decorate('FETCH_{uppercaseName}'))
             dispatch({type: this.decorate('FETCH_{uppercaseName}'), payload: {params}})
             this.standAloneFetchOne(params).then(response => {
                 dispatch({
@@ -63,6 +76,7 @@ export class ReduxActionsList {
                 dispatch({type: this.decorate('FETCH_{uppercaseName}_REJECTED'), payload: {error, params}})
             })
         }
+
     }
 
     /**  SAVE **/
@@ -96,7 +110,7 @@ export class ReduxActionsList {
 
     /** REMOVE **/
 
-    standAloneRemove (params) {
+    standAloneRemove(params) {
         const url = this.decorate(this.config.paths.item, params)
         return this.axios({
             method: this.methods.delete,
@@ -121,7 +135,7 @@ export class ReduxActionsList {
 
     /** LISTS **/
 
-    standAloneFetchAll (params) {
+    standAloneFetchAll(params) {
         const url = this.decorate(this.config.paths.collection, params)
         return this.axios({
             method: this.methods.read,
@@ -134,11 +148,11 @@ export class ReduxActionsList {
         return (dispatch) => {
             dispatch({type: this.decorate('FETCH_{uppercaseName}S'), payload: {params}})
             this.standAloneFetchAll(params).then((response) => {
-                    dispatch({
-                        type: this.decorate('FETCH_{uppercaseName}S_FULFILLED'),
-                        payload: {data: response.data}
-                    })
+                dispatch({
+                    type: this.decorate('FETCH_{uppercaseName}S_FULFILLED'),
+                    payload: {data: response.data}
                 })
+            })
                 .catch((error) => {
                     dispatch({type: this.decorate('FETCH_{uppercaseName}S_REJECTED'), payload: {error}})
                 })

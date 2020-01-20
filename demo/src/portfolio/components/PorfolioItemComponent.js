@@ -2,13 +2,13 @@ import React  from 'react'
 import config from '../config.json'
 import {connect} from 'react-redux'
 import {Link} from 'react-router'
-import {AbstractModelComponent, mixerConnector} from '../../lib'
+import {AbstractModelContainer, mixerConnector} from '../../lib'
 import {Loader} from '../../layout/components/loader'
 import {Toolbar} from '../../layout/components/toolbar'
 import {Toast} from '../../layout/components/toast'
 import {LargeError} from '../../layout/components/error'
 
-class PorfolioItemComponent extends AbstractModelComponent {
+class PortfolioItemComponent extends AbstractModelContainer {
     static defaultProps = {
         ARCConfig: config
     }
@@ -52,4 +52,4 @@ class PorfolioItemComponent extends AbstractModelComponent {
     }
 }
 
-export default mixerConnector(connect, config)(PorfolioItemComponent)
+export default mixerConnector(connect, config)(PortfolioItemComponent)

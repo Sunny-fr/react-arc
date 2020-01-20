@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import config from '../config.json'
 import {connect} from 'react-redux'
-import {AbstractCollectionComponent, mixerConnector} from '../../lib'
+import {AbstractCollectionContainer, mixerConnector} from '../../lib'
 import loadImage from '../../layout/components/image/loadImage'
 
 import {AlbumItemComponent} from '../../album'
@@ -14,8 +14,8 @@ import Link from '../../navigation/Link'
 
 
 class PortfolioItem extends Component {
-    constructor() {
-        super()
+    constructor(props) {
+        super(props)
         this.state = {
             imageLoaded: false
         }
@@ -48,7 +48,8 @@ class PortfolioItem extends Component {
         </div>)
     }
 
-    componentWillMount() {
+    componentDidMount() {
+
 
         loadImage('images/image-' + this.props.model.id + '.jpg').then(() => {
             this.setState({imageLoaded: true})
@@ -58,7 +59,7 @@ class PortfolioItem extends Component {
     }
 }
 
-class PorfolioComponent extends AbstractCollectionComponent {
+class PorfolioComponent extends AbstractCollectionContainer {
     static defaultProps = {
         ARCConfig: config,
         start: 0,
@@ -72,7 +73,6 @@ class PorfolioComponent extends AbstractCollectionComponent {
 
         const items = this.getCollection().map(model => <PortfolioItem remove={this.removeModel} key={model.id}
                                                                       model={model}/>)
-
         // Alternative
         // if we want to provide any visual feedback while we're deleting
         // const items = this.getFullCollection().map(metaModel => <PortfolioItem fetching={metaModel.metas.fetching} remove={this.remove} key={metaModel.model.id} model={metaModel.model}/>)
