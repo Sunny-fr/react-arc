@@ -114,7 +114,11 @@ export class AbstractModelContainer extends AbstractContainer {
     /* public
      * returns model (data retrieved from the server) */
     static getModel(ARCConfig, props) {
-        return AbstractModelContainer._getModel(ARCConfig, props).model
+        const metaModel = AbstractModelContainer._getModel(ARCConfig, props);
+        if(!metaModel) {
+            return null
+        }
+        return metaModel.model
     }
 
     getModel(props) {
