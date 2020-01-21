@@ -7,7 +7,7 @@ export class AbstractContainer extends React.Component {
     static contextTypes = {
         store: PropTypes.object.isRequired,
     }
-    _getTrueStoreState(){
+    getTrueStoreState(){
         const store = this.context.store.getState()
         return {
             tempModel: store[this.ARCConfig.name].temp,
@@ -18,8 +18,8 @@ export class AbstractContainer extends React.Component {
         }
     }
 
-    _getPropsFromTrueStoreState = (props) => {
-        const ARCProps = this._getTrueStoreState()
+    getPropsFromTrueStoreState = (props) => {
+        const ARCProps = this.getTrueStoreState()
         const baseProps = props || this.props
         return {
             ...baseProps,

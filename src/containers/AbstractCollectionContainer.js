@@ -117,12 +117,12 @@ export class AbstractCollectionContainer extends AbstractContainer {
     }
 
     componentDidUpdate() {
-        const props = this._getPropsFromTrueStoreState()
+        const props = this.getPropsFromTrueStoreState()
         if (this._fetchAuthorization(props, {skipReFetchStep: true})) this.fetch()
     }
 
     componentDidMount() {
-        const props = this._getPropsFromTrueStoreState()
+        const props = this.getPropsFromTrueStoreState()
         if (this._fetchAuthorization(props, {})) this.fetch()
     }
 }

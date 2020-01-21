@@ -188,7 +188,7 @@ export class AbstractModelContainer extends AbstractContainer {
 
 
     componentDidUpdate(){
-        const props = this._getPropsFromTrueStoreState(this.props)
+        const props = this.getPropsFromTrueStoreState(this.props)
         if (this._fetchAuthorization(props, {skipReFetchStep: true})){
             this.fetch(this.getParams())
         }
@@ -222,7 +222,7 @@ export class AbstractModelContainer extends AbstractContainer {
     }
 
     componentDidMount() {
-        const props = this._getPropsFromTrueStoreState(this.props)
+        const props = this.getPropsFromTrueStoreState(this.props)
         if (this._fetchAuthorization(props, {})){
             this.fetch(this.getParams())
         }
