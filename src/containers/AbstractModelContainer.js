@@ -55,6 +55,10 @@ export class AbstractModelContainer extends AbstractContainer {
         return result
     }
 
+    _hasRequiredParams(ARCConfig, props) {
+        return AbstractModelContainer._hasRequiredParams(this.ARCConfig, props || this.props)
+    }
+
 
     /* private
      * get a model an its metas data
