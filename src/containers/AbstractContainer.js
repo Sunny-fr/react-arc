@@ -3,7 +3,7 @@ import {ReduxActionsList} from '../actions/ReduxActionsList'
 import defaultConfig from '../defaultConfig'
 import PropTypes from 'prop-types'
 
-export class AbstractContainer extends React.Component {
+export class AbstractContainer extends React.PureComponent {
     static contextTypes = {
         store: PropTypes.object.isRequired,
     }
