@@ -55,7 +55,7 @@ export class AbstractModelContainer extends AbstractContainer {
         return result
     }
 
-    _hasRequiredParams(ARCConfig, props) {
+    _hasRequiredParams(props) {
         return AbstractModelContainer._hasRequiredParams(this.ARCConfig, props || this.props)
     }
 
@@ -87,7 +87,7 @@ export class AbstractModelContainer extends AbstractContainer {
     /* public
      * save a model */
     save = () => {
-        const isNew = AbstractModelContainer.isNew(this.props)
+        const isNew = this.isNew(this.props)
         const model = this.getModel()
         const params = isNew ? this.getParams(model) : this.getParams()
         this.props.dispatch(this.actions.save(model, params, isNew))
@@ -114,8 +114,8 @@ export class AbstractModelContainer extends AbstractContainer {
     /* public
      * returns model (data retrieved from the server) */
     static getModel(ARCConfig, props) {
-        const metaModel = AbstractModelContainer._getModel(ARCConfig, props);
-        if(!metaModel) {
+        const metaModel = AbstractModelContainer._getModel(ARCConfig, props)
+        if (!metaModel) {
             return null
         }
         return metaModel.model
@@ -190,21 +190,20 @@ export class AbstractModelContainer extends AbstractContainer {
     }
 
 
-
-    componentDidUpdate(){
+    componentDidUpdate() {
         const props = this.getPropsFromTrueStoreState(this.props)
-        if (this._fetchAuthorization(props, {skipReFetchStep: true})){
+        if (this._fetchAuthorization(props, {skipReFetchStep: true})) {
             this.fetch(this.getParams())
         }
     }
 
-    _fetchAuthorization(props, {skipReFetchStep = false}){
+    _fetchAuthorization(props, {skipReFetchStep = false}) {
         if (this.isNew(props)) {
             //console.log('//model is new no data to be retrieved')
             return false
         }
 
-        if (typeof this._getModel(props) ==='undefined') {
+        if (typeof this._getModel(props) === 'undefined') {
             //console.log('//model has never been fetch, its ok to fetch')
             return true
         }
@@ -227,7 +226,7 @@ export class AbstractModelContainer extends AbstractContainer {
 
     componentDidMount() {
         const props = this.getPropsFromTrueStoreState(this.props)
-        if (this._fetchAuthorization(props, {})){
+        if (this._fetchAuthorization(props, {})) {
             this.fetch(this.getParams())
         }
     }
