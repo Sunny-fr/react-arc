@@ -2,7 +2,6 @@ import React  from 'react'
 import config from '../config.json'
 import {connect} from 'react-redux'
 import {AbstractModelContainer, mixerConnector} from '../../lib'
-import store from '../../store'
 
 
 class AlbumItemComponent extends AbstractModelContainer {

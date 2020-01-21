@@ -1,12 +1,14 @@
 import React  from 'react'
 import config from '../config.json'
 import {connect} from 'react-redux'
-import {Link, hashHistory} from 'react-router'
-import {AbstractModelContainer, mixerConnector} from '../../lib'
+//import {Link, hashHistory} from 'react-router'
+import {AbstractFormModelContainer, mixerConnector} from '../../lib'
 import {Loader} from '../../layout/components/loader'
 import {Toolbar} from '../../layout/components/toolbar'
 import {Toast} from '../../layout/components/toast'
 import {Error} from '../../layout/components/error'
+import Link from '../../navigation/Link'
+import {navigateTo} from '../../navigation/navigate'
 
 
 function FormRow(props) {
@@ -17,7 +19,7 @@ function FormRow(props) {
     </div>)
 }
 
-class PortfolioEditItemComponent extends AbstractModelContainer {
+class PortfolioEditItemComponent extends AbstractFormModelContainer {
     static defaultProps = {
         ARCConfig: config
     }
@@ -25,7 +27,7 @@ class PortfolioEditItemComponent extends AbstractModelContainer {
     onSave = () => {
         // successful
         const {id} = this.getModel()
-        hashHistory.push('/view/' + (id || ''))
+        navigateTo('/view/' + (id || ''))
     }
 
     render() {

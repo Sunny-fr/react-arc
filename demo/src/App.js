@@ -11,9 +11,21 @@ import {Contact} from './contact/components/Contact'
 
 
 /** ROUTES DEPENDENCIES **/
-import {Router, Route,} from 'react-router'
+import {Router, Route,Switch} from 'react-router'
 import {ConnectedRouter} from 'connected-react-router'
 
+
+const ApplicationLayoutWrapper = (props) => {
+    return (<Application {...props}>
+        <Switch>
+            <Route exact path="/" name="Home" component={Portfolio}/>
+            <Route path="/view/:id" name="Portfolio Item" component={PortfolioItem}/>
+            <Route path="/create" name="Create Item" component={PortfolioEditItem}/>
+            <Route path="/edit/:id" name="Edit Portfolio Item" component={PortfolioEditItem}/>
+            <Route path="/contact" name="Contact" component={Contact}/>
+        </Switch>
+    </Application>)
+}
 
 function App() {
     return (
@@ -21,13 +33,7 @@ function App() {
             <ARCProvider store={store}>
                 <ConnectedRouter history={history}>
                     <Router history={history}>
-                        <Route path="/" component={Application}>
-                            <Route exact path="/" name="Home" component={Portfolio}/>
-                            <Route path="view/:id" name="Portfolio Item" component={PortfolioItem}/>
-                            <Route path="create" name="Create Item" component={PortfolioEditItem}/>
-                            <Route path="edit/:id" name="Edit Portfolio Item" component={PortfolioEditItem}/>
-                            <Route path="contact" name="Contact" component={Contact}/>
-                        </Route>
+                        <Route path="/" component={ApplicationLayoutWrapper}/>
                     </Router>
                 </ConnectedRouter>
             </ARCProvider>

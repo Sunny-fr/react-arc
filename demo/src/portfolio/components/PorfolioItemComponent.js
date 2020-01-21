@@ -1,12 +1,13 @@
 import React  from 'react'
 import config from '../config.json'
 import {connect} from 'react-redux'
-import {Link} from 'react-router'
+
 import {AbstractModelContainer, mixerConnector} from '../../lib'
 import {Loader} from '../../layout/components/loader'
 import {Toolbar} from '../../layout/components/toolbar'
 import {Toast} from '../../layout/components/toast'
 import {LargeError} from '../../layout/components/error'
+import Link from '../../navigation/Link'
 
 class PortfolioItemComponent extends AbstractModelContainer {
     static defaultProps = {

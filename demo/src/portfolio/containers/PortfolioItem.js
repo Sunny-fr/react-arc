@@ -1,8 +1,8 @@
 import React from 'react'
-import PorfolioItemComponent from '../components/PorfolioItemComponent'
+import PortfolioItemComponent from '../components/PorfolioItemComponent'
 
 export function PortfolioItem (props) {
-    return (<PorfolioItemComponent id={props.params.id} />)
+    return (<PortfolioItemComponent id={props.match.params.id} />)
 }
 
 export default PortfolioItem
