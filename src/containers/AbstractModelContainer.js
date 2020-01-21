@@ -51,7 +51,7 @@ export class AbstractModelContainer extends AbstractContainer {
     static _hasRequiredParams(ARCConfig, props) {
         const result = ARCConfig.modelProps.reduce((valid, prop) => (valid === true && typeof props[prop] !== 'undefined' ? valid : false)
             , true)
-        if (!result) console.log('missing required params', ARCConfig.modelProps, props)
+        //if (!result) console.log('missing required params', ARCConfig.modelProps, props)
         return result
     }
 
