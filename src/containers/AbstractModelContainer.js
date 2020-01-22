@@ -183,7 +183,7 @@ export class AbstractModelContainer extends AbstractContainer {
             return false
         }
 
-        if (!skipReFetchStep && this.allowReFetch(props)) {
+        if (!skipReFetchStep && this.isLoaded(props)  && this.allowReFetch(props)) {
             //console.log('//model seems to be loaded but its ok to re-fetch it')
             return true
         }
