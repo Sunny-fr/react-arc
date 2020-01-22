@@ -141,27 +141,27 @@ export class AbstractModelContainer extends AbstractContainer {
 
     _fetchAuthorization(props, {skipReFetchStep = false}) {
         if (this.isNew(props)) {
-            console.log('//model is new no data to be retrieved')
+            //console.log('//model is new no data to be retrieved')
             return false
         }
 
         if (typeof this._getModel(props) === 'undefined') {
-            console.log('//model has never been fetch, its ok to fetch')
+            //console.log('//model has never been fetch, its ok to fetch')
             return true
         }
 
         if (this.isSyncing(props)) {
-            console.log('//model seems to be loading we dont allow to fetch it again')
+            //console.log('//model seems to be loading we dont allow to fetch it again')
             return false
         }
 
         if (!skipReFetchStep && this.allowReFetch(props)) {
-            console.log('//model seems to be loaded but its ok to re-fetch it')
+            //console.log('//model seems to be loaded but its ok to re-fetch it')
             return true
         }
 
         if (!skipReFetchStep && this.errorReFetch(props)) {
-            console.log('//model had an error previously, but its ok to refetch it')
+            //console.log('//model had an error previously, but its ok to refetch it')
             return true
         }
 
