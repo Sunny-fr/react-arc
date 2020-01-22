@@ -44,52 +44,32 @@ export class AbstractCollectionContainer extends AbstractContainer {
     /*  public
      * no errors returns null/false
      * or it will return this axios response */
-    static getError(ARCConfig, props) {
-        const {error} = props
-        return error
-    }
 
     getError(props) {
-        return AbstractCollectionContainer.getError(this.ARCConfig, props || this.props)
+        return this.core.getCollectionError(this.ARCConfig, props || this.props)
     }
 
     /* public
      * is the collection loaded at least one time ? */
-
-    static isLoaded(ARCConfig, props) {
-        const {loaded} = props
-        return loaded
-    }
-
     isLoaded(props) {
-        return AbstractCollectionContainer.isLoaded(this.ARCConfig, props || this.props)
+        return this.core.isCollectionLoaded(this.ARCConfig, props || this.props)
     }
 
 
     /* public
      * is there any activity ? loading
      * or syncing (~means that the collection has been loaded once and we're refetching it) */
-    static isSyncing(ARCConfig, props) {
-        const {fetching} = props
-        return fetching
-    }
 
     isSyncing(props) {
-        return AbstractCollectionContainer.isSyncing(this.ARCConfig, props || this.props)
+        return this.core.isCollectionSyncing(this.ARCConfig, props || this.props)
     }
-
 
     /* private
      * performs a fetch if the flag fetchOnce is set to false
      */
 
-
-    static _allowReFetch(ARCConfig, props) {
-        return !(ARCConfig.fetchOnce && AbstractCollectionContainer.isLoaded(ARCConfig, props))
-    }
-
     _allowReFetch = (props) => {
-        return AbstractCollectionContainer._allowReFetch(this.ARCConfig, props || this.props)
+        return this.core.allowCollectionReFetch(this.ARCConfig, props || this.props)
     }
 
 

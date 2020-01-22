@@ -2,11 +2,20 @@ import React from 'react'
 import {ReduxActionsList} from '../actions/ReduxActionsList'
 import defaultConfig from '../defaultConfig'
 import PropTypes from 'prop-types'
+import core from '../actions/core'
 
-export class AbstractContainer extends React.PureComponent {
+export class AbstractContainer extends React.Component {
     static contextTypes = {
         store: PropTypes.object.isRequired,
     }
+
+    constructor(props) {
+        super(props)
+        this.updateARC(props.ARCConfig)
+        this.actions = new ReduxActionsList({config: this.ARCConfig})
+        this.core = {...core}
+    }
+
     getTrueStoreState(){
         const store = this.context.store.getState()
         return {
@@ -27,11 +36,6 @@ export class AbstractContainer extends React.PureComponent {
         }
     }
 
-    constructor(props) {
-        super(props)
-        this.updateARC(props.ARCConfig)
-        this.actions = new ReduxActionsList({config: this.ARCConfig})
-    }
     updateARC(config) {
         this.ARCConfig = {...(this.ARCConfig || defaultConfig), ...config}
         if (this.actions) this.actions.updateConfig(this.ARCConfig)
