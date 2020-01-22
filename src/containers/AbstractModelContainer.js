@@ -145,9 +145,9 @@ export class AbstractModelContainer extends AbstractContainer {
         if (this._fetchAuthorization(props, {skipReFetchStep})) {
             const max = this.ARCConfig.maxPendingRequestsPerReducer
             if (max > -1) {
-                const count = this.getFetchingCount(props) > max
-                if(count) {
-                    //console.log('too much pending requests', count)
+                const count = this.getFetchingCount(props)
+                if(count > max) {
+                    //console.log('too much pending requests', count, 'pending)
                     return this.delayedFetch({skipReFetchStep})
                 }
             }
@@ -188,7 +188,7 @@ export class AbstractModelContainer extends AbstractContainer {
             return true
         }
 
-        if (!skipReFetchStep && this.errorReFetch(props)) {
+        if (!skipReFetchStep && !!this.getError(props) && this.errorReFetch(props)) {
             //console.log('//model had an error previously, but its ok to refetch it')
             return true
         }
