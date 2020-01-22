@@ -86,6 +86,10 @@ export class AbstractModelContainer extends AbstractContainer {
     /* public
      * returns model (data retrieved from the server) */
 
+    getFetchingCount = (props) => {
+        return this.core.getFetchingCount(this.ARCConfig, props || this.props)
+    }
+
     getModel(props) {
         return this.core.getModel(this.ARCConfig, props || this.props)
     }
@@ -133,13 +137,37 @@ export class AbstractModelContainer extends AbstractContainer {
 
 
     componentDidUpdate() {
+        this.prepareFetch({skipReFetchStep: true})
+    }
+
+    prepareFetch({skipReFetchStep= false}){
         const props = this.getPropsFromTrueStoreState(this.props)
-        if (this._fetchAuthorization(props, {skipReFetchStep: true})) {
+        if (this._fetchAuthorization(props, {skipReFetchStep})) {
+            const max = this.ARCConfig.maxPendingRequestsPerReducer
+            if (max > -1) {
+                const count = this.getFetchingCount(props) > max
+                if(count) {
+                    //console.log('too much pending requests', count)
+                    return this.delayedFetch({skipReFetchStep})
+                }
+            }
             this.fetch(this.getParams())
         }
     }
 
+    componentWillUnmount(){
+        clearTimeout(this.delayedTimeout)
+        this.delayedTimeout = null
+    }
+
+    delayedFetch({skipReFetchStep = false}){
+        this.delayedTimeout = setTimeout(() => {
+            this.prepareFetch({skipReFetchStep})
+        }, this.ARCConfig.requestFetchDelay)
+    }
+
     _fetchAuthorization(props, {skipReFetchStep = false}) {
+
         if (this.isNew(props)) {
             //console.log('//model is new no data to be retrieved')
             return false
@@ -169,10 +197,7 @@ export class AbstractModelContainer extends AbstractContainer {
     }
 
     componentDidMount() {
-        const props = this.getPropsFromTrueStoreState(this.props)
-        if (this._fetchAuthorization(props, {})) {
-            this.fetch(this.getParams())
-        }
+        this.prepareFetch({skipReFetchStep: false})
     }
 
     shouldComponentUpdate(nextProps, nextState) {

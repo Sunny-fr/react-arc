@@ -57,6 +57,12 @@ const core = {
         return !this.getError(ARCConfig, props)
     },
 
+    /** **/
+    getFetchingCount(ARCConfig, props){
+        const { collection } = props || this.props
+        return Object.keys(collection).map((key) => collection[key]).filter((model) => model.metas.fetching).length
+    },
+
     /** COLLECTIONS **/
     getCollectionError(ARCConfig, props) {
         const {error} = props

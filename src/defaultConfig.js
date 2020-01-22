@@ -31,7 +31,11 @@ export const config = {
     // will refetch when the component will be mounted
     refetchOnError: false,
     // adds custom headers
-    headers: {}
+    headers: {},
+    // Limits the number of fetch requests (-1 means no limit)
+    maxPendingRequestsPerReducer: -1,
+    // delay before re fetch
+    requestFetchDelay: 100
 }
 
 export default config
