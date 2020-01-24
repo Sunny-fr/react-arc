@@ -25,7 +25,7 @@ export const cleanParams = function (str) {
 }
 
 export const interpolate = function (str, params) {
-    const keys = Object.keys(params);
+    const keys = Object.keys(params).sort();
     // if no string is given we generate one ( params = {foo:'bar', baz:'wth'} will generate {foo}:{baz})
     // it will provide a unique id for models
     const stringToDecorate = str || keys.map(v => '{' + v + '}').join(':')
