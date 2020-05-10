@@ -1,6 +1,6 @@
 {
   "name": "react-arc",
-  "version": "2.5.0",
+  "version": "2.5.2",
   "description": "React Abstract Redux Component",
   "main": "lib/index.js",
   "scripts": {
@@ -60,6 +60,7 @@
     "babel-preset-es2015": "^6.14.0",
     "babel-preset-react": "^6.11.1",
     "babel-preset-stage-0": "^6.5.0",
+    "eslint-plugin-react-hooks": "^4.0.0",
     "gulp": "^3.9.1",
     "gulp-babel": "^6.1.3",
     "gulp-watch": "^4.3.9",

@@ -1,6 +1,6 @@
 import React, {useEffect, useRef, useState} from 'react'
 import defaultConfig from '../defaultConfig'
-import {extractParams, interpolate} from '../../demo/src/lib/utils'
+import {extractParams, interpolate} from '../utils'
 
 
 class ARC {
@@ -60,6 +60,7 @@ class ARC {
     get({props, params}) {
         const p = params || this.extractParams(props)
         return fetch(interpolate(this.config.paths.item, p), {
+            method: this.config.methods['read'],
             headers: this.applyHeaders(this.config.headers, props)
         }).then(ARC.json)
     }
@@ -67,7 +68,7 @@ class ARC {
     remove({props, params}) {
         const p = params || this.extractParams(props)
         return fetch(interpolate(this.config.paths.item, p), {
-            method: 'delete',
+            method: this.config.methods['delete'],
             headers: this.applyHeaders(this.config.headers, props)
         }).then(ARC.json)
     }
@@ -75,7 +76,7 @@ class ARC {
     create({props, body, params}) {
         const p = params || this.extractParams(props)
         return fetch(interpolate(this.config.paths.item, p), {
-            method: 'post',
+            method: this.config.methods['create'],
             headers: this.applyHeaders(this.config.headers, props),
             body: JSON.stringify(body)
         }).then(ARC.json)
@@ -84,7 +85,7 @@ class ARC {
     update({props, body, params}) {
         const p = params || this.extractParams(props)
         return fetch(interpolate(this.config.paths.item, p), {
-            method: 'put',
+            method: this.config.methods['update'],
             headers: this.applyHeaders(this.config.headers, props),
             body: JSON.stringify(body)
         }).then(ARC.json)
@@ -99,8 +100,9 @@ class ARC {
 }
 
 
-export default function useARC({ARCConfig, props}) {
+export function useARC({ARCConfig, props}) {
     const arc = new ARC({ARCConfig})
+    const defaultProps = props
     const [state, setState] = useState({error: null, loading: false, loaded: false, response: null})
 
     const handle = (fetcher) => {
@@ -129,12 +131,12 @@ export default function useARC({ARCConfig, props}) {
         loaded: state.loaded,
         response: state.response,
         arc,
-        extract: (props) => arc.extractParams(props),
-        extractParams: (props) => arc.extractParams(props),
-        get: ({props, params}) => handle(() => arc.get({props, params})),
-        remove: ({props, params}) => handle(() => arc.remove({props, params})),
-        create: ({props, params, body}) => handle(() => arc.create({props, params, body})),
-        update: ({props, params, body}) => handle(() => arc.update({props, params, body})),
+        extract: (props) => arc.extractParams(props || defaultProps),
+        extractParams: (props) => arc.extractParams(props || defaultProps),
+        get: ({props, params}) => handle(() => arc.get({props: props || defaultProps, params})),
+        remove: ({props, params}) => handle(() => arc.remove({props: props || defaultProps, params})),
+        create: ({props, params, body}) => handle(() => arc.create({props: props || defaultProps, params, body})),
+        update: ({props, params, body}) => handle(() => arc.update({props: props || defaultProps, params, body})),
     }
 }
 
