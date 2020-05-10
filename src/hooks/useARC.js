@@ -59,7 +59,7 @@ class ARC {
 
     get({props, params}) {
         const p = params || this.extractParams(props)
-        return fetch(interpolate(this.config.paths.item, p), {
+        return fetch(interpolate(this.config.paths.read || this.config.paths.item, p), {
             method: this.config.methods['read'],
             headers: this.applyHeaders(this.config.headers, props)
         }).then(ARC.json)
@@ -67,7 +67,7 @@ class ARC {
 
     remove({props, params}) {
         const p = params || this.extractParams(props)
-        return fetch(interpolate(this.config.paths.item, p), {
+        return fetch(interpolate(this.config.paths.delete || this.config.paths.item, p), {
             method: this.config.methods['delete'],
             headers: this.applyHeaders(this.config.headers, props)
         }).then(ARC.json)
@@ -75,7 +75,8 @@ class ARC {
 
     create({props, body, params}) {
         const p = params || this.extractParams(props)
-        return fetch(interpolate(this.config.paths.item, p), {
+        // WARNING !!
+        return fetch(interpolate(this.config.paths.create || this.config.paths.item, p), {
             method: this.config.methods['create'],
             headers: this.applyHeaders(this.config.headers, props),
             body: JSON.stringify(body)
@@ -84,7 +85,7 @@ class ARC {
 
     update({props, body, params}) {
         const p = params || this.extractParams(props)
-        return fetch(interpolate(this.config.paths.item, p), {
+        return fetch(interpolate(this.config.paths.update || this.config.paths.item, p), {
             method: this.config.methods['update'],
             headers: this.applyHeaders(this.config.headers, props),
             body: JSON.stringify(body)
