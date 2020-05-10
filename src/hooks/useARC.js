@@ -120,7 +120,7 @@ export function useARC({ARCConfig, props}) {
     const params = useRef(arc.extractParams(props))
 
     useEffect(() => {
-        if(arc.hasRequiredParams(params.current)) {
+        if (arc.hasRequiredParams(params.current)) {
             handle(() => arc.get({props, params: params.current}))
         }
     }, [params])
@@ -130,13 +130,27 @@ export function useARC({ARCConfig, props}) {
         loading: state.loading,
         loaded: state.loaded,
         response: state.response,
-        arc,
-        extract: (props) => arc.extractParams(props || defaultProps),
-        extractParams: (props) => arc.extractParams(props || defaultProps),
-        get: ({props, params}) => handle(() => arc.get({props: props || defaultProps, params})),
-        remove: ({props, params}) => handle(() => arc.remove({props: props || defaultProps, params})),
-        create: ({props, params, body}) => handle(() => arc.create({props: props || defaultProps, params, body})),
-        update: ({props, params, body}) => handle(() => arc.update({props: props || defaultProps, params, body})),
+        arc: {
+            arc,
+            get: (args = {}) => {
+                const {props, params} = args
+                return handle(() => arc.get({props: props || defaultProps, params}))
+            },
+            remove: (args = {}) => {
+                const {props, params} = args
+                return handle(() => arc.remove({props: props || defaultProps, params}))
+            },
+            create: (args = {}) => {
+                const {props, params, body} = args
+                return handle(() => arc.create({props: props || defaultProps, params, body}))
+            },
+            update: (args = {}) => {
+                const {props, params, body} = args
+                return handle(() => arc.update({props: props || defaultProps, params, body}))
+            },
+            extract: (props) => arc.extractParams(props || defaultProps),
+            extractParams: (props) => arc.extractParams(props || defaultProps),
+        }
     }
 }
 
