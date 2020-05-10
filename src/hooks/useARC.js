@@ -1,0 +1,141 @@
+import React, {useEffect, useRef, useState} from 'react'
+import defaultConfig from '../defaultConfig'
+import {extractParams, interpolate} from '../../demo/src/lib/utils'
+
+
+class ARC {
+
+    constructor({ARCConfig}) {
+        this.config = ARC.createConfig(ARCConfig)
+    }
+
+    static createConfig(ARCConfig) {
+        const config = ARC.extendConfig(ARCConfig)
+        config.headers = ARC.extendHeaders(config)
+        config.methods = ARC.extendMethods(config)
+        return config
+    }
+
+    static extendConfig(ARCConfig) {
+        return {...defaultConfig, ...(ARCConfig || {})}
+    }
+
+    static extendHeaders(ARCConfig) {
+        return Object.keys(ARCConfig.headers).length > 0 ? {...ARCConfig.headers} : undefined
+    }
+
+    static extendMethods(extendedConfig) {
+        const {methods} = extendedConfig
+        return {
+            create: methods.create.toLowerCase(),
+            read: methods.read.toLowerCase(),
+            update: methods.update.toLowerCase(),
+            delete: methods.delete.toLowerCase()
+        }
+    }
+
+    hasRequiredParams(props) {
+        return this.config.modelProps.reduce((valid, prop) => (valid === true && typeof props[prop] !== 'undefined' ? valid : false)
+            , true)
+    }
+
+    extractParams(props) {
+        return extractParams(this.config.modelProps, props)
+    }
+
+    applyHeaders(headers, props) {
+        // MUST BE PROPS !!!
+        // OR PARAMS MUST TAKE THE CHARGE OF HAVING SPECIALS PROPS SUCH AS TOKEN
+        if (Object.keys(headers || {}).length < 1) {
+            return undefined
+        }
+        return Object.keys(headers).reduce((state, header) => {
+            return {
+                ...state,
+                [header]: interpolate(headers[header], props)
+            }
+        }, {})
+    }
+
+    get({props, params}) {
+        const p = params || this.extractParams(props)
+        return fetch(interpolate(this.config.paths.item, p), {
+            headers: this.applyHeaders(this.config.headers, props)
+        }).then(ARC.json)
+    }
+
+    remove({props, params}) {
+        const p = params || this.extractParams(props)
+        return fetch(interpolate(this.config.paths.item, p), {
+            method: 'delete',
+            headers: this.applyHeaders(this.config.headers, props)
+        }).then(ARC.json)
+    }
+
+    create({props, body, params}) {
+        const p = params || this.extractParams(props)
+        return fetch(interpolate(this.config.paths.item, p), {
+            method: 'post',
+            headers: this.applyHeaders(this.config.headers, props),
+            body: JSON.stringify(body)
+        }).then(ARC.json)
+    }
+
+    update({props, body, params}) {
+        const p = params || this.extractParams(props)
+        return fetch(interpolate(this.config.paths.item, p), {
+            method: 'put',
+            headers: this.applyHeaders(this.config.headers, props),
+            body: JSON.stringify(body)
+        }).then(ARC.json)
+    }
+
+    static json(response) {
+        if (response.status === 200 || response.status === 201) {
+            return response.json()
+        }
+        return response.json().then(r => Promise.reject(r))
+    }
+}
+
+
+export default function useARC({ARCConfig, props}) {
+    const arc = new ARC({ARCConfig})
+    const [state, setState] = useState({error: null, loading: false, loaded: false, response: null})
+
+    const handle = (fetcher) => {
+        if (state.pending) return
+        setState({...state, error: null, loaded: false, loading: true, response: null})
+        return fetcher().then(r => {
+            setState({...state, loaded: true, error: null, loading: false, response: r})
+            return r
+        }).catch(r => {
+            setState({...state, error: r.message || r, loading: false})
+            return Promise.reject(r)
+        })
+    }
+
+    const params = useRef(arc.extractParams(props))
+
+    useEffect(() => {
+        if(arc.hasRequiredParams(params.current)) {
+            handle(() => arc.get({props, params: params.current}))
+        }
+    }, [params])
+
+    return {
+        error: state.error,
+        loading: state.loading,
+        loaded: state.loaded,
+        response: state.response,
+        arc,
+        extract: (props) => arc.extractParams(props),
+        extractParams: (props) => arc.extractParams(props),
+        get: ({props, params}) => handle(() => arc.get({props, params})),
+        remove: ({props, params}) => handle(() => arc.remove({props, params})),
+        create: ({props, params, body}) => handle(() => arc.create({props, params, body})),
+        update: ({props, params, body}) => handle(() => arc.update({props, params, body})),
+    }
+}
+
+
