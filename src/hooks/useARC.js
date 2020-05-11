@@ -108,7 +108,7 @@ export function useARC({ARCConfig, props}) {
 
     const handle = (fetcher) => {
         if (state.pending) return
-        setState({...state, error: null, loaded: false, loading: true, response: null})
+        setState({...state, error: null, loading: true, response: null})
         return fetcher().then(r => {
             setState({...state, loaded: true, error: null, loading: false, response: r})
             return r
