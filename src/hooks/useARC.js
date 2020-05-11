@@ -111,10 +111,10 @@ export function useARC({ARCConfig, props}) {
         setState({...state, error: null, loading: true})
         return fetcher().then(response => {
             setState({...state, loaded: true, error: null, loading: false, response})
-            return r
-        }).catch(r => {
-            setState({...state, error: r.message || r, loading: false})
-            return Promise.reject(r)
+            return response
+        }).catch(error => {
+            setState({...state, error: error.message || error, loading: false})
+            return Promise.reject(error)
         })
     }
 
