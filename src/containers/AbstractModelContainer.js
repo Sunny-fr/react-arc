@@ -173,6 +173,10 @@ export class AbstractModelContainer extends AbstractContainer {
             return false
         }
 
+        if(!this.hasRequiredParams(props)) {
+            return false
+        }
+
         if (typeof this._getModel(props) === 'undefined') {
             //console.log('//model has never been fetch, its ok to fetch')
             return true
