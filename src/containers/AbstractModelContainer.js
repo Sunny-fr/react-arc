@@ -1,7 +1,7 @@
 import React from 'react'
 import AbstractContainer from './AbstractContainer'
-import {changedProps} from '../utils/index'
-import equal from 'deep-equal'
+// import {changedProps} from '../utils/index'
+// import equal from 'deep-equal'
 
 
 
@@ -200,27 +200,27 @@ export class AbstractModelContainer extends AbstractContainer {
         this.prepareFetch({skipReFetchStep: false})
     }
 
-    shouldComponentUpdate(nextProps, nextState) {
-
-        if (typeof nextProps !== typeof this.props || typeof nextState !== typeof this.state) return true
-
-        const propsThatChanged = changedProps(this.props, nextProps)
-        const statesThatChanged = changedProps(this.state, nextState)
-
-
-        if (statesThatChanged.length === 0 && propsThatChanged.length === 0) return false
-
-        //if (!this.isCollectionLoaded(this.props) || !this._getModel(nextProps)) return true
-
-        if (propsThatChanged.length === 1 && propsThatChanged.includes('collection')) {
-            const prevModel = this._getModel(this.props)
-            const nextModel = this._getModel(nextProps)
-            return !equal(prevModel, nextModel)
-        }
-
-
-        return statesThatChanged.length > 0 || propsThatChanged.length > 0
-    }
+    // shouldComponentUpdate(nextProps, nextState) {
+    //
+    //     if (typeof nextProps !== typeof this.props || typeof nextState !== typeof this.state) return true
+    //
+    //     const propsThatChanged = changedProps(this.props, nextProps)
+    //     const statesThatChanged = changedProps(this.state, nextState)
+    //
+    //
+    //     if (statesThatChanged.length === 0 && propsThatChanged.length === 0) return false
+    //
+    //     //if (!this.isCollectionLoaded(this.props) || !this._getModel(nextProps)) return true
+    //
+    //     if (propsThatChanged.length === 1 && propsThatChanged.includes('collection')) {
+    //         const prevModel = this._getModel(this.props)
+    //         const nextModel = this._getModel(nextProps)
+    //         return !equal(prevModel, nextModel)
+    //     }
+    //
+    //
+    //     return statesThatChanged.length > 0 || propsThatChanged.length > 0
+    // }
 }
 
 export default AbstractModelContainer

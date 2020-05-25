@@ -1,7 +1,8 @@
 //EXAMPLE CONFIG
 export const config = {
+    //reducer name
     name: 'something',
-    //used in the reducers
+    //namespace
     uppercaseName: 'SOMETHING',
     // useful to map objects in collection
     modelProps: ['id'],
