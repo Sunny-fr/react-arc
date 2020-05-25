@@ -151,6 +151,9 @@ export function useARC({ARCConfig, props}) {
             },
             extract: (props) => arc.extractParams(props || defaultProps),
             extractParams: (props) => arc.extractParams(props || defaultProps),
+            custom: (fetcher) => {
+                return handle(fetcher)
+            },
         }
     }
 }
