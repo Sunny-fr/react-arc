@@ -10,8 +10,24 @@ export class ReduxActionsList {
         this.axios = axios.create()
     }
 
+    applyHeaders(headers, props = {}) {
+        // TODO REALLY HANDLE PROPS
+        // MUST BE PROPS !!!
+        // OR PARAMS MUST TAKE THE CHARGE OF HAVING SPECIALS PROPS SUCH AS TOKEN
+        if (Object.keys(headers || {}).length < 1) {
+            return undefined
+        }
+        return Object.keys(headers).reduce((state, header) => {
+            return {
+                ...state,
+                [header]: interpolate(headers[header], props)
+            }
+        }, {})
+    }
+
     setHeaders() {
-        this.headers = Object.keys(this.config.headers).length > 0 ? {...this.config.headers} : undefined
+        const headers =  Object.keys(this.config.headers).length > 0 ? {...this.config.headers} : undefined
+        this.headers = this.applyHeaders(headers)
     }
 
     updateConfig(config) {
@@ -47,7 +63,7 @@ export class ReduxActionsList {
         return this.axios({
             method: this.methods.read,
             url: this.decorate(this.config.paths.item, params),
-            headers: this.headers
+            headers: this.applyHeaders(this.headers, params)
         })
     }
 
@@ -89,7 +105,7 @@ export class ReduxActionsList {
         return this.axios({
             method,
             url,
-            headers: this.headers,
+            headers: this.applyHeaders(this.headers, params),
             data,
         })
     }
@@ -115,7 +131,7 @@ export class ReduxActionsList {
         return this.axios({
             method: this.methods.delete,
             url,
-            headers: this.headers
+            headers: this.applyHeaders(this.headers, params),
         })
     }
 
@@ -140,7 +156,7 @@ export class ReduxActionsList {
         return this.axios({
             method: this.methods.read,
             url,
-            headers: this.headers
+            headers: this.applyHeaders(this.headers, params),
         })
     }
 
