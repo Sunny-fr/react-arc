@@ -18,6 +18,7 @@ export class ReduxActionsList {
             return undefined
         }
         return Object.keys(headers).reduce((state, header) => {
+            if(!headers[header]) return state
             return {
                 ...state,
                 [header]: interpolate(headers[header], props)
