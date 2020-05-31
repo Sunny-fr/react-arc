@@ -1,5 +1,6 @@
 import React from 'react'
 import AbstractContainer from './AbstractContainer'
+import {extractParams} from '../utils'
 // import {changedProps} from '../utils/index'
 // import equal from 'deep-equal'
 
@@ -61,7 +62,8 @@ export class AbstractModelContainer extends AbstractContainer {
     save = () => {
         const isNew = this.isNew(this.props)
         const model = this.getModel()
-        const params = isNew ? this.getParams(model) : this.getParams()
+        const extracted = extractParams(this.ARCConfig.modelProps, this.props)
+        const params = {...extracted, ...(isNew ? this.getParams(model) : this.getParams())}
         this.props.dispatch(this.actions.save(model, params, isNew))
     }
 
