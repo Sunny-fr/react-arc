@@ -4,7 +4,9 @@ import defaultConfig from '../defaultConfig'
 
 export class ReduxActionsList {
     constructor(options) {
+
         this.config = { ...defaultConfig, ...(options.config || {}) }
+        this.initialConfig = JSON.parse(JSON.stringify(this.config))
         this.setHeaders()
         this.setupMethods()
         this.axios = axios.create()
@@ -54,6 +56,21 @@ export class ReduxActionsList {
         return interpolate(str, options || this.config)
     }
 
+    beforeFetch = ({config, props= {}, params= {}}) => {
+        //DECORATE URLS
+        return {
+            ...config,
+            headers: this.decorateHeaders({...props, ...params}),
+            paths: Object.keys(config.paths).reduce((s, path) => {
+                const value = this.decorate(config.paths[path], params) ;
+                return {
+                    ...s,
+                    [path]: value
+                }
+            }, {})
+        }
+    }
+
     /** EDITING **/
     edit(data, params) {
         return (dispatch) => {
@@ -63,11 +80,12 @@ export class ReduxActionsList {
 
     /** SINGLE ITEM **/
 
-    standAloneFetchOne(params) {
+
+    standAloneFetchOne(params, config, props) {
         return this.axios({
-            method: this.methods.read,
-            url: this.decorate(this.config.paths.item, params),
-            headers: this.decorateHeaders(params)
+            method: config.methods.read,
+            url: config.paths.item,
+            headers: config.headers
         })
     }
 
@@ -83,11 +101,11 @@ export class ReduxActionsList {
         }
     }
 
-    fetchOne(params) {
+    fetchOne(params = {}, props= {}) {
         return (dispatch) => {
-            //console.log(this.decorate('FETCH_{uppercaseName}'))
+            const config = this.beforeFetch({config: this.config, params, props})
             dispatch({ type: this.decorate("FETCH_{uppercaseName}"), payload: { params } })
-            this.standAloneFetchOne(params).then(response => {
+            this.standAloneFetchOne(params, config, props).then(response => {
                 dispatch({
                     type: this.decorate("FETCH_{uppercaseName}_FULFILLED"),
                     payload: { data: response.data, params }
@@ -102,22 +120,23 @@ export class ReduxActionsList {
     /**  SAVE **/
 
 
-    standAloneSave(data, params, create) {
-        const method = create ? this.methods.create : this.methods.update
+    standAloneSave(data, params, create, config, props) {
+        const method = create ? config.methods.create : config.methods.update
         //TODO remove magic ?
         const url = this.decorate(this.config.paths.item, method === "post" ? {} : params)
         return this.axios({
             method,
             url,
-            headers: this.decorateHeaders(params),
+            headers: config.headers,
             data
         })
     }
 
-    save(data, params, create = false) {
+    save(data, params, create = false, props = {}) {
         return (dispatch) => {
+            const config = this.beforeFetch({config: this.config, params, props})
             dispatch({ type: this.decorate("SAVE_{uppercaseName}"), payload: { data, params, create } })
-            this.standAloneSave(data, params, create).then(response => {
+            this.standAloneSave(data, params, create, config, props).then(response => {
                 dispatch({
                     type: this.decorate("SAVE_{uppercaseName}_FULFILLED"),
                     payload: { params, data: response.data, create }
@@ -130,19 +149,20 @@ export class ReduxActionsList {
 
     /** REMOVE **/
 
-    standAloneRemove(params) {
-        const url = this.decorate(this.config.paths.item, params)
+    standAloneRemove(params, config, props) {
+        const url = config.paths.item
         return this.axios({
-            method: this.methods.delete,
+            method: config.methods.delete,
             url,
-            headers: this.decorateHeaders(params)
+            headers: config.headers
         })
     }
 
-    remove(params) {
+    remove(params, props={}) {
         return (dispatch) => {
+            const config = this.beforeFetch({config: this.config, params, props})
             dispatch({ type: this.decorate("DELETE_{uppercaseName}"), payload: { params } })
-            this.standAloneRemove(params).then(response => {
+            this.standAloneRemove(params, config, props).then(response => {
                 dispatch({
                     type: this.decorate("DELETE_{uppercaseName}_FULFILLED"),
                     payload: { params, data: response.data }
@@ -155,19 +175,20 @@ export class ReduxActionsList {
 
     /** LISTS **/
 
-    standAloneFetchAll(params) {
-        const url = this.decorate(this.config.paths.collection, params)
+    standAloneFetchAll(params, config, props) {
+        const url = config.paths.collection
         return this.axios({
-            method: this.methods.read,
+            method: config.methods.read,
             url,
-            headers: this.decorateHeaders(params)
+            headers: config.headers
         })
     }
 
-    fetchAll(params = {}) {
+    fetchAll(params = {}, props={}) {
         return (dispatch) => {
             dispatch({ type: this.decorate("FETCH_{uppercaseName}S"), payload: { params } })
-            this.standAloneFetchAll(params).then((response) => {
+            const config = this.beforeFetch({config: this.config, params, props})
+            this.standAloneFetchAll(params, config, props).then((response) => {
                 dispatch({
                     type: this.decorate("FETCH_{uppercaseName}S_FULFILLED"),
                     payload: { data: response.data }

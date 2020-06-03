@@ -38,6 +38,7 @@ export const interpolate = function (str, params) {
                 '[' + elm_val.map(item => typeof item === 'object' ? interpolate(null, item) : item).join('|') + ']'
             )
         }
+        if (typeof elm_val === 'undefined') return prev
         return prev.replace(new RegExp('{' + current + '}', 'g'), elm_val)
     }, stringToDecorate)
     // if params are missing we remove them

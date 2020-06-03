@@ -12,14 +12,19 @@ export class AbstractCollectionContainer extends AbstractContainer {
     /* public
      * Fetch a collection */
     fetch = (props) => {
-        this.props.dispatch(this.actions.fetchAll(extractParams(this.ARCConfig.collectionProps, props || this.props)))
+        this.props.dispatch(
+            this.actions.fetchAll(
+                extractParams(this.ARCConfig.collectionProps, props || this.props),
+                props || this.props
+            )
+        )
     }
 
     /* Models related actions */
 
     removeModel = (model) => {
         const params = extractParams(this.ARCConfig.modelProps, model)
-        this.props.dispatch(this.actions.remove(params))
+        this.props.dispatch(this.actions.remove(params, this.props))
     }
 
     editModel = (model) => {

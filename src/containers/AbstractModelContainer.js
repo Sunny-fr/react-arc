@@ -48,7 +48,7 @@ export class AbstractModelContainer extends AbstractContainer {
     /* public
      * Fetch a model */
     fetch = (params) => {
-        this.props.dispatch(this.actions.fetchOne(params))
+        this.props.dispatch(this.actions.fetchOne(params, this.props))
     }
 
     /* public
@@ -64,7 +64,7 @@ export class AbstractModelContainer extends AbstractContainer {
         const model = this.getModel()
         const extracted = extractParams(this.ARCConfig.modelProps, this.props)
         const params = {...extracted, ...(isNew ? this.getParams(model) : this.getParams())}
-        this.props.dispatch(this.actions.save(model, params, isNew))
+        this.props.dispatch(this.actions.save(model, params, isNew, this.props))
     }
 
     /* public
@@ -73,7 +73,7 @@ export class AbstractModelContainer extends AbstractContainer {
         if (this.isNew()) this.resetTempModel()
         else {
             const params = this.getParams()
-            this.props.dispatch(this.actions.remove(params))
+            this.props.dispatch(this.actions.remove(params, this.props))
         }
     }
 
