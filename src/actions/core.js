@@ -9,6 +9,12 @@ const core = {
         //if (!result) console.log('missing required params', ARCConfig.modelProps, props)
         return result
     },
+    missingParams (ARCConfig, props) {
+        return ARCConfig.modelProps.reduce((state, prop) => {
+            if (typeof props[prop] !== 'undefined') return state
+            return state.concat(prop)
+        }, [])
+    },
     isNew (ARCConfig, props)  {
         return !this.getKey(ARCConfig, props)
     },
