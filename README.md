@@ -1,7 +1,4 @@
-# ARC 2.7.1
-
-
-# BREAKING CHANGES IN PROGRESS USE 1.03 INSTEAD
+# ARC 2.7.4
 
 React Abstract Redux Component
 

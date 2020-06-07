@@ -4,6 +4,8 @@
 name: React ARC publish action
 
 on:
+  push:
+    branches: master
   release:
     types: [created]
 
@@ -43,4 +45,4 @@ jobs:
       - run: npm i
       - run: npm publish
         env:
-          NODE_AUTH_TOKEN: ${{secrets.GIT_TOKEN}}
+          NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
