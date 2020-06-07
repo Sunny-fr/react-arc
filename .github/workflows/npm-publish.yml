@@ -4,8 +4,6 @@
 name: React ARC publish action
 
 on:
-  push:
-    branches: master
   release:
     types: [created]
 
