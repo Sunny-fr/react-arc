@@ -1,4 +1,4 @@
-# ARC 2.7.4
+# ARC 2.7.5
 
 React Abstract Redux Component
 
