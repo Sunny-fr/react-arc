@@ -1,11 +1,11 @@
 {
   "name": "react-arc",
-  "version": "2.7.2",
+  "version": "2.7.3",
   "description": "React Abstract Redux Component",
   "main": "lib/index.js",
   "scripts": {
     "compile": "babel --presets es2015,stage-0 -d lib/ src/",
-    "prepublish": "npm run compile",
+    "prepare": "npm run compile",
     "prepublish-and-move-to-demo": "npm run compile && cp -r lib demo/src",
     "watch": "gulp watch",
     "test": "ava"
