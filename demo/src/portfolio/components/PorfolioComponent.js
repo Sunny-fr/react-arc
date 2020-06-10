@@ -1,7 +1,6 @@
 import React, {Component} from 'react'
 import config from '../config.json'
-import {connect} from 'react-redux'
-import {AbstractCollectionContainer, mixerConnector} from '../../lib'
+import {AbstractCollectionContainer, withARC} from '../../lib'
 import loadImage from '../../layout/components/image/loadImage'
 
 import {AlbumItemComponent} from '../../album'
@@ -85,4 +84,4 @@ class PorfolioComponent extends AbstractCollectionContainer {
     }
 }
 
-export default mixerConnector(connect, config)(PorfolioComponent)
+export default withARC(config)(PorfolioComponent)

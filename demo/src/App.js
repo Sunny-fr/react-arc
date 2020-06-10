@@ -1,7 +1,7 @@
 import React from 'react'
 
 /** REDUX **/
-import {Provider} from 'react-redux'
+import {connect, Provider} from 'react-redux'
 import store, {history} from './store'
 import {ARCProvider} from '../../lib'
 
@@ -30,7 +30,7 @@ const ApplicationLayoutWrapper = (props) => {
 function App() {
     return (
         <Provider store={store}>
-            <ARCProvider store={store}>
+            <ARCProvider store={store} connect={connect}>
                 <ConnectedRouter history={history}>
                     <Router history={history}>
                         <Route path="/" component={ApplicationLayoutWrapper}/>
