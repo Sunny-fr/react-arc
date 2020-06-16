@@ -48,7 +48,9 @@ export class AbstractModelContainer extends AbstractContainer {
     /* public
      * Fetch a model */
     fetch = (params) => {
-        this.props.dispatch(this.actions.fetchOne(params, this.props))
+        const axiosOptions = {}
+        this.props.dispatch(this.actions.fetchOne(params, this.props, axiosOptions))
+        this.arcCancelPendingRequest = axiosOptions.cancel
     }
 
     /* public
@@ -160,6 +162,10 @@ export class AbstractModelContainer extends AbstractContainer {
     componentWillUnmount(){
         clearTimeout(this.delayedTimeout)
         this.delayedTimeout = null
+        if(this.arcCancelPendingRequest) {
+            console.log(this.arcCancelPendingRequest)
+            this.arcCancelPendingRequest('cancel due to unmount')
+        }
     }
 
     delayedFetch({skipReFetchStep = false}){

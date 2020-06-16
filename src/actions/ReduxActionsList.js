@@ -81,11 +81,22 @@ export class ReduxActionsList {
     /** SINGLE ITEM **/
 
 
-    standAloneFetchOne(params, config, props) {
+    standAloneFetchOne(params, config, props, axiosOptions) {
         return this.axios({
             method: config.methods.read,
             url: config.paths.item,
             headers: config.headers
+        }, {
+            cancelToken: new axios.CancelToken(function executor(c) {
+                // An executor function receives a cancel function as a parameter
+                if(axiosOptions) {
+                    axiosOptions.cancel = c
+                    c('STOP')
+                    c('STOP')
+                    c('STOP')
+                    c('STOP')
+                }
+            })
         })
     }
 
@@ -101,17 +112,19 @@ export class ReduxActionsList {
         }
     }
 
-    fetchOne(params = {}, props= {}) {
+    fetchOne(params = {}, props= {}, axiosOptions) {
         return (dispatch) => {
             const config = this.beforeFetch({config: this.config, params, props})
             dispatch({ type: this.decorate("FETCH_{uppercaseName}"), payload: { params } })
-            this.standAloneFetchOne(params, config, props).then(response => {
+            return this.standAloneFetchOne(params, config, props, axiosOptions).then(response => {
                 dispatch({
                     type: this.decorate("FETCH_{uppercaseName}_FULFILLED"),
                     payload: { data: response.data, params }
                 })
+                return Promise.resolve(response)
             }).catch((error) => {
                 dispatch({ type: this.decorate("FETCH_{uppercaseName}_REJECTED"), payload: { error, params } })
+                return Promise.resolve(error)
             })
         }
 

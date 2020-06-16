@@ -14,6 +14,7 @@ export class AbstractContainer extends React.Component {
         this.updateARC(props.ARCConfig)
         this.actions = new ReduxActionsList({config: this.ARCConfig})
         this.core = {...core}
+        this.arcCancelPendingRequest = null
     }
 
     getTrueStoreState(){
