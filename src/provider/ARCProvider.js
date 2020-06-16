@@ -5,18 +5,15 @@ import PropTypes from 'prop-types'
 class ARCProvider extends Component {
     static propTypes = {
         store: PropTypes.object.isRequired,
-        connect: PropTypes.func.isRequired
     }
     static childContextTypes = {
         store: PropTypes.object.isRequired,
-        connect: PropTypes.func.isRequired
     }
 
     getChildContext() {
-        const {store, connect} = this.props
+        const {store} = this.props
         return {
             store: store,
-            connect: connect
         }
     }
 
