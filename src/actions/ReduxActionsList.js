@@ -3,11 +3,16 @@ import {interpolate} from '../utils/index'
 import defaultConfig from '../defaultConfig'
 import commons from '../commons'
 
+
+const clean = (obj) => {
+    return  JSON.parse(JSON.stringify(obj))
+}
+
 export class ReduxActionsList {
     constructor(options) {
 
-        this.config = {...defaultConfig, ...(options.config || {})}
-        this.initialConfig = JSON.parse(JSON.stringify(this.config))
+        this.config = clean({...defaultConfig, ...(options.config || {})})
+        this.initialConfig = clean(this.config)
         this.setHeaders()
         this.setupMethods()
         this.axios = axios.create()
@@ -37,7 +42,7 @@ export class ReduxActionsList {
         const {headers} = this
 
         if (Object.keys(headers || {}).length < 1) {
-            return undefined
+            return {}
         }
 
         return Object.keys(headers).reduce((state, header) => {
@@ -50,11 +55,11 @@ export class ReduxActionsList {
     }
 
     setHeaders() {
-        this.headers = Object.keys(this.config.headers).length > 0 ? {...this.config.headers} : undefined
+        this.headers = Object.keys(this.config.headers).length > 0 ? {...this.config.headers} : {}
     }
 
     updateConfig(config) {
-        this.config = {...this.config, ...config}
+        this.config = clean({...this.config, ...config})
         this.setHeaders()
         this.setupMethods()
     }
@@ -75,7 +80,7 @@ export class ReduxActionsList {
 
     beforeFetch = ({config, props = {}, params = {}}) => {
         //DECORATE URLS
-        return {
+        return clean({
             ...config,
             headers: this.decorateHeaders({...props, ...params}),
             paths: Object.keys(config.paths).reduce((s, path) => {
@@ -85,7 +90,7 @@ export class ReduxActionsList {
                     [path]: value
                 }
             }, {})
-        }
+        })
     }
 
     /** EDITING **/
