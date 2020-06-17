@@ -91,6 +91,15 @@ export function mixerStore(options) {
                 }
             }
 
+            case decorate('FETCH_{uppercaseName}S_CANCELLED') : {
+                return {
+                    ...state,
+                    fetching: false,
+                    loaded: false,
+                    end: time()
+                }
+            }
+
             case decorate('FETCH_{uppercaseName}S_REJECTED') : {
                 return {...state, fetching: false, loaded: false, end: time(), error: action.payload.error}
             }
@@ -153,6 +162,39 @@ export function mixerStore(options) {
                 return {
                     ...state,
                     collection
+                }
+            }
+
+            case decorate('FETCH_{uppercaseName}_CANCELLED') : {
+                const collection = {...state.collection}
+                const key = keyGen(action.payload.params)
+
+                //HAS A PREVIOUS VALID STATE
+                if(collection[key].metas.loaded === true) {
+                    // KEEP IT
+                    collection[key] = {
+                        metas: {
+                            ...collection[key].metas,
+                            fetching: false,
+                            end: time(),
+                        },
+                    }
+                    return {
+                        ...state,
+                        collection
+                    }
+                }
+
+                //REMOVING IT FROM THE STORE
+                return {
+                    ...state,
+                    collection: Object.keys(collection).reduce((s, i) => {
+                        if(i === key) return s;
+                        return {
+                            ...s,
+                            [i]: collection[i]
+                        }
+                    }, {})
                 }
             }
 

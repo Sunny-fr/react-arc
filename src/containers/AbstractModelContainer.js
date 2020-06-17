@@ -1,6 +1,7 @@
 import React from 'react'
 import AbstractContainer from './AbstractContainer'
 import {extractParams} from '../utils'
+import commons from '../commons'
 // import {changedProps} from '../utils/index'
 // import equal from 'deep-equal'
 
@@ -163,7 +164,7 @@ export class AbstractModelContainer extends AbstractContainer {
         clearTimeout(this.delayedTimeout)
         this.delayedTimeout = null
         if(this.arcCancelPendingRequest) {
-            this.arcCancelPendingRequest('cancel due to unmount')
+            this.arcCancelPendingRequest(commons.cancelRequestMessage)
         }
     }
 

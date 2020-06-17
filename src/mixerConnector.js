@@ -3,12 +3,11 @@ import defaultConfig from './defaultConfig'
 export const mixerConnector = function (connect, config, customMapStateToProps = null) {
     const extendedConfig = {...defaultConfig, ...config}
     const namespace = extendedConfig.name
-
-
     return connect((store) => {
         // Required Props
         const mapStateToProps = (store) => {
             return {
+                ARCConfig: extendedConfig,
                 tempModel: store[namespace].temp,
                 loaded: store[namespace].loaded,
                 fetching: store[namespace].fetching,

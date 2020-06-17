@@ -1,6 +1,7 @@
 import axios from 'axios'
 import {interpolate} from '../utils/index'
 import defaultConfig from '../defaultConfig'
+import commons from '../commons'
 
 export class ReduxActionsList {
     constructor(options) {
@@ -117,8 +118,12 @@ export class ReduxActionsList {
                 })
                 return Promise.resolve(response)
             }).catch((error) => {
+                if(error && error.message === commons.cancelRequestMessage) {
+                    dispatch({type: this.decorate('FETCH_{uppercaseName}_CANCELLED'), payload: {error, params}})
+                    return Promise.reject(error)
+                }
                 dispatch({type: this.decorate('FETCH_{uppercaseName}_REJECTED'), payload: {error, params}})
-                return Promise.resolve(error)
+                return Promise.reject(error)
             })
         }
 
@@ -205,8 +210,14 @@ export class ReduxActionsList {
                     type: this.decorate('FETCH_{uppercaseName}S_FULFILLED'),
                     payload: {data: response.data}
                 })
+                return Promise.resolve(response)
             }).catch((error) => {
-                dispatch({type: this.decorate('FETCH_{uppercaseName}S_REJECTED'), payload: {error}})
+                if(error && error.message === commons.cancelRequestMessage) {
+                    dispatch({type: this.decorate('FETCH_{uppercaseName}S_CANCELLED'), payload: {error, params}})
+                    return Promise.reject(error)
+                }
+                dispatch({type: this.decorate('FETCH_{uppercaseName}S_REJECTED'), payload: {error, params}})
+                return Promise.reject(error)
             })
         }
     }

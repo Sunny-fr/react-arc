@@ -1,6 +1,7 @@
 import React from 'react'
 import {flatten, extractParams} from '../utils'
 import AbstractContainer from './AbstractContainer'
+import commons from '../commons'
 
 
 export class AbstractCollectionContainer extends AbstractContainer {
@@ -115,7 +116,7 @@ export class AbstractCollectionContainer extends AbstractContainer {
     }
     componentWillUnmount(){
         if(this.arcCancelPendingRequest) {
-            this.arcCancelPendingRequest('cancel due to unmount')
+            this.arcCancelPendingRequest(commons.cancelRequestMessage)
         }
     }
 }
