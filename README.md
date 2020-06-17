@@ -1,4 +1,4 @@
-# ARC 2.7.5
+# ARC 2.8.5
 
 React Abstract Redux Component
 
@@ -36,36 +36,47 @@ export const config = {
 
 ```javascript
 
-import React,{Component}  from 'react'
+import React  from 'react'
 import config from './somewhere/config.json'
-import {connect} from 'react-redux'
-import {AbstractCollectionComponent, mixerConnector} from 'react-arc'
+import {AbstractModelContainer, withARC} from 'react-arc'
 
-class PorfolioItem extends Component {
-    render(){
-        const {item} = this.props
-        return (<li>
-            <h3>{item.title}</h3>
-            <p>{item.description}</p>
-        </li>)
-    }
+const PortfolioItem = ({item}) =>{
+    return (<li>
+        <h3>{item.title}</h3>
+        <p>{item.description}</p>
+    </li>)
 }
-class PorfolioComponent extends AbstractCollectionComponent {
-    static defaultProps = {
-        ARCConfig: config
-    }
+class PortfolioComponent extends AbstractModelContainer {
     render(){
         if (!this.isLoaded()) return (<div>loading....</div>)
-        const items = this.getCollection().map(item=><PorfolioItem key={item.id} item={item} />)
+        const items = this.getCollection().map(item=><PortfolioItem key={item.id} item={item} />)
         return(<ul>
             {items}
         </ul>)
     }
 }
 
-export default mixerConnector(connect, config)(PorfolioComponent)
+export default withARC(config)(PortfolioComponent)
 
 ```
+
+
+### App.js
+```javascript
+
+function App() {
+    return (
+        <Provider store={store}>
+            <ARCProvider store={store}>
+                {/* ... */} 
+            </ARCProvider>
+        </Provider>
+    )    
+}
+
+```
+
+
 
 ### store
 
