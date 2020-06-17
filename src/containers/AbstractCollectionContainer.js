@@ -12,12 +12,15 @@ export class AbstractCollectionContainer extends AbstractContainer {
     /* public
      * Fetch a collection */
     fetch = (props) => {
+        const axiosOptions = {}
         this.props.dispatch(
             this.actions.fetchAll(
                 extractParams(this.ARCConfig.collectionProps, props || this.props),
-                props || this.props
+                props || this.props,
+                axiosOptions
             )
         )
+        this.arcCancelPendingRequest = axiosOptions.cancel
     }
 
     /* Models related actions */
@@ -109,6 +112,11 @@ export class AbstractCollectionContainer extends AbstractContainer {
     componentDidMount() {
         const props = this.getPropsFromTrueStoreState()
         if (this._fetchAuthorization(props, {})) this.fetch()
+    }
+    componentWillUnmount(){
+        if(this.arcCancelPendingRequest) {
+            this.arcCancelPendingRequest('cancel due to unmount')
+        }
     }
 }
 

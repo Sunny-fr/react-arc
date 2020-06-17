@@ -5,7 +5,7 @@ import defaultConfig from '../defaultConfig'
 export class ReduxActionsList {
     constructor(options) {
 
-        this.config = { ...defaultConfig, ...(options.config || {}) }
+        this.config = {...defaultConfig, ...(options.config || {})}
         this.initialConfig = JSON.parse(JSON.stringify(this.config))
         this.setHeaders()
         this.setupMethods()
@@ -17,7 +17,7 @@ export class ReduxActionsList {
         // MUST BE PROPS !!!
         // OR PARAMS MUST TAKE THE CHARGE OF HAVING SPECIALS PROPS SUCH AS TOKEN
 
-        const { headers } = this
+        const {headers} = this
 
         if (Object.keys(headers || {}).length < 1) {
             return undefined
@@ -33,17 +33,17 @@ export class ReduxActionsList {
     }
 
     setHeaders() {
-        this.headers = Object.keys(this.config.headers).length > 0 ? { ...this.config.headers } : undefined
+        this.headers = Object.keys(this.config.headers).length > 0 ? {...this.config.headers} : undefined
     }
 
     updateConfig(config) {
-        this.config = { ...this.config, ...config }
+        this.config = {...this.config, ...config}
         this.setHeaders()
         this.setupMethods()
     }
 
     setupMethods() {
-        const { methods } = this.config
+        const {methods} = this.config
         this.methods = {
             create: methods.create.toLowerCase(),
             read: methods.read.toLowerCase(),
@@ -56,13 +56,13 @@ export class ReduxActionsList {
         return interpolate(str, options || this.config)
     }
 
-    beforeFetch = ({config, props= {}, params= {}}) => {
+    beforeFetch = ({config, props = {}, params = {}}) => {
         //DECORATE URLS
         return {
             ...config,
             headers: this.decorateHeaders({...props, ...params}),
             paths: Object.keys(config.paths).reduce((s, path) => {
-                const value = this.decorate(config.paths[path], params) ;
+                const value = this.decorate(config.paths[path], params)
                 return {
                     ...s,
                     [path]: value
@@ -74,7 +74,7 @@ export class ReduxActionsList {
     /** EDITING **/
     edit(data, params) {
         return (dispatch) => {
-            dispatch({ type: this.decorate("EDIT_{uppercaseName}"), payload: { data, params } })
+            dispatch({type: this.decorate('EDIT_{uppercaseName}'), payload: {data, params}})
         }
     }
 
@@ -85,16 +85,10 @@ export class ReduxActionsList {
         return this.axios({
             method: config.methods.read,
             url: config.paths.item,
-            headers: config.headers
-        }, {
+            headers: config.headers,
             cancelToken: new axios.CancelToken(function executor(c) {
-                // An executor function receives a cancel function as a parameter
-                if(axiosOptions) {
+                if (axiosOptions) {
                     axiosOptions.cancel = c
-                    c('STOP')
-                    c('STOP')
-                    c('STOP')
-                    c('STOP')
                 }
             })
         })
@@ -102,28 +96,28 @@ export class ReduxActionsList {
 
     init(params) {
         return (dispatch) => {
-            dispatch({ type: this.decorate("INIT_{uppercaseName}"), payload: { params } })
+            dispatch({type: this.decorate('INIT_{uppercaseName}'), payload: {params}})
         }
     }
 
     requestFetchOne(params) {
         return (dispatch) => {
-            dispatch({ type: this.decorate("FETCH_REQUESTED_{uppercaseName}"), payload: { params } })
+            dispatch({type: this.decorate('FETCH_REQUESTED_{uppercaseName}'), payload: {params}})
         }
     }
 
-    fetchOne(params = {}, props= {}, axiosOptions) {
+    fetchOne(params = {}, props = {}, axiosOptions) {
         return (dispatch) => {
             const config = this.beforeFetch({config: this.config, params, props})
-            dispatch({ type: this.decorate("FETCH_{uppercaseName}"), payload: { params } })
+            dispatch({type: this.decorate('FETCH_{uppercaseName}'), payload: {params}})
             return this.standAloneFetchOne(params, config, props, axiosOptions).then(response => {
                 dispatch({
-                    type: this.decorate("FETCH_{uppercaseName}_FULFILLED"),
-                    payload: { data: response.data, params }
+                    type: this.decorate('FETCH_{uppercaseName}_FULFILLED'),
+                    payload: {data: response.data, params}
                 })
                 return Promise.resolve(response)
             }).catch((error) => {
-                dispatch({ type: this.decorate("FETCH_{uppercaseName}_REJECTED"), payload: { error, params } })
+                dispatch({type: this.decorate('FETCH_{uppercaseName}_REJECTED'), payload: {error, params}})
                 return Promise.resolve(error)
             })
         }
@@ -136,7 +130,7 @@ export class ReduxActionsList {
     standAloneSave(data, params, create, config, props) {
         const method = create ? config.methods.create : config.methods.update
         //TODO remove magic ?
-        const url = this.decorate(this.config.paths.item, method === "post" ? {} : params)
+        const url = this.decorate(this.config.paths.item, method === 'post' ? {} : params)
         return this.axios({
             method,
             url,
@@ -148,14 +142,14 @@ export class ReduxActionsList {
     save(data, params, create = false, props = {}) {
         return (dispatch) => {
             const config = this.beforeFetch({config: this.config, params, props})
-            dispatch({ type: this.decorate("SAVE_{uppercaseName}"), payload: { data, params, create } })
+            dispatch({type: this.decorate('SAVE_{uppercaseName}'), payload: {data, params, create}})
             this.standAloneSave(data, params, create, config, props).then(response => {
                 dispatch({
-                    type: this.decorate("SAVE_{uppercaseName}_FULFILLED"),
-                    payload: { params, data: response.data, create }
+                    type: this.decorate('SAVE_{uppercaseName}_FULFILLED'),
+                    payload: {params, data: response.data, create}
                 })
             }).catch((error) => {
-                dispatch({ type: this.decorate("SAVE_{uppercaseName}_REJECTED"), payload: { error, data, params, create } })
+                dispatch({type: this.decorate('SAVE_{uppercaseName}_REJECTED'), payload: {error, data, params, create}})
             })
         }
     }
@@ -171,57 +165,61 @@ export class ReduxActionsList {
         })
     }
 
-    remove(params, props={}) {
+    remove(params, props = {}) {
         return (dispatch) => {
             const config = this.beforeFetch({config: this.config, params, props})
-            dispatch({ type: this.decorate("DELETE_{uppercaseName}"), payload: { params } })
+            dispatch({type: this.decorate('DELETE_{uppercaseName}'), payload: {params}})
             this.standAloneRemove(params, config, props).then(response => {
                 dispatch({
-                    type: this.decorate("DELETE_{uppercaseName}_FULFILLED"),
-                    payload: { params, data: response.data }
+                    type: this.decorate('DELETE_{uppercaseName}_FULFILLED'),
+                    payload: {params, data: response.data}
                 })
             }).catch((error) => {
-                dispatch({ type: this.decorate("DELETE_{uppercaseName}_REJECTED"), payload: { error, params } })
+                dispatch({type: this.decorate('DELETE_{uppercaseName}_REJECTED'), payload: {error, params}})
             })
         }
     }
 
     /** LISTS **/
 
-    standAloneFetchAll(params, config, props) {
+    standAloneFetchAll(params, config, props, axiosOptions) {
         const url = config.paths.collection
         return this.axios({
             method: config.methods.read,
             url,
-            headers: config.headers
+            headers: config.headers,
+            cancelToken: new axios.CancelToken(function executor(c) {
+                if (axiosOptions) {
+                    axiosOptions.cancel = c
+                }
+            })
         })
     }
 
-    fetchAll(params = {}, props={}) {
+    fetchAll(params = {}, props = {}, axiosOptions) {
         return (dispatch) => {
-            dispatch({ type: this.decorate("FETCH_{uppercaseName}S"), payload: { params } })
+            dispatch({type: this.decorate('FETCH_{uppercaseName}S'), payload: {params}})
             const config = this.beforeFetch({config: this.config, params, props})
-            this.standAloneFetchAll(params, config, props).then((response) => {
+            return this.standAloneFetchAll(params, config, props, axiosOptions).then((response) => {
                 dispatch({
-                    type: this.decorate("FETCH_{uppercaseName}S_FULFILLED"),
-                    payload: { data: response.data }
+                    type: this.decorate('FETCH_{uppercaseName}S_FULFILLED'),
+                    payload: {data: response.data}
                 })
+            }).catch((error) => {
+                dispatch({type: this.decorate('FETCH_{uppercaseName}S_REJECTED'), payload: {error}})
             })
-                .catch((error) => {
-                    dispatch({ type: this.decorate("FETCH_{uppercaseName}S_REJECTED"), payload: { error } })
-                })
         }
     }
 
     reset() {
         return (dispatch) => {
-            dispatch({ type: this.decorate("RESET_{uppercaseName}S") })
+            dispatch({type: this.decorate('RESET_{uppercaseName}S')})
         }
     }
 
     resetTemp() {
         return (dispatch) => {
-            dispatch({ type: this.decorate("RESET_{uppercaseName}_TEMP") })
+            dispatch({type: this.decorate('RESET_{uppercaseName}_TEMP')})
         }
     }
 

@@ -163,7 +163,6 @@ export class AbstractModelContainer extends AbstractContainer {
         clearTimeout(this.delayedTimeout)
         this.delayedTimeout = null
         if(this.arcCancelPendingRequest) {
-            console.log(this.arcCancelPendingRequest)
             this.arcCancelPendingRequest('cancel due to unmount')
         }
     }
