@@ -14,7 +14,7 @@ export class AbstractCollectionContainer extends AbstractContainer {
      * Fetch a collection */
     fetch = (props) => {
         const axiosOptions = {}
-        this.props.dispatch(
+        const promise = this.props.dispatch(
             this.actions.fetchAll(
                 extractParams(this.ARCConfig.collectionProps, props || this.props),
                 props || this.props,
@@ -22,6 +22,8 @@ export class AbstractCollectionContainer extends AbstractContainer {
             )
         )
         this.arcCancelPendingRequest = axiosOptions.cancel
+        promise.catch(e => {/* do something */})
+        return promise
     }
 
     /* Models related actions */

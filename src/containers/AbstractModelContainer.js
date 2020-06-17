@@ -50,8 +50,10 @@ export class AbstractModelContainer extends AbstractContainer {
      * Fetch a model */
     fetch = (params) => {
         const axiosOptions = {}
-        this.props.dispatch(this.actions.fetchOne(params, this.props, axiosOptions))
+        const promise = this.props.dispatch(this.actions.fetchOne(params, this.props, axiosOptions))
         this.arcCancelPendingRequest = axiosOptions.cancel
+        promise.catch(e => { /* */})
+        return promise
     }
 
     /* public

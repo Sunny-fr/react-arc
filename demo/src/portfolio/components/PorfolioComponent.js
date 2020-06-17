@@ -70,8 +70,14 @@ class PorfolioComponent extends AbstractCollectionContainer {
         if (error) return (<LargeError title={'!'} children={error.message}/>)
         if (!this.isLoaded()) return (<Loader/>)
 
-        const items = this.getCollection().map(model => <PortfolioItem remove={this.removeModel} key={model.id}
-                                                                      model={model}/>)
+        const items = this.getCollection().map(model => {
+            if (!model) {
+                const data = this.getCollection();
+                debugger;
+            }
+            return <PortfolioItem remove={this.removeModel} key={model.id}
+                                  model={model}/>
+        })
         // Alternative
         // if we want to provide any visual feedback while we're deleting
         // const items = this.getFullCollection().map(metaModel => <PortfolioItem fetching={metaModel.metas.fetching} remove={this.remove} key={metaModel.model.id} model={metaModel.model}/>)

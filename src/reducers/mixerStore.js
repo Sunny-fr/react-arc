@@ -95,7 +95,6 @@ export function mixerStore(options) {
                 return {
                     ...state,
                     fetching: false,
-                    loaded: false,
                     end: time()
                 }
             }
@@ -173,6 +172,7 @@ export function mixerStore(options) {
                 if(collection[key].metas.loaded === true) {
                     // KEEP IT
                     collection[key] = {
+                        ...collection[key],
                         metas: {
                             ...collection[key].metas,
                             fetching: false,
