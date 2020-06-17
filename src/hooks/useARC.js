@@ -1,6 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react'
-import defaultConfig from '../defaultConfig'
-import {extractParams, interpolate} from '../utils'
+import {extractParams, getDefaultConfig, interpolate} from '../utils'
 
 
 class ARC {
@@ -17,7 +16,7 @@ class ARC {
     }
 
     static extendConfig(ARCConfig) {
-        return {...defaultConfig, ...(ARCConfig || {})}
+        return {...getDefaultConfig(), ...(ARCConfig || {})}
     }
 
     static extendHeaders(ARCConfig) {

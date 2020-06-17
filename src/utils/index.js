@@ -1,4 +1,6 @@
 import equal from 'deep-equal'
+import cloneDeep from 'lodash.clonedeep'
+import defaultConfig from '../defaultConfig'
 
 export const flatten = function (node, withMetas = false) {
     return Object.keys(node).map(nodeName => withMetas ? node[nodeName] : node[nodeName].model)
@@ -44,4 +46,8 @@ export const interpolate = function (str, params) {
     // if params are missing we remove them
     // path/to/123/{anotherId} => path/to/123/
     return cleanParams(result)
+}
+
+export function getDefaultConfig() {
+    return cloneDeep(defaultConfig)
 }

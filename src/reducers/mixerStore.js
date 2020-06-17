@@ -1,6 +1,4 @@
-import {interpolate, extractParams} from '../utils'
-//import {config as baseConfig} from '../containers/AbstractContainer'
-import defaultConfig from '../defaultConfig'
+import {interpolate, extractParams, getDefaultConfig} from '../utils'
 
 const time = () => {
     return new Date().getTime()
@@ -12,7 +10,7 @@ const time = () => {
 
 export function mixerStore(options) {
     const config = options && options.config ? options.config : {}
-    const extendedConfig = {...defaultConfig, ...config}
+    const extendedConfig = {...getDefaultConfig(), ...config}
     const defaultModelObject = JSON.parse(JSON.stringify(extendedConfig.defaultModel))
 
 

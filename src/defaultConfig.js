@@ -39,4 +39,4 @@ const config = {
     requestFetchDelay: 100
 }
 
-export default Object.freeze(config)
+export default config

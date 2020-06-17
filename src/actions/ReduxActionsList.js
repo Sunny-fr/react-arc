@@ -1,22 +1,13 @@
 import axios from 'axios'
-import {interpolate} from '../utils/index'
-import defaultConfig from '../defaultConfig'
+import {getDefaultConfig, interpolate} from '../utils/index'
 import commons from '../commons'
 
 
-const clean = (obj) => {
-    return obj;
-}
-const deepClone = (obj) => {
-    return  JSON.parse(JSON.stringify(obj))
-}
 
 export class ReduxActionsList {
     constructor(options) {
-
-
-        this.config = clean({...deepClone(defaultConfig), ...(options.config || {})})
-        this.initialConfig = clean(this.config)
+        this.config = {...getDefaultConfig(), ...(options.config || {})}
+        this.initialConfig = (this.config)
         this.setHeaders()
         this.setupMethods()
         this.axios = axios.create()
@@ -30,6 +21,10 @@ export class ReduxActionsList {
         })
     }
 
+    getInitialConfig(){
+        return this.initialConfig
+    }
+
     generateCancelToken(axiosOptions){
         return new axios.CancelToken(function executor(c) {
             if (axiosOptions) {
@@ -39,23 +34,17 @@ export class ReduxActionsList {
     }
 
     decorateHeaders(props = {}) {
-        // TODO REALLY HANDLE PROPS
-        // MUST BE PROPS !!!
-        // OR PARAMS MUST TAKE THE CHARGE OF HAVING SPECIALS PROPS SUCH AS TOKEN
-
         const {headers} = this
-
         if (Object.keys(headers || {}).length < 1) {
             return {}
         }
-
         return Object.keys(headers).reduce((state, header) => {
             if (!headers[header]) return state
             return {
                 ...state,
                 [header]: interpolate(headers[header], props)
             }
-        }, headers)
+        }, {})
     }
 
     setHeaders() {
@@ -63,7 +52,7 @@ export class ReduxActionsList {
     }
 
     updateConfig(config) {
-        this.config = clean({...this.config, ...config})
+        this.config = {...this.config, ...config}
         this.setHeaders()
         this.setupMethods()
     }
@@ -84,7 +73,7 @@ export class ReduxActionsList {
 
     beforeFetch = ({config, props = {}, params = {}}) => {
         //DECORATE URLS
-        return clean({
+        return ({
             ...config,
             headers: this.decorateHeaders({...props, ...params}),
             paths: Object.keys(config.paths).reduce((s, path) => {

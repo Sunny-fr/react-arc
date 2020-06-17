@@ -1,8 +1,8 @@
 import React from 'react'
-import defaultConfig from '../defaultConfig'
 import {connect} from 'react-redux'
+import {getDefaultConfig} from '../utils'
 export function withARC(ARCConfig) {
-    const extendedConfig = {...defaultConfig, ...ARCConfig}
+    const extendedConfig = {...getDefaultConfig(), ...ARCConfig}
     const namespace = extendedConfig.name
     const connectFn = store => {
         return {

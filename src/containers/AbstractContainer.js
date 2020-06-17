@@ -1,8 +1,8 @@
 import React from 'react'
 import {ReduxActionsList} from '../actions/ReduxActionsList'
-import defaultConfig from '../defaultConfig'
 import PropTypes from 'prop-types'
 import core from '../actions/core'
+import {getDefaultConfig} from '../utils'
 
 export class AbstractContainer extends React.Component {
     static contextTypes = {
@@ -38,7 +38,7 @@ export class AbstractContainer extends React.Component {
     }
 
     updateARC(config) {
-        this.ARCConfig = {...(this.ARCConfig || defaultConfig), ...config}
+        this.ARCConfig = {...(this.ARCConfig || getDefaultConfig()), ...config}
         if (this.actions) this.actions.updateConfig(this.ARCConfig)
     }
     render() {

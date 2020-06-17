@@ -1,7 +1,8 @@
 import React from 'react'
-import defaultConfig from './defaultConfig'
+import {getDefaultConfig} from './utils'
+
 export const mixerConnector = function (connect, config, customMapStateToProps = null) {
-    const extendedConfig = {...defaultConfig, ...config}
+    const extendedConfig = {...getDefaultConfig(), ...config}
     const namespace = extendedConfig.name
     return connect((store) => {
         // Required Props
