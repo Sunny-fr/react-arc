@@ -13,6 +13,22 @@ export class ReduxActionsList {
         this.axios = axios.create()
     }
 
+    static GenerateCancelToken(axiosOptions){
+        return new axios.CancelToken(function executor(c) {
+            if (axiosOptions) {
+                axiosOptions.cancel = c
+            }
+        })
+    }
+
+    generateCancelToken(axiosOptions){
+        return new axios.CancelToken(function executor(c) {
+            if (axiosOptions) {
+                axiosOptions.cancel = c
+            }
+        })
+    }
+
     decorateHeaders(props = {}) {
         // TODO REALLY HANDLE PROPS
         // MUST BE PROPS !!!
@@ -87,11 +103,7 @@ export class ReduxActionsList {
             method: config.methods.read,
             url: config.paths.item,
             headers: config.headers,
-            cancelToken: new axios.CancelToken(function executor(c) {
-                if (axiosOptions) {
-                    axiosOptions.cancel = c
-                }
-            })
+            cancelToken: this.generateCancelToken(axiosOptions)
         })
     }
 
@@ -193,11 +205,7 @@ export class ReduxActionsList {
             method: config.methods.read,
             url,
             headers: config.headers,
-            cancelToken: new axios.CancelToken(function executor(c) {
-                if (axiosOptions) {
-                    axiosOptions.cancel = c
-                }
-            })
+            cancelToken: this.generateCancelToken(axiosOptions)
         })
     }
 
