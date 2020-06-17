@@ -1,5 +1,5 @@
 //EXAMPLE CONFIG
-export const config = {
+const config = {
     //reducer name
     name: '',
     //namespace
@@ -39,4 +39,4 @@ export const config = {
     requestFetchDelay: 100
 }
 
-export default config
+export default Object.freeze(config)

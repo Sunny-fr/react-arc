@@ -5,13 +5,17 @@ import commons from '../commons'
 
 
 const clean = (obj) => {
+    return obj;
+}
+const deepClone = (obj) => {
     return  JSON.parse(JSON.stringify(obj))
 }
 
 export class ReduxActionsList {
     constructor(options) {
 
-        this.config = clean({...defaultConfig, ...(options.config || {})})
+
+        this.config = clean({...deepClone(defaultConfig), ...(options.config || {})})
         this.initialConfig = clean(this.config)
         this.setHeaders()
         this.setupMethods()
