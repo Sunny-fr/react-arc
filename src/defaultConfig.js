@@ -1,17 +1,17 @@
 //EXAMPLE CONFIG
 export const config = {
     //reducer name
-    name: 'something',
+    name: '',
     //namespace
-    uppercaseName: 'SOMETHING',
+    uppercaseName: '',
     // useful to map objects in collection
-    modelProps: ['id'],
+    modelProps: [],
     // can be empty (might be usefull if you need paging...)
-    collectionProps: ['size','page'],
+    collectionProps: [],
     // path to your rest server
     paths: {
-        item: '/some/url',
-        collection: '/some/other/url'
+        item: '/',
+        collection: '/'
     },
 
     /** OPTIONAL **/
