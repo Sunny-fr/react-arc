@@ -34,6 +34,9 @@ export const interpolate = function (str, params) {
     // it will turn path/to/{id} to path/to/123
     const result = keys.reduce((prev, current) => {
         const elm_val = params[current]
+        // skip functions
+        if (typeof elm_val === 'function') return prev
+
         if (Array.isArray(elm_val)) {
             return prev.replace(
                 new RegExp('{' + current + '}', 'g'),

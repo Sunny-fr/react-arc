@@ -75,6 +75,11 @@ export class AbstractCollectionContainer extends AbstractContainer {
         return this.core.isCollectionSyncing(this.ARCConfig, props || this.props)
     }
 
+    errorReFetch(props) {
+        //can re fetch on error
+        return this.core.errorReFetch(this.ARCConfig, props || this.props)
+    }
+
     /* private
      * performs a fetch if the flag fetchOnce is set to false
      */
@@ -101,7 +106,7 @@ export class AbstractCollectionContainer extends AbstractContainer {
             return true
         }
 
-        if (!skipReFetchStep && this._errorReFetch(props)) {
+        if (!skipReFetchStep && this.errorReFetch(props)) {
             //console.log('//collection had an error previously, but its ok to re-fetch it')
             return true
         }
