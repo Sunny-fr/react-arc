@@ -95,7 +95,11 @@ class ARC {
         if (response.status === 200 || response.status === 201) {
             return response.json()
         }
-        return response.json().then(r => Promise.reject(r))
+        try {
+            return response.json().then(r => Promise.reject(r))
+        } catch (e)  {
+            return response.text().then(r => Promise.reject(r))
+        }
     }
 }
 
