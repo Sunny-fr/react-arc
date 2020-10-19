@@ -92,14 +92,26 @@ class ARC {
     }
 
     static json(response) {
-        if (response.status === 200 || response.status === 201) {
+        if (response.ok) {
             return response.json()
         }
-        try {
-            return response.json().then(r => Promise.reject(r))
-        } catch (e)  {
-            return response.text().then(r => Promise.reject(r))
-        }
+        return new Promise((resolve, reject) => {
+            response.text()
+              .then(data => {
+                  try {
+                      const parsed = JSON.parse(data)
+                      return resolve(parsed)
+                  } catch (e) {
+                      return reject(data)
+                  }
+              })
+              .catch(e => {
+                  console.log('unknown error')
+                  console.log(e)
+                  return reject(e)
+              })
+        })
+
     }
 }
 
