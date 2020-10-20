@@ -91,21 +91,24 @@ class ARC {
         }).then(ARC.json)
     }
 
-    static json(response) {
-        if(response.ok) {
-            return response.json();
+    static jsonOrText (str) {
+        try {
+            return JSON.parse(str)
+        } catch (e) {
+            return str;
         }
-        return response.text().then(function (rawResponseBody) {
-            try {
-                const parsed = JSON.parse(rawResponseBody);
-                return Promise.reject(parsed);
-            } catch (e) {
-                return Promise.reject({
-                    message: 'Invalid JSON',
-                    response: response
-                });
-            }
-        });
+    }
+
+    static json(response) {
+        if (response.ok) {
+            return  response.text().then((rawResponseBody) => {
+                return Promise.resolve(ARC.jsonOrText(rawResponseBody))
+            })
+        }
+        return response.text()
+          .then(rawResponseBody => {
+              return Promise.reject(ARC.jsonOrText(rawResponseBody))
+          })
     }
 }
 
