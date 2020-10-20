@@ -92,19 +92,20 @@ class ARC {
     }
 
     static json(response) {
-
-        return response.text()
-          .then(rawResponseBody => {
-              if (response.ok) {
-                  return response.json()
-              }
-              try {
-                  const parsed = JSON.parse(rawResponseBody)
-                  return Promise.resolve(parsed)
-              } catch (e) {
-                  return Promise.reject(rawResponseBody)
-              }
-          })
+        if(response.ok) {
+            return response.json();
+        }
+        return response.text().then(function (rawResponseBody) {
+            try {
+                const parsed = JSON.parse(rawResponseBody);
+                return Promise.reject(parsed);
+            } catch (e) {
+                return Promise.reject({
+                    message: 'Invalid JSON',
+                    response: response
+                });
+            }
+        });
     }
 }
 
@@ -122,7 +123,6 @@ export function useARC({ARCConfig, props}) {
             return response
         }).catch(error => {
             setState({...state, error, loading: false})
-            return Promise.reject(error)
         })
     }
 
