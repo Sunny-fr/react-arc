@@ -107,10 +107,10 @@ class ARC {
         }
         return response.text()
           .then(rawResponseBody => {
-              return Promise.reject(ARC.jsonOrText({
-                  content: rawResponseBody,
+              return Promise.reject({
+                  content: ARC.jsonOrText(rawResponseBody),
                   response
-              }))
+              })
           })
     }
 }
