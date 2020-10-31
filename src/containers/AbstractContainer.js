@@ -1,13 +1,12 @@
 import React from 'react'
 import {ReduxActionsList} from '../actions/ReduxActionsList'
-import PropTypes from 'prop-types'
 import core from '../actions/core'
 import {getDefaultConfig} from '../utils'
+import {ReactReduxContext} from 'react-redux'
 
 export class AbstractContainer extends React.Component {
-    static contextTypes = {
-        store: PropTypes.object.isRequired,
-    }
+
+    static contextType = ReactReduxContext
 
     constructor(props) {
         super(props)

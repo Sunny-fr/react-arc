@@ -2,7 +2,7 @@ import React from 'react'
 import PorfolioComponent from '../components/PorfolioComponent'
 import {Info} from '../../layout/components/info'
 
-export function Portfolio(props) {
+export function Portfolio() {
     return (<div>
         <Info>
             <h1>React ARC</h1>
