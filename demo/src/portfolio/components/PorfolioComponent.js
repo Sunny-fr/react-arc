@@ -71,10 +71,6 @@ class PorfolioComponent extends AbstractCollectionContainer {
         if (!this.isLoaded()) return (<Loader/>)
 
         const items = this.getCollection().map(model => {
-            if (!model) {
-                const data = this.getCollection();
-                debugger;
-            }
             return <PortfolioItem remove={this.removeModel} key={model.id}
                                   model={model}/>
         })
