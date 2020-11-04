@@ -1,6 +1,6 @@
 {
   "name": "react-arc",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "React Abstract Redux Component",
   "main": "lib/index.js",
   "scripts": {
@@ -69,8 +69,8 @@
     "lodash.clonedeep": "^4.5.0",
     "axios": "0.19.2",
     "deep-equal": "^1.1.1",
-    "react": "^16.12",
-    "react-dom": "^16.13.1",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
     "react-redux": "^7.2.0",
     "redux": "^4.0.5"
   }
