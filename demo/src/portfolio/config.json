@@ -14,5 +14,6 @@
   },
   "defaultModel": {
     "title": "unnamed"
-  }
+  },
+  "maxTries": 3
 }

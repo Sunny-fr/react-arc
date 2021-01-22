@@ -1,6 +1,6 @@
 {
   "name": "react-arc",
-  "version": "3.0.1",
+  "version": "3.0.2",
   "description": "React Abstract Redux Component",
   "main": "lib/index.js",
   "scripts": {
@@ -9,6 +9,9 @@
     "prepublish-and-move-to-demo": "npm run compile && cp -r lib demo/src",
     "watch": "gulp watch",
     "test": "ava"
+  },
+  "prettier": {
+    "semi": false
   },
   "babel": {
     "presets": [
@@ -55,19 +58,19 @@
   "devDependencies": {
     "ava": "^0.16.0",
     "babel-cli": "^6.26.0",
-    "babel-loader": "^6.2.5",
+    "babel-loader": "^8.1.0",
     "babel-preset-es2015": "^6.14.0",
     "babel-preset-react": "^6.11.1",
     "babel-preset-stage-0": "^6.5.0",
     "eslint-plugin-react-hooks": "^4.0.0",
     "gulp": "^3.9.1",
-    "gulp-babel": "^6.1.3",
+    "gulp-babel": "^8.0.0",
     "gulp-watch": "^4.3.9",
     "nyc": "^8.1.0"
   },
   "dependencies": {
     "lodash.clonedeep": "^4.5.0",
-    "axios": "0.19.2",
+    "axios": "^0.21.1",
     "deep-equal": "^1.1.1",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
