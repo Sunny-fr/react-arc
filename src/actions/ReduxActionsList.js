@@ -134,7 +134,8 @@ export class ReduxActionsList {
       const generateRequest = (tryNumber = 1) => {
         const config = this.beforeFetch({ config: this.config, params, props })
         const retryConditionFn =
-          this.retryConditionFn || axiosOptions.retryConditionFn
+          this.retryConditionFn ||
+          (!!axiosOptions ? axiosOptions.retryConditionFn : undefined)
         dispatch({
           type: this.decorate("FETCH_{uppercaseName}"),
           payload: {
