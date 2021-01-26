@@ -1,4 +1,6 @@
-# ARC 3.0.1
+[![npm version](https://badge.fury.io/js/react-arc.svg)](//npmjs.com/package/react-arc)
+
+# ARC 3.0.3
 
 React Abstract Redux Component
 
