@@ -1,6 +1,5 @@
-[![npm version](https://badge.fury.io/js/react-arc.svg)](//npmjs.com/package/react-arc)
-
-# ARC 3.0.3
+![react-arc version](https://img.shields.io/npm/v/react-arc.svg) ![react-arc downloads](https://img.shields.io/npm/dm/react-arc.svg)
+# ARC
 
 React Abstract Redux Component
 
