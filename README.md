@@ -1,7 +1,7 @@
 ![react-arc version](https://img.shields.io/npm/v/react-arc.svg) ![react-arc downloads](https://img.shields.io/npm/dm/react-arc.svg)
 # ARC
 
-React Abstract Redux Component
+React Abstract Redux Containers
 
 Set of components to manage collections/models from a REST service
 
