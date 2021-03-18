@@ -1,5 +1,5 @@
 import React from "react"
-import { getDefaultConfig } from "../utils"
+import { extendWithMissingDefaultProps, getDefaultConfig } from "../utils"
 import core from "../actions/core"
 
 /** LEGACY **/
@@ -20,8 +20,7 @@ export const ARCConnector = function (
       }
 
       const mergedProps = {
-        ...ARCConfig.defaultProps,
-        ...ownProps,
+        ...extendWithMissingDefaultProps(ARCConfig, ownProps),
         ...arcProps,
       }
       const loaded = core.isLoaded(ARCConfig, mergedProps)
@@ -40,6 +39,7 @@ export const ARCConnector = function (
           loaded,
           error,
           syncing,
+          ...extendWithMissingDefaultProps(ARCConfig, ownProps),
         }
       }
       const optionalStateToProps = customMapStateToProps

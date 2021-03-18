@@ -1,6 +1,6 @@
 import React from "react"
 import { connect } from "react-redux"
-import { getDefaultConfig } from "../utils"
+import { getDefaultConfig, extendWithMissingDefaultProps } from "../utils"
 import core from "../actions/core"
 
 export const connectFn = (ARCConfig) => (store, ownProps) => {
@@ -10,8 +10,10 @@ export const connectFn = (ARCConfig) => (store, ownProps) => {
     collection,
     tempModel: store[namespace].temp,
   }
-  const defaultProps = ARCConfig.defaultProps
-  const mergedProps = { ...defaultProps, ...ownProps, ...arcProps }
+  const mergedProps = {
+    ...extendWithMissingDefaultProps(ARCConfig, ownProps),
+    ...arcProps,
+  }
   const metaModel = core._getModel(ARCConfig, mergedProps)
   const loaded = core.isLoaded(ARCConfig, mergedProps)
   const model = core.getModel(ARCConfig, mergedProps)
@@ -26,6 +28,7 @@ export const connectFn = (ARCConfig) => (store, ownProps) => {
     error,
     syncing,
     metas,
+    ...extendWithMissingDefaultProps(ARCConfig, ownProps),
   }
 }
 
