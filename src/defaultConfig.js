@@ -24,6 +24,8 @@ const config = {
   },
   //default model : {name:'', description:'', tags: []}
   defaultModel: {},
+  //props will be added if missing
+  defaultProps: {},
 
   /** EXPERIMENTAL **/
   // Lazy mode :
