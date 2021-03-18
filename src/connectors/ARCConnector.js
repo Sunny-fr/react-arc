@@ -21,6 +21,7 @@ export const ARCConnector = function (
 
       const mergedProps = {
         ...extendWithMissingDefaultProps(ARCConfig, ownProps),
+        ...ownProps,
         ...arcProps,
       }
       const loaded = core.isLoaded(ARCConfig, mergedProps)

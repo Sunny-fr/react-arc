@@ -12,6 +12,7 @@ export const connectFn = (ARCConfig) => (store, ownProps) => {
   }
   const mergedProps = {
     ...extendWithMissingDefaultProps(ARCConfig, ownProps),
+    ...ownProps,
     ...arcProps,
   }
   const metaModel = core._getModel(ARCConfig, mergedProps)
