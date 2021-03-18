@@ -29,7 +29,7 @@ const core = {
   },
   getMetas(ARCConfig, prop, props) {
     if (!this._getModel(ARCConfig, props)) return null
-    return prop
+    return !!prop
       ? this._getModel(ARCConfig, props).metas[prop]
       : this._getModel(ARCConfig, props).metas
   },

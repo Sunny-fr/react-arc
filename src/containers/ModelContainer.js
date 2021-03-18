@@ -112,7 +112,7 @@ export class ModelContainer extends Container {
 
   getMetas(prop, props) {
     const metas = (props || this.props).metas
-    return prop ? metas[prop] : metas
+    return !!prop ? metas[prop] : metas
   }
 
   /* public

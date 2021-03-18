@@ -23,7 +23,10 @@ export const ARCConnector = function (
       const model = core.getModel(ARCConfig, { ...ownProps, ...arcProps })
       const error = core.getError(ARCConfig, { ...ownProps, ...arcProps })
       const syncing = core.isSyncing(ARCConfig, { ...ownProps, ...arcProps })
-      const metas = core.getMetas(ARCConfig, { ...ownProps, ...arcProps })
+      const metas = core.getMetas(ARCConfig, undefined, {
+        ...ownProps,
+        ...arcProps,
+      })
 
       const mapStateToProps = (store) => {
         return {
