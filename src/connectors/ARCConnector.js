@@ -2,6 +2,7 @@ import React from "react"
 import { getDefaultConfig } from "../utils"
 import core from "../actions/core"
 
+/** LEGACY **/
 export const ARCConnector = function (
   connect,
   config,
@@ -18,15 +19,17 @@ export const ARCConnector = function (
         tempModel: store[namespace].temp,
       }
 
-      const loaded = core.isLoaded(ARCConfig, { ...ownProps, ...arcProps })
-      const metaModel = core._getModel(ARCConfig, { ...ownProps, ...arcProps })
-      const model = core.getModel(ARCConfig, { ...ownProps, ...arcProps })
-      const error = core.getError(ARCConfig, { ...ownProps, ...arcProps })
-      const syncing = core.isSyncing(ARCConfig, { ...ownProps, ...arcProps })
-      const metas = core.getMetas(ARCConfig, undefined, {
+      const mergedProps = {
+        ...ARCConfig.defaultProps,
         ...ownProps,
         ...arcProps,
-      })
+      }
+      const loaded = core.isLoaded(ARCConfig, mergedProps)
+      const metaModel = core._getModel(ARCConfig, mergedProps)
+      const model = core.getModel(ARCConfig, mergedProps)
+      const error = core.getError(ARCConfig, mergedProps)
+      const syncing = core.isSyncing(ARCConfig, mergedProps)
+      const metas = core.getMetas(ARCConfig, undefined, mergedProps)
 
       const mapStateToProps = (store) => {
         return {
