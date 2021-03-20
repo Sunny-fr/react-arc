@@ -19,4 +19,5 @@ export {
   flatten,
   cleanParams,
   changedProps,
+  getParams,
 } from "./utils"

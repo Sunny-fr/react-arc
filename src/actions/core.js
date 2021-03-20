@@ -1,4 +1,4 @@
-import { extractParams, interpolate } from "../utils"
+import { getParams, interpolate } from "../utils"
 
 const core = {
   hasRequiredParams(ARCConfig, props) {
@@ -25,7 +25,7 @@ const core = {
   },
   getParams(ARCConfig, props) {
     if (!this.hasRequiredParams(ARCConfig, props)) return null
-    return extractParams(ARCConfig.modelProps, props)
+    return getParams(ARCConfig, props)
   },
   getMetas(ARCConfig, prop, props) {
     if (!this._getModel(ARCConfig, props)) return null
