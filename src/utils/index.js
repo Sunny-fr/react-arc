@@ -28,6 +28,19 @@ export const extractParams = function (props = [], source = {}) {
   )
 }
 
+export const getParams = function (ARCConfig, source = {}) {
+  const props = ARCConfig.modelProps
+  const defaultProps = ARCConfig.defaultProps || {}
+  const merged = { ...defaultProps, ...source }
+  return props.reduce(
+    (params, prop) => ({
+      ...params,
+      [prop]: merged[prop],
+    }),
+    {}
+  )
+}
+
 export const changedProps = function (prevProps, nextProps) {
   if (!prevProps) return []
   if (typeof prevProps !== typeof prevProps) return Object.keys(prevProps)

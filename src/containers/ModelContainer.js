@@ -1,5 +1,5 @@
 import React from "react"
-import { extractParams } from "../utils"
+import { getParams } from "../utils"
 import commons from "../commons"
 import Container from "./Container"
 // import {changedProps} from '../utils/index'
@@ -68,7 +68,7 @@ export class ModelContainer extends Container {
   save = () => {
     const isNew = this.isNew(this.props)
     const model = this.getModel()
-    const extracted = extractParams(this.ARCConfig.modelProps, this.props)
+    const extracted = getParams(this.ARCConfig, this.props)
     const params = {
       ...extracted,
       ...(isNew ? this.getParams(model) : this.getParams()),

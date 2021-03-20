@@ -1,4 +1,4 @@
-import { interpolate, extractParams, getDefaultConfig } from "../utils"
+import { interpolate, getParams, getDefaultConfig } from "../utils"
 
 const time = () => {
   return new Date().getTime()
@@ -46,10 +46,7 @@ export function mixerStore(options) {
 
   function mapModels(list) {
     return list.reduce((prev, current) => {
-      const tempKey = interpolate(
-        null,
-        extractParams(extendedConfig.modelProps, current)
-      )
+      const tempKey = interpolate(null, getParams(extendedConfig, current))
       const key = tempKey || JSON.stringify(current)
       prev[key] = Object.assign({}, defaultModel, {
         model: current,
