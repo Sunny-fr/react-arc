@@ -33,6 +33,7 @@ export const ARCConnector = function (
 
       const mapStateToProps = (store) => {
         return {
+          ...extendWithDefaultProps(ARCConfig, ownProps),
           ARCConfig,
           metas,
           metaModel,
@@ -40,7 +41,6 @@ export const ARCConnector = function (
           loaded,
           error,
           syncing,
-          ...getDefaultFromMissingProps(ARCConfig, ownProps),
         }
       }
       const optionalStateToProps = customMapStateToProps

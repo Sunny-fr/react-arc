@@ -22,6 +22,7 @@ export const connectFn = (ARCConfig) => (store, ownProps) => {
   const syncing = core.isSyncing(ARCConfig, mergedProps)
   const metas = core.getMetas(ARCConfig, undefined, mergedProps)
   return {
+    ...extendWithDefaultProps(ARCConfig, ownProps),
     ARCConfig,
     loaded,
     metaModel,
@@ -29,7 +30,6 @@ export const connectFn = (ARCConfig) => (store, ownProps) => {
     error,
     syncing,
     metas,
-    ...extendWithDefaultProps(ARCConfig, ownProps),
   }
 }
 
