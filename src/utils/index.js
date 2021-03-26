@@ -8,31 +8,42 @@ export const flatten = function (node, withMetas = false) {
   )
 }
 
-export const getDefaultFromMissingProps = (ARCConfig, ownProps) => {
+export const extendWithDefaultProps = (ARCConfig, ownProps) => {
   const defaultProps = ARCConfig.defaultProps || {}
   return Object.keys(defaultProps).reduce((state, prop) => {
     if (typeof ownProps[prop] === "undefined") {
       state[prop] = defaultProps[prop]
     }
     return state
-  }, {})
+  }, ownProps)
 }
 
-export const removeMissingProps = (ARCConfig, ownProps) => {
-  const defaultProps = ARCConfig.defaultProps || {}
-
-  return Object.keys(defaultProps).reduce(
-    (state, prop) => {
-      if (typeof ownProps[prop] === "undefined") {
-        //ugly shit
-        delete state[prop]
-        return state
-      }
-      return state
-    },
-    { ...ownProps }
-  )
-}
+//
+// export const getDefaultFromMissingProps = (ARCConfig, ownProps) => {
+//   const defaultProps = ARCConfig.defaultProps || {}
+//   return Object.keys(defaultProps).reduce((state, prop) => {
+//     if (typeof ownProps[prop] === "undefined") {
+//       state[prop] = defaultProps[prop]
+//     }
+//     return state
+//   }, {})
+// }
+//
+// export const removeMissingProps = (ARCConfig, ownProps) => {
+//   const defaultProps = ARCConfig.defaultProps || {}
+//
+//   return Object.keys(defaultProps).reduce(
+//     (state, prop) => {
+//       if (typeof ownProps[prop] === "undefined") {
+//         //ugly shit
+//         delete state[prop]
+//         return state
+//       }
+//       return state
+//     },
+//     { ...ownProps }
+//   )
+// }
 
 export const extractParams = function (props = [], source = {}) {
   return props.reduce(
