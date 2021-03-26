@@ -170,14 +170,14 @@ export class ReduxActionsList {
                 tryNumber,
               })
             ) {
-              console.log(`retry #${tryNumber}`)
+              //console.log(`retry #${tryNumber}`)
               return generateRequest(tryNumber + 1)
             }
             if (
               typeof retryConditionFn !== "function" &&
               tryNumber < this.config.maxTries
             ) {
-              console.log(`retry #${tryNumber}`)
+              //console.log(`retry #${tryNumber}`)
               return generateRequest(tryNumber + 1)
             }
             dispatch({
@@ -196,7 +196,6 @@ export class ReduxActionsList {
 
   standAloneSave(data, params, create, config, props) {
     const method = create ? config.methods.create : config.methods.update
-    //TODO remove magic ?
     const url = this.decorate(
       this.config.paths.item,
       method === "post" ? {} : params
