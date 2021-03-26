@@ -20,13 +20,18 @@ export const getDefaultFromMissingProps = (ARCConfig, ownProps) => {
 
 export const removeMissingProps = (ARCConfig, ownProps) => {
   const defaultProps = ARCConfig.defaultProps || {}
-  return Object.keys(defaultProps).reduce((state, prop) => {
-    if (typeof ownProps[prop] === "undefined") {
+
+  return Object.keys(defaultProps).reduce(
+    (state, prop) => {
+      if (typeof ownProps[prop] === "undefined") {
+        //ugly shit
+        delete state[prop]
+        return state
+      }
       return state
-    }
-    state[prop] = defaultProps[prop]
-    return state
-  }, {})
+    },
+    { ...ownProps }
+  )
 }
 
 export const extractParams = function (props = [], source = {}) {
