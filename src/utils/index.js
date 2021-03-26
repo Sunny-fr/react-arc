@@ -8,12 +8,23 @@ export const flatten = function (node, withMetas = false) {
   )
 }
 
-export const extendWithMissingDefaultProps = (ARCConfig, ownProps) => {
+export const getDefaultFromMissingProps = (ARCConfig, ownProps) => {
   const defaultProps = ARCConfig.defaultProps || {}
   return Object.keys(defaultProps).reduce((state, prop) => {
     if (typeof ownProps[prop] === "undefined") {
       state[prop] = defaultProps[prop]
     }
+    return state
+  }, {})
+}
+
+export const removeMissingProps = (ARCConfig, ownProps) => {
+  const defaultProps = ARCConfig.defaultProps || {}
+  return Object.keys(defaultProps).reduce((state, prop) => {
+    if (typeof ownProps[prop] === "undefined") {
+      return state
+    }
+    state[prop] = defaultProps[prop]
     return state
   }, {})
 }
