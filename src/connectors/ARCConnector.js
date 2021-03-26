@@ -1,9 +1,5 @@
 import React from "react"
-import {
-  getDefaultFromMissingProps,
-  getDefaultConfig,
-  removeMissingProps,
-} from "../utils"
+import { getDefaultConfig, extendWithDefaultProps } from "../utils"
 import core from "../actions/core"
 
 /** LEGACY **/
@@ -24,8 +20,8 @@ export const ARCConnector = function (
       }
 
       const mergedProps = {
-        ...getDefaultFromMissingProps(ARCConfig, ownProps),
-        ...removeMissingProps(ownProps),
+        ...extendWithDefaultProps(ARCConfig, ownProps),
+        //...removeMissingProps(ownProps),
         ...arcProps,
       }
       const loaded = core.isLoaded(ARCConfig, mergedProps)
