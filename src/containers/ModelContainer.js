@@ -11,11 +11,7 @@ export class ModelContainer extends Container {
   /* public
    * if the component has not the required params it will be set as new */
   isNew(props) {
-    // ENSURE EXISTENCE
-    return (
-      (props || this.props).isNew ||
-      this.core.isNew(this.ARCConfig, props || this.props)
-    )
+    return (props || this.props).isNew
   }
 
   /* public
@@ -44,11 +40,7 @@ export class ModelContainer extends Container {
    */
 
   _getModel(props) {
-    // ENSURE EXISTENCE
-    return (
-      (props || this.props).metaModel ||
-      this.core._getModel(this.ARCConfig, props || this.props)
-    )
+    return (props || this.props).metaModel
   }
 
   /* public
@@ -112,20 +104,14 @@ export class ModelContainer extends Container {
   }
 
   getModel(props) {
-    // ENSURE EXISTENCE
-    return (
-      (props || this.props).model ||
-      this.core.getModel(this.ARCConfig, props || this.props)
-    )
+    return (props || this.props).model
   }
 
   /* public
    * returns metas (loaded, error, etc.) */
 
   getMetas(prop, props) {
-    const metas =
-      (props || this.props).metas ||
-      this.core.getMetas(this.ARCConfig, undefined, props || this.props)
+    const metas = (props || this.props).metas
     return !!prop ? metas[prop] : metas
   }
 
@@ -133,30 +119,21 @@ export class ModelContainer extends Container {
    * returns  error */
 
   getError(props) {
-    return (
-      (props || this.props).error ||
-      this.core.getError(this.ARCConfig, props || this.props)
-    )
+    return (props || this.props).error
   }
 
   /* public
    * returns bool if there's any activity */
 
   isSyncing(props) {
-    return (
-      (props || this.props).syncing ||
-      this.core.isSyncing(this.ARCConfig, props || this.props)
-    )
+    return (props || this.props).syncing
   }
 
   /* public
    * returns bool if the model has been loaded at least one time */
 
   isLoaded(props) {
-    return (
-      (props || this.props).loaded ||
-      this.core.isLoaded(this.ARCConfig, props || this.props)
-    )
+    return (props || this.props).loaded
   }
 
   /* private
