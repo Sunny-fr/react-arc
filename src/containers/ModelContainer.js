@@ -192,22 +192,19 @@ export class ModelContainer extends Container {
       return false
     }
 
-    if (
-      typeof this._getModel(props) === "undefined" ||
-      typeof this.core._getModel(this.ARCConfig, props) === "undefined"
-    ) {
+    if (typeof this.core._getModel(this.ARCConfig, props) === "undefined") {
       //console.log('//model has never been fetch, its ok to fetch')
       return true
     }
 
-    if (this.isSyncing(props) || this.core.isSyncing(this.ARCConfig, props)) {
+    if (this.core.isSyncing(this.ARCConfig, props)) {
       //console.log('//model seems to be loading we dont allow to fetch it again')
       return false
     }
 
     if (
       !skipReFetchStep &&
-      (this.isLoaded(props) || this.core.isLoaded(this.ARCConfig, props)) &&
+      this.core.isLoaded(this.ARCConfig, props) &&
       this.allowReFetch(props)
     ) {
       //console.log('//model seems to be loaded but its ok to re-fetch it')
@@ -216,7 +213,7 @@ export class ModelContainer extends Container {
 
     if (
       !skipReFetchStep &&
-      (!!this.getError(props) || !!this.core.getError(this.ARCConfig, props)) &&
+      !!this.core.getError(this.ARCConfig, props) &&
       this.errorReFetch(props)
     ) {
       //console.log('//model had an error previously, but its ok to refetch it')
