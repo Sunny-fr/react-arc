@@ -21,6 +21,7 @@ export const connectFn = (ARCConfig) => (store, ownProps) => {
   const error = core.getError(ARCConfig, mergedProps)
   const syncing = core.isSyncing(ARCConfig, mergedProps)
   const metas = core.getMetas(ARCConfig, undefined, mergedProps)
+  const isNew = core.isNew(ARCConfig, mergedProps)
   return {
     ...extendWithDefaultProps(ARCConfig, ownProps),
     ARCConfig,
@@ -30,6 +31,7 @@ export const connectFn = (ARCConfig) => (store, ownProps) => {
     error,
     syncing,
     metas,
+    isNew,
   }
 }
 

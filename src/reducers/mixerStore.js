@@ -158,6 +158,7 @@ export function mixerStore(options) {
             ...defaultModel,
             metas: {
               ...defaultModel.metas,
+              error: null,
               fetching: true,
               start: time(),
               tries: tryNumber,
@@ -167,6 +168,7 @@ export function mixerStore(options) {
           collection[key] = Object.assign({}, previous, {
             metas: {
               ...collection[key].metas,
+              error: null,
               fetching: true,
               saved: false,
               start: time(),
