@@ -172,7 +172,9 @@ export class ModelContainer extends Container {
     clearTimeout(this.delayedTimeout)
     this.delayedTimeout = null
     if (this.arcCancelPendingRequest) {
-      this.arcCancelPendingRequest(commons.cancelRequestMessage)
+      this.arcCancelPendingRequest(
+        commons.cancelRequestPayload({ ARCConfig: this.ARCConfig })
+      )
     }
   }
 

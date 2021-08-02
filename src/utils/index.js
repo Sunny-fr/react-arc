@@ -54,7 +54,12 @@ export const extractParams = function (props = [], source = {}) {
     {}
   )
 }
-
+/**
+ *
+ * @param {ARCConfig} ARCConfig
+ * @param {object} source
+ * @return {object}
+ */
 export const getParams = function (ARCConfig, source = {}) {
   const props = ARCConfig.modelProps
   const defaultProps = ARCConfig.defaultProps || {}
@@ -117,6 +122,9 @@ export const interpolate = function (str, params) {
   return cleanParams(result)
 }
 
+/**
+ * @return {ARCConfig} ARCConfig
+ */
 export function getDefaultConfig() {
   return cloneDeep(defaultConfig)
 }

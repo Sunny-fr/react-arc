@@ -2,6 +2,10 @@ import axios from "axios"
 import { getDefaultConfig, interpolate } from "../utils/index"
 import commons from "../commons"
 
+const ERRORS = {
+  CANCEL_HTTP_REQUEST: "ARC:Cancel",
+}
+
 export class ReduxActionsList {
   constructor(options) {
     this.config = { ...getDefaultConfig(), ...(options.config || {}) }
@@ -152,7 +156,7 @@ export class ReduxActionsList {
             return Promise.resolve(response)
           })
           .catch((error) => {
-            if (error && error.message === commons.cancelRequestMessage) {
+            if (error && error.type === ERRORS.CANCEL_HTTP_REQUEST) {
               dispatch({
                 type: this.decorate("FETCH_{uppercaseName}_CANCELLED"),
                 payload: { error, params },
@@ -293,7 +297,7 @@ export class ReduxActionsList {
           return Promise.resolve(response)
         })
         .catch((error) => {
-          if (error && error.message === commons.cancelRequestMessage) {
+          if (error && error.type === ERRORS.CANCEL_HTTP_REQUEST) {
             dispatch({
               type: this.decorate("FETCH_{uppercaseName}S_CANCELLED"),
               payload: { error, params },
