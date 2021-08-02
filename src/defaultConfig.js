@@ -1,4 +1,5 @@
 //EXAMPLE CONFIG
+/** @type {ARCConfig} config **/
 const config = {
   //reducer name
   name: "",
@@ -6,7 +7,7 @@ const config = {
   uppercaseName: "",
   // useful to map objects in collection
   modelProps: [],
-  // can be empty (might be usefull if you need paging...)
+  // can be empty (might be useful if you need paging...)
   collectionProps: [],
   // path to your rest server
   paths: {

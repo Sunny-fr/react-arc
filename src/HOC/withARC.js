@@ -3,6 +3,11 @@ import { connect } from "react-redux"
 import { extendWithDefaultProps, getDefaultConfig } from "../utils"
 import core from "../actions/core"
 
+/**
+ * Store Connector
+ * @param {ARCConfig} ARCConfig
+ * @return {function(StoreConnector)<ARCMappedProps>}
+ */
 export const connectFn = (ARCConfig) => (store, ownProps) => {
   const namespace = ARCConfig.name
   const collection = store[namespace].collection
@@ -35,9 +40,20 @@ export const connectFn = (ARCConfig) => (store, ownProps) => {
   }
 }
 
+/**
+ *
+ * @param {ARCConfig} ARCConfig
+ * @return {function(Component)<ARCWrappedComponent>}
+ */
 export function withARC(ARCConfig) {
+  /** @type {ARCConfig} **/
   const extendedConfig = { ...getDefaultConfig(), ...ARCConfig }
-  return function ARCHoc(Wrapped) {
+  /**
+   * @param {Component} Wrapped
+   * @return {function(ARCMappedProps)<ARCWrappedComponent>}
+   */
+  function ARCHoc(Wrapped) {
     return connect(connectFn(extendedConfig))(Wrapped)
   }
+  return ARCHoc
 }
