@@ -1,8 +1,11 @@
 {
   "name": "react-arc",
-  "version": "4.0.14",
+  "version": "4.0.15",
   "description": "React Abstract Redux Component",
   "main": "lib/index.js",
+  "files": [
+    "/lib"
+  ],
   "scripts": {
     "compile": "babel --presets es2015,stage-0 -d lib/ src/",
     "prepare": "npm run compile",
