@@ -13,6 +13,7 @@ export { default as ARCConnector } from "./connectors/ARCConnector"
 export { useARC } from "./hooks/useARC"
 export { withARC } from "./HOC/withARC"
 export { withUseARC } from "./HOC/withUseARC"
+export * from "./typedefs/typedefs"
 export {
   extractParams,
   interpolate,

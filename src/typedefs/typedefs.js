@@ -1,1 +1,6 @@
 import "./config.typedef"
+import "./model.typedef"
+import "./connectors.typedef"
+import "./config.typedef"
+import "./components.typedef"
+import "./collection.typedef"
