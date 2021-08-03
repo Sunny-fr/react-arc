@@ -1,6 +1,6 @@
+/// <reference path="../typedefs.js" />
 import axios from "axios"
 import { getDefaultConfig, interpolate } from "../utils/index"
-import commons from "../commons"
 
 const ERRORS = {
   CANCEL_HTTP_REQUEST: "ARC:Cancel",

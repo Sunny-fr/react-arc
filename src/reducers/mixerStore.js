@@ -17,7 +17,8 @@ export function mixerStore(options) {
   /* GENERATED WITH CASTER */
   /* REDUCER STRUCTURE */
 
-  const defaultModel = {
+  /** @type {ArcMetaModel} **/
+  const defaultMetaModel = {
     metas: {
       loaded: false,
       fetching: false,
@@ -36,8 +37,8 @@ export function mixerStore(options) {
   const defaultState = {
     collection: {},
     temp: {
-      metas: { ...defaultModel.metas },
-      model: { ...defaultModel.model },
+      metas: { ...defaultMetaModel.metas },
+      model: { ...defaultMetaModel.model },
     },
     fetching: false,
     loaded: false,
@@ -48,9 +49,9 @@ export function mixerStore(options) {
     return list.reduce((prev, current) => {
       const tempKey = interpolate(null, getParams(extendedConfig, current))
       const key = tempKey || JSON.stringify(current)
-      prev[key] = Object.assign({}, defaultModel, {
+      prev[key] = Object.assign({}, defaultMetaModel, {
         model: current,
-        metas: { ...defaultModel.metas, loaded: true, valid: true },
+        metas: { ...defaultMetaModel.metas, loaded: true, valid: true },
       })
       return prev
     }, {})
@@ -82,8 +83,8 @@ export function mixerStore(options) {
           ...defaultState,
           collection: { ...defaultState.collection },
           temp: {
-            metas: { ...defaultModel.metas, loaded: false },
-            model: { ...defaultModel.model },
+            metas: { ...defaultMetaModel.metas, loaded: false },
+            model: { ...defaultMetaModel.model },
           },
         }
       }
@@ -133,8 +134,8 @@ export function mixerStore(options) {
         collection[key] = Object.assign(
           {},
           {
-            metas: { ...defaultModel.metas, loaded: false },
-            model: { ...defaultModel.model },
+            metas: { ...defaultMetaModel.metas, loaded: false },
+            model: { ...defaultMetaModel.model },
           },
           previous
         )
@@ -155,9 +156,9 @@ export function mixerStore(options) {
 
         if (!previous) {
           collection[key] = {
-            ...defaultModel,
+            ...defaultMetaModel,
             metas: {
-              ...defaultModel.metas,
+              ...defaultMetaModel.metas,
               error: null,
               fetching: true,
               start: time(),
@@ -194,7 +195,7 @@ export function mixerStore(options) {
             end: time(),
             error: action.payload.error,
           },
-          model: { ...defaultModel.model },
+          model: { ...defaultMetaModel.model },
         }
         return {
           ...state,
@@ -261,8 +262,8 @@ export function mixerStore(options) {
         return {
           ...state,
           temp: {
-            metas: { ...defaultModel.metas, loaded: true },
-            model: { ...defaultModel.model },
+            metas: { ...defaultMetaModel.metas, loaded: true },
+            model: { ...defaultMetaModel.model },
           },
         }
       }

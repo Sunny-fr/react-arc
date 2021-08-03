@@ -1,3 +1,4 @@
+/// <reference path="../typedefs.js" />
 import React from "react"
 import { connect } from "react-redux"
 import { extendWithDefaultProps, getDefaultConfig } from "../utils"

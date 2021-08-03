@@ -30,4 +30,4 @@
  * @export
  */
 
-module.exports = {}
+exports.unused = {}
