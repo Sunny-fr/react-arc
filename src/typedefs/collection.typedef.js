@@ -3,4 +3,4 @@
  * @typedef {array<ArcModel>} ArcCollection
  */
 
-module.exports = {}
+exports.unused = {}

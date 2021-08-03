@@ -17,9 +17,25 @@
  * @property {object} metas
  * @property {boolean} isNew
  * @property {ARCConfig} ARCConfig
- * @property {object} collection
+ * @property {ArcCollection} collection
  * @property {object} tempModel
  * @export
  */
 
-module.exports = {}
+/**
+ * @typedef {Object.<ArcModelKey, ArcMetaModel>} ArcCollection
+ * @export
+ */
+
+/**
+ * ARC Store
+ * @typedef {object} ArcStore
+ * @property {ArcCollection} collection
+ * @property {ArcMetaModel} temp
+ * @property {boolean} fetching
+ * @property {boolean} loaded
+ * @property {object|null} error
+ * @export
+ */
+
+exports.unused = {}

@@ -1,5 +1,5 @@
+/// <reference path="../typedefs.js" />
 import { getParams, interpolate } from "../utils"
-
 const core = {
   /**
    * Generates Key
@@ -66,7 +66,7 @@ const core = {
    * @param {ARCConfig} ARCConfig
    * @param {string} [prop] - requested meta
    * @param {object} props - component props
-   * @return {null|object|*}
+   * @return {null|ArcMetas|string|number|boolean}
    */
   getMetas(ARCConfig, prop, props) {
     if (!this._getModel(ARCConfig, props)) return null
@@ -78,7 +78,7 @@ const core = {
    * returns the meta model
    * @param {ARCConfig} ARCConfig
    * @param {object} props - component props
-   * @return {object}
+   * @return {ArcMetaModel}
    */
   _getModel(ARCConfig, props) {
     //TO BE RENAMED
@@ -160,7 +160,7 @@ const core = {
    * the reducer state
    * @param {ARCConfig} ARCConfig
    * @param {object} reduxStoreState - redux's store.getState()
-   * @return {object}
+   * @return {ArcStore}
    */
   getStore(ARCConfig, reduxStoreState) {
     return reduxStoreState[ARCConfig.name]
