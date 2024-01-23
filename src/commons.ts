@@ -1,7 +1,7 @@
 import { ARCConfig } from "./types/config.types"
 
-interface CancelRequestParams {
-  ARCConfig: ARCConfig
+interface CancelRequestParams<Model> {
+  ARCConfig: ARCConfig<Model>
 }
 
 const commons = {
@@ -9,7 +9,7 @@ const commons = {
    * @param {ARCConfig} ARCConfig
    * @return {{type: string, message: string}}
    */
-  cancelRequestPayload: ({ ARCConfig }: CancelRequestParams) => {
+  cancelRequestPayload<Model>({ ARCConfig }: CancelRequestParams<Model>)  {
     return {
       type: "ARC:Cancel",
       message: `ARC: Cancel request due to unmount (reducer: ${

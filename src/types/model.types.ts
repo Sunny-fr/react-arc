@@ -17,6 +17,7 @@ export interface ARCMetas {
   tries: number
   start: number
   end: number
+  error?: any
 }
 
 export type ARCMetasType = ARCMetas | object | string | number | boolean | null
@@ -25,17 +26,17 @@ export type ARCMetasType = ARCMetas | object | string | number | boolean | null
  * Meta Model
  * @export
  */
-export interface ARCMetaModel {
+export interface ARCMetaModel<Model> {
   metas: ARCMetas
-  model: ARCModel
+  model: ARCModel<Model>
 }
 
 /**
  * Model Data Model
  */
-export type ARCModel = any
+export type ARCModel<Model> = Model
 
-export const ARCModelDefaults: ARCModel = {}
+///export const ARCModelDefaults: ARCModel = {} as ARCModel
 
-export type ARCMetaCollectionMap = Record<ARCModelKey, ARCMetaModel>
-export type ARCCollectionMap = Record<ARCModelKey, ARCModel>
+export type ARCMetaCollectionMap<Model> = Record<ARCModelKey, ARCMetaModel<Model>>
+export type ARCCollectionMap<Model> = Record<ARCModelKey, ARCModel<Model>>

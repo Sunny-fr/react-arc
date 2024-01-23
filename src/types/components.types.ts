@@ -1,6 +1,7 @@
 import { ARCConfig } from "./config.types"
 import {
-  ARCCollectionMap,
+  //ARCCollectionMap,
+  ARCMetaCollectionMap,
   ARCMetaModel,
   ARCMetasType,
   ARCModel,
@@ -26,11 +27,11 @@ export interface ComponentPropsWithRequiredModelParams extends ComponentProps {}
  * for example model ARCConfig.modelParams = ['id','name']
  * expected ComponentPropsWithRequiredModelParams are  {id:'12', name:'Al', ...}
  */
-export interface ComponentWithStoreProps
+export interface ComponentWithStoreProps<Model>
   extends ComponentPropsWithRequiredModelParams {
   //ARCConfig: ARCConfig
-  collection: ARCCollectionMap
-  temp: ARCModel
+  collection: ARCMetaCollectionMap<Model>
+  temp?: ARCModel<Model> | null | undefined
   // To be dropped
   fetching: boolean
   // To be dropped
@@ -40,13 +41,13 @@ export interface ComponentWithStoreProps
   // Other props
   //[key: string]: any
 }
-export interface ARCContainerProps
+export interface ARCContainerProps<Model>
   extends ComponentPropsWithRequiredModelParams {
-  ARCConfig: ARCConfig
+  ARCConfig: ARCConfig<Model>
   dispatch: ThunkDispatch<any, any, any>
-  collection: ARCCollectionMap
+  collection: ARCMetaCollectionMap<Model>
   // To be dropped
-  temp: ARCModel
+  temp?: ARCModel<Model>
   // To be dropped
   fetching: boolean
   // To be dropped
@@ -55,22 +56,22 @@ export interface ARCContainerProps
   error: object | null
 }
 
-export interface ARCWrappedComponentProps
+export interface ARCWrappedComponentProps<Model>
   extends ComponentPropsWithRequiredModelParams {
-  ARCConfig: ARCConfig
+  ARCConfig: ARCConfig<Model>
   loaded: boolean
-  metaModel: ARCMetaModel | null
-  model: object
+  metaModel: ARCMetaModel<Model> | null
+  model: ARCModel<Model> |null
   error: object
   syncing: boolean
   metas: ARCMetasType
   isNew: boolean
-  collection: ARCCollectionMap
-  tempModel: ARCModel
+  collection: ARCMetaCollectionMap<Model>
+  tempModel?: ARCModel<Model> | null | undefined
   dispatch: ThunkDispatch<any, any, any>
 
   // To be dropped
-  temp: ARCModel
+  temp: ARCModel<Model> | null | undefined
   // To be dropped
   fetching: boolean
 }

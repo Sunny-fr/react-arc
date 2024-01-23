@@ -14,11 +14,11 @@ interface UseARCState {
   pending: boolean
 }
 
-export function useARC({
+export function useARC<Model>({
   ARCConfig,
   props,
 }: {
-  ARCConfig: ARCConfig
+  ARCConfig: ARCConfig<Model>
   props: ComponentProps
 }) {
   const arc = new ARC({ ARCConfig })
@@ -30,7 +30,7 @@ export function useARC({
     response: null,
     pending: false,
   }
-  const [state, setState] = useState(defaultState)
+  const [state, setState] = useState<UseARCState>(defaultState)
 
   const handle = (fetcher: () => Promise<Response>) => {
     if (state.pending) return

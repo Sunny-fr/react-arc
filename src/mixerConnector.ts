@@ -2,9 +2,9 @@ import { getDefaultConfig } from "./utils"
 import { Connect, DefaultRootState } from "react-redux"
 import { ARCConfig } from "./types/config.types"
 
-export const mixerConnector = function (
+export function mixerConnector <Model>(
   connect: Connect,
-  config: ARCConfig,
+  config: ARCConfig<Model>,
   customMapStateToProps: Function | undefined
 ) {
   const extendedConfig = { ...getDefaultConfig(), ...config }

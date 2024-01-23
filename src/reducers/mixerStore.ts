@@ -8,6 +8,7 @@ import {
 } from "../types/model.types"
 import { ARCStoreState } from "../types/connectors.types"
 
+
 const time = (): number => {
   return new Date().getTime()
 }
@@ -15,8 +16,8 @@ const time = (): number => {
 // MIXER
 // returns a reducer
 
-interface MixerStoreParams {
-  config: ARCConfig
+interface MixerStoreParams<Model> {
+  config: ARCConfig<Model>
 }
 
 interface ReduxActionPayload {
@@ -56,16 +57,16 @@ const ACTIONS_MAPPER = {
   DELETE_FULFILLED: "DELETE_{uppercaseName}_FULFILLED",
 }
 
-export function mixerStore(options: MixerStoreParams) {
+export function mixerStore<Model>(options: MixerStoreParams<Model>) {
   const config = options?.config || {}
   const extendedConfig = { ...getDefaultConfig(), ...config }
   const defaultModelObject = JSON.parse(
     JSON.stringify(extendedConfig.defaultModel)
-  )
+  ) as ARCModel<Model>
   /* REDUCER STRUCTURE */
 
   /** @type {ARCMetaModel} **/
-  const defaultMetaModel: ARCMetaModel = {
+  const defaultMetaModel: ARCMetaModel<Model> = {
     metas: {
       loaded: false,
       fetching: false,
@@ -81,7 +82,7 @@ export function mixerStore(options: MixerStoreParams) {
     model: { ...defaultModelObject },
   }
 
-  const defaultState = {
+  const defaultState:ARCStoreState<Model> = {
     collection: {},
     temp: {
       metas: { ...defaultMetaModel.metas },
@@ -92,9 +93,9 @@ export function mixerStore(options: MixerStoreParams) {
     error: null,
   }
 
-  function mapModels(list: ARCModel[]): ARCMetaCollectionMap {
-    const collectionMap: ARCMetaCollectionMap = {}
-    return list.reduce((prev: ARCMetaCollectionMap, current) => {
+  function mapModels(list: ARCModel<Model>[]): ARCMetaCollectionMap<Model> {
+    const collectionMap: ARCMetaCollectionMap<Model> = {}
+    return list.reduce((prev: ARCMetaCollectionMap<Model>, current) => {
       const tempKey = interpolate(null, getParams(extendedConfig, current))
       const key = tempKey || JSON.stringify(current)
       prev[key] = Object.assign({}, defaultMetaModel, {
@@ -119,7 +120,7 @@ export function mixerStore(options: MixerStoreParams) {
   }
 
   return function reducer(
-    state: ARCStoreState = defaultState,
+    state: ARCStoreState<Model> = defaultState,
     action: ReduxAction
   ) {
     function previousItem(key: ARCModelKey) {
@@ -127,7 +128,7 @@ export function mixerStore(options: MixerStoreParams) {
       return collection[key]
     }
 
-    function update(item: ARCMetaCollectionMap, key: ARCModelKey) {
+    function update(item: ARCMetaModel<Model>, key: ARCModelKey) {
       return { ...state.collection, [key]: item }
     }
 
@@ -263,7 +264,7 @@ export function mixerStore(options: MixerStoreParams) {
         const key = keyGen(action.payload.params)
 
         //HAS A PREVIOUS VALID STATE
-        if (collection[key].metas.loaded === true) {
+        if (collection[key].metas.loaded) {
           // KEEP IT
           collection[key] = {
             ...collection[key],
@@ -354,7 +355,7 @@ export function mixerStore(options: MixerStoreParams) {
       case t(ACTIONS_MAPPER.SAVE): {
         const key = keyGen(action.payload.params)
         const prev = action.payload.create ? state.temp : previousItem(key)
-        const updated = {
+        const updated:ARCMetaModel<Model> = {
           ...prev,
           metas: {
             ...prev.metas,

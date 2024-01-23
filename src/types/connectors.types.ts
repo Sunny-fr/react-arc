@@ -2,9 +2,10 @@
  * ARCMappedProps
  */
 import { ARCConfig } from "./config.types"
-import { ARCCollectionMap, ARCModel } from "./model.types"
+import {ARCCollectionMap, ARCMetaCollectionMap, ARCMetaModel} from "./model.types"
 
-export interface ARCMappedProps {
+
+export interface ARCMappedProps<Model> {
   loaded: boolean
   metaModel: object
   model: object
@@ -12,27 +13,27 @@ export interface ARCMappedProps {
   syncing: boolean
   metas: object
   isNew: boolean
-  ARCConfig: ARCConfig
-  collection: ARCCollectionMap
-  tempModel: object
+  ARCConfig: ARCConfig<Model>
+  collection: ARCCollectionMap<Model>
+  tempModel?: Model | object
 }
 
 /**
  *  StoreConnector
  */
 
-export type ARCStoreConnector = (
+export type ARCStoreConnector = <Model>(
   store: object,
   ownProps: object
-) => ARCMappedProps
+) => ARCMappedProps<Model>
 
 /**
  * ARC Store
  */
 
-export interface ARCStoreState {
-  collection: ARCCollectionMap
-  temp: ARCModel
+export interface ARCStoreState<Model> {
+  collection: ARCMetaCollectionMap<Model>
+  temp: ARCMetaModel<Model>
   fetching: boolean
   loaded: boolean
   error: object | null

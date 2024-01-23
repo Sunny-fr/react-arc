@@ -9,34 +9,34 @@ import {
   ComponentPropsWithRequiredModelParams,
 } from "../types/components.types"
 
-interface ARCParams {
-  ARCConfig: ARCConfig
+interface ARCParams<Model> {
+  ARCConfig: ARCConfig<Model>
 }
 
-export class ARC {
-  config: ARCConfig
+export class ARC<Model> {
+  config: ARCConfig<Model>
 
-  constructor({ ARCConfig }: ARCParams) {
+  constructor({ ARCConfig }: ARCParams<Model>) {
     this.config = ARC.createConfig(ARCConfig)
   }
 
-  static createConfig(ARCConfig: ARCConfig): ARCConfig {
+  static createConfig<Model>(ARCConfig: ARCConfig<Model>): ARCConfig<Model> {
     const config = ARC.extendConfig(ARCConfig)
     config.headers = ARC.extendHeaders(config)
     config.methods = ARC.extendMethods(config)
     return config
   }
 
-  static extendConfig(ARCConfig: ARCConfig): ARCConfig {
+  static extendConfig<Model>(ARCConfig: ARCConfig<Model>): ARCConfig<Model> {
     return { ...getDefaultConfig(), ...(ARCConfig || {}) }
   }
 
-  static extendHeaders(ARCConfig: ARCConfig): ARCConfigHeaders {
+  static extendHeaders<Model>(ARCConfig: ARCConfig<Model>): ARCConfigHeaders {
     const headers = ARCConfig.headers || {}
     return { ...headers }
   }
 
-  static extendMethods(extendedConfig: ARCConfig): ARCHttpRestMethodMap {
+  static extendMethods<Model>(extendedConfig: ARCConfig<Model>): ARCHttpRestMethodMap {
     const { methods } = extendedConfig
     return {
       // @ts-ignore Default methods are already extended

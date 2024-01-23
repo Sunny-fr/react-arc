@@ -1,6 +1,7 @@
 import { ARCConfig } from "./types/config.types"
+import {ARCModel} from "./types/model.types";
 //EXAMPLE CONFIG
-const config: ARCConfig = {
+const config: ARCConfig<ARCModel<any>> = {
   //reducer name
   name: "",
   //namespace

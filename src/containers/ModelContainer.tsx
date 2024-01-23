@@ -3,6 +3,8 @@ import commons from "../commons"
 import Container from "./Container"
 import PropTypes from "prop-types"
 import {
+  ARCContainerProps,
+  ARCWrappedComponentProps,
   ComponentProps,
   ComponentPropsWithRequiredModelParams,
   ComponentWithStoreProps,
@@ -12,7 +14,9 @@ import { ARCAxiosOptions } from "../types/actions.types"
 // import {changedProps} from '../utils/index'
 // import equal from 'deep-equal'
 
-export class ModelContainer extends Container {
+type AnyArcComponentProps<Model> = ComponentWithStoreProps<Model> | ARCContainerProps<Model>
+
+export class ModelContainer<Model> extends Container<Model> {
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
     ARCConfig: PropTypes.object.isRequired,
@@ -52,7 +56,7 @@ export class ModelContainer extends Container {
    * get a model an its metas data
    */
 
-  _getModel(props?: ComponentWithStoreProps) {
+  _getModel(props?: AnyArcComponentProps<Model>) {
     //return (props || this.props).metaModel
     return this.core._getModel(this.ARCConfig, props || this.props)
   }
@@ -70,7 +74,7 @@ export class ModelContainer extends Container {
   fetch = (params: ComponentPropsWithRequiredModelParams) => {
     // const dispatch = this.checkDispatchAvailability()
     // if (!dispatch) return
-    const axiosOptions: ARCAxiosOptions = {}
+    const axiosOptions: ARCAxiosOptions<Model> = {}
 
     const promise = this.props.dispatch(
       this.actions.fetchOne(params, this.props, axiosOptions)
@@ -98,9 +102,9 @@ export class ModelContainer extends Container {
     const extracted = getParams(this.ARCConfig, this.props)
     const params = {
       ...extracted,
-      ...(isNew ? this.getParams(model) : this.getParams()),
+      ...(isNew ? this.getParams(model || undefined) : this.getParams()),
     }
-    this.props.dispatch(this.actions.save(model, params, isNew, this.props))
+    this.props.dispatch(this.actions.save(model || {}, params, isNew, this.props))
   }
 
   /* public
@@ -109,7 +113,7 @@ export class ModelContainer extends Container {
     if (this.isNew()) this.resetTempModel()
     else {
       const params = this.getParams()
-      this.props.dispatch(this.actions.remove(params, this.props))
+      this.props.dispatch(this.actions.remove(params ||{}, this.props))
     }
   }
 
@@ -130,36 +134,39 @@ export class ModelContainer extends Container {
     return this.core.getFetchingCount({ ...this.props, collection })
   }
 
-  getModel(props?: ComponentProps) {
+  getModel(props?:  ARCWrappedComponentProps<Model>) {
     return (props || this.props).model
   }
 
   /* public
    * returns metas (loaded, error, etc.) */
 
-  getMetas(prop, props) {
+  getMetas(prop:string, props: ARCWrappedComponentProps<Model>) {
     const metas = (props || this.props).metas
+    if(!metas) {
+      return metas
+    }
     return !!prop ? metas[prop] : metas
   }
 
   /* public
    * returns  error */
 
-  getError(props) {
+  getError(props: ARCWrappedComponentProps<Model>) {
     return (props || this.props).error
   }
 
   /* public
    * returns bool if there's any activity */
 
-  isSyncing(props) {
+  isSyncing(props: ARCWrappedComponentProps<Model>) {
     return (props || this.props).syncing
   }
 
   /* public
    * returns bool if the model has been loaded at least one time */
 
-  isLoaded(props) {
+  isLoaded(props: ARCWrappedComponentProps<Model>) {
     return (props || this.props).loaded
   }
 
@@ -167,11 +174,11 @@ export class ModelContainer extends Container {
    * performs a fetch if the flag fetchOnce is set to false
    */
 
-  allowReFetch = (props) => {
+  allowReFetch = (props: ComponentWithStoreProps<Model>) => {
     return this.core.allowReFetch(this.ARCConfig, props || this.props)
   }
 
-  errorReFetch(props) {
+  errorReFetch(props: ComponentWithStoreProps<Model>) {
     //can re fetch on error
     return this.core.errorReFetch(this.ARCConfig, props || this.props)
   }
@@ -184,20 +191,25 @@ export class ModelContainer extends Container {
     const props = this.getPropsFromTrueStoreState(this.props)
     if (this._fetchAuthorization(props, { skipReFetchStep })) {
       const max = this.ARCConfig.maxPendingRequestsPerReducer
-      if (max > -1) {
-        const count = this.getFetchingCount(props)
+      if (max && max > -1) {
+        const count = this.getFetchingCount()
         if (count > max) {
           //console.log('too much pending requests', count, 'pending)
           return this.delayedFetch({ skipReFetchStep })
         }
       }
-      this.fetch(this.getParams())
+      const params = this.getParams(props)
+      if(!params) {
+        console.error('params are missing')
+        return
+      }
+      this.fetch(params)
     }
   }
 
   componentWillUnmount() {
     clearTimeout(this.delayedTimeout)
-    this.delayedTimeout = null
+    this.delayedTimeout = undefined
     if (this.arcCancelPendingRequest) {
       this.arcCancelPendingRequest(
         commons.cancelRequestPayload({ ARCConfig: this.ARCConfig })
@@ -211,7 +223,7 @@ export class ModelContainer extends Container {
     }, this.ARCConfig.requestFetchDelay)
   }
 
-  _fetchAuthorization(props, { skipReFetchStep = false }) {
+  _fetchAuthorization(props:ComponentWithStoreProps<Model>, { skipReFetchStep = false }) {
     if (this.isNew(props)) {
       //console.log('//model is new no data to be retrieved')
       return false

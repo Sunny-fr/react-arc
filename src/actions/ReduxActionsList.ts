@@ -24,15 +24,15 @@ const ERRORS = {
   CANCEL_HTTP_REQUEST: "ARC:Cancel",
 }
 
-export class ReduxActionsList {
-  config: ARCConfig
-  initialConfig: ARCConfig
-  retryConditionFn: RetryConditionFn | undefined
+export class ReduxActionsList<Model>{
+  config: ARCConfig<Model>
+  initialConfig: ARCConfig<Model>
+  retryConditionFn: RetryConditionFn<Model> | undefined
   axios: AxiosInstance
   headers: ARCConfigHeaders
   methods: ARCHttpRestMethodMap
 
-  constructor(options: ReduxActionsListOptions) {
+  constructor(options: ReduxActionsListOptions<Model>) {
     this.config = { ...getDefaultConfig(), ...(options.config || {}) }
     this.initialConfig = this.config
     this.retryConditionFn = this.config.retryConditionFn
@@ -41,7 +41,7 @@ export class ReduxActionsList {
     this.axios = axios.create()
   }
 
-  static GenerateCancelToken(axiosOptions: ARCAxiosOptions) {
+  static GenerateCancelToken(axiosOptions: ARCAxiosOptions<unknown>) {
     return new axios.CancelToken(function executor(c) {
       if (axiosOptions) {
         axiosOptions.cancel = c
@@ -53,7 +53,7 @@ export class ReduxActionsList {
     return this.initialConfig
   }
 
-  generateCancelToken(axiosOptions: ARCAxiosOptions) {
+  generateCancelToken(axiosOptions: ARCAxiosOptions<Model>) {
     return new axios.CancelToken(function executor(c) {
       if (axiosOptions) {
         axiosOptions.cancel = c
@@ -81,7 +81,7 @@ export class ReduxActionsList {
     this.headers = { ...headers }
   }
 
-  updateConfig(config: ARCConfig) {
+  updateConfig(config: ARCConfig<Model>) {
     this.config = { ...this.config, ...config }
     this.setHeaders()
     this.setupMethods()
@@ -111,10 +111,10 @@ export class ReduxActionsList {
     props = {},
     params,
   }: {
-    config: ARCConfig
+    config: ARCConfig<Model>
     props: object
     params: ComponentPropsWithRequiredModelParams
-  }): ARCConfig {
+  }): ARCConfig<Model> {
     const paths: ARCConfigPaths = {
       item: "",
     }
@@ -146,9 +146,9 @@ export class ReduxActionsList {
 
   standAloneFetchOne(
     _params: ComponentPropsWithRequiredModelParams,
-    config: ARCConfig,
+    config: ARCConfig<Model>,
     _props: object,
-    axiosOptions: ARCAxiosOptions
+    axiosOptions: ARCAxiosOptions<Model>
   ): AxiosPromise {
     return this.axios({
       // @ts-ignore Default methods are already extended
@@ -182,7 +182,7 @@ export class ReduxActionsList {
   fetchOne(
     params: ComponentPropsWithRequiredModelParams,
     props: object = {},
-    axiosOptions: ARCAxiosOptions
+    axiosOptions: ARCAxiosOptions<Model>
   ) {
     return (dispatch: Dispatch) => {
       const retryConditionFn =
@@ -253,7 +253,7 @@ export class ReduxActionsList {
     data: object,
     params: ComponentPropsWithRequiredModelParams,
     create: boolean,
-    config: ARCConfig,
+    config: ARCConfig<Model>,
     _props: object
   ) {
     // @ts-ignore
@@ -304,7 +304,7 @@ export class ReduxActionsList {
 
   standAloneRemove(
     _params: ComponentPropsWithRequiredModelParams,
-    config: ARCConfig,
+    config: ARCConfig<Model>,
     _props: object
   ): AxiosPromise {
     const url = config.paths.item
@@ -348,9 +348,9 @@ export class ReduxActionsList {
 
   standAloneFetchAll(
     _params: ComponentPropsWithRequiredModelParams,
-    config: ARCConfig,
+    config: ARCConfig<Model>,
     _props: object,
-    axiosOptions: ARCAxiosOptions
+    axiosOptions: ARCAxiosOptions<Model>
   ): AxiosPromise {
     const url = config.paths.collection
     return this.axios({
@@ -365,7 +365,7 @@ export class ReduxActionsList {
   fetchAll(
     params: ComponentPropsWithRequiredModelParams,
     props: object = {},
-    axiosOptions: ARCAxiosOptions
+    axiosOptions: ARCAxiosOptions<Model>
   ) {
     return (dispatch: Dispatch): AxiosPromise => {
       dispatch({

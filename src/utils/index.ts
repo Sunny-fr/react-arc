@@ -1,26 +1,25 @@
-// @ts-ignore
+
 import equal from "deep-equal"
-// @ts-ignore
 import cloneDeep from "lodash.clonedeep"
 import defaultConfig from "../defaultConfig"
-import { ARCCollectionMap, ARCMetaModel, ARCModel } from "../types/model.types"
+import { ARCMetaCollectionMap, ARCMetaModel, ARCModel} from "../types/model.types"
 import { ARCConfig } from "../types/config.types"
 import {
   ComponentProps,
   ComponentPropsWithRequiredModelParams,
 } from "../types/components.types"
 
-export function flatten(
-  arcCollectionMap: ARCCollectionMap,
+export function flatten<Model>(
+  arcCollectionMap: ARCMetaCollectionMap<Model>,
   withMetas: boolean = false
-): ARCModel[] | ARCMetaModel[] {
-  return Object.keys(arcCollectionMap).map((nodeName) =>
-    withMetas ? arcCollectionMap[nodeName] : arcCollectionMap[nodeName].model
-  )
+): ARCModel<Model>[] | ARCMetaModel<Model>[] {
+  const metaModels = Object.keys(arcCollectionMap).map((nodeName) =>
+    arcCollectionMap[nodeName])
+  return withMetas ? metaModels : metaModels.map((metaModel) => metaModel.model)
 }
 
-export function extendWithDefaultProps(
-  config: ARCConfig,
+export function extendWithDefaultProps<Model>(
+  config: ARCConfig<Model>,
   ownProps: ComponentProps
 ): ComponentProps {
   const defaultProps = config.defaultProps || {}
@@ -72,8 +71,8 @@ export function extractParams(
   )
 }
 
-export function getParams(
-  config: ARCConfig,
+export function getParams<Model>(
+  config: ARCConfig<Model>,
   source: ComponentProps = {}
 ): ComponentPropsWithRequiredModelParams {
   const props = config.modelProps
@@ -152,6 +151,6 @@ export function interpolate(str: string | null, params: object): string {
   return cleanParams(result)
 }
 
-export function getDefaultConfig(): ARCConfig {
-  return cloneDeep(defaultConfig)
+export function getDefaultConfig<Model>() {
+  return cloneDeep<ARCConfig<Model>>(defaultConfig)
 }
