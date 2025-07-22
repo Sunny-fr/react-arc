@@ -1,6 +1,6 @@
 import React from "react"
 import { ReduxActionsList } from "../actions/ReduxActionsList"
-import core, { CoreMethods } from "../actions/core"
+import {core, CoreMethods } from "../actions/core"
 import { getDefaultConfig } from "../utils"
 import { ReactReduxContext } from "react-redux"
 import { ARCConfig } from "../types/config.types"
@@ -8,24 +8,30 @@ import {
   ARCWrappedComponentProps,
   ComponentProps, ComponentWithStoreProps,
 } from "../types/components.types"
+
 //import { ARCMetaCollectionMap} from "../types/model.types";
 
-export class Container<Model> extends React.Component {
+
+
+
+
+export class Container<P, S, Model> extends React.Component<P & ARCWrappedComponentProps<Model>, S> {
   static contextType = ReactReduxContext
   ARCConfig: ARCConfig<Model>
   actions: ReduxActionsList<Model>
-  core: CoreMethods<Model>
+  core: CoreMethods
   arcCancelPendingRequest: any
-  props: ARCWrappedComponentProps<Model>
+  props: P & ARCWrappedComponentProps<Model>
   delayedTimeout: number | undefined
 
-  constructor(props: ARCWrappedComponentProps<Model>) {
+  constructor(props: (Readonly<P> | P) & ARCWrappedComponentProps<Model>) {
+    //: ARCWrappedComponentProps<Model>
     super(props)
     this.updateARC(props.ARCConfig)
     this.actions = new ReduxActionsList({
       config: this.ARCConfig,
     })
-    this.core = core as CoreMethods<Model>
+    this.core = core as CoreMethods
     this.arcCancelPendingRequest = null
   }
 
@@ -46,7 +52,7 @@ export class Container<Model> extends React.Component {
     // }
   }
 
-  getPropsFromTrueStoreState = (props: ComponentProps) => {
+  getPropsFromTrueStoreState = (props?: ComponentProps) => {
     const ARCProps = this.getTrueStoreState()
     const baseProps = props || this.props
     return {

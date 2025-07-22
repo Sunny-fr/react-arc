@@ -1,5 +1,5 @@
 import {getDefaultConfig, extendWithDefaultProps} from "../utils"
-import core from "../actions/core"
+import {core} from "../actions/core"
 import {ARCConfig} from "../types/config.types"
 import {
   ARCWrappedComponentProps,

@@ -7,6 +7,7 @@ import {
   ARCModelKey,
 } from "../types/model.types"
 import { ARCStoreState } from "../types/connectors.types"
+import {ComponentProps} from "../types/components.types";
 
 
 const time = (): number => {
@@ -96,7 +97,7 @@ export function mixerStore<Model>(options: MixerStoreParams<Model>) {
   function mapModels(list: ARCModel<Model>[]): ARCMetaCollectionMap<Model> {
     const collectionMap: ARCMetaCollectionMap<Model> = {}
     return list.reduce((prev: ARCMetaCollectionMap<Model>, current) => {
-      const tempKey = interpolate(null, getParams(extendedConfig, current))
+      const tempKey = interpolate(null, getParams(extendedConfig, current as ComponentProps))
       const key = tempKey || JSON.stringify(current)
       prev[key] = Object.assign({}, defaultMetaModel, {
         model: current,

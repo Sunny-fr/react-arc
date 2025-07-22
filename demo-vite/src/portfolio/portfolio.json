@@ -1,0 +1,15 @@
+{
+  "name": "portfolio",
+  "uppercaseName": "PORTFOLIO",
+  "modelProps": [
+    "id"
+  ],
+
+  "paths": {
+    "item": "https://jsonplaceholder.typicode.com/photos/{id}"
+  },
+  "defaultModel": {
+    "title": "unnamed"
+  },
+  "maxTries": 3
+}

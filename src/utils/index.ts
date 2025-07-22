@@ -127,7 +127,7 @@ export function interpolate(str: string | null, params: object): string {
     if(!stringIsReplaceable(prev)){
       return prev
     }
-    const elm_val = params[current]
+    const elm_val:string|number = params[current]
     // skip functions
     if (typeof elm_val === "function") return prev
 
@@ -144,7 +144,7 @@ export function interpolate(str: string | null, params: object): string {
       )
     }
     if (typeof elm_val === "undefined") return prev
-    return prev.replace(new RegExp("{" + current + "}", "g"), elm_val)
+    return prev.replace(new RegExp("{" + current + "}", "g"), String(elm_val))
   }, stringToDecorate)
   // if params are missing we remove them
   // path/to/123/{anotherId} => path/to/123/

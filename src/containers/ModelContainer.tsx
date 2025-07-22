@@ -1,7 +1,7 @@
 import { getParams } from "../utils"
 import commons from "../commons"
 import Container from "./Container"
-import PropTypes from "prop-types"
+//import PropTypes from "prop-types"
 import {
   ARCContainerProps,
   ARCWrappedComponentProps,
@@ -16,11 +16,12 @@ import { ARCAxiosOptions } from "../types/actions.types"
 
 type AnyArcComponentProps<Model> = ComponentWithStoreProps<Model> | ARCContainerProps<Model>
 
-export class ModelContainer<Model> extends Container<Model> {
-  static propTypes = {
-    dispatch: PropTypes.func.isRequired,
-    ARCConfig: PropTypes.object.isRequired,
-  }
+export class ModelContainer<P, S, Model> extends Container<P,S, Model> {
+
+  // static propTypes = {
+  //   dispatch: PropTypes.func.isRequired,
+  //   ARCConfig: PropTypes.object.isRequired,
+  // }
 
   /** PUBLIC ACTIONS METHODS **/
 
@@ -141,7 +142,7 @@ export class ModelContainer<Model> extends Container<Model> {
   /* public
    * returns metas (loaded, error, etc.) */
 
-  getMetas(prop:string, props: ARCWrappedComponentProps<Model>) {
+  getMetas(prop:string, props?: ARCWrappedComponentProps<Model>) {
     const metas = (props || this.props).metas
     if(!metas) {
       return metas
@@ -152,21 +153,21 @@ export class ModelContainer<Model> extends Container<Model> {
   /* public
    * returns  error */
 
-  getError(props: ARCWrappedComponentProps<Model>) {
+  getError(props?: ARCWrappedComponentProps<Model>) {
     return (props || this.props).error
   }
 
   /* public
    * returns bool if there's any activity */
 
-  isSyncing(props: ARCWrappedComponentProps<Model>) {
+  isSyncing(props?: ARCWrappedComponentProps<Model>) {
     return (props || this.props).syncing
   }
 
   /* public
    * returns bool if the model has been loaded at least one time */
 
-  isLoaded(props: ARCWrappedComponentProps<Model>) {
+  isLoaded(props?: ARCWrappedComponentProps<Model>) {
     return (props || this.props).loaded
   }
 
@@ -174,11 +175,11 @@ export class ModelContainer<Model> extends Container<Model> {
    * performs a fetch if the flag fetchOnce is set to false
    */
 
-  allowReFetch = (props: ComponentWithStoreProps<Model>) => {
+  allowReFetch = (props?: ComponentWithStoreProps<Model>) => {
     return this.core.allowReFetch(this.ARCConfig, props || this.props)
   }
 
-  errorReFetch(props: ComponentWithStoreProps<Model>) {
+  errorReFetch(props?: ComponentWithStoreProps<Model>) {
     //can re fetch on error
     return this.core.errorReFetch(this.ARCConfig, props || this.props)
   }
@@ -291,4 +292,4 @@ export class ModelContainer<Model> extends Container<Model> {
   // }
 }
 
-export default ModelContainer
+

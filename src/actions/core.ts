@@ -18,7 +18,7 @@ import {
 import {ARCStoreState} from "../types/connectors.types"
 
 
-type AnyArcComponentProps<Model> = ComponentWithStoreProps<Model> | ARCContainerProps<Model>
+type AnyArcComponentProps<Model> = Omit<ComponentWithStoreProps<Model> | ARCContainerProps<Model>, 'dispatch'>
 
 type KeyGeneratorFn = (params: object) => ARCModelKey
 /**
@@ -295,18 +295,18 @@ function getFetchingCount<Model>(props:ComponentWithStoreProps<Model>) {
 
 
 function getCollectionError<Model>(props: ComponentWithStoreProps<Model>) {
-  const {error} = props
+  const {error=false} = props
   return error
 }
 //type IsCollectionLoadedFn = (props: ComponentWithStoreProps) => boolean
 function isCollectionLoaded<Model>(props: ComponentWithStoreProps<Model>) {
-  const {loaded} = props
+  const {loaded= false} = props
   return loaded
 }
 
 
 function isCollectionSyncing<Model>(props:ComponentWithStoreProps<Model>) {
-  const {fetching} = props
+  const {fetching=false} = props
   return fetching
 }
 
@@ -314,42 +314,42 @@ function allowCollectionReFetch<Model>(config:ARCConfig<Model>, props: Component
   return !(config.fetchOnce && isCollectionLoaded(props))
 }
 
-export interface CoreMethods<Model> {
+export interface CoreMethods {
   keyGenerator: KeyGeneratorFn
-  hasRequiredParams: (config: ARCConfig<Model>, props: ComponentProps) => boolean
-  missingParams: (config: ARCConfig<Model>, props: ComponentProps) => string[]
-  isNew: (config: ARCConfig<Model>, props: ComponentProps) => boolean
-  getKey: (config: ARCConfig<Model>, props: ComponentProps) => string | null
-  getParams: (config: ARCConfig<Model>, props: ComponentProps) => ComponentPropsWithRequiredModelParams | null
-  getMetas: (config: ARCConfig<Model>, prop: string | undefined, props: ComponentProps) => any
+  hasRequiredParams<Model>(config: ARCConfig<Model>, props: ComponentProps) : boolean
+  missingParams<Model>(config: ARCConfig<Model>, props: ComponentProps) : string[]
+  isNew<Model>(config: ARCConfig<Model>, props: ComponentProps) : boolean
+  getKey<Model>(config: ARCConfig<Model>, props: ComponentProps) : string | null
+  getParams<Model>(config: ARCConfig<Model>, props: ComponentProps) : ComponentPropsWithRequiredModelParams | null
+  getMetas<Model>(config: ARCConfig<Model>, prop: string | undefined, props: ComponentProps) : any
   _getModel<Model>(config: ARCConfig<Model>, props: AnyArcComponentProps<Model>) : ARCMetaModel<Model> | null
   getModel<Model> (config: ARCConfig<Model>, props: AnyArcComponentProps<Model>) : Model | null
-  getError: (config: ARCConfig<Model>, props: ComponentWithStoreProps<Model>) => any
-  isSyncing: (config: ARCConfig<Model>, props: ComponentWithStoreProps<Model>) => boolean
-  isLoaded: (config: ARCConfig<Model>, props: ComponentWithStoreProps<Model>) => boolean
-  allowReFetch: (config: ARCConfig<Model>, props: ComponentWithStoreProps<Model>) => boolean
-  errorReFetch: (config: ARCConfig<Model>, props: ComponentWithStoreProps<Model>) => boolean
-  getStore: (config: ARCConfig<Model>, reduxStoreState: object) => ARCStoreState<Model>
-  modelPicker: (config: ARCConfig<Model>,
+  getError<Model>(config: ARCConfig<Model>, props: ComponentWithStoreProps<Model>) : any
+  isSyncing<Model>(config: ARCConfig<Model>, props: ComponentWithStoreProps<Model>) : boolean
+  isLoaded<Model>(config: ARCConfig<Model>, props: ComponentWithStoreProps<Model>) : boolean
+  allowReFetch<Model>(config: ARCConfig<Model>, props: ComponentWithStoreProps<Model>) : boolean
+  errorReFetch<Model>(config: ARCConfig<Model>, props: ComponentWithStoreProps<Model>) : boolean
+  getStore<Model>(config: ARCConfig<Model>, reduxStoreState: object) : ARCStoreState<Model>
+  modelPicker<Model>(config: ARCConfig<Model>,
                 props: ComponentWithStoreProps<Model>,
-                listOfParams: ComponentPropsWithRequiredModelParams[]) => Model[]
-  freeModelPicker: (
+                listOfParams: ComponentPropsWithRequiredModelParams[]) : Model[]
+  freeModelPicker<Model>(
     config: ARCConfig<Model>,
     reduxStoreState: object,
     listOfParams: ComponentPropsWithRequiredModelParams[]
-  ) => ARCModel<Model>[]
-  getFetchingCount: (props:ComponentWithStoreProps<Model>) => number
+  ) : ARCModel<Model>[]
+  getFetchingCount<Model>(props:ComponentWithStoreProps<Model>) : number
 
   /** COLLECTIONS
    * SOON TO BE DROPPED
    * **/
-  getCollectionError: (props: ComponentWithStoreProps<Model>) => any
-  isCollectionLoaded: (props: ComponentWithStoreProps<Model>) => boolean
-  isCollectionSyncing: (props: ComponentWithStoreProps<Model>) => boolean
-  allowCollectionReFetch: (config:ARCConfig<Model>, props: ComponentWithStoreProps<Model>) => boolean
+  getCollectionError<Model>(props: ComponentWithStoreProps<Model>) : any
+  isCollectionLoaded<Model>(props: ComponentWithStoreProps<Model>) : boolean
+  isCollectionSyncing<Model>(props: ComponentWithStoreProps<Model>) : boolean
+  allowCollectionReFetch<Model>(config:ARCConfig<Model>, props: ComponentWithStoreProps<Model>) : boolean
 }
 
-const core: CoreMethods<unknown> = {
+export const core: CoreMethods = {
   keyGenerator,
   hasRequiredParams,
   missingParams,
@@ -378,4 +378,3 @@ const core: CoreMethods<unknown> = {
   allowCollectionReFetch,
 }
 
-export default core

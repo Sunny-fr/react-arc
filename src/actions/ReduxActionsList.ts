@@ -123,7 +123,11 @@ export class ReduxActionsList<Model>{
       ...config,
       headers: this.decorateHeaders({ ...props, ...params }),
       paths: Object.keys(config.paths).reduce((s, path) => {
-        const value = this.decorate(config.paths[path], params)
+        const _path = config.paths[path]
+        if(!_path) {
+          throw new Error(`Path ${path} in your ARCConfig  is not defined in config`)
+        }
+        const value = this.decorate(_path, params)
         return {
           ...s,
           [path]: value,
@@ -149,7 +153,7 @@ export class ReduxActionsList<Model>{
     config: ARCConfig<Model>,
     _props: object,
     axiosOptions: ARCAxiosOptions<Model>
-  ): AxiosPromise {
+  ): AxiosPromise<Model> {
     return this.axios({
       // @ts-ignore Default methods are already extended
       method: config.methods.read,
@@ -189,7 +193,7 @@ export class ReduxActionsList<Model>{
         this.retryConditionFn || axiosOptions?.retryConditionFn
       const config = this.beforeFetch({ config: this.config, params, props })
       const maxTries = this.config.maxTries || 1
-      const applyRequest = (tryNumber: number = 1): AxiosPromise => {
+      const applyRequest = (tryNumber: number = 1): AxiosPromise<Model> => {
         //(!!axiosOptions ? axiosOptions.retryConditionFn : undefined)
         dispatch({
           type: this.decorate("FETCH_{uppercaseName}"),
@@ -351,7 +355,7 @@ export class ReduxActionsList<Model>{
     config: ARCConfig<Model>,
     _props: object,
     axiosOptions: ARCAxiosOptions<Model>
-  ): AxiosPromise {
+  ): AxiosPromise<Model[]> {
     const url = config.paths.collection
     return this.axios({
       // @ts-ignore
@@ -412,4 +416,4 @@ export class ReduxActionsList<Model>{
   }
 }
 
-export default ReduxActionsList
+

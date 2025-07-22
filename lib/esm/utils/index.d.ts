@@ -1,0 +1,12 @@
+import { ARCMetaCollectionMap, ARCMetaModel, ARCModel } from "../types/model.types";
+import { ARCConfig } from "../types/config.types";
+import { ComponentProps, ComponentPropsWithRequiredModelParams } from "../types/components.types";
+export declare function flatten<Model>(arcCollectionMap: ARCMetaCollectionMap<Model>, withMetas?: boolean): ARCModel<Model>[] | ARCMetaModel<Model>[];
+export declare function extendWithDefaultProps<Model>(config: ARCConfig<Model>, ownProps: ComponentProps): ComponentProps;
+export declare function extractParams(props?: string[], source?: ComponentProps): {};
+export declare function getParams<Model>(config: ARCConfig<Model>, source?: ComponentProps): ComponentPropsWithRequiredModelParams;
+export declare const changedProps: (prevProps: ComponentProps, nextProps: ComponentProps) => string[];
+export declare function cleanParams(str: string): string;
+export declare function stringIsReplaceable(str: string): boolean;
+export declare function interpolate(str: string | null, params: object): string;
+export declare function getDefaultConfig<Model>(): ARCConfig<Model>;

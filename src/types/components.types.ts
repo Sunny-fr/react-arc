@@ -8,10 +8,11 @@ import {
 } from "./model.types"
 import { ThunkDispatch } from "redux-thunk"
 
+
 /**
  * Any Component Props
  */
-export interface ComponentProps {
+export interface ComponentProps extends React.ComponentProps<any> {
   dispatch?: ThunkDispatch<any, any, any>
 }
 
@@ -20,7 +21,9 @@ export interface ComponentProps {
  * for example model ARCConfig.modelParams = ['id','name']
  * expected ComponentPropsWithRequiredModelParams are  {id:'12', name:'Al', ...}
  */
-export interface ComponentPropsWithRequiredModelParams extends ComponentProps {}
+export interface ComponentPropsWithRequiredModelParams extends ComponentProps  {
+  [key: string]: any
+}
 
 /**
  * Component Props with required params
@@ -33,11 +36,11 @@ export interface ComponentWithStoreProps<Model>
   collection: ARCMetaCollectionMap<Model>
   temp?: ARCModel<Model> | null | undefined
   // To be dropped
-  fetching: boolean
+  fetching?: boolean
   // To be dropped
-  loaded: boolean
+  loaded?: boolean
   // To be dropped
-  error: object | null
+  error?: object | null
   // Other props
   //[key: string]: any
 }
