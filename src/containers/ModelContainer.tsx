@@ -75,12 +75,15 @@ export class ModelContainer<P, S, Model> extends Container<P,S, Model> {
   fetch = (params: ComponentPropsWithRequiredModelParams) => {
     // const dispatch = this.checkDispatchAvailability()
     // if (!dispatch) return
-    const axiosOptions: ARCAxiosOptions<Model> = {}
+    this.abortController = new AbortController()
+    const axiosOptions: ARCAxiosOptions<Model> = {
+      abortController: this.abortController
+    }
 
     const promise = this.props.dispatch(
       this.actions.fetchOne(params, this.props, axiosOptions)
     )
-    this.arcCancelPendingRequest = axiosOptions.cancel
+
     // promise.catch((e) => {
     //   /* */
     // })
@@ -211,10 +214,8 @@ export class ModelContainer<P, S, Model> extends Container<P,S, Model> {
   componentWillUnmount() {
     clearTimeout(this.delayedTimeout)
     this.delayedTimeout = undefined
-    if (this.arcCancelPendingRequest) {
-      this.arcCancelPendingRequest(
-        commons.cancelRequestPayload({ ARCConfig: this.ARCConfig })
-      )
+    if (this.abortController) {
+      this.abortController.abort(commons.cancelRequestPayload({ ARCConfig: this.ARCConfig }))
     }
   }
 
