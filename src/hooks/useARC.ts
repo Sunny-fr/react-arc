@@ -5,7 +5,7 @@ import {
   ComponentPropsWithRequiredModelParams,
 } from "../types/components.types"
 import { ARCConfig } from "../types/config.types"
-import { UseARCMethods, UseARC, UseARCState } from "../types/hooks.types"
+import {UseARCMethods, UseARC, UseARCState, ARCResponse} from "../types/hooks.types"
 
 export function useARC<Model>({
   ARCConfig,
@@ -16,17 +16,17 @@ export function useARC<Model>({
 }): UseARC<Model> {
   const arc = new ARC({ ARCConfig })
   const defaultProps = props
-  const defaultState: UseARCState = {
+  const defaultState: UseARCState<Model> = {
     error: null,
     loading: false,
     loaded: false,
     response: null,
     pending: false,
   }
-  const pendingPromise = useRef<Promise<Response> | null>(null)
-  const [state, setState] = useState<UseARCState>(defaultState)
+  const pendingPromise = useRef<Promise< ARCResponse<Model>> | null>(null)
+  const [state, setState] = useState<UseARCState<Model>>(defaultState)
 
-  const handle = (fetcher: () => Promise<Response>) => {
+  const handle = (fetcher: () => Promise<ARCResponse<Model>>) => {
     if (state.pending && pendingPromise.current) {
       // If a request is already pending, return the existing promise
       return pendingPromise.current
@@ -105,7 +105,7 @@ export function useARC<Model>({
       arc.extractParams(props || defaultProps),
     extractParams: (props: ComponentProps) =>
       arc.extractParams(props || defaultProps),
-    custom: (fetcher: () => Promise<Response>) => {
+    custom: (fetcher: () => Promise<ARCResponse<Model>>) => {
       return handle(fetcher)
     },
   }

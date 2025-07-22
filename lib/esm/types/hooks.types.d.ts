@@ -1,13 +1,14 @@
 import { ARC } from "../hooks/arc";
 import { ComponentProps, ComponentPropsWithRequiredModelParams } from "./components.types";
+export type ARCResponse<Model> = Model | null | undefined;
 /**
  * État interne du hook useARC
  */
-export interface UseARCState {
+export interface UseARCState<Model> {
     error: null | object;
     loading: boolean;
     loaded: boolean;
-    response: Response | null;
+    response?: ARCResponse<Model>;
     pending: boolean;
 }
 /**
@@ -24,14 +25,14 @@ export interface UseARCMethods<Model> {
     get: (args: {
         props?: ComponentProps;
         params: ComponentPropsWithRequiredModelParams;
-    }) => (Promise<Response>);
+    }) => Promise<ARCResponse<Model>>;
     /**
      * Supprime une ressource
      */
     remove: (args: {
         props?: ComponentProps;
         params: ComponentPropsWithRequiredModelParams;
-    }) => (Promise<Response>);
+    }) => Promise<ARCResponse<Model>>;
     /**
      * Crée une nouvelle ressource
      */
@@ -39,7 +40,7 @@ export interface UseARCMethods<Model> {
         props?: ComponentProps;
         params: ComponentPropsWithRequiredModelParams;
         body: any;
-    }) => (Promise<Response>);
+    }) => Promise<ARCResponse<Model>>;
     /**
      * Met à jour une ressource existante
      */
@@ -47,7 +48,7 @@ export interface UseARCMethods<Model> {
         props?: ComponentProps;
         params: ComponentPropsWithRequiredModelParams;
         body: any;
-    }) => (Promise<Response>);
+    }) => Promise<ARCResponse<Model>>;
     /**
      * Extrait les paramètres requis à partir des props
      */
@@ -59,7 +60,7 @@ export interface UseARCMethods<Model> {
     /**
      * Permet d'exécuter une requête personnalisée
      */
-    custom: (fetcher: () => Promise<Response>) => (Promise<Response>);
+    custom: (fetcher: () => Promise<ARCResponse<Model>>) => Promise<ARCResponse<Model>>;
 }
 /**
  * Type de retour complet du hook useARC
@@ -68,6 +69,6 @@ export interface UseARC<Model> {
     error: null | object;
     loading: boolean;
     loaded: boolean;
-    response: Response | null;
+    response: ARCResponse<Model>;
     arc: UseARCMethods<Model>;
 }
