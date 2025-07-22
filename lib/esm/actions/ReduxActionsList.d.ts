@@ -11,9 +11,9 @@ export declare class ReduxActionsList<Model> {
     headers: ARCConfigHeaders;
     methods: ARCHttpRestMethodMap;
     constructor(options: ReduxActionsListOptions<Model>);
-    static GenerateCancelToken(axiosOptions: ARCAxiosOptions<unknown>): import("axios").CancelToken;
+    static GenerateAbortSignal(axiosOptions: ARCAxiosOptions<unknown>): AbortSignal | undefined;
     getInitialConfig(): ARCConfig<Model>;
-    generateCancelToken(axiosOptions: ARCAxiosOptions<Model>): import("axios").CancelToken;
+    generateAbortSignal(axiosOptions: ARCAxiosOptions<Model>): AbortSignal | undefined;
     decorateHeaders(props?: {}): ARCConfigHeaders;
     setHeaders(): void;
     updateConfig(config: ARCConfig<Model>): void;

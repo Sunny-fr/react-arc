@@ -1,6 +1,6 @@
 import { connect } from "react-redux"
 import { extendWithDefaultProps, getDefaultConfig } from "../utils"
-import core from "../actions/core"
+import {core} from "../actions/core"
 import { ARCConfig } from "../types/config.types"
 import { ComponentWithStoreProps } from "../types/components.types"
 import { ComponentType} from "react"

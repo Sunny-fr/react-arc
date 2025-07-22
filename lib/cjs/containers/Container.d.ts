@@ -8,7 +8,7 @@ export declare class Container<P, S, Model> extends React.Component<P & ARCWrapp
     ARCConfig: ARCConfig<Model>;
     actions: ReduxActionsList<Model>;
     core: CoreMethods;
-    arcCancelPendingRequest: any;
+    abortController: null | AbortController;
     props: P & ARCWrappedComponentProps<Model>;
     delayedTimeout: number | undefined;
     constructor(props: (Readonly<P> | P) & ARCWrappedComponentProps<Model>);
