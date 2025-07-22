@@ -24,14 +24,14 @@ export interface UseARCMethods<Model> {
     get: (args: {
         props?: ComponentProps;
         params: ComponentPropsWithRequiredModelParams;
-    }) => Promise<Response> | undefined;
+    }) => (Promise<Response> | undefined);
     /**
      * Supprime une ressource
      */
     remove: (args: {
         props?: ComponentProps;
         params: ComponentPropsWithRequiredModelParams;
-    }) => Promise<Response> | undefined;
+    }) => (Promise<Response> | undefined);
     /**
      * Crée une nouvelle ressource
      */
@@ -39,7 +39,7 @@ export interface UseARCMethods<Model> {
         props?: ComponentProps;
         params: ComponentPropsWithRequiredModelParams;
         body: any;
-    }) => Promise<Response> | undefined;
+    }) => (Promise<Response> | undefined);
     /**
      * Met à jour une ressource existante
      */
@@ -47,7 +47,7 @@ export interface UseARCMethods<Model> {
         props?: ComponentProps;
         params: ComponentPropsWithRequiredModelParams;
         body: any;
-    }) => Promise<Response> | undefined;
+    }) => (Promise<Response> | undefined);
     /**
      * Extrait les paramètres requis à partir des props
      */
@@ -59,7 +59,7 @@ export interface UseARCMethods<Model> {
     /**
      * Permet d'exécuter une requête personnalisée
      */
-    custom: (fetcher: () => Promise<Response>) => Promise<Response> | undefined;
+    custom: (fetcher: () => Promise<Response>) => (Promise<Response> | undefined);
 }
 /**
  * Type de retour complet du hook useARC
