@@ -5,7 +5,7 @@ import {
   ComponentPropsWithRequiredModelParams,
 } from "../types/components.types"
 import { ARCConfig } from "../types/config.types"
-import { UseARCMethods, UseARCReturn, UseARCState } from "../types/hooks.types"
+import { UseARCMethods, UseARC, UseARCState } from "../types/hooks.types"
 
 export function useARC<Model>({
   ARCConfig,
@@ -13,7 +13,7 @@ export function useARC<Model>({
 }: {
   ARCConfig: ARCConfig<Model>
   props: ComponentProps
-}): UseARCReturn<Model> {
+}): UseARC<Model> {
   const arc = new ARC({ ARCConfig })
   const defaultProps = props
   const defaultState: UseARCState = {

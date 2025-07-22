@@ -74,7 +74,7 @@ export interface UseARCMethods<Model> {
 /**
  * Type de retour complet du hook useARC
  */
-export interface UseARCReturn<Model> {
+export interface UseARC<Model> {
   error: null | object
   loading: boolean
   loaded: boolean
