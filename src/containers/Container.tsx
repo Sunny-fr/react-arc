@@ -20,7 +20,7 @@ export class Container<P, S, Model> extends React.Component<P & ARCWrappedCompon
   ARCConfig: ARCConfig<Model>
   actions: ReduxActionsList<Model>
   core: CoreMethods
-  arcCancelPendingRequest: any
+  abortController: null | AbortController
   props: P & ARCWrappedComponentProps<Model>
   delayedTimeout: number | undefined
 
@@ -32,7 +32,7 @@ export class Container<P, S, Model> extends React.Component<P & ARCWrappedCompon
       config: this.ARCConfig,
     })
     this.core = core as CoreMethods
-    this.arcCancelPendingRequest = null
+    this.abortController = null
   }
 
   getTrueStoreState() {

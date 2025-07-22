@@ -41,24 +41,16 @@ export class ReduxActionsList<Model>{
     this.axios = axios.create()
   }
 
-  static GenerateCancelToken(axiosOptions: ARCAxiosOptions<unknown>) {
-    return new axios.CancelToken(function executor(c) {
-      if (axiosOptions) {
-        axiosOptions.cancel = c
-      }
-    })
+  static GenerateAbortSignal(axiosOptions: ARCAxiosOptions<unknown>) {
+    return axiosOptions?.abortController?.signal
   }
 
   getInitialConfig() {
     return this.initialConfig
   }
 
-  generateCancelToken(axiosOptions: ARCAxiosOptions<Model>) {
-    return new axios.CancelToken(function executor(c) {
-      if (axiosOptions) {
-        axiosOptions.cancel = c
-      }
-    })
+  generateAbortSignal(axiosOptions: ARCAxiosOptions<Model>) {
+    return axiosOptions?.abortController?.signal
   }
 
   decorateHeaders(props = {}): ARCConfigHeaders {
@@ -155,33 +147,14 @@ export class ReduxActionsList<Model>{
     axiosOptions: ARCAxiosOptions<Model>
   ): AxiosPromise<Model> {
     return this.axios({
-      // @ts-ignore Default methods are already extended
-      method: config.methods.read,
+      // methods are already lowercased in setupMethods
+      method: (config.methods as ARCHttpRestMethodMap).read ,
       url: config.paths.item,
       headers: config.headers,
-      cancelToken: this.generateCancelToken(axiosOptions),
+      signal: this.generateAbortSignal(axiosOptions),
     })
   }
 
-  // NEVER USED !
-  // init(params) {
-  //   return (dispatch) => {
-  //     dispatch({
-  //       type: this.decorate("INIT_{uppercaseName}"),
-  //       payload: { params },
-  //     })
-  //   }
-  // }
-
-  // NEVER USED !
-  // requestFetchOne(params) {
-  //   return (dispatch) => {
-  //     dispatch({
-  //       type: this.decorate("FETCH_REQUESTED_{uppercaseName}"),
-  //       payload: { params },
-  //     })
-  //   }
-  // }
 
   fetchOne(
     params: ComponentPropsWithRequiredModelParams,
@@ -358,11 +331,10 @@ export class ReduxActionsList<Model>{
   ): AxiosPromise<Model[]> {
     const url = config.paths.collection
     return this.axios({
-      // @ts-ignore
-      method: config.methods.read,
+      method: (config.methods as ARCHttpRestMethodMap).read,
       url,
       headers: config.headers,
-      cancelToken: this.generateCancelToken(axiosOptions),
+      signal: this.generateAbortSignal(axiosOptions),
     })
   }
 

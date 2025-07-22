@@ -1,6 +1,5 @@
 import { ARCConfig } from "./config.types"
 import { ComponentPropsWithRequiredModelParams } from "./components.types"
-import { Canceler } from "axios"
 
 export interface ReduxActionsListOptions<Model> {
   config: ARCConfig<Model>
@@ -13,6 +12,6 @@ export interface RetryFnParams<Model> {
   tryNumber: number
 }
 export interface ARCAxiosOptions<Model> {
-  cancel?: Canceler
+  abortController?: AbortController
   retryConditionFn?: (error: object, params: RetryFnParams<Model>) => boolean
 }
