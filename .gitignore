@@ -5,7 +5,6 @@
 *.vscode/*
 .settings
 .project
-dist
 target
 .DS_Store
 server/tmp
