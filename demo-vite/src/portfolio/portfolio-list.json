@@ -1,0 +1,15 @@
+{
+  "name": "portfolioList",
+  "uppercaseName": "PORTFOLIO_LIST",
+  "modelProps": [
+    "start",
+    "limit"
+  ],
+  "paths": {
+    "item": "https://jsonplaceholder.typicode.com/photos?_start={start}&_limit={limit}"
+  },
+  "defaultModel": {
+    "title": "unnamed"
+  },
+  "maxTries": 3
+}
