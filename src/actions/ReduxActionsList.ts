@@ -41,7 +41,7 @@ export class ReduxActionsList<Model>{
     this.axios = axios.create()
   }
 
-  static GenerateAbortSignal(axiosOptions: ARCAxiosOptions<unknown>) {
+  static GenerateAbortSignal<Model>(axiosOptions: ARCAxiosOptions<Model>) {
     return axiosOptions?.abortController?.signal
   }
 
