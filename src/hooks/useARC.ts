@@ -23,12 +23,17 @@ export function useARC<Model>({
     response: null,
     pending: false,
   }
+  const pendingPromise = useRef<Promise<Response> | null>(null)
   const [state, setState] = useState<UseARCState>(defaultState)
 
   const handle = (fetcher: () => Promise<Response>) => {
-    if (state.pending) return
+    if (state.pending && pendingPromise.current) {
+      // If a request is already pending, return the existing promise
+      return pendingPromise.current
+    }
     setState({ ...state, error: null, loading: true })
-    return fetcher()
+    pendingPromise.current = fetcher()
+    pendingPromise.current
       .then((response) => {
         setState({
           ...state,
@@ -37,12 +42,17 @@ export function useARC<Model>({
           loading: false,
           response,
         })
+
+        pendingPromise.current = null
         return Promise.resolve(response)
       })
       .catch((error) => {
         setState({ ...state, error, loading: false, pending: false })
+        pendingPromise.current = null
         return Promise.reject(error)
       })
+
+    return pendingPromise.current
   }
 
   const params = useRef(arc.extractParams(props))
