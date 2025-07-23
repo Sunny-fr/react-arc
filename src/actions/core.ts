@@ -243,7 +243,7 @@ function modelPicker<Model>(
     }
     const model = getModel(config, props)
     if (model) {
-      models.push()
+      models.push(model)
     }
   })
   return models
