@@ -201,11 +201,13 @@ function errorReFetch<Model>(config: ARCConfig<Model>, props: ComponentWithStore
  * @param {ARCConfig} config
  * @param {ARCRootState} reduxStoreState - redux's store.getState()
  */
-function getStore<Model>(config: ARCConfig<Model>, reduxStoreState: ARCRootState<Model>) {
-  if(!reduxStoreState[config.name]) {
+function getStore<Model>(config: ARCConfig<Model>, reduxStoreState: ARCRootState) {
+
+  const store: ARCStoreState<Model> = reduxStoreState[config.name]
+  if(!store) {
     throw new Error(`Namespace "${config.name}" not found in store. Please ensure the ARCConfig is correctly set up.`)
   }
-  return reduxStoreState[config.name]
+  return store
 }
 
 
@@ -253,7 +255,7 @@ function modelPicker<Model>(
  */
 function freeModelPicker<Model>(
   config: ARCConfig<Model>,
-  reduxStoreState: ARCRootState<Model>,
+  reduxStoreState: ARCRootState,
   listOfParams: ComponentPropsWithRequiredModelParams[] = []
 ) {
   const {collection} = getStore(config, reduxStoreState)

@@ -8,5 +8,6 @@ export { ARCConnector } from "./connectors/ARCConnector";
 export { useARC } from "./hooks/useARC";
 export { withARC } from "./HOC/withARC";
 export { withUseARC } from "./HOC/withUseARC";
+export { createHOC } from "./HOC/createHOC";
 export * from "./types/types";
 export { extractParams, interpolate, flatten, cleanParams, changedProps, getParams, } from "./utils";

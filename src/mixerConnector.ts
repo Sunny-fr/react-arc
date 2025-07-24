@@ -1,7 +1,7 @@
 import {getDefaultConfig} from "./utils"
 import {Connect} from "react-redux"
 import {ARCConfig} from "./types/config.types"
-import {ARCRootState} from "./types/connectors.types";
+import {ARCRootState, ARCStoreState} from "./types/connectors.types";
 
 export function mixerConnector <Model>(
   connect: Connect,
@@ -12,8 +12,8 @@ export function mixerConnector <Model>(
   const reducerName = extendedConfig.name
   return connect(
     (store) => {
-      const mapStateToProps = (rootState:ARCRootState<Model>) => {
-        const state = rootState[reducerName]
+      const mapStateToProps = (rootState:ARCRootState) => {
+        const state:ARCStoreState<Model> = rootState[reducerName]
         return {
           ARCConfig: extendedConfig,
           collection: state.collection,
@@ -22,7 +22,7 @@ export function mixerConnector <Model>(
       const optionalStateToProps = customMapStateToProps
         ? customMapStateToProps(store)
         : {}
-      return Object.assign({}, mapStateToProps(store as ARCRootState<Model>), optionalStateToProps)
+      return Object.assign({}, mapStateToProps(store as ARCRootState), optionalStateToProps)
     },
     null,
     null,

@@ -5,9 +5,9 @@ import {
   ARCWrappedComponentProps,
   ComponentWithStoreProps,
 } from "../types/components.types"
-import {DefaultRootState, Connect} from "react-redux"
+import { Connect} from "react-redux"
 import {ThunkDispatch} from "redux-thunk";
-import {ARCRootState} from "../types/connectors.types";
+import {ARCRootState, ARCStoreState} from "../types/connectors.types";
 
 
 
@@ -15,16 +15,19 @@ import {ARCRootState} from "../types/connectors.types";
 export function ARCConnector<Model>(
   connect: Connect,
   config: ARCConfig<Model>,
-  customMapStateToProps?: (store: DefaultRootState) => object
+  customMapStateToProps?: (store: ARCRootState) => object
 ) {
   const ARCConfig = {...getDefaultConfig<Model>(), ...config}
   const namespace = ARCConfig.name
-  function arcConnector (store: ARCRootState<Model>, ownProps: ComponentWithStoreProps<Model>){
-    // Required Props
-    const collection = store[namespace].collection
-    if (!collection) {
+  function arcConnector (rootState: ARCRootState, ownProps: ComponentWithStoreProps<Model>){
+
+    const store:ARCStoreState<Model> = rootState[namespace]
+    if (!store) {
       throw new Error(`Collection not found in store for namespace "${namespace}". Please ensure the ARCConfig is correctly set up.`);
     }
+    const { collection } = store
+
+
     const arcProps = {
       collection,
     }
@@ -58,7 +61,7 @@ export function ARCConnector<Model>(
       dispatch: ownProps.dispatch as ThunkDispatch<any, any, any>
     }
     const optionalStateToProps = customMapStateToProps
-      ? customMapStateToProps(store)
+      ? customMapStateToProps(rootState)
       : {}
     return {...mapStateToProps, optionalStateToProps}
   }

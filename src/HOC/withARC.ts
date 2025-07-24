@@ -14,7 +14,7 @@ import {ARCRootState, ARCStoreState} from "../types/connectors.types";
  */
 export function connectFn<Model>(config: ARCConfig<Model>) {
   return function(
-    store: ARCRootState<Model>,
+    store: ARCRootState,
     ownProps: object
   )  {
     const namespace = config.name
@@ -22,7 +22,7 @@ export function connectFn<Model>(config: ARCConfig<Model>) {
       throw new Error(`Namespace "${namespace}" not found in store. Please ensure the ARCConfig is correctly set up.`);
     }
 
-    const reducerState = store[namespace] as unknown as  ARCStoreState<Model>
+    const reducerState:ARCStoreState<Model> = store[namespace]
 
     const collection = reducerState.collection
     const arcProps = {
