@@ -31,16 +31,16 @@ export declare class ReduxActionsList<Model> {
     fetchOne(params: ComponentPropsWithRequiredModelParams, props: object | undefined, axiosOptions: ARCAxiosOptions<Model>): (dispatch: Dispatch) => AxiosPromise<Model>;
     /**  SAVE **/
     standAloneSave(data: object, params: ComponentPropsWithRequiredModelParams, create: boolean, config: ARCConfig<Model>, _props: object): Promise<import("axios").AxiosResponse<any, any>>;
-    save(data: object, params: ComponentPropsWithRequiredModelParams, create?: boolean, props?: object): (dispatch: Dispatch) => AxiosPromise<any>;
+    save(data: object, params: ComponentPropsWithRequiredModelParams, create?: boolean, props?: object): (dispatch: Dispatch) => AxiosPromise;
     /** REMOVE **/
     standAloneRemove(_params: ComponentPropsWithRequiredModelParams, config: ARCConfig<Model>, _props: object): AxiosPromise;
-    remove(params: ComponentPropsWithRequiredModelParams, props?: object): (dispatch: Dispatch) => AxiosPromise<any>;
+    remove(params: ComponentPropsWithRequiredModelParams, props?: object): (dispatch: Dispatch) => AxiosPromise;
     /**
      * LISTS
      * to be deprecated
      * **/
     standAloneFetchAll(_params: ComponentPropsWithRequiredModelParams, config: ARCConfig<Model>, _props: object, axiosOptions: ARCAxiosOptions<Model>): AxiosPromise<Model[]>;
-    fetchAll(params: ComponentPropsWithRequiredModelParams, props: object | undefined, axiosOptions: ARCAxiosOptions<Model>): (dispatch: Dispatch) => AxiosPromise<any>;
+    fetchAll(params: ComponentPropsWithRequiredModelParams, props: object | undefined, axiosOptions: ARCAxiosOptions<Model>): (dispatch: Dispatch) => AxiosPromise;
     reset(): (dispatch: Dispatch) => void;
     resetTemp(): (dispatch: Dispatch) => void;
 }

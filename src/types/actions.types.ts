@@ -1,5 +1,6 @@
 import { ARCConfig } from "./config.types"
 import { ComponentPropsWithRequiredModelParams } from "./components.types"
+import {ComponentProps} from "react";
 
 export interface ReduxActionsListOptions<Model> {
   config: ARCConfig<Model>
@@ -7,11 +8,11 @@ export interface ReduxActionsListOptions<Model> {
 export interface RetryFnParams<Model> {
   params: ComponentPropsWithRequiredModelParams
   config: ARCConfig<Model>
-  props: object
+  props: Partial<ComponentProps<any>>
   axiosOptions: ARCAxiosOptions<Model>
   tryNumber: number
 }
 export interface ARCAxiosOptions<Model> {
   abortController?: AbortController
-  retryConditionFn?: (error: object, params: RetryFnParams<Model>) => boolean
+  retryConditionFn?: (error: any, params: RetryFnParams<Model>) => boolean
 }

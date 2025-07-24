@@ -1,8 +1,14 @@
 import React from 'react'
-export function LargeError(props) {
+
+interface LargeErrorProps {
+    title: string
+    children: React.ReactNode
+}
+
+export function LargeError({title, children}: LargeErrorProps): React.ReactElement {
     return (<div className="error large">
-        <div className="title">{props.title}</div>
-        <div className="description">{props.children}</div>
+        <div className="title">{title}</div>
+        <div className="description">{children}</div>
     </div>)
 }
 export default LargeError

@@ -1,6 +1,7 @@
-import { getDefaultConfig } from "./utils"
-import { Connect, DefaultRootState } from "react-redux"
-import { ARCConfig } from "./types/config.types"
+import {getDefaultConfig} from "./utils"
+import {Connect} from "react-redux"
+import {ARCConfig} from "./types/config.types"
+import {ARCRootState} from "./types/connectors.types";
 
 export function mixerConnector <Model>(
   connect: Connect,
@@ -8,24 +9,20 @@ export function mixerConnector <Model>(
   customMapStateToProps: Function | undefined
 ) {
   const extendedConfig = { ...getDefaultConfig(), ...config }
-  const namespace = extendedConfig.name
+  const reducerName = extendedConfig.name
   return connect(
     (store) => {
-      // Required Props
-      const mapStateToProps = (store: DefaultRootState) => {
+      const mapStateToProps = (rootState:ARCRootState<Model>) => {
+        const state = rootState[reducerName]
         return {
           ARCConfig: extendedConfig,
-          tempModel: store[namespace].temp,
-          loaded: store[namespace].loaded,
-          fetching: store[namespace].fetching,
-          error: store[namespace].error,
-          collection: store[namespace].collection,
+          collection: state.collection,
         }
       }
       const optionalStateToProps = customMapStateToProps
         ? customMapStateToProps(store)
         : {}
-      return Object.assign({}, mapStateToProps(store), optionalStateToProps)
+      return Object.assign({}, mapStateToProps(store as ARCRootState<Model>), optionalStateToProps)
     },
     null,
     null,

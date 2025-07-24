@@ -133,6 +133,11 @@ export function mixerStore<Model>(options: MixerStoreParams<Model>) {
       return { ...state.collection, [key]: item }
     }
 
+    if(action.type.includes('PORTF')){
+      console.log(action.type)
+    }
+
+
     switch (action.type) {
       /*** FETCHING COLLECTION ***/
       case t(ACTIONS_MAPPER.COLLECTION_RESET): {

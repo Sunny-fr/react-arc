@@ -1,22 +1,23 @@
 import React from 'react';
-import config from '../config.json';
-import { connect } from 'react-redux';
-import { mixerConnector }  from 'react-arc'
-// import { useARCModel } from '../../lib/hooks/arc';
-import { useARC }  from 'react-arc'
+import {album} from "../arc/album.arc";
+import {useARC} from "../../../../src";
+
 
 interface AlbumItemComponentProps {
-  // Ajoutez ici les props spécifiques si besoin
+  id: string;
 }
 
 export const AlbumItemComponent: React.FC<AlbumItemComponentProps> = (props) => {
-  // Utilisation d'un hook personnalisé pour la logique du modèle
-  const { model, isLoaded, error } = useARC(props, config);
+
+  const { response, loaded, error } = useARC({
+    ARCConfig: album,
+    props
+  });
 
   if (error) return (<label className="label label-danger">!</label>);
-  if (!isLoaded) return (<label className="label label-default">...</label>);
-  return (<label className="label label-default">{model?.title}</label>);
+  if (!loaded) return (<label className="label label-default">...</label>);
+  return (<label className="label label-default">{response?.title}</label>);
 };
 
-export const AlbumItem = mixerConnector(connect, config)(AlbumItemComponent);
+export const AlbumItem = AlbumItemComponent;
 

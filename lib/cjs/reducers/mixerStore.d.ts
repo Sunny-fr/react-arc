@@ -37,6 +37,12 @@ export declare function mixerStore<Model>(options: MixerStoreParams<Model>): (st
     collection: ARCMetaCollectionMap<Model>;
     temp: ARCMetaModel<Model>;
 } | {
+    collection: {};
+    temp: ARCMetaModel<Model>;
+    fetching: boolean;
+    loaded: boolean;
+    error: object | null;
+} | {
     temp: {
         model: any;
         metas: import("../types/model.types").ARCMetas;

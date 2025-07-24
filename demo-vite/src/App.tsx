@@ -16,14 +16,14 @@ import {Router, Route, Switch} from 'react-router'
 import {ConnectedRouter} from 'connected-react-router'
 
 
-const ApplicationLayoutWrapper = (props) => {
+const ApplicationLayoutWrapper = (props:any) => {
   return (<Application {...props}>
     <Switch>
-      <Route exact path="/" name="Home" component={Portfolio}/>
-      <Route path="/view/:id" name="Portfolio Item" component={PortfolioItem}/>
-      <Route path="/create" name="Create Item" component={PortfolioEditItem}/>
-      <Route path="/edit/:id" name="Edit Portfolio Item" component={PortfolioEditItem}/>
-      <Route path="/contact" name="Contact" component={Contact}/>
+      <Route exact path="/" component={Portfolio}/>
+      <Route path="/view/:id" component={PortfolioItem}/>
+      <Route path="/create" component={PortfolioEditItem}/>
+      <Route path="/edit/:id" component={PortfolioEditItem}/>
+      <Route path="/contact" component={Contact}/>
     </Switch>
   </Application>)
 }

@@ -7,27 +7,27 @@
 // // @ts-ignore
 // export { default as AbstractFormModelContainer } from "./containers/AbstractFormModelContainer"
 
-export { ModelContainer } from "./containers/ModelContainer"
+export {ModelContainer} from "./containers/ModelContainer"
 
-export { Container } from "./containers/Container"
+export {Container} from "./containers/Container"
 
-export {  ReduxActionsList } from "./actions/ReduxActionsList"
+export {ReduxActionsList} from "./actions/ReduxActionsList"
 
-export {  core } from "./actions/core"
+export {core} from "./actions/core"
 
-export {  mixerStore } from "./reducers/mixerStore"
+export {mixerStore} from "./reducers/mixerStore"
 
-export {  mixerConnector } from "./mixerConnector"
+export {mixerConnector} from "./mixerConnector"
 
-export {  ARCConnector } from "./connectors/ARCConnector"
+export {ARCConnector} from "./connectors/ARCConnector"
 
-export { useARC } from "./hooks/useARC"
+export {useARC} from "./hooks/useARC"
 
-export { withARC } from "./HOC/withARC"
+export {withARC} from "./HOC/withARC"
 
-export { withUseARC } from "./HOC/withUseARC"
+export {withUseARC} from "./HOC/withUseARC"
 
-export {ARCConnect} from "./connectors/ARCConnect"
+export {createHOC} from "./HOC/createHOC"
 
 export * from "./types/types"
 

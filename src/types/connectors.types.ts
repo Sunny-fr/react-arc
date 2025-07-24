@@ -3,7 +3,12 @@
  */
 import { ARCConfig } from "./config.types"
 import {ARCCollectionMap, ARCMetaCollectionMap, ARCMetaModel} from "./model.types"
+import {DefaultRootState} from "react-redux";
 
+
+export interface ARCRootState<M> extends DefaultRootState {
+  [key: string]: ARCStoreState<M>
+}
 
 export interface ARCMappedProps<Model> {
   loaded: boolean

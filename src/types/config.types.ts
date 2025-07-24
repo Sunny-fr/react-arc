@@ -91,7 +91,7 @@ export interface ARCConfig<Model> {
   // default model
   defaultModel?: ARCModel<Model>
   // defaults props passed to a component
-  defaultProps?: object
+  defaultProps?: Partial<ComponentProps<any>>
   // will fetch the data only one time
   fetchOnce?: boolean
   // if fetching data fails when the component is remounted, it will try to fetch again the data
@@ -114,7 +114,7 @@ interface ARCHttpRestMethodMapDefaults<Model> {
   // default model
   defaultModel: ARCModel<Model>
   // defaults props passed to a component
-  defaultProps: object
+  defaultProps: Partial<ComponentProps<any>>
   // will fetch the data only one time
   fetchOnce: boolean
   // if fetching data fails when the component is remounted, it will try to fetch again the data

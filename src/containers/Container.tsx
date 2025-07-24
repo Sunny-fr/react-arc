@@ -9,8 +9,6 @@ import {
   ComponentProps, ComponentWithStoreProps,
 } from "../types/components.types"
 
-//import { ARCMetaCollectionMap} from "../types/model.types";
-
 
 
 
@@ -25,7 +23,7 @@ export class Container<P, S, Model> extends React.Component<P & ARCWrappedCompon
   delayedTimeout: number | undefined
 
   constructor(props: (Readonly<P> | P) & ARCWrappedComponentProps<Model>) {
-    //: ARCWrappedComponentProps<Model>
+
     super(props)
     this.updateARC(props.ARCConfig)
     this.actions = new ReduxActionsList({
@@ -38,18 +36,14 @@ export class Container<P, S, Model> extends React.Component<P & ARCWrappedCompon
   getTrueStoreState() {
     const store = this.context.store.getState()
     const namespace = this.ARCConfig.name
+    if (!store[namespace]) {
+      console.log(this.ARCConfig)
+      throw new Error(`Namespace "${namespace}" not found in store. Please ensure the ARCConfig is correctly set up.`);
+    }
     return {
-      tempModel: store[namespace].temp,
-      // GETTING RID OF COLLECTION TYPE
-      //      loaded: store[namespace].loaded,
-      //      fetching: store[namespace].fetching,
-      //      error: store[namespace].error,
+      // tempModel: store[namespace].temp,
       collection: store[namespace].collection,
     }
-    // as {
-    //   tempModel?: Model | null | undefined
-    //   collection: ARCMetaCollectionMap<Model>
-    // }
   }
 
   getPropsFromTrueStoreState = (props?: ComponentProps) => {
@@ -66,11 +60,6 @@ export class Container<P, S, Model> extends React.Component<P & ARCWrappedCompon
     if (this.actions) this.actions.updateConfig(this.ARCConfig)
   }
 
-  // render() {
-  //   if (this.getError()) return null
-  //   if (!this.isLoaded()) return <p>loading</p>
-  //   return <div>loaded (you should do something with your view :) )</div>
-  // }
 }
 
 export default Container

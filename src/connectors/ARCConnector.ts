@@ -7,6 +7,7 @@ import {
 } from "../types/components.types"
 import {DefaultRootState, Connect} from "react-redux"
 import {ThunkDispatch} from "redux-thunk";
+import {ARCRootState} from "../types/connectors.types";
 
 
 
@@ -18,19 +19,14 @@ export function ARCConnector<Model>(
 ) {
   const ARCConfig = {...getDefaultConfig<Model>(), ...config}
   const namespace = ARCConfig.name
-  function arcConnector (store: DefaultRootState, ownProps: ComponentWithStoreProps<Model>){
+  function arcConnector (store: ARCRootState<Model>, ownProps: ComponentWithStoreProps<Model>){
     // Required Props
     const collection = store[namespace].collection
+    if (!collection) {
+      throw new Error(`Collection not found in store for namespace "${namespace}". Please ensure the ARCConfig is correctly set up.`);
+    }
     const arcProps = {
       collection,
-      // To be dropped
-      temp: store[namespace].temp,
-      // To be dropped
-      fetching: store[namespace].fetching,
-      // To be dropped
-      loaded: store[namespace].loaded,
-      // To be dropped
-      error: store[namespace].error,
     }
 
     const mergedProps: ComponentWithStoreProps<Model> = {

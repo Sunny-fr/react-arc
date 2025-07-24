@@ -1,10 +1,11 @@
-import { connect } from "react-redux"
-import { extendWithDefaultProps, getDefaultConfig } from "../utils"
+import {connect} from "react-redux"
+import {extendWithDefaultProps, getDefaultConfig} from "../utils"
 import {core} from "../actions/core"
-import { ARCConfig } from "../types/config.types"
-import { ComponentWithStoreProps } from "../types/components.types"
-import { ComponentType} from "react"
-import {ARCStoreState} from "../types/connectors.types";
+import {ARCConfig} from "../types/config.types"
+import {ComponentWithStoreProps} from "../types/components.types"
+import {ComponentType} from "react"
+import {ARCRootState, ARCStoreState} from "../types/connectors.types";
+
 
 /**
  * Store Connector
@@ -13,22 +14,20 @@ import {ARCStoreState} from "../types/connectors.types";
  */
 export function connectFn<Model>(config: ARCConfig<Model>) {
   return function(
-    store: ARCStoreState<Model>,
+    store: ARCRootState<Model>,
     ownProps: object
   )  {
     const namespace = config.name
-    const collection = store[namespace].collection
+    if (!store[namespace]) {
+      throw new Error(`Namespace "${namespace}" not found in store. Please ensure the ARCConfig is correctly set up.`);
+    }
+
+    const reducerState = store[namespace] as unknown as  ARCStoreState<Model>
+
+    const collection = reducerState.collection
     const arcProps = {
       collection,
-      tempModel: store[namespace].temp,
-      // To be dropped
-      temp: store[namespace].temp,
-      // To be dropped
-      fetching: store[namespace].fetching,
-      // To be dropped
-      loaded: store[namespace].loaded,
-      // To be dropped
-      error: store[namespace].error,
+      tempModel: reducerState.temp,
     }
     const mergedProps: ComponentWithStoreProps<Model> = {
       ...extendWithDefaultProps(config, ownProps),
@@ -62,14 +61,15 @@ export function connectFn<Model>(config: ARCConfig<Model>) {
  * @return {function(Component)<ARCWrappedComponent>}
  */
 export function withARC<Model>(config: ARCConfig<Model>) {
-  /** @type {ARCConfig} **/
+
   const extendedConfig:ARCConfig<Model> = { ...getDefaultConfig(), ...config }
   /**
    * @param {Component} Wrapped
    * @return {function(ARCMappedProps)<ARCWrappedComponent>}
    */
   function ARCHoc<T>(Wrapped: ComponentType<T>) {
-    // @ts-ignore
+
+    //@ts-ignore
     return connect(connectFn(extendedConfig))(Wrapped)
   }
   return ARCHoc

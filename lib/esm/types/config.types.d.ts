@@ -44,7 +44,7 @@ export interface ARCConfig<Model> {
     paths: ARCConfigPaths;
     methods?: ARCHttpRestMethodMap;
     defaultModel?: ARCModel<Model>;
-    defaultProps?: object;
+    defaultProps?: Partial<ComponentProps<any>>;
     fetchOnce?: boolean;
     refetchOnError?: boolean;
     retryOnError?: boolean;
@@ -57,7 +57,7 @@ export interface ARCConfig<Model> {
 interface ARCHttpRestMethodMapDefaults<Model> {
     methods: ARCHttpRestMethodMap;
     defaultModel: ARCModel<Model>;
-    defaultProps: object;
+    defaultProps: Partial<ComponentProps<any>>;
     fetchOnce: boolean;
     refetchOnError: boolean;
     headers: object;

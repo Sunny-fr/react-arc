@@ -1,4 +1,4 @@
-import { getParams } from "../utils"
+import {getParams, omit} from "../utils"
 import commons from "../commons"
 import Container from "./Container"
 //import PropTypes from "prop-types"
@@ -10,6 +10,8 @@ import {
   ComponentWithStoreProps,
 } from "../types/components.types"
 import { ARCAxiosOptions } from "../types/actions.types"
+import {ARCMetas} from "../types/model.types";
+import React from "react"
 
 // import {changedProps} from '../utils/index'
 // import equal from 'deep-equal'
@@ -73,6 +75,7 @@ export class ModelContainer<P, S, Model> extends Container<P,S, Model> {
   /* public
    * Fetch a model */
   fetch = (params: ComponentPropsWithRequiredModelParams) => {
+
     // const dispatch = this.checkDispatchAvailability()
     // if (!dispatch) return
     this.abortController = new AbortController()
@@ -145,7 +148,7 @@ export class ModelContainer<P, S, Model> extends Container<P,S, Model> {
   /* public
    * returns metas (loaded, error, etc.) */
 
-  getMetas(prop:string, props?: ARCWrappedComponentProps<Model>) {
+  getMetas(prop:keyof ARCMetas, props?: ARCWrappedComponentProps<Model>) {
     const metas = (props || this.props).metas
     if(!metas) {
       return metas
@@ -232,16 +235,17 @@ export class ModelContainer<P, S, Model> extends Container<P,S, Model> {
     }
 
     if (!this.hasRequiredParams(props)) {
+      // console.log("// model has not the required params, we don't fetch it")
       return false
     }
 
     if (typeof this.core._getModel(this.ARCConfig, props) === "undefined") {
-      //console.log('//model has never been fetch, its ok to fetch')
+      // console.log('//model has never been fetch, its ok to fetch')
       return true
     }
 
     if (this.core.isSyncing(this.ARCConfig, props)) {
-      //console.log('//model seems to be loading we dont allow to fetch it again')
+      // console.log('//model seems to be loading we dont allow to fetch it again')
       return false
     }
 
@@ -250,7 +254,7 @@ export class ModelContainer<P, S, Model> extends Container<P,S, Model> {
       this.core.isLoaded(this.ARCConfig, props) &&
       this.allowReFetch(props)
     ) {
-      //console.log('//model seems to be loaded but its ok to re-fetch it')
+      // console.log('//model seems to be loaded but its ok to re-fetch it')
       return true
     }
 
@@ -259,7 +263,7 @@ export class ModelContainer<P, S, Model> extends Container<P,S, Model> {
       !!this.core.getError(this.ARCConfig, props) &&
       this.errorReFetch(props)
     ) {
-      //console.log('//model had an error previously, but its ok to refetch it')
+      // console.log('//model had an error previously, but its ok to refetch it')
       return true
     }
 
@@ -268,6 +272,43 @@ export class ModelContainer<P, S, Model> extends Container<P,S, Model> {
 
   componentDidMount() {
     this.prepareFetch({ skipReFetchStep: false })
+  }
+
+
+  getModelDataTyped() {
+    const loaded = this.isLoaded()
+    const error = this.getError()
+    return !error && loaded && !this.isNew() ? this.getModel() : this.ARCConfig.defaultModel
+  }
+  render() {
+
+    const Component = this.props.component as React.ComponentType<any>
+    const props = { ...omit(this.props, ['ARCConfig', 'component']) }
+    const loaded = this.isLoaded()
+    const loading = this.isSyncing()
+    const error = this.getError()
+
+    const data = this.getModelDataTyped()
+    if( !Component ) {
+      console.error('ModelContainer: component prop is required')
+      return null
+    }
+    const params = this.getParams(props)
+    if(!params){
+      console.error('ModelContainer: params are required')
+      return null
+    }
+
+    return (
+      <Component
+        {...props}
+        loading={loading}
+        loaded={loaded}
+        model={data}
+        error={error}
+        fetch={() => this.fetch(params)}
+      />
+    )
   }
 
   // shouldComponentUpdate(nextProps, nextState) {

@@ -127,6 +127,7 @@ export function interpolate(str: string | null, params: object): string {
     if(!stringIsReplaceable(prev)){
       return prev
     }
+    // @ts-ignore
     const elm_val:string|number = params[current]
     // skip functions
     if (typeof elm_val === "function") return prev
@@ -153,4 +154,20 @@ export function interpolate(str: string | null, params: object): string {
 
 export function getDefaultConfig<Model>() {
   return cloneDeep<ARCConfig<Model>>(defaultConfig)
+}
+export const omit = (
+  props: Record<string, any>,
+  prop: string | string[]
+): Record<string, any> => {
+  const omitted = typeof prop === 'string' ? [prop] : prop
+  return Object.keys(props).reduce(
+    (state, current) =>
+      omitted.includes(current)
+        ? state
+        : {
+            ...state,
+            [current]: props[current],
+          },
+    {}
+  )
 }

@@ -1,4 +1,3 @@
-/// <reference types="react" />
 import { ARCConfig } from "./config.types";
 import { ARCMetaCollectionMap, ARCMetaModel, ARCMetasType, ARCModel } from "./model.types";
 import { ThunkDispatch } from "redux-thunk";
@@ -26,7 +25,7 @@ export interface ComponentWithStoreProps<Model> extends ComponentPropsWithRequir
     temp?: ARCModel<Model> | null | undefined;
     fetching?: boolean;
     loaded?: boolean;
-    error?: object | null;
+    error?: null | any;
 }
 export interface ARCContainerProps<Model> extends ComponentPropsWithRequiredModelParams {
     ARCConfig: ARCConfig<Model>;
@@ -35,14 +34,14 @@ export interface ARCContainerProps<Model> extends ComponentPropsWithRequiredMode
     temp?: ARCModel<Model>;
     fetching: boolean;
     loaded: boolean;
-    error: object | null;
+    error: null | any;
 }
 export interface ARCWrappedComponentProps<Model> extends ComponentPropsWithRequiredModelParams {
     ARCConfig: ARCConfig<Model>;
     loaded: boolean;
     metaModel: ARCMetaModel<Model> | null;
     model: ARCModel<Model> | null;
-    error: object;
+    error: any | null;
     syncing: boolean;
     metas: ARCMetasType;
     isNew: boolean;

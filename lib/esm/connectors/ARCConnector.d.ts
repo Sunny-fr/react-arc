@@ -9,7 +9,7 @@ export declare function ARCConnector<Model>(connect: Connect, config: ARCConfig<
     loaded: boolean;
     metaModel: import("..").ARCMetaModel<Model> | null;
     model: Model | null;
-    error: object;
+    error: any | null;
     syncing: boolean;
     metas: import("..").ARCMetasType;
     isNew: boolean;

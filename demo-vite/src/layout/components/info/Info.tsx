@@ -1,7 +1,7 @@
-import React, { ReactNode } from 'react';
+
 
 interface InfoProps {
-  children: ReactNode;
+  children: React.ReactNode;
 }
 
 export function Info(props: InfoProps) {
