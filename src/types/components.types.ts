@@ -1,12 +1,6 @@
-import { ARCConfig } from "./config.types"
-import {
-  //ARCCollectionMap,
-  ARCMetaCollectionMap,
-  ARCMetaModel,
-  ARCMetasType,
-  ARCModel,
-} from "./model.types"
-import { ThunkDispatch } from "redux-thunk"
+import {ARCConfig} from "./config.types"
+import {ARCMetaCollectionMap,} from "./model.types"
+import {ThunkDispatch} from "redux-thunk"
 
 
 /**

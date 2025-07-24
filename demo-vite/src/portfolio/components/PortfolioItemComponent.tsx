@@ -3,20 +3,19 @@ import {Toolbar} from "../../layout/components/toolbar/Toolbar"
 import {Toast} from "../../layout/components/toast/Toast"
 import {LargeError} from "../../layout/components/error/LargeError"
 import Link from "../../navigation/Link"
-import {useARC} from "../../../../src";
-import {portfolio} from "../arc/portfolio.arc.ts";
+import {type PortfolioProps, withPortfolio} from "../arc/portfolio.arc.ts";
 
-const PortfolioItemComponent: React.FC<{ id: string }> = (props) => {
-  const {
-    loaded,
-    response: model,
-    error,
-    loading,
-
-  } = useARC({
-    ARCConfig: portfolio,
-    props
-  })
+const PortfolioItemComponent: React.FC<PortfolioProps> = withPortfolio(({model, error, loaded, loading}) => {
+  // const {
+  //   loaded,
+  //   response: model,
+  //   error,
+  //   loading,
+  //
+  // } = useARC({
+  //   ARCConfig: portfolio,
+  //   props
+  // })
 
   if (error) {
     return (
@@ -66,6 +65,6 @@ const PortfolioItemComponent: React.FC<{ id: string }> = (props) => {
       </div>
     </div>
   )
-}
+})
 
 export default PortfolioItemComponent

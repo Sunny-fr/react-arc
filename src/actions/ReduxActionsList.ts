@@ -162,17 +162,14 @@ export class ReduxActionsList<Model>{
     axiosOptions: ARCAxiosOptions<Model>
   ) {
     return (dispatch: Dispatch) => {
-      console.log("fetchOne", params, props, axiosOptions)
+
       const retryConditionFn =
         this.retryConditionFn || axiosOptions?.retryConditionFn
       const config = this.beforeFetch({ config: this.config, params, props })
       const maxTries = this.config.maxTries || 1
       const applyRequest = (tryNumber: number = 1): AxiosPromise<Model> => {
         //(!!axiosOptions ? axiosOptions.retryConditionFn : undefined)
-        console.log(`applyRequest #${tryNumber}`, params, props, axiosOptions)
         const actionType = this.decorate("FETCH_{uppercaseName}")
-        console.log("dispatching", actionType, params, tryNumber)
-        console.log(dispatch);
         dispatch({
           type: actionType,
           payload: {
@@ -197,26 +194,26 @@ export class ReduxActionsList<Model>{
               return Promise.reject(error)
             }
 
-            // if (
-            //   typeof retryConditionFn === "function" &&
-            //   retryConditionFn(error, {
-            //     params,
-            //     config,
-            //     props,
-            //     axiosOptions,
-            //     tryNumber,
-            //   })
-            // ) {
-            //   //console.log(`retry #${tryNumber}`)
-            //   return applyRequest(tryNumber + 1)
-            // }
-            // if (
-            //   typeof retryConditionFn !== "function" &&
-            //   tryNumber < maxTries
-            // ) {
-            //   //console.log(`retry #${tryNumber}`)
-            //   return applyRequest(tryNumber + 1)
-            // }
+            if (
+              typeof retryConditionFn === "function" &&
+              retryConditionFn(error, {
+                params,
+                config,
+                props,
+                axiosOptions,
+                tryNumber,
+              })
+            ) {
+              //console.log(`retry #${tryNumber}`)
+              return applyRequest(tryNumber + 1)
+            }
+            if (
+              typeof retryConditionFn !== "function" &&
+              tryNumber < maxTries
+            ) {
+              //console.log(`retry #${tryNumber}`)
+              return applyRequest(tryNumber + 1)
+            }
             dispatch({
               type: this.decorate("FETCH_{uppercaseName}_REJECTED"),
               payload: { error, params },

@@ -1,5 +1,5 @@
 import React, {useEffect} from "react"
-import {withPortfolioList} from "../arc/portfolio-list.arc"
+import {type PortfolioListProps, withPortfolioList} from "../arc/portfolio-list.arc"
 
 import loadImage from "../../layout/components/image/loadImage"
 
@@ -97,32 +97,32 @@ const PortfolioItem = ({model, remove}:any) => {
 //   )
 //
 // }
-const PortfolioComponent = withPortfolioList((props) => {
 
+
+interface PortfolioComponentProps extends PortfolioListProps{
+  hello?: string
+}
+
+const PortfolioComponent:React.FC<PortfolioComponentProps> = withPortfolioList((props) => {
 
   const {model, error, loaded, loading} = props
-
-  // console.log(props, model)
-  //
-  // console.log(core.missingParams(portfolioList, props))
 
   if (error) return <LargeError title={"!"} children={error?.message} />
   if (!loaded) return <Loader />
 
-  // const items = (model || []).map((item) => {
-  //   return (
-  //     <PortfolioItem
-  //       //remove={this.removeModel}
-  //       key={item.id} model={item} />
-  //   )
-  // })
+  const items = (model || []).map((item) => {
+    return (
+      <PortfolioItem
+        //remove={this.removeModel}
+        key={item.id} model={item} />
+    )
+  })
 
   return (
     <div className="portfolio">
       <Link to={"/create"} className="btn-float create" />
       {loading ? <Toast>syncing...</Toast> : null}
-      {/*{items}*/}
-      done !
+      {items}
     </div>
   )
 

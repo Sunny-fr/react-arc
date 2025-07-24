@@ -1,4 +1,4 @@
-import type {ARCConfig} from "../../../../src";
+import {type ARCConfig, createHOC} from "../../../../src";
 
 
 export interface Album {
@@ -7,6 +7,9 @@ export interface Album {
   userId: number;
 }
 
+export interface AlbumProps {
+  id: number;
+}
 
 
 export const album: ARCConfig<Album> = {
@@ -18,5 +21,10 @@ export const album: ARCConfig<Album> = {
   "paths": {
     "item": "https://jsonplaceholder.typicode.com/albums/{id}",
   },
-  "fetchOnce": false
+  "fetchOnce": true
 }
+
+
+export const withAlbum = createHOC<AlbumProps, Album>({
+  ARCConfig: album,
+})
