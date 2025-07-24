@@ -1,7 +1,7 @@
 import React from 'react'
 import {ARCConfig} from "../types/config.types";
 import {ARCMetaModel} from "../types/model.types";
-import {ModelContainer} from "../containers/ModelContainer";
+import {ModelContainer} from "../containers-next/ModelContainer";
 import {withARC} from "./withARC";
 
 

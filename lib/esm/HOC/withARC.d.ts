@@ -111,7 +111,7 @@ export declare function withARC<Model>(config: ARCConfig<Model>): <T>(Wrapped: C
     isNew: boolean;
     dispatch?: import("redux-thunk").ThunkDispatch<any, any, any>;
     Component?: React.ComponentType<any>;
-} & import("react-redux").DispatchProp<import("redux").UnknownAction>, T | (import("react").ClassAttributes<import("react").Component<T, any, any>> & T)>, any, any>>) & ("key" | "ref" | keyof T))> | Extract<"syncing", (keyof T & (keyof T | keyof import("react").ClassAttributes<import("react").Component<T, any, any>>)) & ((keyof T | keyof import("react").ClassAttributes<import("react").Component<import("react-redux").Matching<{
+} & import("react-redux").DispatchProp<import("redux").UnknownAction>, T | (import("react").ClassAttributes<import("react").Component<T, any, any>> & T)>, any, any>>) & ("key" | "ref" | keyof T))> | Extract<"metas", (keyof T & (keyof T | keyof import("react").ClassAttributes<import("react").Component<T, any, any>>)) & ((keyof T | keyof import("react").ClassAttributes<import("react").Component<import("react-redux").Matching<{
     ARCConfig: ARCConfig<Model>;
     loaded: boolean;
     metaModel: import("..").ARCMetaModel<Model> | null;
@@ -122,7 +122,7 @@ export declare function withARC<Model>(config: ARCConfig<Model>): <T>(Wrapped: C
     isNew: boolean;
     dispatch?: import("redux-thunk").ThunkDispatch<any, any, any>;
     Component?: React.ComponentType<any>;
-} & import("react-redux").DispatchProp<import("redux").UnknownAction>, T | (import("react").ClassAttributes<import("react").Component<T, any, any>> & T)>, any, any>>) & ("key" | "ref" | keyof T))> | Extract<"metas", (keyof T & (keyof T | keyof import("react").ClassAttributes<import("react").Component<T, any, any>>)) & ((keyof T | keyof import("react").ClassAttributes<import("react").Component<import("react-redux").Matching<{
+} & import("react-redux").DispatchProp<import("redux").UnknownAction>, T | (import("react").ClassAttributes<import("react").Component<T, any, any>> & T)>, any, any>>) & ("key" | "ref" | keyof T))> | Extract<"syncing", (keyof T & (keyof T | keyof import("react").ClassAttributes<import("react").Component<T, any, any>>)) & ((keyof T | keyof import("react").ClassAttributes<import("react").Component<import("react-redux").Matching<{
     ARCConfig: ARCConfig<Model>;
     loaded: boolean;
     metaModel: import("..").ARCMetaModel<Model> | null;
@@ -243,7 +243,7 @@ export declare function withARC<Model>(config: ARCConfig<Model>): <T>(Wrapped: C
     isNew: boolean;
     dispatch?: import("redux-thunk").ThunkDispatch<any, any, any>;
     Component?: React.ComponentType<any>;
-} & import("react-redux").DispatchProp<import("redux").UnknownAction>, T | (import("react").ClassAttributes<import("react").Component<T, any, any>> & T)>, any, any>>) & ("key" | "ref" | keyof T))> | Extract<"syncing", (keyof T & (keyof T | keyof import("react").ClassAttributes<import("react").Component<T, any, any>>)) & ((keyof T | keyof import("react").ClassAttributes<import("react").Component<import("react-redux").Matching<{
+} & import("react-redux").DispatchProp<import("redux").UnknownAction>, T | (import("react").ClassAttributes<import("react").Component<T, any, any>> & T)>, any, any>>) & ("key" | "ref" | keyof T))> | Extract<"metas", (keyof T & (keyof T | keyof import("react").ClassAttributes<import("react").Component<T, any, any>>)) & ((keyof T | keyof import("react").ClassAttributes<import("react").Component<import("react-redux").Matching<{
     ARCConfig: ARCConfig<Model>;
     loaded: boolean;
     metaModel: import("..").ARCMetaModel<Model> | null;
@@ -254,7 +254,7 @@ export declare function withARC<Model>(config: ARCConfig<Model>): <T>(Wrapped: C
     isNew: boolean;
     dispatch?: import("redux-thunk").ThunkDispatch<any, any, any>;
     Component?: React.ComponentType<any>;
-} & import("react-redux").DispatchProp<import("redux").UnknownAction>, T | (import("react").ClassAttributes<import("react").Component<T, any, any>> & T)>, any, any>>) & ("key" | "ref" | keyof T))> | Extract<"metas", (keyof T & (keyof T | keyof import("react").ClassAttributes<import("react").Component<T, any, any>>)) & ((keyof T | keyof import("react").ClassAttributes<import("react").Component<import("react-redux").Matching<{
+} & import("react-redux").DispatchProp<import("redux").UnknownAction>, T | (import("react").ClassAttributes<import("react").Component<T, any, any>> & T)>, any, any>>) & ("key" | "ref" | keyof T))> | Extract<"syncing", (keyof T & (keyof T | keyof import("react").ClassAttributes<import("react").Component<T, any, any>>)) & ((keyof T | keyof import("react").ClassAttributes<import("react").Component<import("react-redux").Matching<{
     ARCConfig: ARCConfig<Model>;
     loaded: boolean;
     metaModel: import("..").ARCMetaModel<Model> | null;
@@ -375,7 +375,7 @@ export declare function withARC<Model>(config: ARCConfig<Model>): <T>(Wrapped: C
     isNew: boolean;
     dispatch?: import("redux-thunk").ThunkDispatch<any, any, any>;
     Component?: React.ComponentType<any>;
-} & import("react-redux").DispatchProp<import("redux").UnknownAction>, T | (import("react").ClassAttributes<import("react").Component<T, any, any>> & T)>, any, any>>) & ("key" | "ref" | keyof T))> | Extract<"syncing", (keyof T & (keyof T | keyof import("react").ClassAttributes<import("react").Component<T, any, any>>)) & ((keyof T | keyof import("react").ClassAttributes<import("react").Component<import("react-redux").Matching<{
+} & import("react-redux").DispatchProp<import("redux").UnknownAction>, T | (import("react").ClassAttributes<import("react").Component<T, any, any>> & T)>, any, any>>) & ("key" | "ref" | keyof T))> | Extract<"metas", (keyof T & (keyof T | keyof import("react").ClassAttributes<import("react").Component<T, any, any>>)) & ((keyof T | keyof import("react").ClassAttributes<import("react").Component<import("react-redux").Matching<{
     ARCConfig: ARCConfig<Model>;
     loaded: boolean;
     metaModel: import("..").ARCMetaModel<Model> | null;
@@ -386,7 +386,7 @@ export declare function withARC<Model>(config: ARCConfig<Model>): <T>(Wrapped: C
     isNew: boolean;
     dispatch?: import("redux-thunk").ThunkDispatch<any, any, any>;
     Component?: React.ComponentType<any>;
-} & import("react-redux").DispatchProp<import("redux").UnknownAction>, T | (import("react").ClassAttributes<import("react").Component<T, any, any>> & T)>, any, any>>) & ("key" | "ref" | keyof T))> | Extract<"metas", (keyof T & (keyof T | keyof import("react").ClassAttributes<import("react").Component<T, any, any>>)) & ((keyof T | keyof import("react").ClassAttributes<import("react").Component<import("react-redux").Matching<{
+} & import("react-redux").DispatchProp<import("redux").UnknownAction>, T | (import("react").ClassAttributes<import("react").Component<T, any, any>> & T)>, any, any>>) & ("key" | "ref" | keyof T))> | Extract<"syncing", (keyof T & (keyof T | keyof import("react").ClassAttributes<import("react").Component<T, any, any>>)) & ((keyof T | keyof import("react").ClassAttributes<import("react").Component<import("react-redux").Matching<{
     ARCConfig: ARCConfig<Model>;
     loaded: boolean;
     metaModel: import("..").ARCMetaModel<Model> | null;
@@ -507,7 +507,7 @@ export declare function withARC<Model>(config: ARCConfig<Model>): <T>(Wrapped: C
     isNew: boolean;
     dispatch?: import("redux-thunk").ThunkDispatch<any, any, any>;
     Component?: React.ComponentType<any>;
-} & import("react-redux").DispatchProp<import("redux").UnknownAction>, T | (import("react").ClassAttributes<import("react").Component<T, any, any>> & T)>, any, any>>) & ("key" | "ref" | keyof T))> | Extract<"syncing", (keyof T & (keyof T | keyof import("react").ClassAttributes<import("react").Component<T, any, any>>)) & ((keyof T | keyof import("react").ClassAttributes<import("react").Component<import("react-redux").Matching<{
+} & import("react-redux").DispatchProp<import("redux").UnknownAction>, T | (import("react").ClassAttributes<import("react").Component<T, any, any>> & T)>, any, any>>) & ("key" | "ref" | keyof T))> | Extract<"metas", (keyof T & (keyof T | keyof import("react").ClassAttributes<import("react").Component<T, any, any>>)) & ((keyof T | keyof import("react").ClassAttributes<import("react").Component<import("react-redux").Matching<{
     ARCConfig: ARCConfig<Model>;
     loaded: boolean;
     metaModel: import("..").ARCMetaModel<Model> | null;
@@ -518,7 +518,7 @@ export declare function withARC<Model>(config: ARCConfig<Model>): <T>(Wrapped: C
     isNew: boolean;
     dispatch?: import("redux-thunk").ThunkDispatch<any, any, any>;
     Component?: React.ComponentType<any>;
-} & import("react-redux").DispatchProp<import("redux").UnknownAction>, T | (import("react").ClassAttributes<import("react").Component<T, any, any>> & T)>, any, any>>) & ("key" | "ref" | keyof T))> | Extract<"metas", (keyof T & (keyof T | keyof import("react").ClassAttributes<import("react").Component<T, any, any>>)) & ((keyof T | keyof import("react").ClassAttributes<import("react").Component<import("react-redux").Matching<{
+} & import("react-redux").DispatchProp<import("redux").UnknownAction>, T | (import("react").ClassAttributes<import("react").Component<T, any, any>> & T)>, any, any>>) & ("key" | "ref" | keyof T))> | Extract<"syncing", (keyof T & (keyof T | keyof import("react").ClassAttributes<import("react").Component<T, any, any>>)) & ((keyof T | keyof import("react").ClassAttributes<import("react").Component<import("react-redux").Matching<{
     ARCConfig: ARCConfig<Model>;
     loaded: boolean;
     metaModel: import("..").ARCMetaModel<Model> | null;
@@ -639,7 +639,7 @@ export declare function withARC<Model>(config: ARCConfig<Model>): <T>(Wrapped: C
     isNew: boolean;
     dispatch?: import("redux-thunk").ThunkDispatch<any, any, any>;
     Component?: React.ComponentType<any>;
-} & import("react-redux").DispatchProp<import("redux").UnknownAction>, T | (import("react").ClassAttributes<import("react").Component<T, any, any>> & T)>, any, any>>) & ("key" | "ref" | keyof T))> | Extract<"syncing", (keyof T & (keyof T | keyof import("react").ClassAttributes<import("react").Component<T, any, any>>)) & ((keyof T | keyof import("react").ClassAttributes<import("react").Component<import("react-redux").Matching<{
+} & import("react-redux").DispatchProp<import("redux").UnknownAction>, T | (import("react").ClassAttributes<import("react").Component<T, any, any>> & T)>, any, any>>) & ("key" | "ref" | keyof T))> | Extract<"metas", (keyof T & (keyof T | keyof import("react").ClassAttributes<import("react").Component<T, any, any>>)) & ((keyof T | keyof import("react").ClassAttributes<import("react").Component<import("react-redux").Matching<{
     ARCConfig: ARCConfig<Model>;
     loaded: boolean;
     metaModel: import("..").ARCMetaModel<Model> | null;
@@ -650,7 +650,7 @@ export declare function withARC<Model>(config: ARCConfig<Model>): <T>(Wrapped: C
     isNew: boolean;
     dispatch?: import("redux-thunk").ThunkDispatch<any, any, any>;
     Component?: React.ComponentType<any>;
-} & import("react-redux").DispatchProp<import("redux").UnknownAction>, T | (import("react").ClassAttributes<import("react").Component<T, any, any>> & T)>, any, any>>) & ("key" | "ref" | keyof T))> | Extract<"metas", (keyof T & (keyof T | keyof import("react").ClassAttributes<import("react").Component<T, any, any>>)) & ((keyof T | keyof import("react").ClassAttributes<import("react").Component<import("react-redux").Matching<{
+} & import("react-redux").DispatchProp<import("redux").UnknownAction>, T | (import("react").ClassAttributes<import("react").Component<T, any, any>> & T)>, any, any>>) & ("key" | "ref" | keyof T))> | Extract<"syncing", (keyof T & (keyof T | keyof import("react").ClassAttributes<import("react").Component<T, any, any>>)) & ((keyof T | keyof import("react").ClassAttributes<import("react").Component<import("react-redux").Matching<{
     ARCConfig: ARCConfig<Model>;
     loaded: boolean;
     metaModel: import("..").ARCMetaModel<Model> | null;
@@ -782,7 +782,7 @@ export declare function withARC<Model>(config: ARCConfig<Model>): <T>(Wrapped: C
     isNew: boolean;
     dispatch?: import("redux-thunk").ThunkDispatch<any, any, any>;
     Component?: React.ComponentType<any>;
-} & import("react-redux").DispatchProp<import("redux").UnknownAction>, T | (import("react").ClassAttributes<import("react").Component<T, any, any>> & T)>, any, any>>) & ("key" | "ref" | keyof T))> | Extract<"syncing", (keyof T & (keyof T | keyof import("react").ClassAttributes<import("react").Component<T, any, any>>)) & ((keyof T | keyof import("react").ClassAttributes<import("react").Component<import("react-redux").Matching<{
+} & import("react-redux").DispatchProp<import("redux").UnknownAction>, T | (import("react").ClassAttributes<import("react").Component<T, any, any>> & T)>, any, any>>) & ("key" | "ref" | keyof T))> | Extract<"metas", (keyof T & (keyof T | keyof import("react").ClassAttributes<import("react").Component<T, any, any>>)) & ((keyof T | keyof import("react").ClassAttributes<import("react").Component<import("react-redux").Matching<{
     ARCConfig: ARCConfig<Model>;
     loaded: boolean;
     metaModel: import("..").ARCMetaModel<Model> | null;
@@ -793,7 +793,7 @@ export declare function withARC<Model>(config: ARCConfig<Model>): <T>(Wrapped: C
     isNew: boolean;
     dispatch?: import("redux-thunk").ThunkDispatch<any, any, any>;
     Component?: React.ComponentType<any>;
-} & import("react-redux").DispatchProp<import("redux").UnknownAction>, T | (import("react").ClassAttributes<import("react").Component<T, any, any>> & T)>, any, any>>) & ("key" | "ref" | keyof T))> | Extract<"metas", (keyof T & (keyof T | keyof import("react").ClassAttributes<import("react").Component<T, any, any>>)) & ((keyof T | keyof import("react").ClassAttributes<import("react").Component<import("react-redux").Matching<{
+} & import("react-redux").DispatchProp<import("redux").UnknownAction>, T | (import("react").ClassAttributes<import("react").Component<T, any, any>> & T)>, any, any>>) & ("key" | "ref" | keyof T))> | Extract<"syncing", (keyof T & (keyof T | keyof import("react").ClassAttributes<import("react").Component<T, any, any>>)) & ((keyof T | keyof import("react").ClassAttributes<import("react").Component<import("react-redux").Matching<{
     ARCConfig: ARCConfig<Model>;
     loaded: boolean;
     metaModel: import("..").ARCMetaModel<Model> | null;
@@ -925,7 +925,7 @@ export declare function withARC<Model>(config: ARCConfig<Model>): <T>(Wrapped: C
     isNew: boolean;
     dispatch?: import("redux-thunk").ThunkDispatch<any, any, any>;
     Component?: React.ComponentType<any>;
-} & import("react-redux").DispatchProp<import("redux").UnknownAction>, T | (import("react").ClassAttributes<import("react").Component<T, any, any>> & T)>, any, any>>) & ("key" | "ref" | keyof T))> | Extract<"syncing", (keyof T & (keyof T | keyof import("react").ClassAttributes<import("react").Component<T, any, any>>)) & ((keyof T | keyof import("react").ClassAttributes<import("react").Component<import("react-redux").Matching<{
+} & import("react-redux").DispatchProp<import("redux").UnknownAction>, T | (import("react").ClassAttributes<import("react").Component<T, any, any>> & T)>, any, any>>) & ("key" | "ref" | keyof T))> | Extract<"metas", (keyof T & (keyof T | keyof import("react").ClassAttributes<import("react").Component<T, any, any>>)) & ((keyof T | keyof import("react").ClassAttributes<import("react").Component<import("react-redux").Matching<{
     ARCConfig: ARCConfig<Model>;
     loaded: boolean;
     metaModel: import("..").ARCMetaModel<Model> | null;
@@ -936,7 +936,7 @@ export declare function withARC<Model>(config: ARCConfig<Model>): <T>(Wrapped: C
     isNew: boolean;
     dispatch?: import("redux-thunk").ThunkDispatch<any, any, any>;
     Component?: React.ComponentType<any>;
-} & import("react-redux").DispatchProp<import("redux").UnknownAction>, T | (import("react").ClassAttributes<import("react").Component<T, any, any>> & T)>, any, any>>) & ("key" | "ref" | keyof T))> | Extract<"metas", (keyof T & (keyof T | keyof import("react").ClassAttributes<import("react").Component<T, any, any>>)) & ((keyof T | keyof import("react").ClassAttributes<import("react").Component<import("react-redux").Matching<{
+} & import("react-redux").DispatchProp<import("redux").UnknownAction>, T | (import("react").ClassAttributes<import("react").Component<T, any, any>> & T)>, any, any>>) & ("key" | "ref" | keyof T))> | Extract<"syncing", (keyof T & (keyof T | keyof import("react").ClassAttributes<import("react").Component<T, any, any>>)) & ((keyof T | keyof import("react").ClassAttributes<import("react").Component<import("react-redux").Matching<{
     ARCConfig: ARCConfig<Model>;
     loaded: boolean;
     metaModel: import("..").ARCMetaModel<Model> | null;
@@ -1068,7 +1068,7 @@ export declare function withARC<Model>(config: ARCConfig<Model>): <T>(Wrapped: C
     isNew: boolean;
     dispatch?: import("redux-thunk").ThunkDispatch<any, any, any>;
     Component?: React.ComponentType<any>;
-} & import("react-redux").DispatchProp<import("redux").UnknownAction>, T | (import("react").ClassAttributes<import("react").Component<T, any, any>> & T)>, any, any>>) & ("key" | "ref" | keyof T))> | Extract<"syncing", (keyof T & (keyof T | keyof import("react").ClassAttributes<import("react").Component<T, any, any>>)) & ((keyof T | keyof import("react").ClassAttributes<import("react").Component<import("react-redux").Matching<{
+} & import("react-redux").DispatchProp<import("redux").UnknownAction>, T | (import("react").ClassAttributes<import("react").Component<T, any, any>> & T)>, any, any>>) & ("key" | "ref" | keyof T))> | Extract<"metas", (keyof T & (keyof T | keyof import("react").ClassAttributes<import("react").Component<T, any, any>>)) & ((keyof T | keyof import("react").ClassAttributes<import("react").Component<import("react-redux").Matching<{
     ARCConfig: ARCConfig<Model>;
     loaded: boolean;
     metaModel: import("..").ARCMetaModel<Model> | null;
@@ -1079,7 +1079,7 @@ export declare function withARC<Model>(config: ARCConfig<Model>): <T>(Wrapped: C
     isNew: boolean;
     dispatch?: import("redux-thunk").ThunkDispatch<any, any, any>;
     Component?: React.ComponentType<any>;
-} & import("react-redux").DispatchProp<import("redux").UnknownAction>, T | (import("react").ClassAttributes<import("react").Component<T, any, any>> & T)>, any, any>>) & ("key" | "ref" | keyof T))> | Extract<"metas", (keyof T & (keyof T | keyof import("react").ClassAttributes<import("react").Component<T, any, any>>)) & ((keyof T | keyof import("react").ClassAttributes<import("react").Component<import("react-redux").Matching<{
+} & import("react-redux").DispatchProp<import("redux").UnknownAction>, T | (import("react").ClassAttributes<import("react").Component<T, any, any>> & T)>, any, any>>) & ("key" | "ref" | keyof T))> | Extract<"syncing", (keyof T & (keyof T | keyof import("react").ClassAttributes<import("react").Component<T, any, any>>)) & ((keyof T | keyof import("react").ClassAttributes<import("react").Component<import("react-redux").Matching<{
     ARCConfig: ARCConfig<Model>;
     loaded: boolean;
     metaModel: import("..").ARCMetaModel<Model> | null;
@@ -1211,7 +1211,7 @@ export declare function withARC<Model>(config: ARCConfig<Model>): <T>(Wrapped: C
     isNew: boolean;
     dispatch?: import("redux-thunk").ThunkDispatch<any, any, any>;
     Component?: React.ComponentType<any>;
-} & import("react-redux").DispatchProp<import("redux").UnknownAction>, T | (import("react").ClassAttributes<import("react").Component<T, any, any>> & T)>, any, any>>) & ("key" | "ref" | keyof T))> | Extract<"syncing", (keyof T & (keyof T | keyof import("react").ClassAttributes<import("react").Component<T, any, any>>)) & ((keyof T | keyof import("react").ClassAttributes<import("react").Component<import("react-redux").Matching<{
+} & import("react-redux").DispatchProp<import("redux").UnknownAction>, T | (import("react").ClassAttributes<import("react").Component<T, any, any>> & T)>, any, any>>) & ("key" | "ref" | keyof T))> | Extract<"metas", (keyof T & (keyof T | keyof import("react").ClassAttributes<import("react").Component<T, any, any>>)) & ((keyof T | keyof import("react").ClassAttributes<import("react").Component<import("react-redux").Matching<{
     ARCConfig: ARCConfig<Model>;
     loaded: boolean;
     metaModel: import("..").ARCMetaModel<Model> | null;
@@ -1222,7 +1222,7 @@ export declare function withARC<Model>(config: ARCConfig<Model>): <T>(Wrapped: C
     isNew: boolean;
     dispatch?: import("redux-thunk").ThunkDispatch<any, any, any>;
     Component?: React.ComponentType<any>;
-} & import("react-redux").DispatchProp<import("redux").UnknownAction>, T | (import("react").ClassAttributes<import("react").Component<T, any, any>> & T)>, any, any>>) & ("key" | "ref" | keyof T))> | Extract<"metas", (keyof T & (keyof T | keyof import("react").ClassAttributes<import("react").Component<T, any, any>>)) & ((keyof T | keyof import("react").ClassAttributes<import("react").Component<import("react-redux").Matching<{
+} & import("react-redux").DispatchProp<import("redux").UnknownAction>, T | (import("react").ClassAttributes<import("react").Component<T, any, any>> & T)>, any, any>>) & ("key" | "ref" | keyof T))> | Extract<"syncing", (keyof T & (keyof T | keyof import("react").ClassAttributes<import("react").Component<T, any, any>>)) & ((keyof T | keyof import("react").ClassAttributes<import("react").Component<import("react-redux").Matching<{
     ARCConfig: ARCConfig<Model>;
     loaded: boolean;
     metaModel: import("..").ARCMetaModel<Model> | null;
@@ -1343,7 +1343,7 @@ export declare function withARC<Model>(config: ARCConfig<Model>): <T>(Wrapped: C
     isNew: boolean;
     dispatch?: import("redux-thunk").ThunkDispatch<any, any, any>;
     Component?: React.ComponentType<any>;
-} & import("react-redux").DispatchProp<import("redux").UnknownAction>, T | (import("react").ClassAttributes<import("react").Component<T, any, any>> & T)>, any, any>>) & ("key" | "ref" | keyof T))> | Extract<"syncing", (keyof T & (keyof T | keyof import("react").ClassAttributes<import("react").Component<T, any, any>>)) & ((keyof T | keyof import("react").ClassAttributes<import("react").Component<import("react-redux").Matching<{
+} & import("react-redux").DispatchProp<import("redux").UnknownAction>, T | (import("react").ClassAttributes<import("react").Component<T, any, any>> & T)>, any, any>>) & ("key" | "ref" | keyof T))> | Extract<"metas", (keyof T & (keyof T | keyof import("react").ClassAttributes<import("react").Component<T, any, any>>)) & ((keyof T | keyof import("react").ClassAttributes<import("react").Component<import("react-redux").Matching<{
     ARCConfig: ARCConfig<Model>;
     loaded: boolean;
     metaModel: import("..").ARCMetaModel<Model> | null;
@@ -1354,7 +1354,7 @@ export declare function withARC<Model>(config: ARCConfig<Model>): <T>(Wrapped: C
     isNew: boolean;
     dispatch?: import("redux-thunk").ThunkDispatch<any, any, any>;
     Component?: React.ComponentType<any>;
-} & import("react-redux").DispatchProp<import("redux").UnknownAction>, T | (import("react").ClassAttributes<import("react").Component<T, any, any>> & T)>, any, any>>) & ("key" | "ref" | keyof T))> | Extract<"metas", (keyof T & (keyof T | keyof import("react").ClassAttributes<import("react").Component<T, any, any>>)) & ((keyof T | keyof import("react").ClassAttributes<import("react").Component<import("react-redux").Matching<{
+} & import("react-redux").DispatchProp<import("redux").UnknownAction>, T | (import("react").ClassAttributes<import("react").Component<T, any, any>> & T)>, any, any>>) & ("key" | "ref" | keyof T))> | Extract<"syncing", (keyof T & (keyof T | keyof import("react").ClassAttributes<import("react").Component<T, any, any>>)) & ((keyof T | keyof import("react").ClassAttributes<import("react").Component<import("react-redux").Matching<{
     ARCConfig: ARCConfig<Model>;
     loaded: boolean;
     metaModel: import("..").ARCMetaModel<Model> | null;
@@ -1475,7 +1475,7 @@ export declare function withARC<Model>(config: ARCConfig<Model>): <T>(Wrapped: C
     isNew: boolean;
     dispatch?: import("redux-thunk").ThunkDispatch<any, any, any>;
     Component?: React.ComponentType<any>;
-} & import("react-redux").DispatchProp<import("redux").UnknownAction>, T | (import("react").ClassAttributes<import("react").Component<T, any, any>> & T)>, any, any>>) & ("key" | "ref" | keyof T))> | Extract<"syncing", (keyof T & (keyof T | keyof import("react").ClassAttributes<import("react").Component<T, any, any>>)) & ((keyof T | keyof import("react").ClassAttributes<import("react").Component<import("react-redux").Matching<{
+} & import("react-redux").DispatchProp<import("redux").UnknownAction>, T | (import("react").ClassAttributes<import("react").Component<T, any, any>> & T)>, any, any>>) & ("key" | "ref" | keyof T))> | Extract<"metas", (keyof T & (keyof T | keyof import("react").ClassAttributes<import("react").Component<T, any, any>>)) & ((keyof T | keyof import("react").ClassAttributes<import("react").Component<import("react-redux").Matching<{
     ARCConfig: ARCConfig<Model>;
     loaded: boolean;
     metaModel: import("..").ARCMetaModel<Model> | null;
@@ -1486,7 +1486,7 @@ export declare function withARC<Model>(config: ARCConfig<Model>): <T>(Wrapped: C
     isNew: boolean;
     dispatch?: import("redux-thunk").ThunkDispatch<any, any, any>;
     Component?: React.ComponentType<any>;
-} & import("react-redux").DispatchProp<import("redux").UnknownAction>, T | (import("react").ClassAttributes<import("react").Component<T, any, any>> & T)>, any, any>>) & ("key" | "ref" | keyof T))> | Extract<"metas", (keyof T & (keyof T | keyof import("react").ClassAttributes<import("react").Component<T, any, any>>)) & ((keyof T | keyof import("react").ClassAttributes<import("react").Component<import("react-redux").Matching<{
+} & import("react-redux").DispatchProp<import("redux").UnknownAction>, T | (import("react").ClassAttributes<import("react").Component<T, any, any>> & T)>, any, any>>) & ("key" | "ref" | keyof T))> | Extract<"syncing", (keyof T & (keyof T | keyof import("react").ClassAttributes<import("react").Component<T, any, any>>)) & ((keyof T | keyof import("react").ClassAttributes<import("react").Component<import("react-redux").Matching<{
     ARCConfig: ARCConfig<Model>;
     loaded: boolean;
     metaModel: import("..").ARCMetaModel<Model> | null;
@@ -1607,7 +1607,7 @@ export declare function withARC<Model>(config: ARCConfig<Model>): <T>(Wrapped: C
     isNew: boolean;
     dispatch?: import("redux-thunk").ThunkDispatch<any, any, any>;
     Component?: React.ComponentType<any>;
-} & import("react-redux").DispatchProp<import("redux").UnknownAction>, T | (import("react").ClassAttributes<import("react").Component<T, any, any>> & T)>, any, any>>) & ("key" | "ref" | keyof T))> | Extract<"syncing", (keyof T & (keyof T | keyof import("react").ClassAttributes<import("react").Component<T, any, any>>)) & ((keyof T | keyof import("react").ClassAttributes<import("react").Component<import("react-redux").Matching<{
+} & import("react-redux").DispatchProp<import("redux").UnknownAction>, T | (import("react").ClassAttributes<import("react").Component<T, any, any>> & T)>, any, any>>) & ("key" | "ref" | keyof T))> | Extract<"metas", (keyof T & (keyof T | keyof import("react").ClassAttributes<import("react").Component<T, any, any>>)) & ((keyof T | keyof import("react").ClassAttributes<import("react").Component<import("react-redux").Matching<{
     ARCConfig: ARCConfig<Model>;
     loaded: boolean;
     metaModel: import("..").ARCMetaModel<Model> | null;
@@ -1618,7 +1618,7 @@ export declare function withARC<Model>(config: ARCConfig<Model>): <T>(Wrapped: C
     isNew: boolean;
     dispatch?: import("redux-thunk").ThunkDispatch<any, any, any>;
     Component?: React.ComponentType<any>;
-} & import("react-redux").DispatchProp<import("redux").UnknownAction>, T | (import("react").ClassAttributes<import("react").Component<T, any, any>> & T)>, any, any>>) & ("key" | "ref" | keyof T))> | Extract<"metas", (keyof T & (keyof T | keyof import("react").ClassAttributes<import("react").Component<T, any, any>>)) & ((keyof T | keyof import("react").ClassAttributes<import("react").Component<import("react-redux").Matching<{
+} & import("react-redux").DispatchProp<import("redux").UnknownAction>, T | (import("react").ClassAttributes<import("react").Component<T, any, any>> & T)>, any, any>>) & ("key" | "ref" | keyof T))> | Extract<"syncing", (keyof T & (keyof T | keyof import("react").ClassAttributes<import("react").Component<T, any, any>>)) & ((keyof T | keyof import("react").ClassAttributes<import("react").Component<import("react-redux").Matching<{
     ARCConfig: ARCConfig<Model>;
     loaded: boolean;
     metaModel: import("..").ARCMetaModel<Model> | null;
@@ -1739,7 +1739,7 @@ export declare function withARC<Model>(config: ARCConfig<Model>): <T>(Wrapped: C
     isNew: boolean;
     dispatch?: import("redux-thunk").ThunkDispatch<any, any, any>;
     Component?: React.ComponentType<any>;
-} & import("react-redux").DispatchProp<import("redux").UnknownAction>, T | (import("react").ClassAttributes<import("react").Component<T, any, any>> & T)>, any, any>>) & ("key" | "ref" | keyof T))> | Extract<"syncing", (keyof T & (keyof T | keyof import("react").ClassAttributes<import("react").Component<T, any, any>>)) & ((keyof T | keyof import("react").ClassAttributes<import("react").Component<import("react-redux").Matching<{
+} & import("react-redux").DispatchProp<import("redux").UnknownAction>, T | (import("react").ClassAttributes<import("react").Component<T, any, any>> & T)>, any, any>>) & ("key" | "ref" | keyof T))> | Extract<"metas", (keyof T & (keyof T | keyof import("react").ClassAttributes<import("react").Component<T, any, any>>)) & ((keyof T | keyof import("react").ClassAttributes<import("react").Component<import("react-redux").Matching<{
     ARCConfig: ARCConfig<Model>;
     loaded: boolean;
     metaModel: import("..").ARCMetaModel<Model> | null;
@@ -1750,7 +1750,7 @@ export declare function withARC<Model>(config: ARCConfig<Model>): <T>(Wrapped: C
     isNew: boolean;
     dispatch?: import("redux-thunk").ThunkDispatch<any, any, any>;
     Component?: React.ComponentType<any>;
-} & import("react-redux").DispatchProp<import("redux").UnknownAction>, T | (import("react").ClassAttributes<import("react").Component<T, any, any>> & T)>, any, any>>) & ("key" | "ref" | keyof T))> | Extract<"metas", (keyof T & (keyof T | keyof import("react").ClassAttributes<import("react").Component<T, any, any>>)) & ((keyof T | keyof import("react").ClassAttributes<import("react").Component<import("react-redux").Matching<{
+} & import("react-redux").DispatchProp<import("redux").UnknownAction>, T | (import("react").ClassAttributes<import("react").Component<T, any, any>> & T)>, any, any>>) & ("key" | "ref" | keyof T))> | Extract<"syncing", (keyof T & (keyof T | keyof import("react").ClassAttributes<import("react").Component<T, any, any>>)) & ((keyof T | keyof import("react").ClassAttributes<import("react").Component<import("react-redux").Matching<{
     ARCConfig: ARCConfig<Model>;
     loaded: boolean;
     metaModel: import("..").ARCMetaModel<Model> | null;
@@ -1882,7 +1882,7 @@ export declare function withARC<Model>(config: ARCConfig<Model>): <T>(Wrapped: C
     isNew: boolean;
     dispatch?: import("redux-thunk").ThunkDispatch<any, any, any>;
     Component?: React.ComponentType<any>;
-} & import("react-redux").DispatchProp<import("redux").UnknownAction>, T | (import("react").ClassAttributes<import("react").Component<T, any, any>> & T)>, any, any>>) & ("key" | "ref" | keyof T))> | Extract<"syncing", (keyof T & (keyof T | keyof import("react").ClassAttributes<import("react").Component<T, any, any>>)) & ((keyof T | keyof import("react").ClassAttributes<import("react").Component<import("react-redux").Matching<{
+} & import("react-redux").DispatchProp<import("redux").UnknownAction>, T | (import("react").ClassAttributes<import("react").Component<T, any, any>> & T)>, any, any>>) & ("key" | "ref" | keyof T))> | Extract<"metas", (keyof T & (keyof T | keyof import("react").ClassAttributes<import("react").Component<T, any, any>>)) & ((keyof T | keyof import("react").ClassAttributes<import("react").Component<import("react-redux").Matching<{
     ARCConfig: ARCConfig<Model>;
     loaded: boolean;
     metaModel: import("..").ARCMetaModel<Model> | null;
@@ -1893,7 +1893,7 @@ export declare function withARC<Model>(config: ARCConfig<Model>): <T>(Wrapped: C
     isNew: boolean;
     dispatch?: import("redux-thunk").ThunkDispatch<any, any, any>;
     Component?: React.ComponentType<any>;
-} & import("react-redux").DispatchProp<import("redux").UnknownAction>, T | (import("react").ClassAttributes<import("react").Component<T, any, any>> & T)>, any, any>>) & ("key" | "ref" | keyof T))> | Extract<"metas", (keyof T & (keyof T | keyof import("react").ClassAttributes<import("react").Component<T, any, any>>)) & ((keyof T | keyof import("react").ClassAttributes<import("react").Component<import("react-redux").Matching<{
+} & import("react-redux").DispatchProp<import("redux").UnknownAction>, T | (import("react").ClassAttributes<import("react").Component<T, any, any>> & T)>, any, any>>) & ("key" | "ref" | keyof T))> | Extract<"syncing", (keyof T & (keyof T | keyof import("react").ClassAttributes<import("react").Component<T, any, any>>)) & ((keyof T | keyof import("react").ClassAttributes<import("react").Component<import("react-redux").Matching<{
     ARCConfig: ARCConfig<Model>;
     loaded: boolean;
     metaModel: import("..").ARCMetaModel<Model> | null;
@@ -2025,7 +2025,7 @@ export declare function withARC<Model>(config: ARCConfig<Model>): <T>(Wrapped: C
     isNew: boolean;
     dispatch?: import("redux-thunk").ThunkDispatch<any, any, any>;
     Component?: React.ComponentType<any>;
-} & import("react-redux").DispatchProp<import("redux").UnknownAction>, T | (import("react").ClassAttributes<import("react").Component<T, any, any>> & T)>, any, any>>) & ("key" | "ref" | keyof T))> | Extract<"syncing", (keyof T & (keyof T | keyof import("react").ClassAttributes<import("react").Component<T, any, any>>)) & ((keyof T | keyof import("react").ClassAttributes<import("react").Component<import("react-redux").Matching<{
+} & import("react-redux").DispatchProp<import("redux").UnknownAction>, T | (import("react").ClassAttributes<import("react").Component<T, any, any>> & T)>, any, any>>) & ("key" | "ref" | keyof T))> | Extract<"metas", (keyof T & (keyof T | keyof import("react").ClassAttributes<import("react").Component<T, any, any>>)) & ((keyof T | keyof import("react").ClassAttributes<import("react").Component<import("react-redux").Matching<{
     ARCConfig: ARCConfig<Model>;
     loaded: boolean;
     metaModel: import("..").ARCMetaModel<Model> | null;
@@ -2036,7 +2036,7 @@ export declare function withARC<Model>(config: ARCConfig<Model>): <T>(Wrapped: C
     isNew: boolean;
     dispatch?: import("redux-thunk").ThunkDispatch<any, any, any>;
     Component?: React.ComponentType<any>;
-} & import("react-redux").DispatchProp<import("redux").UnknownAction>, T | (import("react").ClassAttributes<import("react").Component<T, any, any>> & T)>, any, any>>) & ("key" | "ref" | keyof T))> | Extract<"metas", (keyof T & (keyof T | keyof import("react").ClassAttributes<import("react").Component<T, any, any>>)) & ((keyof T | keyof import("react").ClassAttributes<import("react").Component<import("react-redux").Matching<{
+} & import("react-redux").DispatchProp<import("redux").UnknownAction>, T | (import("react").ClassAttributes<import("react").Component<T, any, any>> & T)>, any, any>>) & ("key" | "ref" | keyof T))> | Extract<"syncing", (keyof T & (keyof T | keyof import("react").ClassAttributes<import("react").Component<T, any, any>>)) & ((keyof T | keyof import("react").ClassAttributes<import("react").Component<import("react-redux").Matching<{
     ARCConfig: ARCConfig<Model>;
     loaded: boolean;
     metaModel: import("..").ARCMetaModel<Model> | null;
@@ -2168,7 +2168,7 @@ export declare function withARC<Model>(config: ARCConfig<Model>): <T>(Wrapped: C
     isNew: boolean;
     dispatch?: import("redux-thunk").ThunkDispatch<any, any, any>;
     Component?: React.ComponentType<any>;
-} & import("react-redux").DispatchProp<import("redux").UnknownAction>, T | (import("react").ClassAttributes<import("react").Component<T, any, any>> & T)>, any, any>>) & ("key" | "ref" | keyof T))> | Extract<"syncing", (keyof T & (keyof T | keyof import("react").ClassAttributes<import("react").Component<T, any, any>>)) & ((keyof T | keyof import("react").ClassAttributes<import("react").Component<import("react-redux").Matching<{
+} & import("react-redux").DispatchProp<import("redux").UnknownAction>, T | (import("react").ClassAttributes<import("react").Component<T, any, any>> & T)>, any, any>>) & ("key" | "ref" | keyof T))> | Extract<"metas", (keyof T & (keyof T | keyof import("react").ClassAttributes<import("react").Component<T, any, any>>)) & ((keyof T | keyof import("react").ClassAttributes<import("react").Component<import("react-redux").Matching<{
     ARCConfig: ARCConfig<Model>;
     loaded: boolean;
     metaModel: import("..").ARCMetaModel<Model> | null;
@@ -2179,7 +2179,7 @@ export declare function withARC<Model>(config: ARCConfig<Model>): <T>(Wrapped: C
     isNew: boolean;
     dispatch?: import("redux-thunk").ThunkDispatch<any, any, any>;
     Component?: React.ComponentType<any>;
-} & import("react-redux").DispatchProp<import("redux").UnknownAction>, T | (import("react").ClassAttributes<import("react").Component<T, any, any>> & T)>, any, any>>) & ("key" | "ref" | keyof T))> | Extract<"metas", (keyof T & (keyof T | keyof import("react").ClassAttributes<import("react").Component<T, any, any>>)) & ((keyof T | keyof import("react").ClassAttributes<import("react").Component<import("react-redux").Matching<{
+} & import("react-redux").DispatchProp<import("redux").UnknownAction>, T | (import("react").ClassAttributes<import("react").Component<T, any, any>> & T)>, any, any>>) & ("key" | "ref" | keyof T))> | Extract<"syncing", (keyof T & (keyof T | keyof import("react").ClassAttributes<import("react").Component<T, any, any>>)) & ((keyof T | keyof import("react").ClassAttributes<import("react").Component<import("react-redux").Matching<{
     ARCConfig: ARCConfig<Model>;
     loaded: boolean;
     metaModel: import("..").ARCMetaModel<Model> | null;
@@ -2322,7 +2322,7 @@ export declare function withARC<Model>(config: ARCConfig<Model>): <T>(Wrapped: C
     isNew: boolean;
     dispatch?: import("redux-thunk").ThunkDispatch<any, any, any>;
     Component?: React.ComponentType<any>;
-} & import("react-redux").DispatchProp<import("redux").UnknownAction>, T | (import("react").ClassAttributes<import("react").Component<T, any, any>> & T)>, any, any>>) & ("key" | "ref" | keyof T))> | Extract<"syncing", (keyof T & (keyof T | keyof import("react").ClassAttributes<import("react").Component<T, any, any>>)) & ((keyof T | keyof import("react").ClassAttributes<import("react").Component<import("react-redux").Matching<{
+} & import("react-redux").DispatchProp<import("redux").UnknownAction>, T | (import("react").ClassAttributes<import("react").Component<T, any, any>> & T)>, any, any>>) & ("key" | "ref" | keyof T))> | Extract<"metas", (keyof T & (keyof T | keyof import("react").ClassAttributes<import("react").Component<T, any, any>>)) & ((keyof T | keyof import("react").ClassAttributes<import("react").Component<import("react-redux").Matching<{
     ARCConfig: ARCConfig<Model>;
     loaded: boolean;
     metaModel: import("..").ARCMetaModel<Model> | null;
@@ -2333,7 +2333,7 @@ export declare function withARC<Model>(config: ARCConfig<Model>): <T>(Wrapped: C
     isNew: boolean;
     dispatch?: import("redux-thunk").ThunkDispatch<any, any, any>;
     Component?: React.ComponentType<any>;
-} & import("react-redux").DispatchProp<import("redux").UnknownAction>, T | (import("react").ClassAttributes<import("react").Component<T, any, any>> & T)>, any, any>>) & ("key" | "ref" | keyof T))> | Extract<"metas", (keyof T & (keyof T | keyof import("react").ClassAttributes<import("react").Component<T, any, any>>)) & ((keyof T | keyof import("react").ClassAttributes<import("react").Component<import("react-redux").Matching<{
+} & import("react-redux").DispatchProp<import("redux").UnknownAction>, T | (import("react").ClassAttributes<import("react").Component<T, any, any>> & T)>, any, any>>) & ("key" | "ref" | keyof T))> | Extract<"syncing", (keyof T & (keyof T | keyof import("react").ClassAttributes<import("react").Component<T, any, any>>)) & ((keyof T | keyof import("react").ClassAttributes<import("react").Component<import("react-redux").Matching<{
     ARCConfig: ARCConfig<Model>;
     loaded: boolean;
     metaModel: import("..").ARCMetaModel<Model> | null;
@@ -2465,7 +2465,7 @@ export declare function withARC<Model>(config: ARCConfig<Model>): <T>(Wrapped: C
     isNew: boolean;
     dispatch?: import("redux-thunk").ThunkDispatch<any, any, any>;
     Component?: React.ComponentType<any>;
-} & import("react-redux").DispatchProp<import("redux").UnknownAction>, T | (import("react").ClassAttributes<import("react").Component<T, any, any>> & T)>, any, any>>) & ("key" | "ref" | keyof T))> | Extract<"syncing", (keyof T & (keyof T | keyof import("react").ClassAttributes<import("react").Component<T, any, any>>)) & ((keyof T | keyof import("react").ClassAttributes<import("react").Component<import("react-redux").Matching<{
+} & import("react-redux").DispatchProp<import("redux").UnknownAction>, T | (import("react").ClassAttributes<import("react").Component<T, any, any>> & T)>, any, any>>) & ("key" | "ref" | keyof T))> | Extract<"metas", (keyof T & (keyof T | keyof import("react").ClassAttributes<import("react").Component<T, any, any>>)) & ((keyof T | keyof import("react").ClassAttributes<import("react").Component<import("react-redux").Matching<{
     ARCConfig: ARCConfig<Model>;
     loaded: boolean;
     metaModel: import("..").ARCMetaModel<Model> | null;
@@ -2476,7 +2476,7 @@ export declare function withARC<Model>(config: ARCConfig<Model>): <T>(Wrapped: C
     isNew: boolean;
     dispatch?: import("redux-thunk").ThunkDispatch<any, any, any>;
     Component?: React.ComponentType<any>;
-} & import("react-redux").DispatchProp<import("redux").UnknownAction>, T | (import("react").ClassAttributes<import("react").Component<T, any, any>> & T)>, any, any>>) & ("key" | "ref" | keyof T))> | Extract<"metas", (keyof T & (keyof T | keyof import("react").ClassAttributes<import("react").Component<T, any, any>>)) & ((keyof T | keyof import("react").ClassAttributes<import("react").Component<import("react-redux").Matching<{
+} & import("react-redux").DispatchProp<import("redux").UnknownAction>, T | (import("react").ClassAttributes<import("react").Component<T, any, any>> & T)>, any, any>>) & ("key" | "ref" | keyof T))> | Extract<"syncing", (keyof T & (keyof T | keyof import("react").ClassAttributes<import("react").Component<T, any, any>>)) & ((keyof T | keyof import("react").ClassAttributes<import("react").Component<import("react-redux").Matching<{
     ARCConfig: ARCConfig<Model>;
     loaded: boolean;
     metaModel: import("..").ARCMetaModel<Model> | null;
@@ -2608,7 +2608,7 @@ export declare function withARC<Model>(config: ARCConfig<Model>): <T>(Wrapped: C
     isNew: boolean;
     dispatch?: import("redux-thunk").ThunkDispatch<any, any, any>;
     Component?: React.ComponentType<any>;
-} & import("react-redux").DispatchProp<import("redux").UnknownAction>, T | (import("react").ClassAttributes<import("react").Component<T, any, any>> & T)>, any, any>>) & ("key" | "ref" | keyof T))> | Extract<"syncing", (keyof T & (keyof T | keyof import("react").ClassAttributes<import("react").Component<T, any, any>>)) & ((keyof T | keyof import("react").ClassAttributes<import("react").Component<import("react-redux").Matching<{
+} & import("react-redux").DispatchProp<import("redux").UnknownAction>, T | (import("react").ClassAttributes<import("react").Component<T, any, any>> & T)>, any, any>>) & ("key" | "ref" | keyof T))> | Extract<"metas", (keyof T & (keyof T | keyof import("react").ClassAttributes<import("react").Component<T, any, any>>)) & ((keyof T | keyof import("react").ClassAttributes<import("react").Component<import("react-redux").Matching<{
     ARCConfig: ARCConfig<Model>;
     loaded: boolean;
     metaModel: import("..").ARCMetaModel<Model> | null;
@@ -2619,7 +2619,7 @@ export declare function withARC<Model>(config: ARCConfig<Model>): <T>(Wrapped: C
     isNew: boolean;
     dispatch?: import("redux-thunk").ThunkDispatch<any, any, any>;
     Component?: React.ComponentType<any>;
-} & import("react-redux").DispatchProp<import("redux").UnknownAction>, T | (import("react").ClassAttributes<import("react").Component<T, any, any>> & T)>, any, any>>) & ("key" | "ref" | keyof T))> | Extract<"metas", (keyof T & (keyof T | keyof import("react").ClassAttributes<import("react").Component<T, any, any>>)) & ((keyof T | keyof import("react").ClassAttributes<import("react").Component<import("react-redux").Matching<{
+} & import("react-redux").DispatchProp<import("redux").UnknownAction>, T | (import("react").ClassAttributes<import("react").Component<T, any, any>> & T)>, any, any>>) & ("key" | "ref" | keyof T))> | Extract<"syncing", (keyof T & (keyof T | keyof import("react").ClassAttributes<import("react").Component<T, any, any>>)) & ((keyof T | keyof import("react").ClassAttributes<import("react").Component<import("react-redux").Matching<{
     ARCConfig: ARCConfig<Model>;
     loaded: boolean;
     metaModel: import("..").ARCMetaModel<Model> | null;
@@ -2751,7 +2751,7 @@ export declare function withARC<Model>(config: ARCConfig<Model>): <T>(Wrapped: C
     isNew: boolean;
     dispatch?: import("redux-thunk").ThunkDispatch<any, any, any>;
     Component?: React.ComponentType<any>;
-} & import("react-redux").DispatchProp<import("redux").UnknownAction>, T | (import("react").ClassAttributes<import("react").Component<T, any, any>> & T)>, any, any>>) & ("key" | "ref" | keyof T))> | Extract<"syncing", (keyof T & (keyof T | keyof import("react").ClassAttributes<import("react").Component<T, any, any>>)) & ((keyof T | keyof import("react").ClassAttributes<import("react").Component<import("react-redux").Matching<{
+} & import("react-redux").DispatchProp<import("redux").UnknownAction>, T | (import("react").ClassAttributes<import("react").Component<T, any, any>> & T)>, any, any>>) & ("key" | "ref" | keyof T))> | Extract<"metas", (keyof T & (keyof T | keyof import("react").ClassAttributes<import("react").Component<T, any, any>>)) & ((keyof T | keyof import("react").ClassAttributes<import("react").Component<import("react-redux").Matching<{
     ARCConfig: ARCConfig<Model>;
     loaded: boolean;
     metaModel: import("..").ARCMetaModel<Model> | null;
@@ -2762,7 +2762,7 @@ export declare function withARC<Model>(config: ARCConfig<Model>): <T>(Wrapped: C
     isNew: boolean;
     dispatch?: import("redux-thunk").ThunkDispatch<any, any, any>;
     Component?: React.ComponentType<any>;
-} & import("react-redux").DispatchProp<import("redux").UnknownAction>, T | (import("react").ClassAttributes<import("react").Component<T, any, any>> & T)>, any, any>>) & ("key" | "ref" | keyof T))> | Extract<"metas", (keyof T & (keyof T | keyof import("react").ClassAttributes<import("react").Component<T, any, any>>)) & ((keyof T | keyof import("react").ClassAttributes<import("react").Component<import("react-redux").Matching<{
+} & import("react-redux").DispatchProp<import("redux").UnknownAction>, T | (import("react").ClassAttributes<import("react").Component<T, any, any>> & T)>, any, any>>) & ("key" | "ref" | keyof T))> | Extract<"syncing", (keyof T & (keyof T | keyof import("react").ClassAttributes<import("react").Component<T, any, any>>)) & ((keyof T | keyof import("react").ClassAttributes<import("react").Component<import("react-redux").Matching<{
     ARCConfig: ARCConfig<Model>;
     loaded: boolean;
     metaModel: import("..").ARCMetaModel<Model> | null;
@@ -2894,7 +2894,7 @@ export declare function withARC<Model>(config: ARCConfig<Model>): <T>(Wrapped: C
     isNew: boolean;
     dispatch?: import("redux-thunk").ThunkDispatch<any, any, any>;
     Component?: React.ComponentType<any>;
-} & import("react-redux").DispatchProp<import("redux").UnknownAction>, T | (import("react").ClassAttributes<import("react").Component<T, any, any>> & T)>, any, any>>) & ("key" | "ref" | keyof T))> | Extract<"syncing", (keyof T & (keyof T | keyof import("react").ClassAttributes<import("react").Component<T, any, any>>)) & ((keyof T | keyof import("react").ClassAttributes<import("react").Component<import("react-redux").Matching<{
+} & import("react-redux").DispatchProp<import("redux").UnknownAction>, T | (import("react").ClassAttributes<import("react").Component<T, any, any>> & T)>, any, any>>) & ("key" | "ref" | keyof T))> | Extract<"metas", (keyof T & (keyof T | keyof import("react").ClassAttributes<import("react").Component<T, any, any>>)) & ((keyof T | keyof import("react").ClassAttributes<import("react").Component<import("react-redux").Matching<{
     ARCConfig: ARCConfig<Model>;
     loaded: boolean;
     metaModel: import("..").ARCMetaModel<Model> | null;
@@ -2905,7 +2905,7 @@ export declare function withARC<Model>(config: ARCConfig<Model>): <T>(Wrapped: C
     isNew: boolean;
     dispatch?: import("redux-thunk").ThunkDispatch<any, any, any>;
     Component?: React.ComponentType<any>;
-} & import("react-redux").DispatchProp<import("redux").UnknownAction>, T | (import("react").ClassAttributes<import("react").Component<T, any, any>> & T)>, any, any>>) & ("key" | "ref" | keyof T))> | Extract<"metas", (keyof T & (keyof T | keyof import("react").ClassAttributes<import("react").Component<T, any, any>>)) & ((keyof T | keyof import("react").ClassAttributes<import("react").Component<import("react-redux").Matching<{
+} & import("react-redux").DispatchProp<import("redux").UnknownAction>, T | (import("react").ClassAttributes<import("react").Component<T, any, any>> & T)>, any, any>>) & ("key" | "ref" | keyof T))> | Extract<"syncing", (keyof T & (keyof T | keyof import("react").ClassAttributes<import("react").Component<T, any, any>>)) & ((keyof T | keyof import("react").ClassAttributes<import("react").Component<import("react-redux").Matching<{
     ARCConfig: ARCConfig<Model>;
     loaded: boolean;
     metaModel: import("..").ARCMetaModel<Model> | null;
@@ -3048,7 +3048,7 @@ export declare function withARC<Model>(config: ARCConfig<Model>): <T>(Wrapped: C
     isNew: boolean;
     dispatch?: import("redux-thunk").ThunkDispatch<any, any, any>;
     Component?: React.ComponentType<any>;
-} & import("react-redux").DispatchProp<import("redux").UnknownAction>, T | (import("react").ClassAttributes<import("react").Component<T, any, any>> & T)>, any, any>>) & ("key" | "ref" | keyof T))> | Extract<"syncing", (keyof T & (keyof T | keyof import("react").ClassAttributes<import("react").Component<T, any, any>>)) & ((keyof T | keyof import("react").ClassAttributes<import("react").Component<import("react-redux").Matching<{
+} & import("react-redux").DispatchProp<import("redux").UnknownAction>, T | (import("react").ClassAttributes<import("react").Component<T, any, any>> & T)>, any, any>>) & ("key" | "ref" | keyof T))> | Extract<"metas", (keyof T & (keyof T | keyof import("react").ClassAttributes<import("react").Component<T, any, any>>)) & ((keyof T | keyof import("react").ClassAttributes<import("react").Component<import("react-redux").Matching<{
     ARCConfig: ARCConfig<Model>;
     loaded: boolean;
     metaModel: import("..").ARCMetaModel<Model> | null;
@@ -3059,7 +3059,7 @@ export declare function withARC<Model>(config: ARCConfig<Model>): <T>(Wrapped: C
     isNew: boolean;
     dispatch?: import("redux-thunk").ThunkDispatch<any, any, any>;
     Component?: React.ComponentType<any>;
-} & import("react-redux").DispatchProp<import("redux").UnknownAction>, T | (import("react").ClassAttributes<import("react").Component<T, any, any>> & T)>, any, any>>) & ("key" | "ref" | keyof T))> | Extract<"metas", (keyof T & (keyof T | keyof import("react").ClassAttributes<import("react").Component<T, any, any>>)) & ((keyof T | keyof import("react").ClassAttributes<import("react").Component<import("react-redux").Matching<{
+} & import("react-redux").DispatchProp<import("redux").UnknownAction>, T | (import("react").ClassAttributes<import("react").Component<T, any, any>> & T)>, any, any>>) & ("key" | "ref" | keyof T))> | Extract<"syncing", (keyof T & (keyof T | keyof import("react").ClassAttributes<import("react").Component<T, any, any>>)) & ((keyof T | keyof import("react").ClassAttributes<import("react").Component<import("react-redux").Matching<{
     ARCConfig: ARCConfig<Model>;
     loaded: boolean;
     metaModel: import("..").ARCMetaModel<Model> | null;
@@ -3202,7 +3202,7 @@ export declare function withARC<Model>(config: ARCConfig<Model>): <T>(Wrapped: C
     isNew: boolean;
     dispatch?: import("redux-thunk").ThunkDispatch<any, any, any>;
     Component?: React.ComponentType<any>;
-} & import("react-redux").DispatchProp<import("redux").UnknownAction>, T | (import("react").ClassAttributes<import("react").Component<T, any, any>> & T)>, any, any>>) & ("key" | "ref" | keyof T))> | Extract<"syncing", (keyof T & (keyof T | keyof import("react").ClassAttributes<import("react").Component<T, any, any>>)) & ((keyof T | keyof import("react").ClassAttributes<import("react").Component<import("react-redux").Matching<{
+} & import("react-redux").DispatchProp<import("redux").UnknownAction>, T | (import("react").ClassAttributes<import("react").Component<T, any, any>> & T)>, any, any>>) & ("key" | "ref" | keyof T))> | Extract<"metas", (keyof T & (keyof T | keyof import("react").ClassAttributes<import("react").Component<T, any, any>>)) & ((keyof T | keyof import("react").ClassAttributes<import("react").Component<import("react-redux").Matching<{
     ARCConfig: ARCConfig<Model>;
     loaded: boolean;
     metaModel: import("..").ARCMetaModel<Model> | null;
@@ -3213,7 +3213,7 @@ export declare function withARC<Model>(config: ARCConfig<Model>): <T>(Wrapped: C
     isNew: boolean;
     dispatch?: import("redux-thunk").ThunkDispatch<any, any, any>;
     Component?: React.ComponentType<any>;
-} & import("react-redux").DispatchProp<import("redux").UnknownAction>, T | (import("react").ClassAttributes<import("react").Component<T, any, any>> & T)>, any, any>>) & ("key" | "ref" | keyof T))> | Extract<"metas", (keyof T & (keyof T | keyof import("react").ClassAttributes<import("react").Component<T, any, any>>)) & ((keyof T | keyof import("react").ClassAttributes<import("react").Component<import("react-redux").Matching<{
+} & import("react-redux").DispatchProp<import("redux").UnknownAction>, T | (import("react").ClassAttributes<import("react").Component<T, any, any>> & T)>, any, any>>) & ("key" | "ref" | keyof T))> | Extract<"syncing", (keyof T & (keyof T | keyof import("react").ClassAttributes<import("react").Component<T, any, any>>)) & ((keyof T | keyof import("react").ClassAttributes<import("react").Component<import("react-redux").Matching<{
     ARCConfig: ARCConfig<Model>;
     loaded: boolean;
     metaModel: import("..").ARCMetaModel<Model> | null;
@@ -3356,7 +3356,7 @@ export declare function withARC<Model>(config: ARCConfig<Model>): <T>(Wrapped: C
     isNew: boolean;
     dispatch?: import("redux-thunk").ThunkDispatch<any, any, any>;
     Component?: React.ComponentType<any>;
-} & import("react-redux").DispatchProp<import("redux").UnknownAction>, T | (import("react").ClassAttributes<import("react").Component<T, any, any>> & T)>, any, any>>) & ("key" | "ref" | keyof T))> | Extract<"syncing", (keyof T & (keyof T | keyof import("react").ClassAttributes<import("react").Component<T, any, any>>)) & ((keyof T | keyof import("react").ClassAttributes<import("react").Component<import("react-redux").Matching<{
+} & import("react-redux").DispatchProp<import("redux").UnknownAction>, T | (import("react").ClassAttributes<import("react").Component<T, any, any>> & T)>, any, any>>) & ("key" | "ref" | keyof T))> | Extract<"metas", (keyof T & (keyof T | keyof import("react").ClassAttributes<import("react").Component<T, any, any>>)) & ((keyof T | keyof import("react").ClassAttributes<import("react").Component<import("react-redux").Matching<{
     ARCConfig: ARCConfig<Model>;
     loaded: boolean;
     metaModel: import("..").ARCMetaModel<Model> | null;
@@ -3367,7 +3367,7 @@ export declare function withARC<Model>(config: ARCConfig<Model>): <T>(Wrapped: C
     isNew: boolean;
     dispatch?: import("redux-thunk").ThunkDispatch<any, any, any>;
     Component?: React.ComponentType<any>;
-} & import("react-redux").DispatchProp<import("redux").UnknownAction>, T | (import("react").ClassAttributes<import("react").Component<T, any, any>> & T)>, any, any>>) & ("key" | "ref" | keyof T))> | Extract<"metas", (keyof T & (keyof T | keyof import("react").ClassAttributes<import("react").Component<T, any, any>>)) & ((keyof T | keyof import("react").ClassAttributes<import("react").Component<import("react-redux").Matching<{
+} & import("react-redux").DispatchProp<import("redux").UnknownAction>, T | (import("react").ClassAttributes<import("react").Component<T, any, any>> & T)>, any, any>>) & ("key" | "ref" | keyof T))> | Extract<"syncing", (keyof T & (keyof T | keyof import("react").ClassAttributes<import("react").Component<T, any, any>>)) & ((keyof T | keyof import("react").ClassAttributes<import("react").Component<import("react-redux").Matching<{
     ARCConfig: ARCConfig<Model>;
     loaded: boolean;
     metaModel: import("..").ARCMetaModel<Model> | null;
@@ -3510,7 +3510,7 @@ export declare function withARC<Model>(config: ARCConfig<Model>): <T>(Wrapped: C
     isNew: boolean;
     dispatch?: import("redux-thunk").ThunkDispatch<any, any, any>;
     Component?: React.ComponentType<any>;
-} & import("react-redux").DispatchProp<import("redux").UnknownAction>, T | (import("react").ClassAttributes<import("react").Component<T, any, any>> & T)>, any, any>>) & ("key" | "ref" | keyof T))> | Extract<"syncing", (keyof T & (keyof T | keyof import("react").ClassAttributes<import("react").Component<T, any, any>>)) & ((keyof T | keyof import("react").ClassAttributes<import("react").Component<import("react-redux").Matching<{
+} & import("react-redux").DispatchProp<import("redux").UnknownAction>, T | (import("react").ClassAttributes<import("react").Component<T, any, any>> & T)>, any, any>>) & ("key" | "ref" | keyof T))> | Extract<"metas", (keyof T & (keyof T | keyof import("react").ClassAttributes<import("react").Component<T, any, any>>)) & ((keyof T | keyof import("react").ClassAttributes<import("react").Component<import("react-redux").Matching<{
     ARCConfig: ARCConfig<Model>;
     loaded: boolean;
     metaModel: import("..").ARCMetaModel<Model> | null;
@@ -3521,7 +3521,7 @@ export declare function withARC<Model>(config: ARCConfig<Model>): <T>(Wrapped: C
     isNew: boolean;
     dispatch?: import("redux-thunk").ThunkDispatch<any, any, any>;
     Component?: React.ComponentType<any>;
-} & import("react-redux").DispatchProp<import("redux").UnknownAction>, T | (import("react").ClassAttributes<import("react").Component<T, any, any>> & T)>, any, any>>) & ("key" | "ref" | keyof T))> | Extract<"metas", (keyof T & (keyof T | keyof import("react").ClassAttributes<import("react").Component<T, any, any>>)) & ((keyof T | keyof import("react").ClassAttributes<import("react").Component<import("react-redux").Matching<{
+} & import("react-redux").DispatchProp<import("redux").UnknownAction>, T | (import("react").ClassAttributes<import("react").Component<T, any, any>> & T)>, any, any>>) & ("key" | "ref" | keyof T))> | Extract<"syncing", (keyof T & (keyof T | keyof import("react").ClassAttributes<import("react").Component<T, any, any>>)) & ((keyof T | keyof import("react").ClassAttributes<import("react").Component<import("react-redux").Matching<{
     ARCConfig: ARCConfig<Model>;
     loaded: boolean;
     metaModel: import("..").ARCMetaModel<Model> | null;
@@ -3653,7 +3653,7 @@ export declare function withARC<Model>(config: ARCConfig<Model>): <T>(Wrapped: C
     isNew: boolean;
     dispatch?: import("redux-thunk").ThunkDispatch<any, any, any>;
     Component?: React.ComponentType<any>;
-} & import("react-redux").DispatchProp<import("redux").UnknownAction>, T | (import("react").ClassAttributes<import("react").Component<T, any, any>> & T)>, any, any>>) & ("key" | "ref" | keyof T))> | Extract<"syncing", (keyof T & (keyof T | keyof import("react").ClassAttributes<import("react").Component<T, any, any>>)) & ((keyof T | keyof import("react").ClassAttributes<import("react").Component<import("react-redux").Matching<{
+} & import("react-redux").DispatchProp<import("redux").UnknownAction>, T | (import("react").ClassAttributes<import("react").Component<T, any, any>> & T)>, any, any>>) & ("key" | "ref" | keyof T))> | Extract<"metas", (keyof T & (keyof T | keyof import("react").ClassAttributes<import("react").Component<T, any, any>>)) & ((keyof T | keyof import("react").ClassAttributes<import("react").Component<import("react-redux").Matching<{
     ARCConfig: ARCConfig<Model>;
     loaded: boolean;
     metaModel: import("..").ARCMetaModel<Model> | null;
@@ -3664,7 +3664,7 @@ export declare function withARC<Model>(config: ARCConfig<Model>): <T>(Wrapped: C
     isNew: boolean;
     dispatch?: import("redux-thunk").ThunkDispatch<any, any, any>;
     Component?: React.ComponentType<any>;
-} & import("react-redux").DispatchProp<import("redux").UnknownAction>, T | (import("react").ClassAttributes<import("react").Component<T, any, any>> & T)>, any, any>>) & ("key" | "ref" | keyof T))> | Extract<"metas", (keyof T & (keyof T | keyof import("react").ClassAttributes<import("react").Component<T, any, any>>)) & ((keyof T | keyof import("react").ClassAttributes<import("react").Component<import("react-redux").Matching<{
+} & import("react-redux").DispatchProp<import("redux").UnknownAction>, T | (import("react").ClassAttributes<import("react").Component<T, any, any>> & T)>, any, any>>) & ("key" | "ref" | keyof T))> | Extract<"syncing", (keyof T & (keyof T | keyof import("react").ClassAttributes<import("react").Component<T, any, any>>)) & ((keyof T | keyof import("react").ClassAttributes<import("react").Component<import("react-redux").Matching<{
     ARCConfig: ARCConfig<Model>;
     loaded: boolean;
     metaModel: import("..").ARCMetaModel<Model> | null;
@@ -3796,7 +3796,7 @@ export declare function withARC<Model>(config: ARCConfig<Model>): <T>(Wrapped: C
     isNew: boolean;
     dispatch?: import("redux-thunk").ThunkDispatch<any, any, any>;
     Component?: React.ComponentType<any>;
-} & import("react-redux").DispatchProp<import("redux").UnknownAction>, T | (import("react").ClassAttributes<import("react").Component<T, any, any>> & T)>, any, any>>) & ("key" | "ref" | keyof T))> | Extract<"syncing", (keyof T & (keyof T | keyof import("react").ClassAttributes<import("react").Component<T, any, any>>)) & ((keyof T | keyof import("react").ClassAttributes<import("react").Component<import("react-redux").Matching<{
+} & import("react-redux").DispatchProp<import("redux").UnknownAction>, T | (import("react").ClassAttributes<import("react").Component<T, any, any>> & T)>, any, any>>) & ("key" | "ref" | keyof T))> | Extract<"metas", (keyof T & (keyof T | keyof import("react").ClassAttributes<import("react").Component<T, any, any>>)) & ((keyof T | keyof import("react").ClassAttributes<import("react").Component<import("react-redux").Matching<{
     ARCConfig: ARCConfig<Model>;
     loaded: boolean;
     metaModel: import("..").ARCMetaModel<Model> | null;
@@ -3807,7 +3807,7 @@ export declare function withARC<Model>(config: ARCConfig<Model>): <T>(Wrapped: C
     isNew: boolean;
     dispatch?: import("redux-thunk").ThunkDispatch<any, any, any>;
     Component?: React.ComponentType<any>;
-} & import("react-redux").DispatchProp<import("redux").UnknownAction>, T | (import("react").ClassAttributes<import("react").Component<T, any, any>> & T)>, any, any>>) & ("key" | "ref" | keyof T))> | Extract<"metas", (keyof T & (keyof T | keyof import("react").ClassAttributes<import("react").Component<T, any, any>>)) & ((keyof T | keyof import("react").ClassAttributes<import("react").Component<import("react-redux").Matching<{
+} & import("react-redux").DispatchProp<import("redux").UnknownAction>, T | (import("react").ClassAttributes<import("react").Component<T, any, any>> & T)>, any, any>>) & ("key" | "ref" | keyof T))> | Extract<"syncing", (keyof T & (keyof T | keyof import("react").ClassAttributes<import("react").Component<T, any, any>>)) & ((keyof T | keyof import("react").ClassAttributes<import("react").Component<import("react-redux").Matching<{
     ARCConfig: ARCConfig<Model>;
     loaded: boolean;
     metaModel: import("..").ARCMetaModel<Model> | null;
@@ -3939,7 +3939,7 @@ export declare function withARC<Model>(config: ARCConfig<Model>): <T>(Wrapped: C
     isNew: boolean;
     dispatch?: import("redux-thunk").ThunkDispatch<any, any, any>;
     Component?: React.ComponentType<any>;
-} & import("react-redux").DispatchProp<import("redux").UnknownAction>, T | (import("react").ClassAttributes<import("react").Component<T, any, any>> & T)>, any, any>>) & ("key" | "ref" | keyof T))> | Extract<"syncing", (keyof T & (keyof T | keyof import("react").ClassAttributes<import("react").Component<T, any, any>>)) & ((keyof T | keyof import("react").ClassAttributes<import("react").Component<import("react-redux").Matching<{
+} & import("react-redux").DispatchProp<import("redux").UnknownAction>, T | (import("react").ClassAttributes<import("react").Component<T, any, any>> & T)>, any, any>>) & ("key" | "ref" | keyof T))> | Extract<"metas", (keyof T & (keyof T | keyof import("react").ClassAttributes<import("react").Component<T, any, any>>)) & ((keyof T | keyof import("react").ClassAttributes<import("react").Component<import("react-redux").Matching<{
     ARCConfig: ARCConfig<Model>;
     loaded: boolean;
     metaModel: import("..").ARCMetaModel<Model> | null;
@@ -3950,7 +3950,7 @@ export declare function withARC<Model>(config: ARCConfig<Model>): <T>(Wrapped: C
     isNew: boolean;
     dispatch?: import("redux-thunk").ThunkDispatch<any, any, any>;
     Component?: React.ComponentType<any>;
-} & import("react-redux").DispatchProp<import("redux").UnknownAction>, T | (import("react").ClassAttributes<import("react").Component<T, any, any>> & T)>, any, any>>) & ("key" | "ref" | keyof T))> | Extract<"metas", (keyof T & (keyof T | keyof import("react").ClassAttributes<import("react").Component<T, any, any>>)) & ((keyof T | keyof import("react").ClassAttributes<import("react").Component<import("react-redux").Matching<{
+} & import("react-redux").DispatchProp<import("redux").UnknownAction>, T | (import("react").ClassAttributes<import("react").Component<T, any, any>> & T)>, any, any>>) & ("key" | "ref" | keyof T))> | Extract<"syncing", (keyof T & (keyof T | keyof import("react").ClassAttributes<import("react").Component<T, any, any>>)) & ((keyof T | keyof import("react").ClassAttributes<import("react").Component<import("react-redux").Matching<{
     ARCConfig: ARCConfig<Model>;
     loaded: boolean;
     metaModel: import("..").ARCMetaModel<Model> | null;
@@ -4082,7 +4082,7 @@ export declare function withARC<Model>(config: ARCConfig<Model>): <T>(Wrapped: C
     isNew: boolean;
     dispatch?: import("redux-thunk").ThunkDispatch<any, any, any>;
     Component?: React.ComponentType<any>;
-} & import("react-redux").DispatchProp<import("redux").UnknownAction>, T | (import("react").ClassAttributes<import("react").Component<T, any, any>> & T)>, any, any>>) & ("key" | "ref" | keyof T))> | Extract<"syncing", (keyof T & (keyof T | keyof import("react").ClassAttributes<import("react").Component<T, any, any>>)) & ((keyof T | keyof import("react").ClassAttributes<import("react").Component<import("react-redux").Matching<{
+} & import("react-redux").DispatchProp<import("redux").UnknownAction>, T | (import("react").ClassAttributes<import("react").Component<T, any, any>> & T)>, any, any>>) & ("key" | "ref" | keyof T))> | Extract<"metas", (keyof T & (keyof T | keyof import("react").ClassAttributes<import("react").Component<T, any, any>>)) & ((keyof T | keyof import("react").ClassAttributes<import("react").Component<import("react-redux").Matching<{
     ARCConfig: ARCConfig<Model>;
     loaded: boolean;
     metaModel: import("..").ARCMetaModel<Model> | null;
@@ -4093,7 +4093,7 @@ export declare function withARC<Model>(config: ARCConfig<Model>): <T>(Wrapped: C
     isNew: boolean;
     dispatch?: import("redux-thunk").ThunkDispatch<any, any, any>;
     Component?: React.ComponentType<any>;
-} & import("react-redux").DispatchProp<import("redux").UnknownAction>, T | (import("react").ClassAttributes<import("react").Component<T, any, any>> & T)>, any, any>>) & ("key" | "ref" | keyof T))> | Extract<"metas", (keyof T & (keyof T | keyof import("react").ClassAttributes<import("react").Component<T, any, any>>)) & ((keyof T | keyof import("react").ClassAttributes<import("react").Component<import("react-redux").Matching<{
+} & import("react-redux").DispatchProp<import("redux").UnknownAction>, T | (import("react").ClassAttributes<import("react").Component<T, any, any>> & T)>, any, any>>) & ("key" | "ref" | keyof T))> | Extract<"syncing", (keyof T & (keyof T | keyof import("react").ClassAttributes<import("react").Component<T, any, any>>)) & ((keyof T | keyof import("react").ClassAttributes<import("react").Component<import("react-redux").Matching<{
     ARCConfig: ARCConfig<Model>;
     loaded: boolean;
     metaModel: import("..").ARCMetaModel<Model> | null;
@@ -4236,7 +4236,7 @@ export declare function withARC<Model>(config: ARCConfig<Model>): <T>(Wrapped: C
     isNew: boolean;
     dispatch?: import("redux-thunk").ThunkDispatch<any, any, any>;
     Component?: React.ComponentType<any>;
-} & import("react-redux").DispatchProp<import("redux").UnknownAction>, T | (import("react").ClassAttributes<import("react").Component<T, any, any>> & T)>, any, any>>) & ("key" | "ref" | keyof T))> | Extract<"syncing", (keyof T & (keyof T | keyof import("react").ClassAttributes<import("react").Component<T, any, any>>)) & ((keyof T | keyof import("react").ClassAttributes<import("react").Component<import("react-redux").Matching<{
+} & import("react-redux").DispatchProp<import("redux").UnknownAction>, T | (import("react").ClassAttributes<import("react").Component<T, any, any>> & T)>, any, any>>) & ("key" | "ref" | keyof T))> | Extract<"metas", (keyof T & (keyof T | keyof import("react").ClassAttributes<import("react").Component<T, any, any>>)) & ((keyof T | keyof import("react").ClassAttributes<import("react").Component<import("react-redux").Matching<{
     ARCConfig: ARCConfig<Model>;
     loaded: boolean;
     metaModel: import("..").ARCMetaModel<Model> | null;
@@ -4247,7 +4247,7 @@ export declare function withARC<Model>(config: ARCConfig<Model>): <T>(Wrapped: C
     isNew: boolean;
     dispatch?: import("redux-thunk").ThunkDispatch<any, any, any>;
     Component?: React.ComponentType<any>;
-} & import("react-redux").DispatchProp<import("redux").UnknownAction>, T | (import("react").ClassAttributes<import("react").Component<T, any, any>> & T)>, any, any>>) & ("key" | "ref" | keyof T))> | Extract<"metas", (keyof T & (keyof T | keyof import("react").ClassAttributes<import("react").Component<T, any, any>>)) & ((keyof T | keyof import("react").ClassAttributes<import("react").Component<import("react-redux").Matching<{
+} & import("react-redux").DispatchProp<import("redux").UnknownAction>, T | (import("react").ClassAttributes<import("react").Component<T, any, any>> & T)>, any, any>>) & ("key" | "ref" | keyof T))> | Extract<"syncing", (keyof T & (keyof T | keyof import("react").ClassAttributes<import("react").Component<T, any, any>>)) & ((keyof T | keyof import("react").ClassAttributes<import("react").Component<import("react-redux").Matching<{
     ARCConfig: ARCConfig<Model>;
     loaded: boolean;
     metaModel: import("..").ARCMetaModel<Model> | null;
@@ -4390,7 +4390,7 @@ export declare function withARC<Model>(config: ARCConfig<Model>): <T>(Wrapped: C
     isNew: boolean;
     dispatch?: import("redux-thunk").ThunkDispatch<any, any, any>;
     Component?: React.ComponentType<any>;
-} & import("react-redux").DispatchProp<import("redux").UnknownAction>, T | (import("react").ClassAttributes<import("react").Component<T, any, any>> & T)>, any, any>>) & ("key" | "ref" | keyof T))> | Extract<"syncing", (keyof T & (keyof T | keyof import("react").ClassAttributes<import("react").Component<T, any, any>>)) & ((keyof T | keyof import("react").ClassAttributes<import("react").Component<import("react-redux").Matching<{
+} & import("react-redux").DispatchProp<import("redux").UnknownAction>, T | (import("react").ClassAttributes<import("react").Component<T, any, any>> & T)>, any, any>>) & ("key" | "ref" | keyof T))> | Extract<"metas", (keyof T & (keyof T | keyof import("react").ClassAttributes<import("react").Component<T, any, any>>)) & ((keyof T | keyof import("react").ClassAttributes<import("react").Component<import("react-redux").Matching<{
     ARCConfig: ARCConfig<Model>;
     loaded: boolean;
     metaModel: import("..").ARCMetaModel<Model> | null;
@@ -4401,7 +4401,7 @@ export declare function withARC<Model>(config: ARCConfig<Model>): <T>(Wrapped: C
     isNew: boolean;
     dispatch?: import("redux-thunk").ThunkDispatch<any, any, any>;
     Component?: React.ComponentType<any>;
-} & import("react-redux").DispatchProp<import("redux").UnknownAction>, T | (import("react").ClassAttributes<import("react").Component<T, any, any>> & T)>, any, any>>) & ("key" | "ref" | keyof T))> | Extract<"metas", (keyof T & (keyof T | keyof import("react").ClassAttributes<import("react").Component<T, any, any>>)) & ((keyof T | keyof import("react").ClassAttributes<import("react").Component<import("react-redux").Matching<{
+} & import("react-redux").DispatchProp<import("redux").UnknownAction>, T | (import("react").ClassAttributes<import("react").Component<T, any, any>> & T)>, any, any>>) & ("key" | "ref" | keyof T))> | Extract<"syncing", (keyof T & (keyof T | keyof import("react").ClassAttributes<import("react").Component<T, any, any>>)) & ((keyof T | keyof import("react").ClassAttributes<import("react").Component<import("react-redux").Matching<{
     ARCConfig: ARCConfig<Model>;
     loaded: boolean;
     metaModel: import("..").ARCMetaModel<Model> | null;
@@ -4544,7 +4544,7 @@ export declare function withARC<Model>(config: ARCConfig<Model>): <T>(Wrapped: C
     isNew: boolean;
     dispatch?: import("redux-thunk").ThunkDispatch<any, any, any>;
     Component?: React.ComponentType<any>;
-} & import("react-redux").DispatchProp<import("redux").UnknownAction>, T | (import("react").ClassAttributes<import("react").Component<T, any, any>> & T)>, any, any>>) & ("key" | "ref" | keyof T))> | Extract<"syncing", (keyof T & (keyof T | keyof import("react").ClassAttributes<import("react").Component<T, any, any>>)) & ((keyof T | keyof import("react").ClassAttributes<import("react").Component<import("react-redux").Matching<{
+} & import("react-redux").DispatchProp<import("redux").UnknownAction>, T | (import("react").ClassAttributes<import("react").Component<T, any, any>> & T)>, any, any>>) & ("key" | "ref" | keyof T))> | Extract<"metas", (keyof T & (keyof T | keyof import("react").ClassAttributes<import("react").Component<T, any, any>>)) & ((keyof T | keyof import("react").ClassAttributes<import("react").Component<import("react-redux").Matching<{
     ARCConfig: ARCConfig<Model>;
     loaded: boolean;
     metaModel: import("..").ARCMetaModel<Model> | null;
@@ -4555,7 +4555,7 @@ export declare function withARC<Model>(config: ARCConfig<Model>): <T>(Wrapped: C
     isNew: boolean;
     dispatch?: import("redux-thunk").ThunkDispatch<any, any, any>;
     Component?: React.ComponentType<any>;
-} & import("react-redux").DispatchProp<import("redux").UnknownAction>, T | (import("react").ClassAttributes<import("react").Component<T, any, any>> & T)>, any, any>>) & ("key" | "ref" | keyof T))> | Extract<"metas", (keyof T & (keyof T | keyof import("react").ClassAttributes<import("react").Component<T, any, any>>)) & ((keyof T | keyof import("react").ClassAttributes<import("react").Component<import("react-redux").Matching<{
+} & import("react-redux").DispatchProp<import("redux").UnknownAction>, T | (import("react").ClassAttributes<import("react").Component<T, any, any>> & T)>, any, any>>) & ("key" | "ref" | keyof T))> | Extract<"syncing", (keyof T & (keyof T | keyof import("react").ClassAttributes<import("react").Component<T, any, any>>)) & ((keyof T | keyof import("react").ClassAttributes<import("react").Component<import("react-redux").Matching<{
     ARCConfig: ARCConfig<Model>;
     loaded: boolean;
     metaModel: import("..").ARCMetaModel<Model> | null;

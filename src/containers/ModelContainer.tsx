@@ -1,7 +1,7 @@
-import React, { useEffect, useRef, useCallback, useState } from "react"
-import { omit } from "../utils"
+import {getParams, omit} from "../utils"
 import commons from "../commons"
-import { useContainer, ContainerHookConfig } from "./Container"
+import Container from "./Container"
+//import PropTypes from "prop-types"
 import {
   ARCContainerProps,
   ARCWrappedComponentProps,
@@ -10,469 +10,328 @@ import {
   ComponentWithStoreProps,
 } from "../types/components.types"
 import { ARCAxiosOptions } from "../types/actions.types"
-import { ARCMetas } from "../types/model.types"
-import { useDispatch } from "react-redux"
-import { ThunkDispatch } from "redux-thunk"
+import {ARCMetas} from "../types/model.types";
+import React from "react"
+
+// import {changedProps} from '../utils/index'
+// import equal from 'deep-equal'
 
 type AnyArcComponentProps<Model> = ComponentWithStoreProps<Model> | ARCContainerProps<Model>
 
-export interface ModelContainerHookProps<Model> extends ContainerHookConfig<Model> {
-  props: ComponentProps
-}
+export class ModelContainer<P, S, Model> extends Container<P,S, Model> {
 
-export function useModelContainer<Model>({
-  ARCConfig,
-  props: initialProps
-}: ModelContainerHookProps<Model>) {
-  const dispatch = useDispatch<ThunkDispatch<any, any, any>>()
-  const container = useContainer<Model>({ ARCConfig })
-  const {
-    actions,
-    core,
-    abortController: abortControllerRef,
-    getPropsFromTrueStoreState
-  } = container
-
-  const delayedTimeoutRef = useRef<number | undefined>(undefined)
-  const props = getPropsFromTrueStoreState(initialProps)
-  const isMountedRef = useRef(true) // Reference to track if the component is mounted
-  const [fetchStatus, setFetchStatus] = useState({
-    inProgress: false,
-    hasInitialFetch: false
-  })
-
-  /** PUBLIC METHODS **/
-
-  /**
-   * Returns model data retrieved from the server
-   * @param componentProps Optional component props
-   * @returns The model data
-   */
-  const getModel = useCallback((componentProps?: ARCWrappedComponentProps<Model>) => {
-    return (componentProps || props).model
-  }, [props])
-
-  /**
-   * Returns any error information
-   * @param componentProps Optional component props
-   * @returns Error information
-   */
-  const getError = useCallback((componentProps?: ARCWrappedComponentProps<Model>) => {
-    return (componentProps || props).error
-  }, [props])
-
-  /**
-   * Checks if there's any sync activity in progress
-   * @param componentProps Optional component props
-   * @returns Boolean indicating if sync is in progress
-   */
-  const isSyncing = useCallback((componentProps?: ARCWrappedComponentProps<Model>) => {
-    return (componentProps || props).syncing
-  }, [props])
-
-  /**
-   * Checks if the model has been loaded at least once
-   * @param componentProps Optional component props
-   * @returns Boolean indicating if model is loaded
-   */
-  const isLoaded = useCallback((componentProps?: ARCWrappedComponentProps<Model>) => {
-    return (componentProps || props).loaded
-  }, [props])
+  // static propTypes = {
+  //   dispatch: PropTypes.func.isRequired,
+  //   ARCConfig: PropTypes.object.isRequired,
+  // }
 
   /** PUBLIC ACTIONS METHODS **/
 
-  /**
-   * Checks if the component has not the required params and should be considered as new
-   * @param componentProps Optional props to check against instead of current props
-   * @returns boolean indicating if the model is new
-   */
-  const isNew = useCallback((componentProps?: ComponentProps) => {
-    return core.isNew(ARCConfig, componentProps || props)
-  }, [core, ARCConfig, props])
+  /* public
+   * if the component has not the required params it will be set as new */
+  isNew(props?: ComponentProps) {
+    //return (props || this.props).isNew
+    return this.core.isNew(this.ARCConfig, props || this.props)
+  }
 
-  /**
-   * Returns null or string that acts as unique identifier (based on required props)
-   * @param componentProps Optional props to generate key from
-   * @returns A string key or null
-   */
-  const getKey = useCallback((componentProps?: ComponentProps) => {
-    return core.getKey(ARCConfig, componentProps || props)
-  }, [core, ARCConfig, props])
+  /* public
+   * returns null or string
+   * acts as unique identifier (based on required props) */
+  getKey(props?: ComponentProps) {
+    return this.core.getKey(this.ARCConfig, props || this.props)
+  }
 
-  /**
-   * Retrieves params from props or model
-   * @param componentProps Optional props to get params from
-   * @returns The extracted params
-   */
-  const getParams = useCallback((componentProps?: ComponentProps) => {
-    return core.getParams(ARCConfig, componentProps || props)
-  }, [core, ARCConfig, props])
+  /* public
+   * retrieve params from props or model */
+  /* CUSTOMIZE HERE FOR ADVANCED USAGE */
+  getParams(props?: ComponentProps) {
+    return this.core.getParams(this.ARCConfig, props || this.props)
+  }
 
-  /**
-   * Checks if the component has the required params based on modelProps in config
-   * @param componentProps Optional props to check against
-   * @returns Boolean indicating if required params are present
+  /* private
+   * checks if the component has the required params based on modelProps in config
    */
-  const hasRequiredParams = useCallback((componentProps?: ComponentProps) => {
-    return core.hasRequiredParams(ARCConfig, componentProps || props)
-  }, [core, ARCConfig, props])
+  hasRequiredParams(props?: ComponentProps) {
+    return this.core.hasRequiredParams(this.ARCConfig, props || this.props)
+  }
 
-  /**
-   * Gets a model and its meta data
-   * @param componentProps Optional component props to use
-   * @returns The model data
+  /* private
+   * get a model an its metas data
    */
-  const _getModel = useCallback((componentProps?: AnyArcComponentProps<Model>) => {
-    return core._getModel(ARCConfig, componentProps || props)
-  }, [core, ARCConfig, props])
 
-  /**
-   * Returns meta information (loaded, error, etc.)
-   * @param prop Specific meta property to retrieve
-   * @param componentProps Optional component props
-   * @returns The requested meta information
-   */
-  const getMetas = useCallback((prop: keyof ARCMetas, componentProps?: ARCWrappedComponentProps<Model>) => {
-    const metas = (componentProps || props).metas
-    if (!metas) {
+  _getModel(props?: AnyArcComponentProps<Model>) {
+    //return (props || this.props).metaModel
+    return this.core._getModel(this.ARCConfig, props || this.props)
+  }
+
+  // checkDispatchAvailability() {
+  //   const { dispatch } = this.props
+  //   if (!dispatch) {
+  //     return new Error("Component is missing dispatch")
+  //   }
+  //   return dispatch
+  // }
+
+  /* public
+   * Fetch a model */
+  fetch = (params: ComponentPropsWithRequiredModelParams) => {
+
+    // const dispatch = this.checkDispatchAvailability()
+    // if (!dispatch) return
+    this.abortController = new AbortController()
+    const axiosOptions: ARCAxiosOptions<Model> = {
+      abortController: this.abortController
+    }
+
+    const promise = this.props.dispatch(
+      this.actions.fetchOne(params, this.props, axiosOptions)
+    )
+
+    // promise.catch((e) => {
+    //   /* */
+    // })
+    return promise
+  }
+
+  /* public
+   * edit a model without sending it to the server */
+  edit = (model: object) => {
+    const params = this.getParams()
+    if (!params) return
+    this.props.dispatch(this.actions.edit(model, params))
+  }
+
+  /* public
+   * save a model */
+  save = () => {
+    const isNew = this.isNew(this.props)
+    const model = this.getModel()
+    const extracted = getParams(this.ARCConfig, this.props)
+    const params = {
+      ...extracted,
+      ...(isNew ? this.getParams(model || undefined) : this.getParams()),
+    }
+    this.props.dispatch(this.actions.save(model || {}, params, isNew, this.props))
+  }
+
+  /* public
+   * deletes a model */
+  remove = () => {
+    if (this.isNew()) this.resetTempModel()
+    else {
+      const params = this.getParams()
+      this.props.dispatch(this.actions.remove(params ||{}, this.props))
+    }
+  }
+
+  /* public
+   * resets the temp model (clearing forms etc..) */
+  resetTempModel = () => {
+    this.props.dispatch(this.actions.resetTemp())
+  }
+
+  /** PUBLIC METHODS **/
+
+  /* public
+   * returns model (data retrieved from the server) */
+
+  getFetchingCount = () => {
+    //props || this.props
+    const { collection } = this.getPropsFromTrueStoreState(this.props)
+    return this.core.getFetchingCount({ ...this.props, collection })
+  }
+
+  getModel(props?:  ARCWrappedComponentProps<Model>) {
+    return (props || this.props).model
+  }
+
+  /* public
+   * returns metas (loaded, error, etc.) */
+
+  getMetas(prop:keyof ARCMetas, props?: ARCWrappedComponentProps<Model>) {
+    const metas = (props || this.props).metas
+    if(!metas) {
       return metas
     }
     return !!prop ? metas[prop] : metas
-  }, [props])
+  }
 
-  /**
-   * Reset the temporary model (clearing forms etc.)
+  /* public
+   * returns  error */
+
+  getError(props?: ARCWrappedComponentProps<Model>) {
+    return (props || this.props).error
+  }
+
+  /* public
+   * returns bool if there's any activity */
+
+  isSyncing(props?: ARCWrappedComponentProps<Model>) {
+    return (props || this.props).syncing
+  }
+
+  /* public
+   * returns bool if the model has been loaded at least one time */
+
+  isLoaded(props?: ARCWrappedComponentProps<Model>) {
+    return (props || this.props).loaded
+  }
+
+  /* private
+   * performs a fetch if the flag fetchOnce is set to false
    */
-  const resetTempModel = useCallback(() => {
-    dispatch(actions.resetTemp())
-  }, [dispatch, actions])
 
-  /**
-   * Fetches a model from the server
-   * @param params The params required for fetching
-   * @returns Promise resolving to the fetch result
-   */
-  const fetch = useCallback((params: ComponentPropsWithRequiredModelParams) => {
-    // Don't fetch if the component is unmounted
-    if (!isMountedRef.current) {
-      return Promise.resolve()
-    }
+  allowReFetch = (props?: ComponentWithStoreProps<Model>) => {
+    return this.core.allowReFetch(this.ARCConfig, props || this.props)
+  }
 
-    // Create new AbortController only if needed
-    if (!abortControllerRef.current) {
-      abortControllerRef.current = new AbortController()
-    }
+  errorReFetch(props?: ComponentWithStoreProps<Model>) {
+    //can re fetch on error
+    return this.core.errorReFetch(this.ARCConfig, props || this.props)
+  }
 
-    // Mark fetch as in progress
-    setFetchStatus(prev => ({ ...prev, inProgress: true }))
+  componentDidUpdate() {
+    this.prepareFetch({ skipReFetchStep: true })
+  }
 
-    const axiosOptions: ARCAxiosOptions<Model> = {
-      abortController: abortControllerRef.current
-    }
-
-    // Use then/catch instead of finally for better compatibility
-    return dispatch(actions.fetchOne(params, props, axiosOptions))
-      .then(result => {
-        // Once request is complete successfully, update status
-        if (isMountedRef.current) {
-          setFetchStatus(prev => ({ ...prev, inProgress: false }))
+  prepareFetch({ skipReFetchStep = false }) {
+    const props = this.getPropsFromTrueStoreState(this.props)
+    if (this._fetchAuthorization(props, { skipReFetchStep })) {
+      const max = this.ARCConfig.maxPendingRequestsPerReducer
+      if (max && max > -1) {
+        const count = this.getFetchingCount()
+        if (count > max) {
+          //console.log('too much pending requests', count, 'pending)
+          return this.delayedFetch({ skipReFetchStep })
         }
-        return result
-      })
-      .catch(error => {
-        // Once request fails, update status
-        if (isMountedRef.current) {
-          setFetchStatus(prev => ({ ...prev, inProgress: false }))
-        }
-        throw error // re-throw to propagate the error
-      })
-  }, [dispatch, actions, props, abortControllerRef])
-
-  /**
-   * Edit a model without sending it to the server
-   * @param model The model data to edit
-   */
-  const edit = useCallback((model: object) => {
-    const fetchParams = getParams()
-    if (!fetchParams) return
-    dispatch(actions.edit(model, fetchParams))
-  }, [dispatch, actions, getParams])
-
-  /**
-   * Save a model to the server
-   */
-  const save = useCallback(() => {
-    const currentIsNew = isNew(props)
-    const model = getModel()
-    const extracted = getParams(props)
-    const params = {
-      ...extracted,
-      ...(currentIsNew ? getParams(model || undefined) : getParams()),
+      }
+      const params = this.getParams(props)
+      if(!params) {
+        console.error('params are missing')
+        return
+      }
+      this.fetch(params)
     }
-    dispatch(actions.save(model || {}, params, currentIsNew, props))
-  }, [dispatch, actions, isNew, getParams, props, ARCConfig, getModel])
+  }
 
-  /**
-   * Delete a model from the server
-   */
-  const remove = useCallback(() => {
-    if (isNew()) resetTempModel()
-    else {
-      const params = getParams()
-      params && dispatch(actions.remove(params, props))
+  componentWillUnmount() {
+    clearTimeout(this.delayedTimeout)
+    this.delayedTimeout = undefined
+    if (this.abortController) {
+      this.abortController.abort(commons.cancelRequestPayload({ ARCConfig: this.ARCConfig }))
     }
-  }, [dispatch, actions, isNew, getParams, props, resetTempModel])
+  }
 
-  /** ADDITIONAL METHODS **/
+  delayedFetch({ skipReFetchStep = false }) {
+    this.delayedTimeout = setTimeout(() => {
+      this.prepareFetch({ skipReFetchStep })
+    }, this.ARCConfig.requestFetchDelay)
+  }
 
-  /**
-   * Returns count of fetching requests
-   * @returns Number of active fetch requests
-   */
-  const getFetchingCount = useCallback(() => {
-    const { collection } = getPropsFromTrueStoreState(props)
-    return core.getFetchingCount({ ...props, collection })
-  }, [core, getPropsFromTrueStoreState, props])
-
-  /**
-   * Determines if a refetch is allowed based on the fetchOnce flag
-   * @param componentProps Optional component props
-   * @returns Boolean indicating if refetch is allowed
-   */
-  const allowReFetch = useCallback((componentProps?: ComponentWithStoreProps<Model>) => {
-    return core.allowReFetch(ARCConfig, componentProps || props)
-  }, [core, ARCConfig, props])
-
-  /**
-   * Determines if a refetch is allowed on error
-   * @param componentProps Optional component props
-   * @returns Boolean indicating if refetch on error is allowed
-   */
-  const errorReFetch = useCallback((componentProps?: ComponentWithStoreProps<Model>) => {
-    return core.errorReFetch(ARCConfig, componentProps || props)
-  }, [core, ARCConfig, props])
-
-  /**
-   * Determines if fetch is authorized based on several conditions
-   * @param componentProps The component props to check
-   * @param options Options for fetch authorization
-   * @returns Boolean indicating if fetch is authorized
-   */
-  const _fetchAuthorization = useCallback((componentProps: ComponentWithStoreProps<Model>, { skipReFetchStep = false }) => {
-    if (isNew(componentProps)) {
+  _fetchAuthorization(props:ComponentWithStoreProps<Model>, { skipReFetchStep = false }) {
+    if (this.isNew(props)) {
+      //console.log('//model is new no data to be retrieved')
       return false
     }
 
-    if (!hasRequiredParams(componentProps)) {
+    if (!this.hasRequiredParams(props)) {
+      // console.log("// model has not the required params, we don't fetch it")
       return false
     }
 
-    if (typeof core._getModel(ARCConfig, componentProps) === "undefined") {
+    if (typeof this.core._getModel(this.ARCConfig, props) === "undefined") {
+      // console.log('//model has never been fetch, its ok to fetch')
       return true
     }
 
-    if (core.isSyncing(ARCConfig, componentProps)) {
+    if (this.core.isSyncing(this.ARCConfig, props)) {
+      // console.log('//model seems to be loading we dont allow to fetch it again')
       return false
     }
 
     if (
       !skipReFetchStep &&
-      core.isLoaded(ARCConfig, componentProps) &&
-      allowReFetch(componentProps)
+      this.core.isLoaded(this.ARCConfig, props) &&
+      this.allowReFetch(props)
     ) {
+      // console.log('//model seems to be loaded but its ok to re-fetch it')
       return true
     }
 
     if (
       !skipReFetchStep &&
-      !!core.getError(ARCConfig, componentProps) &&
-      errorReFetch(componentProps)
+      !!this.core.getError(this.ARCConfig, props) &&
+      this.errorReFetch(props)
     ) {
+      // console.log('//model had an error previously, but its ok to refetch it')
       return true
     }
 
     return false
-  }, [core, isNew, hasRequiredParams, allowReFetch, errorReFetch, ARCConfig])
-
-  /**
-   * Get the model data with appropriate fallback
-   * @returns The model data or default model
-   */
-  const getModelDataTyped = useCallback(() => {
-    const loaded = isLoaded()
-    const error = getError()
-    return !error && loaded && !isNew() ? getModel() : ARCConfig.defaultModel
-  }, [isLoaded, getError, isNew, getModel, ARCConfig])
-
-  /**
-   * Schedule a delayed fetch for throttling
-   * @param options Options for the delayed fetch
-   */
-  const delayedFetch = useCallback(({ skipReFetchStep = false }) => {
-    delayedTimeoutRef.current = window.setTimeout(() => {
-      prepareFetch({ skipReFetchStep })
-    }, ARCConfig.requestFetchDelay) as unknown as number
-  }, [ARCConfig]) // Note: Will add prepareFetch to dependencies after it's defined
-
-  /**
-   * Prepares a fetch with max pending request check
-   * @param options Options for preparing the fetch
-   */
-  const prepareFetch = useCallback(({ skipReFetchStep = false }) => {
-    // Don't trigger a fetch if the component is unmounted
-    if (!isMountedRef.current) return
-
-    // For initial fetch on mount, check if we've already done it
-    if (!skipReFetchStep && fetchStatus.hasInitialFetch) return
-
-    // If this is the initial fetch, mark it as done
-    if (!skipReFetchStep) {
-      setFetchStatus(prev => ({ ...prev, hasInitialFetch: true }))
-    }
-
-    const currentProps = getPropsFromTrueStoreState(props)
-    if (_fetchAuthorization(currentProps, { skipReFetchStep })) {
-      const max = ARCConfig.maxPendingRequestsPerReducer
-      if (max && max > -1) {
-        const count = getFetchingCount()
-        if (count > max) {
-          return delayedFetch({ skipReFetchStep })
-        }
-      }
-      const params = getParams(currentProps)
-      if (!params) {
-        console.error('Fetch params are missing')
-        return
-      }
-      fetch(params)
-    }
-  }, [
-    _fetchAuthorization,
-    getPropsFromTrueStoreState,
-    props,
-    ARCConfig,
-    getFetchingCount,
-    getParams,
-    fetch,
-    fetchStatus.hasInitialFetch,
-    delayedFetch
-  ])
-
-  // Fix circular dependency by updating delayedFetch to include prepareFetch in dependencies
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  useCallback(delayedFetch, [prepareFetch, ARCConfig])
-
-  // Mount effect - run once at component initialization
-  useEffect(() => {
-    console.log('ModelContainer mounted with props:', props)
-    isMountedRef.current = true
-
-    // Use a small delay to ensure state stability before initial fetch
-    const initTimeout = setTimeout(() => {
-      if (isMountedRef.current) {
-        prepareFetch({ skipReFetchStep: false })
-      }
-    }, 0)
-
-    // Cleanup function executed only on real unmount
-    return () => {
-      console.log('ModelContainer unmounting - cleanup phase')
-      isMountedRef.current = false
-      clearTimeout(initTimeout)
-      clearTimeout(delayedTimeoutRef.current)
-
-      // Only abort request if there's actually a fetch in progress
-      if (abortControllerRef.current && fetchStatus.inProgress) {
-        console.log('ModelContainer unmounted, aborting ongoing request')
-        abortControllerRef.current.abort(commons.cancelRequestPayload({ ARCConfig }))
-        abortControllerRef.current = null
-      }
-    }
-  }, []) // Empty deps array ensures this runs only on mount/unmount
-
-  // Separate update effect for props changes - avoids restarting the complete lifecycle
-  useEffect(() => {
-    // Skip for initial render - the first useEffect already handles it
-    if (fetchStatus.hasInitialFetch && isMountedRef.current) {
-      prepareFetch({ skipReFetchStep: true })
-    }
-  }, [props, prepareFetch, fetchStatus.hasInitialFetch])
-
-  return {
-    ...container,
-    isNew,
-    getKey,
-    getParams,
-    hasRequiredParams,
-    _getModel,
-    fetch,
-    edit,
-    save,
-    remove,
-    resetTempModel,
-    getFetchingCount,
-    getModel,
-    getMetas,
-    getError,
-    isSyncing,
-    isLoaded,
-    allowReFetch,
-    errorReFetch,
-    getModelDataTyped,
-    prepareFetch
   }
+
+  componentDidMount() {
+    this.prepareFetch({ skipReFetchStep: false })
+  }
+
+
+  getModelDataTyped() {
+    const loaded = this.isLoaded()
+    const error = this.getError()
+    return !error && loaded && !this.isNew() ? this.getModel() : this.ARCConfig.defaultModel
+  }
+  render() {
+
+    const Component = this.props.component as React.ComponentType<any>
+    const props = { ...omit(this.props, ['ARCConfig', 'component']) }
+    const loaded = this.isLoaded()
+    const loading = this.isSyncing()
+    const error = this.getError()
+
+    const data = this.getModelDataTyped()
+    if( !Component ) {
+      console.error('ModelContainer: component prop is required')
+      return null
+    }
+    const params = this.getParams(props)
+    if(!params){
+      console.error('ModelContainer: params are required')
+      return null
+    }
+
+    return (
+      <Component
+        {...props}
+        loading={loading}
+        loaded={loaded}
+        model={data}
+        error={error}
+        fetch={() => this.fetch(params)}
+      />
+    )
+  }
+
+  // shouldComponentUpdate(nextProps, nextState) {
+  //
+  //     if (typeof nextProps !== typeof this.props || typeof nextState !== typeof this.state) return true
+  //
+  //     const propsThatChanged = changedProps(this.props, nextProps)
+  //     const statesThatChanged = changedProps(this.state, nextState)
+  //
+  //
+  //     if (statesThatChanged.length === 0 && propsThatChanged.length === 0) return false
+  //
+  //     //if (!this.isCollectionLoaded(this.props) || !this._getModel(nextProps)) return true
+  //
+  //     if (propsThatChanged.length === 1 && propsThatChanged.includes('collection')) {
+  //         const prevModel = this._getModel(this.props)
+  //         const nextModel = this._getModel(nextProps)
+  //         return !equal(prevModel, nextModel)
+  //     }
+  //
+  //
+  //     return statesThatChanged.length > 0 || propsThatChanged.length > 0
+  // }
 }
 
 
-export type ModelContainerProps<P, Model> = P & ARCWrappedComponentProps<Model> & {
-  component: React.ComponentType<any>
-}
-
-export function ModelContainer<P, Model>(props: ModelContainerProps<P, Model>) {
-  const { ARCConfig, component: Component } = props
-  const dispatch = useDispatch()
-
-  const modelContainer = useModelContainer<Model>({
-    ARCConfig,
-    props: { ...props, dispatch }
-  })
-
-  const {
-    isLoaded,
-    isSyncing,
-    getError,
-    getModelDataTyped,
-    getParams,
-    fetch
-  } = modelContainer
-
-  const componentProps = omit(props, ['ARCConfig', 'component'])
-  const loaded = isLoaded()
-  const loading = isSyncing()
-  const error = getError()
-  const data = getModelDataTyped()
-
-  if (!Component) {
-    console.error('ModelContainer: component prop is required')
-    return null
-  }
-
-  const params = getParams(componentProps)
-  if (!params) {
-    console.error('ModelContainer: params are required')
-    return null
-  }
-
-  return (
-    <Component
-      {...componentProps}
-      loading={loading}
-      loaded={loaded}
-      model={data}
-      error={error}
-      fetch={() => fetch(params)}
-    />
-  )
-}
-
-export default ModelContainer
