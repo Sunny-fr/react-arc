@@ -69,7 +69,7 @@ export function ARCConnector<Model>(
     null,
     null,
     {
-      forwardRef: true,
+      //forwardRef: true,
     }
   )
 }

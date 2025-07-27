@@ -27,7 +27,7 @@ export function mixerConnector <Model>(
     null,
     null,
     {
-      forwardRef: true,
+      //forwardRef: true,
     }
   )
 }

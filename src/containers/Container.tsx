@@ -8,11 +8,7 @@ import {
   ARCWrappedComponentProps,
   ComponentProps, ComponentWithStoreProps,
 } from "../types/components.types"
-
-//import { ARCMetaCollectionMap} from "../types/model.types";
-
-
-
+import {ARCRootState, ARCStoreState} from "../types/connectors.types";
 
 
 export class Container<P, S, Model> extends React.Component<P & ARCWrappedComponentProps<Model>, S> {
@@ -37,20 +33,12 @@ export class Container<P, S, Model> extends React.Component<P & ARCWrappedCompon
 
   getTrueStoreState() {
     //@ts-ignore
-    const store = this.context.store.getState()
+    const rootState:ARCRootState = this.context.store.getState()
     const namespace = this.ARCConfig.name
+    const store: ARCStoreState<Model> = rootState[namespace]
     return {
-      tempModel: store[namespace].temp,
-      // GETTING RID OF COLLECTION TYPE
-      //      loaded: store[namespace].loaded,
-      //      fetching: store[namespace].fetching,
-      //      error: store[namespace].error,
-      collection: store[namespace].collection,
+      collection: store.collection,
     }
-    // as {
-    //   tempModel?: Model | null | undefined
-    //   collection: ARCMetaCollectionMap<Model>
-    // }
   }
 
   getPropsFromTrueStoreState = (props?: ComponentProps) => {
@@ -67,11 +55,6 @@ export class Container<P, S, Model> extends React.Component<P & ARCWrappedCompon
     if (this.actions) this.actions.updateConfig(this.ARCConfig)
   }
 
-  // render() {
-  //   if (this.getError()) return null
-  //   if (!this.isLoaded()) return <p>loading</p>
-  //   return <div>loaded (you should do something with your view :) )</div>
-  // }
 }
 
 export default Container

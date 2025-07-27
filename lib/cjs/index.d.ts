@@ -1,3 +1,7 @@
+/**
+ * REACT ARC
+ * 6.0.5-alpha
+ */
 export { ModelContainer } from "./containers/ModelContainer";
 export { Container } from "./containers/Container";
 export { ReduxActionsList } from "./actions/ReduxActionsList";

@@ -83,13 +83,25 @@ export class ModelContainer<P, S, Model> extends Container<P,S, Model> {
       abortController: this.abortController
     }
 
+
     const promise = this.props.dispatch(
       this.actions.fetchOne(params, this.props, axiosOptions)
     )
 
-    // promise.catch((e) => {
-    //   /* */
-    // })
+    promise.catch((e:any) => {
+      if (e.name === 'AbortError') {
+        //console.warn('ModelContainer: fetch aborted', e)
+        return Promise.reject({
+          message: 'Fetch aborted',
+          ARCConfig: this.ARCConfig,
+        })
+      }
+      return Promise.reject({
+        message: 'Fetch error',
+        ARCConfig: this.ARCConfig,
+        error: e,
+      })
+    })
     return promise
   }
 

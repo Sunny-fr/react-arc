@@ -13,8 +13,7 @@ export declare class Container<P, S, Model> extends React.Component<P & ARCWrapp
     delayedTimeout: number | undefined;
     constructor(props: (Readonly<P> | P) & ARCWrappedComponentProps<Model>);
     getTrueStoreState(): {
-        tempModel: any;
-        collection: any;
+        collection: import("..").ARCMetaCollectionMap<Model>;
     };
     getPropsFromTrueStoreState: (props?: ComponentProps) => ComponentWithStoreProps<Model>;
     updateARC(config: ARCConfig<Model>): void;

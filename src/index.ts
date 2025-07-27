@@ -1,3 +1,9 @@
+/**
+ * REACT ARC
+ * 6.0.5-alpha
+ */
+
+
 // // @ts-ignore
 // export { default as  AbstractContainer } from "./containers/AbstractContainer"
 // // @ts-ignore

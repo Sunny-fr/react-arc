@@ -1,6 +1,4 @@
-
 import equal from "deep-equal"
-import cloneDeep from "lodash.clonedeep"
 import defaultConfig from "../defaultConfig"
 import { ARCMetaCollectionMap, ARCMetaModel, ARCModel} from "../types/model.types"
 import { ARCConfig } from "../types/config.types"
@@ -153,7 +151,9 @@ export function interpolate(str: string | null, params: object): string {
 }
 
 export function getDefaultConfig<Model>() {
-  return cloneDeep<ARCConfig<Model>>(defaultConfig)
+  return JSON.parse(
+    JSON.stringify(defaultConfig)
+  ) as ARCConfig<Model>
 }
 export const omit = (
   props: Record<string, any>,

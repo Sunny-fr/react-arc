@@ -25,10 +25,10 @@ interface CreateHOCParams<P, M> {
 
 
 export function createHOC<P, M>({Container = ModelContainer, ARCConfig}: CreateHOCParams<P, M> ) {
-  // const ARCContainer = Container || ModelContainer as React.ComponentType<P & HOCBootstrapped<M>>
+
+  const ARCContainer = withARC(ARCConfig)(Container) as React.ComponentType<P & HOCBootstrapped<M>>
   return (Wrapped: React.ComponentType<P & HOCBootstrapped<M>>) =>
     (props: P) => {
-      const ARCContainer = withARC(ARCConfig)(Container) as React.ComponentType<P & HOCBootstrapped<M>>
       return <ARCContainer {...props as P & HOCBootstrapped<M>} component={Wrapped}/>
     }
 }
