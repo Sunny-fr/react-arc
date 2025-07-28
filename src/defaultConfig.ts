@@ -8,8 +8,6 @@ const config: ARCConfig<ARCModel<any>> = {
   actionNamespace: "",
   // useful to map objects in collection
   modelProps: [],
-  // can be empty (might be useful if you need paging...)
-  collectionProps: [],
   // path to your rest server
   paths: {
     item: "/",

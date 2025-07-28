@@ -19,7 +19,6 @@ export interface ARCHttpRestMethodMap {
 export declare const ARCHttpRestMethodMapDefaults: ARCHttpRestMethodMap;
 export interface ARCConfigPaths extends Partial<Record<string, string>> {
     item: string;
-    collection?: string;
     read?: string;
     delete?: string;
     update?: string;
@@ -38,9 +37,8 @@ export type RetryConditionFn<Model> = (arg0: any, arg1: RetryConditionFnCallback
  */
 export interface ARCConfig<Model> {
     name: string;
-    uppercaseName: string;
+    actionNamespace: string;
     modelProps: string[];
-    collectionProps?: string[];
     paths: ARCConfigPaths;
     methods?: ARCHttpRestMethodMap;
     defaultModel?: ARCModel<Model>;

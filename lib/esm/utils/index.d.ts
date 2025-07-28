@@ -3,6 +3,7 @@ import { ARCConfig } from "../types/config.types";
 import { ComponentProps, ComponentPropsWithRequiredModelParams } from "../types/components.types";
 export declare function flatten<Model>(arcCollectionMap: ARCMetaCollectionMap<Model>, withMetas?: boolean): ARCModel<Model>[] | ARCMetaModel<Model>[];
 export declare function extendWithDefaultProps<Model>(config: ARCConfig<Model>, ownProps: ComponentProps): ComponentProps;
+export type ObjectValues<T> = T[keyof T];
 export declare function extractParams(props?: string[], source?: ComponentProps): {};
 export declare function getParams<Model>(config: ARCConfig<Model>, source?: ComponentProps): ComponentPropsWithRequiredModelParams;
 export declare const changedProps: (prevProps: ComponentProps, nextProps: ComponentProps) => string[];
