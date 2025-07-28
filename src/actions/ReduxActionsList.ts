@@ -15,6 +15,16 @@ import {ARCAxiosOptions, ReduxActionsListOptions,} from "../types/actions.types"
 import {ACTIONS} from "../reducers/action";
 
 
+// Error serializer for better error handling
+// prevents mutations
+
+function errorSerializer(error: any): string {
+  if (error && error.response) {
+    return `Error: ${error.message}, Response: ${JSON.stringify(error.response.data)}`
+  }
+  return `Error: ${error.message}`
+}
+
 export const AXIOS_CANCEL_PAYLOAD = {
   code: "ERR_CANCELED",
   name: "CanceledError"
@@ -186,7 +196,10 @@ export class ReduxActionsList<Model>{
             if (error && error.code === AXIOS_CANCEL_PAYLOAD.code && error.name === AXIOS_CANCEL_PAYLOAD.name) {
               dispatch({
                 type: this.decorate(ACTIONS.FETCH_CANCELLED),
-                payload: { error, params },
+                payload: {
+                  error: errorSerializer(error),
+                  params
+                },
               })
               return Promise.reject(error)
             }
@@ -213,7 +226,10 @@ export class ReduxActionsList<Model>{
             }
             dispatch({
               type: this.decorate(ACTIONS.FETCH_REJECTED),
-              payload: { error, params },
+              payload: {
+                error: errorSerializer(error),
+                params
+              },
             })
             return Promise.reject(error)
           })
@@ -271,7 +287,9 @@ export class ReduxActionsList<Model>{
         .catch((error) => {
           dispatch({
             type: this.decorate(ACTIONS.SAVE_REJECTED),
-            payload: { error, data, params, create },
+            payload: {
+              error: errorSerializer(error),
+              data, params, create },
           })
           return Promise.reject(error)
         })
@@ -312,7 +330,10 @@ export class ReduxActionsList<Model>{
         .catch((error) => {
           dispatch({
             type: this.decorate(ACTIONS.DELETE_REJECTED),
-            payload: { error, params },
+            payload: {
+              error: errorSerializer(error),
+              params
+            },
           })
           return Promise.reject(error)
         })
