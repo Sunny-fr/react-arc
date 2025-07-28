@@ -9,8 +9,18 @@ const time = (): number => {
   return new Date().getTime()
 }
 
-// MIXER
-// returns a reducer
+// in order to avoid data mutation
+// when we update the store
+// if the data retrieved is an object
+// we'll clone it
+function sanitizeData<M>(data: M): any {
+  if (data && typeof data === "object") {
+    return JSON.parse(JSON.stringify(data))
+  }
+  return data
+}
+
+
 
 interface MixerStoreParams<Model> {
   config: ARCConfig<Model>
@@ -28,6 +38,8 @@ interface ReduxAction {
   type: string
   payload: ReduxActionPayload
 }
+
+
 
 
 export function createReducer<Model>(options: MixerStoreParams<Model>) {
@@ -234,7 +246,7 @@ export function createReducer<Model>(options: MixerStoreParams<Model>) {
             end: time(),
             valid: true,
           },
-          model: action.payload.data,
+          model: sanitizeData(action.payload.data),
         }
         return {
           ...state,
@@ -272,7 +284,7 @@ export function createReducer<Model>(options: MixerStoreParams<Model>) {
             model: Object.assign(
               {},
               collection[key].model,
-              action.payload.data
+              sanitizeData(action.payload.data)
             ),
           }
           return {
