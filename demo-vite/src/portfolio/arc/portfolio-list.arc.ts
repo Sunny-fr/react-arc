@@ -13,7 +13,7 @@ export interface PortfolioListProps {
 
 export const portfolioList: ARCConfig<Portfolios> = {
   "name": "portfolioList",
-  "uppercaseName": "PORTFOLIO_LIST",
+  "actionNamespace": "PORTFOLIO_LIST",
   "modelProps": [
     "start",
     "limit"

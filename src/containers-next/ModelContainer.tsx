@@ -364,7 +364,7 @@ export function useModelContainer<Model>({
 
   // Mount effect - run once at component initialization
   useEffect(() => {
-    console.log('ModelContainer mounted with props:', props)
+    //console.log('ModelContainer mounted with props:', props)
     isMountedRef.current = true
 
     // Use a small delay to ensure state stability before initial fetch
@@ -376,14 +376,14 @@ export function useModelContainer<Model>({
 
     // Cleanup function executed only on real unmount
     return () => {
-      console.log('ModelContainer unmounting - cleanup phase')
+      //console.log('ModelContainer unmounting - cleanup phase')
       isMountedRef.current = false
       clearTimeout(initTimeout)
       clearTimeout(delayedTimeoutRef.current)
 
       // Only abort request if there's actually a fetch in progress
       if (abortControllerRef.current && fetchStatus.inProgress) {
-        console.log('ModelContainer unmounted, aborting ongoing request')
+        //console.log('ModelContainer unmounted, aborting ongoing request')
         abortControllerRef.current.abort(commons.cancelRequestPayload({ ARCConfig }))
         abortControllerRef.current = null
       }

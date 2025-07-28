@@ -32,17 +32,17 @@ export const portfolioConfig = {
 
 ## Store Setup
 
-Set up your Redux store using `mixerStore` from `react-arc`.
+Set up your Redux store using `createReducer` from `react-arc`.
 
 **`src/store.js`**
 
 ```javascript
 import { createStore, combineReducers } from 'redux';
-import { mixerStore } from 'react-arc';
+import { createReducer } from 'react-arc';
 import { portfolioConfig } from './config';
 
 const rootReducer = combineReducers({
-    portfolio: mixerStore({ config: portfolioConfig }),
+    portfolio: createReducer({ config: portfolioConfig }),
 });
 
 const store = createStore(rootReducer);

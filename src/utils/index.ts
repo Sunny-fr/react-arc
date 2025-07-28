@@ -29,6 +29,8 @@ export function extendWithDefaultProps<Model>(
   }, ownProps)
 }
 
+export type ObjectValues<T> = T[keyof T]
+
 //
 // export const getDefaultFromMissingProps = (ARCConfig, ownProps) => {
 //   const defaultProps = ARCConfig.defaultProps || {}

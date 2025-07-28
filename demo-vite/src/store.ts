@@ -1,7 +1,7 @@
 import {applyMiddleware, createStore, compose, combineReducers} from "redux"
 import thunk from "redux-thunk"
 
-import {mixerStore} from '../../src'
+import {createReducer} from '../../src'
 
 
 import {portfolio} from "./portfolio/arc/portfolio.arc";
@@ -27,9 +27,9 @@ const composeEnhancers =(window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__|| c
 const enhancer = composeEnhancers(middleware)
 
 const reducers = {
-  portfolio: mixerStore({config: portfolio}),
-  portfolioList: mixerStore({config: portfolioList}),
-  album: mixerStore({config: album}),
+  portfolio: createReducer({config: portfolio}),
+  portfolioList: createReducer({config: portfolioList}),
+  album: createReducer({config: album}),
   router: connectRouter(history)
 }
 

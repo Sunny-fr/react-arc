@@ -18,7 +18,7 @@ export interface PortfolioProps {
 
 export const portfolio: ARCConfig<Portfolio> = {
   "name": "portfolio",
-  "uppercaseName": "PORTFOLIO",
+  "actionNamespace": "PORTFOLIO",
   "modelProps": [
     "id"
   ],

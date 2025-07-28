@@ -12,6 +12,7 @@ import {
 import { ARCAxiosOptions } from "../types/actions.types"
 import {ARCMetas} from "../types/model.types";
 import React from "react"
+import {AXIOS_CANCEL_PAYLOAD} from "../actions/ReduxActionsList";
 
 // import {changedProps} from '../utils/index'
 // import equal from 'deep-equal'
@@ -76,8 +77,7 @@ export class ModelContainer<P, S, Model> extends Container<P,S, Model> {
    * Fetch a model */
   fetch = (params: ComponentPropsWithRequiredModelParams) => {
 
-    // const dispatch = this.checkDispatchAvailability()
-    // if (!dispatch) return
+
     this.abortController = new AbortController()
     const axiosOptions: ARCAxiosOptions<Model> = {
       abortController: this.abortController
@@ -89,12 +89,11 @@ export class ModelContainer<P, S, Model> extends Container<P,S, Model> {
     )
 
     promise.catch((e:any) => {
-      if (e.name === 'AbortError') {
+
+      if (e.name === AXIOS_CANCEL_PAYLOAD.name && e.code === AXIOS_CANCEL_PAYLOAD.code) {
+
         //console.warn('ModelContainer: fetch aborted', e)
-        return Promise.reject({
-          message: 'Fetch aborted',
-          ARCConfig: this.ARCConfig,
-        })
+        return
       }
       return Promise.reject({
         message: 'Fetch error',
@@ -223,6 +222,10 @@ export class ModelContainer<P, S, Model> extends Container<P,S, Model> {
         return
       }
       this.fetch(params)
+        .catch(() => {
+          //console.error('fetch error')
+          // this.props.dispatch(this.actions.resetTemp())
+        })
     }
   }
 
@@ -308,6 +311,8 @@ export class ModelContainer<P, S, Model> extends Container<P,S, Model> {
     const params = this.getParams(props)
     if(!params){
       console.error('ModelContainer: params are required')
+      console.log('missing params for', this.ARCConfig.name)
+      console.log(this.core.missingParams(this.ARCConfig, props))
       return null
     }
 

@@ -5,7 +5,7 @@ const config: ARCConfig<ARCModel<any>> = {
   //reducer name
   name: "",
   //namespace
-  uppercaseName: "",
+  actionNamespace: "",
   // useful to map objects in collection
   modelProps: [],
   // can be empty (might be useful if you need paging...)

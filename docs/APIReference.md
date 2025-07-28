@@ -35,7 +35,7 @@ An object with the following properties:
 *   `response` (object): The response from the API.
 *   `arc` (object): An object with methods to interact with the API (`get`, `create`, `update`, `remove`).
 
-### `mixerStore(options)`
+### `createReducer(options)`
 
 A function that creates a Redux reducer for your data model.
 

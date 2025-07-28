@@ -1,13 +1,8 @@
-import { interpolate, getParams, getDefaultConfig } from "../utils"
-import { ARCConfig } from "../types/config.types"
-import {
-  ARCMetaCollectionMap,
-  ARCMetaModel,
-  ARCModel,
-  ARCModelKey,
-} from "../types/model.types"
-import { ARCStoreState } from "../types/connectors.types"
-import {ComponentProps} from "../types/components.types";
+import {getDefaultConfig, interpolate} from "../utils"
+import {ARCConfig} from "../types/config.types"
+import {ARCMetaModel, ARCModel, ARCModelKey,} from "../types/model.types"
+import {ARCStoreState} from "../types/connectors.types"
+import {ACTIONS} from "./action";
 
 
 const time = (): number => {
@@ -34,31 +29,8 @@ interface ReduxAction {
   payload: ReduxActionPayload
 }
 
-const ACTIONS_MAPPER = {
-  //DEPRECATED
-  COLLECTION_RESET: "RESET_{uppercaseName}S",
-  COLLECTION_FETCH: "FETCH_{uppercaseName}S",
-  COLLECTION_FETCH_FULFILLED: "FETCH_{uppercaseName}S_FULFILLED",
-  COLLECTION_FETCH_CANCELLED: "FETCH_{uppercaseName}S_CANCELLED",
-  COLLECTION_FETCH_REJECTED: "FETCH_{uppercaseName}S_REJECTED",
-  //END DEPRECATED
 
-  INIT: "INIT_{uppercaseName}",
-  FETCH: "FETCH_{uppercaseName}",
-  FETCH_REJECTED: "FETCH_{uppercaseName}_REJECTED",
-  FETCH_CANCELLED: "FETCH_{uppercaseName}_CANCELLED",
-  FETCH_FULFILLED: "FETCH_{uppercaseName}_FULFILLED",
-  RESET: "RESET_{uppercaseName}_TEMP",
-  EDIT: "EDIT_{uppercaseName}",
-  SAVE: "SAVE_{uppercaseName}",
-  SAVE_REJECTED: "SAVE_{uppercaseName}_REJECTED",
-  SAVE_FULFILLED: "SAVE_{uppercaseName}_FULFILLED",
-  DELETE: "DELETE_{uppercaseName}",
-  DELETE_REJECTED: "DELETE_{uppercaseName}_REJECTED",
-  DELETE_FULFILLED: "DELETE_{uppercaseName}_FULFILLED",
-}
-
-export function mixerStore<Model>(options: MixerStoreParams<Model>) {
+export function createReducer<Model>(options: MixerStoreParams<Model>) {
   const config = options?.config || {}
   const extendedConfig = { ...getDefaultConfig(), ...config }
   const defaultModelObject = JSON.parse(
@@ -94,18 +66,18 @@ export function mixerStore<Model>(options: MixerStoreParams<Model>) {
     error: null,
   }
 
-  function mapModels(list: ARCModel<Model>[]): ARCMetaCollectionMap<Model> {
-    const collectionMap: ARCMetaCollectionMap<Model> = {}
-    return list.reduce((prev: ARCMetaCollectionMap<Model>, current) => {
-      const tempKey = interpolate(null, getParams(extendedConfig, current as ComponentProps))
-      const key = tempKey || JSON.stringify(current)
-      prev[key] = Object.assign({}, defaultMetaModel, {
-        model: current,
-        metas: { ...defaultMetaModel.metas, loaded: true, valid: true },
-      })
-      return prev
-    }, collectionMap)
-  }
+  // function mapModels(list: ARCModel<Model>[]): ARCMetaCollectionMap<Model> {
+  //   const collectionMap: ARCMetaCollectionMap<Model> = {}
+  //   return list.reduce((prev: ARCMetaCollectionMap<Model>, current) => {
+  //     const tempKey = interpolate(null, getParams(extendedConfig, current as ComponentProps))
+  //     const key = tempKey || JSON.stringify(current)
+  //     prev[key] = Object.assign({}, defaultMetaModel, {
+  //       model: current,
+  //       metas: { ...defaultMetaModel.metas, loaded: true, valid: true },
+  //     })
+  //     return prev
+  //   }, collectionMap)
+  // }
 
   /**
    * decorates ("templatize") a string using params
@@ -133,62 +105,14 @@ export function mixerStore<Model>(options: MixerStoreParams<Model>) {
       return { ...state.collection, [key]: item }
     }
 
-    if(action.type.includes('PORTF')){
-      console.log(action.type)
-    }
-
 
     switch (action.type) {
-      /*** FETCHING COLLECTION ***/
-      case t(ACTIONS_MAPPER.COLLECTION_RESET): {
-        return {
-          ...defaultState,
-          collection: { ...defaultState.collection },
-          temp: {
-            metas: { ...defaultMetaModel.metas, loaded: false },
-            model: { ...defaultMetaModel.model },
-          },
-        }
-      }
 
-      case t(ACTIONS_MAPPER.COLLECTION_FETCH): {
-        return { ...state, fetching: true, error: null, start: time() }
-      }
-
-      case t(ACTIONS_MAPPER.COLLECTION_FETCH_FULFILLED): {
-        return {
-          ...state,
-          fetching: false,
-          loaded: true,
-          end: time(),
-          collection: mapModels(action.payload.data),
-        }
-      }
-
-      case t(ACTIONS_MAPPER.COLLECTION_FETCH_CANCELLED): {
-        return {
-          ...state,
-          fetching: false,
-          end: time(),
-        }
-      }
-
-      case t(ACTIONS_MAPPER.COLLECTION_FETCH_REJECTED): {
-        return {
-          ...state,
-          fetching: false,
-          loaded: false,
-          end: time(),
-          error: action.payload.error,
-        }
-      }
-
-      /*** END FETCHING COLLECTION ***/
 
       /*** FETCHING MODEL ***/
 
       // NEVER USED
-      case t(ACTIONS_MAPPER.INIT): {
+      case t(ACTIONS.INIT): {
         const collection = { ...state.collection }
         const key = keyGen(action.payload.params)
 
@@ -208,7 +132,7 @@ export function mixerStore<Model>(options: MixerStoreParams<Model>) {
         }
       }
 
-      case t(ACTIONS_MAPPER.FETCH): {
+      case t(ACTIONS.FETCH): {
         const collection = { ...state.collection }
         const key = keyGen(action.payload.params)
 
@@ -245,7 +169,7 @@ export function mixerStore<Model>(options: MixerStoreParams<Model>) {
         }
       }
 
-      case t(ACTIONS_MAPPER.FETCH_REJECTED): {
+      case t(ACTIONS.FETCH_REJECTED): {
         const collection = { ...state.collection }
         const key = keyGen(action.payload.params)
         collection[key] = {
@@ -265,7 +189,7 @@ export function mixerStore<Model>(options: MixerStoreParams<Model>) {
         }
       }
 
-      case t(ACTIONS_MAPPER.FETCH_CANCELLED): {
+      case t(ACTIONS.FETCH_CANCELLED): {
         const collection = { ...state.collection }
         const key = keyGen(action.payload.params)
 
@@ -299,7 +223,7 @@ export function mixerStore<Model>(options: MixerStoreParams<Model>) {
         }
       }
 
-      case t(ACTIONS_MAPPER.FETCH_FULFILLED): {
+      case t(ACTIONS.FETCH_FULFILLED): {
         const collection = { ...state.collection }
         const key = keyGen(action.payload.params)
         collection[key] = {
@@ -320,7 +244,7 @@ export function mixerStore<Model>(options: MixerStoreParams<Model>) {
 
       /*** END FETCHING MODEL ***/
 
-      case t(ACTIONS_MAPPER.RESET): {
+      case t(ACTIONS.RESET): {
         return {
           ...state,
           temp: {
@@ -330,7 +254,7 @@ export function mixerStore<Model>(options: MixerStoreParams<Model>) {
         }
       }
 
-      case t(ACTIONS_MAPPER.EDIT): {
+      case t(ACTIONS.EDIT): {
         const key = keyGen(action.payload.params)
         if (!key) {
           //model is new
@@ -358,7 +282,7 @@ export function mixerStore<Model>(options: MixerStoreParams<Model>) {
         }
       }
 
-      case t(ACTIONS_MAPPER.SAVE): {
+      case t(ACTIONS.SAVE): {
         const key = keyGen(action.payload.params)
         const prev = action.payload.create ? state.temp : previousItem(key)
         const updated:ARCMetaModel<Model> = {
@@ -380,7 +304,7 @@ export function mixerStore<Model>(options: MixerStoreParams<Model>) {
         }
       }
 
-      case t(ACTIONS_MAPPER.SAVE_REJECTED): {
+      case t(ACTIONS.SAVE_REJECTED): {
         const key = keyGen(action.payload.params)
         const prev = action.payload.create ? state.temp : previousItem(key)
         const updated = {
@@ -405,7 +329,7 @@ export function mixerStore<Model>(options: MixerStoreParams<Model>) {
         }
       }
 
-      case t(ACTIONS_MAPPER.SAVE_FULFILLED): {
+      case t(ACTIONS.SAVE_FULFILLED): {
         const key = keyGen(action.payload.params)
         const prev = action.payload.create ? state.temp : previousItem(key)
         const updated = {
@@ -425,7 +349,7 @@ export function mixerStore<Model>(options: MixerStoreParams<Model>) {
         }
       }
 
-      case t(ACTIONS_MAPPER.DELETE): {
+      case t(ACTIONS.DELETE): {
         const key = keyGen(action.payload.params)
         const prev = previousItem(key)
         const updated = {
@@ -441,7 +365,7 @@ export function mixerStore<Model>(options: MixerStoreParams<Model>) {
         return { ...state, collection }
       }
 
-      case t(ACTIONS_MAPPER.DELETE_REJECTED): {
+      case t(ACTIONS.DELETE_REJECTED): {
         const key = keyGen(action.payload.params)
         const prev = previousItem(key)
         const updated = {
@@ -461,7 +385,7 @@ export function mixerStore<Model>(options: MixerStoreParams<Model>) {
         }
       }
 
-      case t(ACTIONS_MAPPER.DELETE_FULFILLED): {
+      case t(ACTIONS.DELETE_FULFILLED): {
         const key = keyGen(action.payload.params)
         const collection = { ...state.collection }
         delete collection[key]
@@ -477,4 +401,4 @@ export function mixerStore<Model>(options: MixerStoreParams<Model>) {
   }
 }
 
-export default mixerStore
+export default createReducer

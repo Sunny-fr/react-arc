@@ -14,7 +14,7 @@ export interface AlbumProps {
 
 export const album: ARCConfig<Album> = {
   "name": "album",
-  "uppercaseName": "ALBUM",
+  "actionNamespace": "ALBUM",
   "modelProps": [
     "id"
   ],

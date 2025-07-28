@@ -1,5 +1,5 @@
-import axios, { AxiosInstance, AxiosPromise } from "axios"
-import { getDefaultConfig, interpolate } from "../utils"
+import axios, {AxiosInstance, AxiosPromise} from "axios"
+import {getDefaultConfig, interpolate} from "../utils"
 import {
   ARCConfig,
   ARCConfigHeaders,
@@ -8,21 +8,17 @@ import {
   RetryConditionFn,
 } from "../types/config.types"
 //import { ARCStoreState } from "../types/connectors.types"
-import { Dispatch } from "redux"
+import {Dispatch} from "redux"
 
-import { ComponentPropsWithRequiredModelParams } from "../types/components.types"
-import {
-  ARCAxiosOptions,
-  ReduxActionsListOptions,
-} from "../types/actions.types"
+import {ComponentPropsWithRequiredModelParams} from "../types/components.types"
+import {ARCAxiosOptions, ReduxActionsListOptions,} from "../types/actions.types"
+import {ACTIONS} from "../reducers/action";
 
-//type Actions = any //{ type: 'FOO' } | { type: 'BAR'; result: number };
 
-//type ThunkResult<R> = ThunkAction<R, ARCStoreState, undefined, Actions>
-
-const ERRORS = {
-  CANCEL_HTTP_REQUEST: "ARC:Cancel",
-}
+export const AXIOS_CANCEL_PAYLOAD = {
+  code: "ERR_CANCELED",
+  name: "CanceledError"
+} as const
 
 export class ReduxActionsList<Model>{
   config: ARCConfig<Model>
@@ -132,7 +128,7 @@ export class ReduxActionsList<Model>{
   edit(data: any, params: ComponentPropsWithRequiredModelParams) {
     return (dispatch: Dispatch) => {
       dispatch({
-        type: this.decorate("EDIT_{uppercaseName}"),
+        type: this.decorate(ACTIONS.EDIT),
         payload: { data, params },
       })
     }
@@ -169,7 +165,7 @@ export class ReduxActionsList<Model>{
       const maxTries = this.config.maxTries || 1
       const applyRequest = (tryNumber: number = 1): AxiosPromise<Model> => {
         //(!!axiosOptions ? axiosOptions.retryConditionFn : undefined)
-        const actionType = this.decorate("FETCH_{uppercaseName}")
+        const actionType = this.decorate(ACTIONS.FETCH)
         dispatch({
           type: actionType,
           payload: {
@@ -180,15 +176,16 @@ export class ReduxActionsList<Model>{
         return this.standAloneFetchOne(params, config, props, axiosOptions)
           .then((response) => {
             dispatch({
-              type: this.decorate("FETCH_{uppercaseName}_FULFILLED"),
+              type: this.decorate(ACTIONS.FETCH_FULFILLED),
               payload: { data: response.data, params },
             })
             return Promise.resolve(response)
           })
           .catch((error) => {
-            if (error && error.type === ERRORS.CANCEL_HTTP_REQUEST) {
+
+            if (error && error.code === AXIOS_CANCEL_PAYLOAD.code && error.name === AXIOS_CANCEL_PAYLOAD.name) {
               dispatch({
-                type: this.decorate("FETCH_{uppercaseName}_CANCELLED"),
+                type: this.decorate(ACTIONS.FETCH_CANCELLED),
                 payload: { error, params },
               })
               return Promise.reject(error)
@@ -215,7 +212,7 @@ export class ReduxActionsList<Model>{
               return applyRequest(tryNumber + 1)
             }
             dispatch({
-              type: this.decorate("FETCH_{uppercaseName}_REJECTED"),
+              type: this.decorate(ACTIONS.FETCH_REJECTED),
               payload: { error, params },
             })
             return Promise.reject(error)
@@ -225,6 +222,8 @@ export class ReduxActionsList<Model>{
       return applyRequest()
     }
   }
+
+
 
   /**  SAVE **/
 
@@ -258,20 +257,20 @@ export class ReduxActionsList<Model>{
     return (dispatch: Dispatch): AxiosPromise => {
       const config = this.beforeFetch({ config: this.config, params, props })
       dispatch({
-        type: this.decorate("SAVE_{uppercaseName}"),
+        type: this.decorate(ACTIONS.SAVE),
         payload: { data, params, create },
       })
       return this.standAloneSave(data, params, create, config, props)
         .then((response) => {
           dispatch({
-            type: this.decorate("SAVE_{uppercaseName}_FULFILLED"),
+            type: this.decorate(ACTIONS.SAVE_FULFILLED),
             payload: { params, data: response.data, create },
           })
           return Promise.resolve(response)
         })
         .catch((error) => {
           dispatch({
-            type: this.decorate("SAVE_{uppercaseName}_REJECTED"),
+            type: this.decorate(ACTIONS.SAVE_REJECTED),
             payload: { error, data, params, create },
           })
           return Promise.reject(error)
@@ -299,20 +298,20 @@ export class ReduxActionsList<Model>{
     return (dispatch: Dispatch): AxiosPromise => {
       const config = this.beforeFetch({ config: this.config, params, props })
       dispatch({
-        type: this.decorate("DELETE_{uppercaseName}"),
+        type: this.decorate(ACTIONS.DELETE),
         payload: { params },
       })
       return this.standAloneRemove(params, config, props)
         .then((response) => {
           dispatch({
-            type: this.decorate("DELETE_{uppercaseName}_FULFILLED"),
+            type: this.decorate(ACTIONS.DELETE_FULFILLED),
             payload: { params, data: response.data },
           })
           return Promise.resolve(response)
         })
         .catch((error) => {
           dispatch({
-            type: this.decorate("DELETE_{uppercaseName}_REJECTED"),
+            type: this.decorate(ACTIONS.DELETE_REJECTED),
             payload: { error, params },
           })
           return Promise.reject(error)
@@ -320,72 +319,13 @@ export class ReduxActionsList<Model>{
     }
   }
 
-  /**
-   * LISTS
-   * to be deprecated
-   * **/
 
-  standAloneFetchAll(
-    _params: ComponentPropsWithRequiredModelParams,
-    config: ARCConfig<Model>,
-    _props: object,
-    axiosOptions: ARCAxiosOptions<Model>
-  ): AxiosPromise<Model[]> {
-    const url = config.paths.collection
-    return this.axios({
-      method: (config.methods as ARCHttpRestMethodMap).read,
-      url,
-      headers: config.headers,
-      signal: this.generateAbortSignal(axiosOptions),
-    })
-  }
 
-  fetchAll(
-    params: ComponentPropsWithRequiredModelParams,
-    props: object = {},
-    axiosOptions: ARCAxiosOptions<Model>
-  ) {
-    return (dispatch: Dispatch): AxiosPromise => {
-      dispatch({
-        type: this.decorate("FETCH_{uppercaseName}S"),
-        payload: { params },
-      })
-      const config = this.beforeFetch({ config: this.config, params, props })
-      return this.standAloneFetchAll(params, config, props, axiosOptions)
-        .then((response) => {
-          dispatch({
-            type: this.decorate("FETCH_{uppercaseName}S_FULFILLED"),
-            payload: { data: response.data },
-          })
-          return Promise.resolve(response)
-        })
-        .catch((error) => {
-          if (error && error.type === ERRORS.CANCEL_HTTP_REQUEST) {
-            dispatch({
-              type: this.decorate("FETCH_{uppercaseName}S_CANCELLED"),
-              payload: { error, params },
-            })
-            return Promise.reject(error)
-          }
-          dispatch({
-            type: this.decorate("FETCH_{uppercaseName}S_REJECTED"),
-            payload: { error, params },
-          })
-          return Promise.reject(error)
-        })
-    }
-  }
 
-  reset() {
-    return (dispatch: Dispatch): void => {
-      dispatch({ type: this.decorate("RESET_{uppercaseName}S") })
-      return
-    }
-  }
 
   resetTemp() {
     return (dispatch: Dispatch): void => {
-      dispatch({ type: this.decorate("RESET_{uppercaseName}_TEMP") })
+      dispatch({ type: this.decorate(ACTIONS.RESET) })
     }
   }
 }
