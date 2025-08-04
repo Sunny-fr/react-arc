@@ -1,11 +1,20 @@
-import React, { ReactNode } from 'react';
+
+import { cn } from '@/lib/utils.ts';
 
 interface ToolbarProps {
-  children: ReactNode;
+  children: React.ReactNode;
+  className?: string;
 }
 
-export function Toolbar(props: ToolbarProps) {
-  return <div className="toolbar sizing">{props.children}</div>;
+export function Toolbar({ children, className }: ToolbarProps) {
+  return (
+    <div className={cn(
+      "py-5",
+      className
+    )}>
+      {children}
+    </div>
+  );
 }
 
 export default Toolbar;

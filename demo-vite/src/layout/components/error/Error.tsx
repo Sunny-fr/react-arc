@@ -1,13 +1,17 @@
-import React, { ReactNode } from 'react';
+import {cn} from '@/lib/utils.ts';
 
 interface ErrorProps {
-  children: ReactNode;
+  children: React.ReactNode;
+  className?: string;
 }
 
-export function Error(props: ErrorProps) {
+export function Error({ children, className }: ErrorProps) {
   return (
-    <div className="error small">
-      <p>{props.children}</p>
+    <div className={cn(
+      "bg-yellow-200 p-4 rounded text-left text-sm",
+      className
+    )}>
+      {children}
     </div>
   );
 }

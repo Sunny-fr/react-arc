@@ -1,11 +1,11 @@
-import React, { ReactNode } from 'react';
+import './toast.css'
 
 interface ToastProps {
-  children: ReactNode;
+  children: React.ReactNode;
 }
 
 export function Toast(props: ToastProps) {
-  return <div className="toast">{props.children}</div>;
+  return <div className="toast animated fadeInUp">{props.children}</div>;
 }
 
 export default Toast;
