@@ -1,7 +1,6 @@
 import {getParams, omit} from "../utils"
 import commons from "../commons"
 import Container from "./Container"
-//import PropTypes from "prop-types"
 import {
   ARCContainerProps,
   ARCWrappedComponentProps,
@@ -57,7 +56,7 @@ export class ModelContainer<P, S, Model> extends Container<P,S, Model> {
   }
 
   /* private
-   * get a model an its metas data
+   * get a model and its metas data
    */
 
   _getModel(props?: AnyArcComponentProps<Model>) {
@@ -89,17 +88,10 @@ export class ModelContainer<P, S, Model> extends Container<P,S, Model> {
     )
 
     promise.catch((e:any) => {
-
       if (e.name === AXIOS_CANCEL_PAYLOAD.name && e.code === AXIOS_CANCEL_PAYLOAD.code) {
-
-        //console.warn('ModelContainer: fetch aborted', e)
         return
       }
-      return Promise.reject({
-        message: 'Fetch error',
-        ARCConfig: this.ARCConfig,
-        error: e,
-      })
+      return;
     })
     return promise
   }

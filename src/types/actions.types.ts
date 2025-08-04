@@ -16,3 +16,18 @@ export interface ARCAxiosOptions<Model> {
   abortController?: AbortController
   retryConditionFn?: (error: any, params: RetryFnParams<Model>) => boolean
 }
+
+
+export interface ArcFetchError {
+  message: string
+  meta: {
+    code: string
+    message: string
+    status: number
+    response: {
+      status: number
+      statusText: string
+      data: any
+    }
+  }
+}

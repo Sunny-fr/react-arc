@@ -1,4 +1,4 @@
-import axios, {AxiosInstance, AxiosPromise} from "axios"
+import axios, {AxiosError, AxiosInstance, AxiosPromise} from "axios"
 import {getDefaultConfig, interpolate} from "../utils"
 import {
   ARCConfig,
@@ -11,18 +11,36 @@ import {
 import {Dispatch} from "redux"
 
 import {ComponentPropsWithRequiredModelParams} from "../types/components.types"
-import {ARCAxiosOptions, ReduxActionsListOptions,} from "../types/actions.types"
+import {ARCAxiosOptions, ArcFetchError, ReduxActionsListOptions,} from "../types/actions.types"
 import {ACTIONS} from "../reducers/action";
 
 
 // Error serializer for better error handling
 // prevents mutations
 
-function errorSerializer(error: any): string {
-  if (error && error.response) {
-    return `Error: ${error.message}, Response: ${JSON.stringify(error.response.data)}`
+
+
+function errorSerializer(error: AxiosError | any): ArcFetchError | string {
+
+  // axios error
+  if (error.isAxiosError) {
+    const axiosError = error as AxiosError
+    return {
+      message: axiosError.message,
+      meta: {
+        code: axiosError.code || "UNKNOWN_ERROR",
+        message: axiosError.message,
+        status: axiosError.response?.status || 500,
+        response: {
+          status: axiosError.response?.status || 500,
+          statusText: axiosError.response?.statusText || "Unknown",
+          data: axiosError.response?.data || {},
+        },
+      },
+    }
   }
-  return `Error: ${error.message}`
+
+  return `Error: ${error.message || "Unknown error"}`
 }
 
 export const AXIOS_CANCEL_PAYLOAD = {
