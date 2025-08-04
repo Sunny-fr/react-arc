@@ -6,11 +6,11 @@ import {type Portfolio, portfolio} from "../arc/portfolio.arc.ts";
 import {useEffect, useState} from "react";
 import {Link, useHistory} from "react-router-dom";
 import {SiteHeader} from "@/components/site-header.tsx";
-import {Button} from "@/components/ui/button.tsx";
-import {Card, CardContent, CardFooter, CardHeader, CardTitle} from "@/components/ui/card.tsx";
-import {Input} from "@/components/ui/input.tsx";
-import {Textarea} from "@/components/ui/textarea.tsx";
-import {Label} from "@/components/ui/label.tsx";
+import {Button} from "@/layout/ui/button.tsx";
+import {Card, CardContent, CardFooter, CardHeader, CardTitle} from "@/layout/ui/card.tsx";
+import {Input} from "@/layout/ui/input.tsx";
+import {Textarea} from "@/layout/ui/textarea.tsx";
+import {Label} from "@/layout/ui/label.tsx";
 
 interface FormRowProps {
   name: string;

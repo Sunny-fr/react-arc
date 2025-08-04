@@ -1,6 +1,6 @@
 import React, {type PropsWithChildren} from 'react'
 import './common.css'
-import {SidebarInset, SidebarProvider,} from "@/components/ui/sidebar"
+import {SidebarInset, SidebarProvider,} from "@/layout/ui/sidebar"
 import {AppSidebar} from "@/components/app-sidebar.tsx";
 
 //import {Link} from 'react-router'

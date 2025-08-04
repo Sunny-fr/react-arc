@@ -1,7 +1,7 @@
 import React, {useEffect} from "react"
 import {type PortfolioListProps, withPortfolioList} from "../arc/portfolio-list.arc.ts"
 
-import loadImage from "../../../layout/components/image/loadImage.ts"
+import loadImage from "@/layout/components/image/loadImage.ts"
 
 import {AlbumName} from "../../album/components/AlbumName.tsx"
 
@@ -9,8 +9,8 @@ import {AlbumName} from "../../album/components/AlbumName.tsx"
 import {Loader} from "@/layout/components/loader/Loader.tsx"
 import {LargeError} from "@/layout/components/error/LargeError.tsx"
 import {Link} from "react-router-dom";
-import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle} from "@/components/ui/card.tsx";
-import {Button} from "@/components/ui/button.tsx";
+import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle} from "@/layout/ui/card.tsx";
+import {Button} from "@/layout/ui/button.tsx";
 import Toast from "@/layout/components/toast/Toast.tsx";
 import type {Portfolio} from "@/components/portfolio/arc/portfolio.arc.ts";
 

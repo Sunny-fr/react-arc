@@ -1,6 +1,6 @@
-import {Avatar, AvatarFallback, AvatarImage,} from "@/components/ui/avatar"
-import {DropdownMenu, DropdownMenuTrigger,} from "@/components/ui/dropdown-menu"
-import {SidebarMenu, SidebarMenuButton, SidebarMenuItem,} from "@/components/ui/sidebar"
+import {Avatar, AvatarFallback, AvatarImage,} from "@/layout/ui/avatar"
+import {DropdownMenu, DropdownMenuTrigger,} from "@/layout/ui/dropdown-menu"
+import {SidebarMenu, SidebarMenuButton, SidebarMenuItem,} from "@/layout/ui/sidebar"
 
 export function NavUser({
   user,
