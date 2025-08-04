@@ -1,6 +1,6 @@
-import React from 'react'
+
 import PortfolioComponent from '../components/PortfolioComponent'
-import {Info} from '../../layout/components/info'
+import {Info} from '../../layout/components/info/Info'
 
 export function Portfolio() {
     return (<div>
@@ -15,7 +15,7 @@ export function Portfolio() {
             <p style={{marginTop: '30px'}} className="text-center">
                 <a href="https://github.com/Sunny-fr/react-arc">Github</a> -  <a href="https://www.npmjs.com/package/react-arc">npm</a></p>
         </Info>
-        <PortfolioComponent hello={'world'} start={0} limit={20}/>
+        <PortfolioComponent hello={'world'} start={0} limit={2}/>
     </div>)
 }
 

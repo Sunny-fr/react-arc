@@ -20,7 +20,7 @@ export interface ARCMetas {
   error?: any
 }
 
-export type ARCMetasType = ARCMetas | object | string | number | boolean | null
+export type ARCMetasType = ARCMetas //| object | string | number | boolean | null
 
 /**
  * Meta Model

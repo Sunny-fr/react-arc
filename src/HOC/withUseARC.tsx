@@ -11,7 +11,7 @@ export function withUseARC<Model>(config: ARCConfig<Model>) {
       return <Wrapped {...arc} {...(props as T)} />
     }
 
-    ComponentWithArc.displayName = `withTheme(${displayName})`
+    ComponentWithArc.displayName = `withARC(${displayName})`
 
     return ComponentWithArc
   }

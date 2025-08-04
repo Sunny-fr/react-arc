@@ -10,12 +10,11 @@ import {
 import {ARCConfig} from "../types/config.types"
 import {
   ARCContainerProps,
-  //ARCContainerProps,
   ComponentProps,
   ComponentPropsWithRequiredModelParams,
   ComponentWithStoreProps,
 } from "../types/components.types"
-import {ARCStoreState} from "../types/connectors.types"
+import {ARCRootState, ARCStoreState} from "../types/connectors.types"
 
 
 type AnyArcComponentProps<Model> = Omit<ComponentWithStoreProps<Model> | ARCContainerProps<Model>, 'dispatch'>
@@ -104,10 +103,7 @@ function getMetas<Model>(config: ARCConfig<Model>, prop: string | undefined, pro
   return metaModel.metas
 }
 
-// type GetMetaModelFn = (
-//   config: ARCConfig,
-//   props: ComponentWithStoreProps | ARCContainerProps
-// ) => ARCMetaModel | null
+
 /**
  * returns the meta model
  * @param {ARCConfig} config
@@ -139,11 +135,6 @@ function getModel<Model>(config: ARCConfig<Model>, props: AnyArcComponentProps<M
   if (!metaModel) {
     return null
   }
-  // //@ts-ignore
-  // if (typeof metaModel?.model !== 'undefined') {
-  //   const _metaModel = metaModel as ARCMetaModel<Model>
-  //   return _metaModel.model as Model
-  // }
   return metaModel.model
 }
 
@@ -208,10 +199,15 @@ function errorReFetch<Model>(config: ARCConfig<Model>, props: ComponentWithStore
 /**
  * the reducer state
  * @param {ARCConfig} config
- * @param {object} reduxStoreState - redux's store.getState()
+ * @param {ARCRootState} reduxStoreState - redux's store.getState()
  */
-function getStore<Model>(config: ARCConfig<Model>, reduxStoreState: object) {
-  return reduxStoreState[config.name]
+function getStore<Model>(config: ARCConfig<Model>, reduxStoreState: ARCRootState) {
+
+  const store: ARCStoreState<Model> = reduxStoreState[config.name]
+  if(!store) {
+    throw new Error(`Namespace "${config.name}" not found in store. Please ensure the ARCConfig is correctly set up.`)
+  }
+  return store
 }
 
 
@@ -227,17 +223,17 @@ function modelPicker<Model>(
   listOfParams: ComponentPropsWithRequiredModelParams[] = []
 ) {
   const models: ARCModel<Model>[] = []
-  const {collection, temp, error, loaded, fetching} = props
+  const {collection} = props
   //TODO REWRITE AS REDUCE FN
   //return listOfParams.reduce((acc, params) => {}, models)
   listOfParams.forEach((keyProps) => {
     const modelParams = getParams(config, keyProps)
     const props: ComponentWithStoreProps<Model> = {
       //TODO  REMOVE temp, error, loaded, fetching,
-      temp,
-      error,
-      loaded,
-      fetching,
+      // temp,
+      // error,
+      // loaded,
+      // fetching,
       collection,
       ...modelParams,
     }
@@ -259,7 +255,7 @@ function modelPicker<Model>(
  */
 function freeModelPicker<Model>(
   config: ARCConfig<Model>,
-  reduxStoreState: object,
+  reduxStoreState: ARCRootState,
   listOfParams: ComponentPropsWithRequiredModelParams[] = []
 ) {
   const {collection} = getStore(config, reduxStoreState)
@@ -268,10 +264,10 @@ function freeModelPicker<Model>(
     {
       collection,
       //DUMMY DATA MUST BE REMOVED  temp: null, error: null, loaded: false, fetching: false
-      temp: null,
-      error: null,
-      loaded: false,
-      fetching: false,
+      // temp: null,
+      // error: null,
+      // loaded: false,
+      // fetching: false,
     },
     listOfParams
   ) || []).filter(Boolean)

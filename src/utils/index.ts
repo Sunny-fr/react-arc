@@ -1,6 +1,4 @@
-
 import equal from "deep-equal"
-import cloneDeep from "lodash.clonedeep"
 import defaultConfig from "../defaultConfig"
 import { ARCMetaCollectionMap, ARCMetaModel, ARCModel} from "../types/model.types"
 import { ARCConfig } from "../types/config.types"
@@ -30,6 +28,8 @@ export function extendWithDefaultProps<Model>(
     return state
   }, ownProps)
 }
+
+export type ObjectValues<T> = T[keyof T]
 
 //
 // export const getDefaultFromMissingProps = (ARCConfig, ownProps) => {
@@ -127,6 +127,7 @@ export function interpolate(str: string | null, params: object): string {
     if(!stringIsReplaceable(prev)){
       return prev
     }
+    // @ts-ignore
     const elm_val:string|number = params[current]
     // skip functions
     if (typeof elm_val === "function") return prev
@@ -152,5 +153,23 @@ export function interpolate(str: string | null, params: object): string {
 }
 
 export function getDefaultConfig<Model>() {
-  return cloneDeep<ARCConfig<Model>>(defaultConfig)
+  return JSON.parse(
+    JSON.stringify(defaultConfig)
+  ) as ARCConfig<Model>
+}
+export const omit = (
+  props: Record<string, any>,
+  prop: string | string[]
+): Record<string, any> => {
+  const omitted = typeof prop === 'string' ? [prop] : prop
+  return Object.keys(props).reduce(
+    (state, current) =>
+      omitted.includes(current)
+        ? state
+        : {
+            ...state,
+            [current]: props[current],
+          },
+    {}
+  )
 }

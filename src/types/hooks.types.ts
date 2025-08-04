@@ -8,7 +8,7 @@ export type ARCResponse<Model> = Model | null | undefined
  * État interne du hook useARC
  */
 export interface UseARCState<Model> {
-  error: null | object
+  error: null | any
   loading: boolean
   loaded: boolean
   response?: ARCResponse<Model>
@@ -78,7 +78,7 @@ export interface UseARCMethods<Model> {
  * Type de retour complet du hook useARC
  */
 export interface UseARC<Model> {
-  error: null | object
+  error: null | any
   loading: boolean
   loaded: boolean
   response: ARCResponse<Model>

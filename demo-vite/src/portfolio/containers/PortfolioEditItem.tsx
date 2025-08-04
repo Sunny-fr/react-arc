@@ -1,7 +1,15 @@
-import React from 'react'
 import PortfolioEditItemComponent from '../components/PortfolioEditItemComponent'
+import type {RouteComponentProps} from "react-router";
 
-export function PortfolioEditItem (props) {
+interface MatchParams {
+    id: string;
+}
+
+interface PortfolioEditItemProps extends RouteComponentProps<MatchParams>{
+
+}
+
+export function PortfolioEditItem (props: PortfolioEditItemProps){
     return (<PortfolioEditItemComponent id={props.match.params.id} />)
 }
 

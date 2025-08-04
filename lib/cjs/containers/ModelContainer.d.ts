@@ -1,5 +1,7 @@
 import Container from "./Container";
 import { ARCContainerProps, ARCWrappedComponentProps, ComponentProps, ComponentPropsWithRequiredModelParams, ComponentWithStoreProps } from "../types/components.types";
+import { ARCMetas } from "../types/model.types";
+import React from "react";
 type AnyArcComponentProps<Model> = ComponentWithStoreProps<Model> | ARCContainerProps<Model>;
 export declare class ModelContainer<P, S, Model> extends Container<P, S, Model> {
     /** PUBLIC ACTIONS METHODS **/
@@ -7,7 +9,7 @@ export declare class ModelContainer<P, S, Model> extends Container<P, S, Model> 
     getKey(props?: ComponentProps): string | null;
     getParams(props?: ComponentProps): ComponentPropsWithRequiredModelParams | null;
     hasRequiredParams(props?: ComponentProps): boolean;
-    _getModel(props?: AnyArcComponentProps<Model>): import("..").ARCMetaModel<Model> | null;
+    _getModel(props?: AnyArcComponentProps<Model>): import("../types/model.types").ARCMetaModel<Model> | null;
     fetch: (params: ComponentPropsWithRequiredModelParams) => import("axios").AxiosPromise<Model>;
     edit: (model: object) => void;
     save: () => void;
@@ -15,11 +17,11 @@ export declare class ModelContainer<P, S, Model> extends Container<P, S, Model> 
     resetTempModel: () => void;
     /** PUBLIC METHODS **/
     getFetchingCount: () => number;
-    getModel(props?: ARCWrappedComponentProps<Model>): Model | null;
-    getMetas(prop: string, props?: ARCWrappedComponentProps<Model>): any;
-    getError(props?: ARCWrappedComponentProps<Model>): object;
-    isSyncing(props?: ARCWrappedComponentProps<Model>): boolean;
-    isLoaded(props?: ARCWrappedComponentProps<Model>): boolean;
+    getModel(props?: ARCWrappedComponentProps<Model>): any;
+    getMetas(prop: keyof ARCMetas, props?: ARCWrappedComponentProps<Model>): any;
+    getError(props?: ARCWrappedComponentProps<Model>): any;
+    isSyncing(props?: ARCWrappedComponentProps<Model>): any;
+    isLoaded(props?: ARCWrappedComponentProps<Model>): any;
     allowReFetch: (props?: ComponentWithStoreProps<Model>) => boolean;
     errorReFetch(props?: ComponentWithStoreProps<Model>): boolean;
     componentDidUpdate(): void;
@@ -34,5 +36,7 @@ export declare class ModelContainer<P, S, Model> extends Container<P, S, Model> 
         skipReFetchStep?: boolean | undefined;
     }): boolean;
     componentDidMount(): void;
+    getModelDataTyped(): any;
+    render(): React.JSX.Element | null;
 }
 export {};

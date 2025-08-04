@@ -1,14 +1,14 @@
-import React, {Component, useEffect} from "react"
-import config from "../portfolio-list.json"
-import { ModelContainer, withARC, withUseARC}  from 'react-arc'
-import loadImage from "../../layout/components/image/loadImage.js"
+import React, {useEffect} from "react"
+import {type PortfolioListProps, withPortfolioList} from "../arc/portfolio-list.arc"
 
-import { AlbumItem } from "../../album/components/AlbumItemComponent"
+import loadImage from "../../layout/components/image/loadImage"
+
+import {AlbumItem} from "../../album/components/AlbumItemComponent"
 
 /** UI ASSETS **/
-import { Loader } from "../../layout/components/loader"
-import { Toast } from "../../layout/components/toast"
-import { LargeError } from "../../layout/components/error"
+import {Loader} from "../../layout/components/loader/Loader"
+import {Toast} from "../../layout/components/toast/Toast"
+import {LargeError} from "../../layout/components/error/LargeError"
 import Link from "../../navigation/Link.js"
 
 const PortfolioItem = ({model, remove}:any) => {
@@ -66,33 +66,68 @@ const PortfolioItem = ({model, remove}:any) => {
 }
 
 
+//
+// const PortfolioComponentUsingUseARC = (props:any) => {
+//   const {
+//     response,
+//     error,
+//     loaded,
+//     loading
+//   } = useARC({
+//     ARCConfig: portfolioList,
+//     props
+//   })
+//   if (error) return <LargeError title={"!"} children={error} />
+//   if (!loaded) return <Loader />
+//
+//   const items = (response || []).map((model) => {
+//     return (
+//       <PortfolioItem
+//         //remove={this.removeModel}
+//         key={model.id} model={model} />
+//     )
+//   })
+//
+//   return (
+//     <div className="portfolio">
+//       <Link to={"/create"} className="btn-float create" />
+//       {loading ? <Toast>syncing...</Toast> : null}
+//       {items}
+//     </div>
+//   )
+//
+// }
 
-class PorfolioComponent extends ModelContainer {
-  static defaultProps = {
-    ARCConfig: config,
-    start: 0,
-    limit: 20,
-  }
 
-  render() {
-    const error = this.getError()
-    if (error) return <LargeError title={"!"} children={error.message} />
-    if (!this.isLoaded()) return <Loader />
-
-    const items = (this.getModel() || []).map((model) => {
-      return (
-        <PortfolioItem remove={this.removeModel} key={model.id} model={model} />
-      )
-    })
-
-    return (
-      <div className="portfolio">
-        <Link to={"/create"} className="btn-float create" />
-        {this.isSyncing() ? <Toast>syncing...</Toast> : null}
-        {items}
-      </div>
-    )
-  }
+interface PortfolioComponentProps extends PortfolioListProps{
+  hello?: string
 }
 
-export default withARC(config)(PorfolioComponent)
+const PortfolioComponent:React.FC<PortfolioComponentProps> = withPortfolioList((props) => {
+
+  const {model, error, loaded, loading} = props
+
+  if (error) return <LargeError title={"!"} children={error?.message} />
+  if (!loaded) return <Loader />
+
+  const items = (model || []).map((item) => {
+    return (
+      <PortfolioItem
+        //remove={this.removeModel}
+        key={item.id} model={item} />
+    )
+  })
+
+  return (
+    <div className="portfolio">
+      <Link to={"/create"} className="btn-float create" />
+      {loading ? <Toast>syncing...</Toast> : null}
+      {items}
+    </div>
+  )
+
+})
+
+
+
+export default PortfolioComponent

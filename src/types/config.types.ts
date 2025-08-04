@@ -51,9 +51,6 @@ export const ARCHttpRestMethodMapDefaults: ARCHttpRestMethodMap = {
 export interface ARCConfigPaths extends Partial<Record<string, string>>{
   //to-be-renamed
   item: string
-  //to-be-dropped
-  collection?: string
-  //
   read?: string
   delete?: string
   update?: string
@@ -79,19 +76,17 @@ export interface ARCConfig<Model> {
   // Reducer Name
   name: string
   // Actions Namespace
-  uppercaseName: string
+  actionNamespace: string
   // Required props component for a model type
   modelProps: string[]
-  // Required props component for a collection type
-  collectionProps?: string[]
-  // URL to resources item for a model, collection for collection
+  // URL to resources item for a model
   paths: ARCConfigPaths
   // Http methods/verbs
   methods?: ARCHttpRestMethodMap
   // default model
   defaultModel?: ARCModel<Model>
   // defaults props passed to a component
-  defaultProps?: object
+  defaultProps?: Partial<ComponentProps<any>>
   // will fetch the data only one time
   fetchOnce?: boolean
   // if fetching data fails when the component is remounted, it will try to fetch again the data
@@ -114,7 +109,7 @@ interface ARCHttpRestMethodMapDefaults<Model> {
   // default model
   defaultModel: ARCModel<Model>
   // defaults props passed to a component
-  defaultProps: object
+  defaultProps: Partial<ComponentProps<any>>
   // will fetch the data only one time
   fetchOnce: boolean
   // if fetching data fails when the component is remounted, it will try to fetch again the data

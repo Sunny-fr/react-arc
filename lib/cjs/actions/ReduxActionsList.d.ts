@@ -3,6 +3,10 @@ import { ARCConfig, ARCConfigHeaders, ARCHttpRestMethodMap, RetryConditionFn } f
 import { Dispatch } from "redux";
 import { ComponentPropsWithRequiredModelParams } from "../types/components.types";
 import { ARCAxiosOptions, ReduxActionsListOptions } from "../types/actions.types";
+export declare const AXIOS_CANCEL_PAYLOAD: {
+    readonly code: "ERR_CANCELED";
+    readonly name: "CanceledError";
+};
 export declare class ReduxActionsList<Model> {
     config: ARCConfig<Model>;
     initialConfig: ARCConfig<Model>;
@@ -31,16 +35,9 @@ export declare class ReduxActionsList<Model> {
     fetchOne(params: ComponentPropsWithRequiredModelParams, props: object | undefined, axiosOptions: ARCAxiosOptions<Model>): (dispatch: Dispatch) => AxiosPromise<Model>;
     /**  SAVE **/
     standAloneSave(data: object, params: ComponentPropsWithRequiredModelParams, create: boolean, config: ARCConfig<Model>, _props: object): Promise<import("axios").AxiosResponse<any, any>>;
-    save(data: object, params: ComponentPropsWithRequiredModelParams, create?: boolean, props?: object): (dispatch: Dispatch) => AxiosPromise<any>;
+    save(data: object, params: ComponentPropsWithRequiredModelParams, create?: boolean, props?: object): (dispatch: Dispatch) => AxiosPromise;
     /** REMOVE **/
     standAloneRemove(_params: ComponentPropsWithRequiredModelParams, config: ARCConfig<Model>, _props: object): AxiosPromise;
-    remove(params: ComponentPropsWithRequiredModelParams, props?: object): (dispatch: Dispatch) => AxiosPromise<any>;
-    /**
-     * LISTS
-     * to be deprecated
-     * **/
-    standAloneFetchAll(_params: ComponentPropsWithRequiredModelParams, config: ARCConfig<Model>, _props: object, axiosOptions: ARCAxiosOptions<Model>): AxiosPromise<Model[]>;
-    fetchAll(params: ComponentPropsWithRequiredModelParams, props: object | undefined, axiosOptions: ARCAxiosOptions<Model>): (dispatch: Dispatch) => AxiosPromise<any>;
-    reset(): (dispatch: Dispatch) => void;
+    remove(params: ComponentPropsWithRequiredModelParams, props?: object): (dispatch: Dispatch) => AxiosPromise;
     resetTemp(): (dispatch: Dispatch) => void;
 }

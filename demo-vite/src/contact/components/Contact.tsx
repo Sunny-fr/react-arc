@@ -1,9 +1,9 @@
-import React, { FC } from 'react';
-import { Info } from '../../layout/components/info';
+import React from 'react';
+import { Info } from '../../layout/components/info/Info';
 
 interface ContactProps {}
 
-const Contact: FC<ContactProps> = (props) => {
+const Contact: React.FC<ContactProps> = () => {
     return (
         <div className="animated fadeIn">
             <Info>
