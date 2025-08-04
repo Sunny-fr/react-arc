@@ -1,6 +1,6 @@
 import PortfolioComponent from '../components/portfolio/components/PortfolioComponent.tsx'
 import {SiteHeader} from "@/components/site-header.tsx";
-import {Card, CardContent, CardFooter, CardHeader, CardTitle} from "@/components/ui/card.tsx";
+import {Card, CardContent, CardFooter, CardHeader, CardTitle} from "@/layout/ui/card.tsx";
 
 
 export function Portfolio() {

@@ -1,6 +1,6 @@
-import { Button } from "@/components/ui/button"
-import { Separator } from "@/components/ui/separator"
-import { SidebarTrigger } from "@/components/ui/sidebar"
+import { Button } from "@/layout/ui/button"
+import { Separator } from "@/layout/ui/separator"
+import { SidebarTrigger } from "@/layout/ui/sidebar"
 import {cn} from "@/lib/utils.ts";
 
 interface SiteHeaderProps {

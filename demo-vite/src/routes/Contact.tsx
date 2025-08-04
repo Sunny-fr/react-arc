@@ -1,6 +1,6 @@
 import React from 'react';
 import {SiteHeader} from "@/components/site-header.tsx";
-import {Card, CardContent, CardFooter, CardHeader, CardTitle} from "@/components/ui/card.tsx";
+import {Card, CardContent, CardFooter, CardHeader, CardTitle} from "@/layout/ui/card.tsx";
 
 interface ContactProps {}
 

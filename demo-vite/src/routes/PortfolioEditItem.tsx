@@ -1,4 +1,4 @@
-import PortfolioEditItemComponent from '../components/portfolio/components/PortfolioEditItemComponent.tsx'
+import PortfolioEditItemComponent from '../components/portfolio/components/PortfolioEditItemComponent'
 import type {RouteComponentProps} from "react-router";
 
 interface MatchParams {

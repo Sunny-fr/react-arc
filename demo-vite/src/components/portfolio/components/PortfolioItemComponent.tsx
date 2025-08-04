@@ -4,8 +4,8 @@ import {Toast} from "@/layout/components/toast/Toast.tsx"
 import {LargeError} from "@/layout/components/error/LargeError.tsx"
 import {type PortfolioProps, withPortfolio} from "../arc/portfolio.arc.ts";
 import {Link} from "react-router-dom";
-import {Button} from "@/components/ui/button.tsx";
-import {Card, CardContent, CardFooter, CardHeader, CardTitle} from "@/components/ui/card.tsx";
+import {Button} from "@/layout/ui/button.tsx";
+import {Card, CardContent, CardFooter, CardHeader, CardTitle} from "@/layout/ui/card.tsx";
 import {SiteHeader} from "@/components/site-header.tsx";
 
 const PortfolioItemComponent: React.FC<PortfolioProps> = withPortfolio(({model, error, loaded, loading}) => {
