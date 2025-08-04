@@ -5,10 +5,10 @@ import store, {history} from './store'
 
 import Application from './layout/ApplicationLayout'
 //import {Portfolio, PortfolioItem, PortfolioEditItem} from './portfolio'
-import Portfolio from './portfolio/containers/Portfolio'
-import PortfolioItem from './portfolio/containers/PortfolioItem'
-import PortfolioEditItem from './portfolio/containers/PortfolioEditItem'
-import {Contact} from './contact/components/Contact'
+import Portfolio from './routes/Portfolio.tsx'
+import PortfolioItem from './routes/PortfolioItem.tsx'
+import PortfolioEditItem from './routes/PortfolioEditItem.tsx'
+import {Contact} from './routes/Contact.tsx'
 
 
 /** ROUTES DEPENDENCIES **/
