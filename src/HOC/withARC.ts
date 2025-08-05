@@ -2,7 +2,7 @@ import {connect} from "react-redux"
 import {extendWithDefaultProps, getDefaultConfig} from "../utils"
 import {core} from "../actions/core"
 import {ARCConfig} from "../types/config.types"
-import {ComponentWithStoreProps} from "../types/components.types"
+import {ComponentPropsWithRequiredModelParams} from "../types/components.types"
 import {ComponentType} from "react"
 import {ARCRootState, ARCStoreState} from "../types/connectors.types";
 
@@ -24,26 +24,24 @@ export function connectFn<Model>(config: ARCConfig<Model>) {
 
     const reducerState:ARCStoreState<Model> = store[namespace]
 
-    const collection = reducerState.collection
-    const arcProps = {
-      collection,
-      tempModel: reducerState.temp,
-    }
-    const mergedProps: ComponentWithStoreProps<Model> = {
+    // const collection = reducerState.collection
+
+    const mergedProps: ComponentPropsWithRequiredModelParams = {
       ...extendWithDefaultProps(config, ownProps),
       //...removeMissingProps(ownProps),
-      ...arcProps,
+      // collection,
     }
-    const metaModel = core._getModel(config, mergedProps)
-    const loaded = core.isLoaded(config, mergedProps)
-    const model = core.getModel(config, mergedProps)
-    const error = core.getError(config, mergedProps)
-    const syncing = core.isSyncing(config, mergedProps)
-    const metas = core.getMetas(config, undefined, mergedProps)
+    const metaModel = core._getModel(config, mergedProps, reducerState)
+    const loaded = core.isLoaded(config, mergedProps, reducerState)
+    const model = core.getModel(config, mergedProps, reducerState)
+    const error = core.getError(config, mergedProps, reducerState)
+    const syncing = core.isSyncing(config, mergedProps, reducerState)
+    const metas = core.getMetas(config, undefined, mergedProps, reducerState)
     const isNew = core.isNew(config, mergedProps)
     return {
       ...extendWithDefaultProps(config, ownProps),
       ARCConfig: config,
+      ARCReducerState: reducerState,
       loaded,
       metaModel,
       model,

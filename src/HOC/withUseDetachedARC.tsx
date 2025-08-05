@@ -2,7 +2,7 @@ import React, { ComponentType } from "react"
 import { useARC } from "../hooks/useARC"
 import { ARCConfig } from "../types/config.types"
 
-export function withUseARC<Model>(config: ARCConfig<Model>) {
+export function withUseDetachedARC<Model>(config: ARCConfig<Model>) {
   return function HOC<T extends object>(Wrapped: ComponentType<T>) {
     const displayName = Wrapped.displayName || Wrapped.name || "Component"
 

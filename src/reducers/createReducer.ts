@@ -1,4 +1,4 @@
-import {getDefaultConfig, interpolate} from "../utils"
+import {initializeConfig, interpolate} from "../utils"
 import {ARCConfig} from "../types/config.types"
 import {ARCMetaModel, ARCModel, ARCModelKey,} from "../types/model.types"
 import {ARCStoreState} from "../types/connectors.types"
@@ -44,7 +44,7 @@ interface ReduxAction {
 
 export function createReducer<Model>(options: MixerStoreParams<Model>) {
   const config = options?.config || {}
-  const extendedConfig = { ...getDefaultConfig(), ...config }
+  const extendedConfig = initializeConfig(config)
   const defaultModelObject = JSON.parse(
     JSON.stringify(extendedConfig.defaultModel)
   ) as ARCModel<Model>
@@ -69,13 +69,6 @@ export function createReducer<Model>(options: MixerStoreParams<Model>) {
 
   const defaultState:ARCStoreState<Model> = {
     collection: {},
-    temp: {
-      metas: { ...defaultMetaModel.metas },
-      model: { ...defaultMetaModel.model },
-    },
-    fetching: false,
-    loaded: false,
-    error: null,
   }
 
   // function mapModels(list: ARCModel<Model>[]): ARCMetaCollectionMap<Model> {
@@ -256,47 +249,13 @@ export function createReducer<Model>(options: MixerStoreParams<Model>) {
 
       /*** END FETCHING MODEL ***/
 
-      case t(ACTIONS.RESET): {
-        return {
-          ...state,
-          temp: {
-            metas: { ...defaultMetaModel.metas, loaded: true },
-            model: { ...defaultMetaModel.model },
-          },
-        }
-      }
 
-      case t(ACTIONS.EDIT): {
-        const key = keyGen(action.payload.params)
-        if (!key) {
-          //model is new
-          return {
-            ...state,
-            temp: {
-              ...state.temp,
-              model: Object.assign({}, state.temp.model, action.payload.data),
-            },
-          }
-        } else {
-          const collection = { ...state.collection }
-          collection[key] = {
-            metas: { ...collection[key].metas },
-            model: Object.assign(
-              {},
-              collection[key].model,
-              sanitizeData(action.payload.data)
-            ),
-          }
-          return {
-            ...state,
-            collection,
-          }
-        }
-      }
+
+      /** TODO: DEPRECATED ACTIONS ***/
 
       case t(ACTIONS.SAVE): {
         const key = keyGen(action.payload.params)
-        const prev = action.payload.create ? state.temp : previousItem(key)
+        const prev = previousItem(key)
         const updated:ARCMetaModel<Model> = {
           ...prev,
           metas: {
@@ -318,7 +277,7 @@ export function createReducer<Model>(options: MixerStoreParams<Model>) {
 
       case t(ACTIONS.SAVE_REJECTED): {
         const key = keyGen(action.payload.params)
-        const prev = action.payload.create ? state.temp : previousItem(key)
+        const prev = previousItem(key)
         const updated = {
           ...prev,
           metas: {
@@ -343,7 +302,7 @@ export function createReducer<Model>(options: MixerStoreParams<Model>) {
 
       case t(ACTIONS.SAVE_FULFILLED): {
         const key = keyGen(action.payload.params)
-        const prev = action.payload.create ? state.temp : previousItem(key)
+        const prev = previousItem(key)
         const updated = {
           ...prev,
           metas: { ...prev.metas, saving: false, end: time(), saved: true },

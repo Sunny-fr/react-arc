@@ -5,6 +5,8 @@
 import { ComponentPropsWithRequiredModelParams } from "./components.types"
 import { ARCModel } from "./model.types"
 import { ComponentProps } from "react"
+import {ARCAxiosOptions} from "./actions.types";
+import {AxiosPromise} from "axios";
 
 export type ARCConfigHeaders = Record<string, string>
 
@@ -69,6 +71,18 @@ export type RetryConditionFn<Model> = (
   arg1: RetryConditionFnCallbackParams<Model>
 ) => boolean
 
+
+export type Fetcher<Model>  = (params: ComponentPropsWithRequiredModelParams,
+                               config: ARCConfig<Model>,
+                               props: object,
+                               axiosOptions: ARCAxiosOptions<Model>) => AxiosPromise<Model>
+
+
+export type FetcherMap<Model> = {
+  // Default fetcher
+  'fetch': Fetcher<Model>
+  [key: string]: Fetcher<Model>
+}
 /**
  * ARCConfig V1
  */
@@ -76,7 +90,7 @@ export interface ARCConfig<Model> {
   // Reducer Name
   name: string
   // Actions Namespace
-  actionNamespace: string
+  actionNamespace?: string
   // Required props component for a model type
   modelProps: string[]
   // URL to resources item for a model
@@ -101,6 +115,7 @@ export interface ARCConfig<Model> {
   // number of tries in case of failure
   maxTries?: number
   retryConditionFn?: RetryConditionFn<Model>
+  fetchers?: FetcherMap<Model>
 }
 
 interface ARCHttpRestMethodMapDefaults<Model> {

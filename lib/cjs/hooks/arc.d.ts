@@ -13,9 +13,12 @@ export declare class ARC<Model> {
     hasRequiredParams(props: ComponentProps): boolean;
     extractParams(props: ComponentProps): ComponentPropsWithRequiredModelParams;
     applyHeaders(headers: ARCConfigHeaders | undefined, props: ComponentProps): ARCConfigHeaders;
-    get({ props, params, }: {
+    get({ props, params, options }: {
         props: ComponentProps;
         params: ComponentPropsWithRequiredModelParams;
+        options?: {
+            signal?: AbortSignal;
+        };
     }): Promise<any>;
     remove({ props, params, }: {
         props: ComponentProps;

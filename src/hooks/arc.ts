@@ -1,13 +1,6 @@
-import {
-  ARCConfig,
-  ARCConfigHeaders,
-  ARCHttpRestMethodMap,
-} from "../types/config.types"
-import { getDefaultConfig, getParams, interpolate } from "../utils"
-import {
-  ComponentProps,
-  ComponentPropsWithRequiredModelParams,
-} from "../types/components.types"
+import {ARCConfig, ARCConfigHeaders, ARCHttpRestMethodMap,} from "../types/config.types"
+import {getParams, initializeConfig, interpolate} from "../utils"
+import {ComponentProps, ComponentPropsWithRequiredModelParams,} from "../types/components.types"
 
 interface ARCParams<Model> {
   ARCConfig: ARCConfig<Model>
@@ -28,7 +21,7 @@ export class ARC<Model> {
   }
 
   static extendConfig<Model>(ARCConfig: ARCConfig<Model>): ARCConfig<Model> {
-    return { ...getDefaultConfig(), ...(ARCConfig || {}) }
+    return initializeConfig(ARCConfig)
   }
 
   static extendHeaders<Model>(ARCConfig: ARCConfig<Model>): ARCConfigHeaders {
@@ -77,9 +70,13 @@ export class ARC<Model> {
   get({
     props,
     params,
+    options
   }: {
     props: ComponentProps
     params: ComponentPropsWithRequiredModelParams
+    options?: {
+      signal?: AbortSignal
+    }
   }) {
     const p: ComponentPropsWithRequiredModelParams =
       params || this.extractParams(props)
@@ -89,6 +86,7 @@ export class ARC<Model> {
         // @ts-ignore
         method: this.config.methods.read,
         headers: this.applyHeaders(this.config.headers, props),
+        signal: options?.signal
       }
     ).then(ARC.json)
   }

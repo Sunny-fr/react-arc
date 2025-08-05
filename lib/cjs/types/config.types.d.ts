@@ -4,6 +4,8 @@
 import { ComponentPropsWithRequiredModelParams } from "./components.types";
 import { ARCModel } from "./model.types";
 import { ComponentProps } from "react";
+import { ARCAxiosOptions } from "./actions.types";
+import { AxiosPromise } from "axios";
 export type ARCConfigHeaders = Record<string, string>;
 export type ARCHTTPMethod = "get" | "GET" | "delete" | "DELETE" | "head" | "HEAD" | "options" | "OPTIONS" | "post" | "POST" | "put" | "PUT" | "patch" | "PATCH" | "purge" | "PURGE" | "link" | "LINK" | "unlink" | "UNLINK";
 /**
@@ -32,12 +34,17 @@ export interface RetryConditionFnCallbackParams<Model> {
     tryNumber: number;
 }
 export type RetryConditionFn<Model> = (arg0: any, arg1: RetryConditionFnCallbackParams<Model>) => boolean;
+export type Fetcher<Model> = (params: ComponentPropsWithRequiredModelParams, config: ARCConfig<Model>, props: object, axiosOptions: ARCAxiosOptions<Model>) => AxiosPromise<Model>;
+export type FetcherMap<Model> = {
+    'fetch': Fetcher<Model>;
+    [key: string]: Fetcher<Model>;
+};
 /**
  * ARCConfig V1
  */
 export interface ARCConfig<Model> {
     name: string;
-    actionNamespace: string;
+    actionNamespace?: string;
     modelProps: string[];
     paths: ARCConfigPaths;
     methods?: ARCHttpRestMethodMap;
@@ -51,6 +58,7 @@ export interface ARCConfig<Model> {
     requestFetchDelay?: number;
     maxTries?: number;
     retryConditionFn?: RetryConditionFn<Model>;
+    fetchers?: FetcherMap<Model>;
 }
 interface ARCHttpRestMethodMapDefaults<Model> {
     methods: ARCHttpRestMethodMap;

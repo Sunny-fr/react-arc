@@ -1,5 +1,4 @@
 import { ARCConfig } from "../types/config.types";
-import { ARCMetaModel } from "../types/model.types";
 import { ARCStoreState } from "../types/connectors.types";
 interface MixerStoreParams<Model> {
     config: ARCConfig<Model>;
@@ -17,18 +16,23 @@ interface ReduxAction {
 }
 export declare function createReducer<Model>(options: MixerStoreParams<Model>): (state: ARCStoreState<Model> | undefined, action: ReduxAction) => {
     collection: {};
-    temp: ARCMetaModel<Model>;
-    fetching: boolean;
-    loaded: boolean;
-    error: object | null;
 } | {
     temp: {
+        metas: {
+            saving: boolean;
+            end: number;
+            saved: boolean;
+            loaded: boolean;
+            fetching: boolean;
+            fetchRequested: boolean;
+            valid: boolean;
+            deleting: boolean;
+            tries: number;
+            start: number;
+            error?: any;
+        };
         model: any;
-        metas: import("../types/model.types").ARCMetas;
     };
     collection: import("../types/model.types").ARCMetaCollectionMap<Model>;
-    fetching: boolean;
-    loaded: boolean;
-    error: object | null;
 };
 export default createReducer;

@@ -1,5 +1,5 @@
 import axios, {AxiosError, AxiosInstance, AxiosPromise} from "axios"
-import {getDefaultConfig, interpolate} from "../utils"
+import {initializeConfig, interpolate} from "../utils"
 import {
   ARCConfig,
   ARCConfigHeaders,
@@ -48,7 +48,7 @@ export const AXIOS_CANCEL_PAYLOAD = {
   name: "CanceledError"
 } as const
 
-export class ReduxActionsList<Model>{
+export class ReduxActions<Model>{
   config: ARCConfig<Model>
   initialConfig: ARCConfig<Model>
   retryConditionFn: RetryConditionFn<Model> | undefined
@@ -57,7 +57,7 @@ export class ReduxActionsList<Model>{
   methods: ARCHttpRestMethodMap
 
   constructor(options: ReduxActionsListOptions<Model>) {
-    this.config = { ...getDefaultConfig(), ...(options.config || {}) }
+    this.config = initializeConfig(options.config)
     this.initialConfig = this.config
     this.retryConditionFn = this.config.retryConditionFn
     this.setHeaders()
@@ -186,7 +186,6 @@ export class ReduxActionsList<Model>{
     axiosOptions: ARCAxiosOptions<Model>
   ) {
     return (dispatch: Dispatch) => {
-
       const retryConditionFn =
         this.retryConditionFn || axiosOptions?.retryConditionFn
       const config = this.beforeFetch({ config: this.config, params, props })

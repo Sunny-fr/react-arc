@@ -1,6 +1,6 @@
-import { ARCConfig } from "./types/config.types"
+import {ARCConfig} from "./types/config.types"
 import {ARCModel} from "./types/model.types";
-//EXAMPLE CONFIG
+//DEFAULT CONFIG
 const config: ARCConfig<ARCModel<any>> = {
   //reducer name
   name: "",
@@ -11,7 +11,6 @@ const config: ARCConfig<ARCModel<any>> = {
   // path to your rest server
   paths: {
     item: "/",
-    collection: "/",
   },
 
   /** OPTIONAL **/
@@ -41,6 +40,8 @@ const config: ARCConfig<ARCModel<any>> = {
   requestFetchDelay: 100,
   //tries
   maxTries: 1,
+
+  // fetchers: {}
 }
 
 export default config

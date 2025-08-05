@@ -2,11 +2,11 @@
  * ARCMappedProps
  */
 import { ARCConfig } from "./config.types";
-import { ARCCollectionMap, ARCMetaCollectionMap, ARCMetaModel } from "./model.types";
+import { ARCCollectionMap, ARCMetaCollectionMap } from "./model.types";
 interface DefaultRootState {
 }
 export interface ARCRootState extends DefaultRootState {
-    [key: string]: ARCStoreState<any>;
+    [key: ARCConfig<any>['name']]: ARCStoreState<any>;
 }
 export interface ARCMappedProps<Model> {
     loaded: boolean;
@@ -29,9 +29,5 @@ export type ARCStoreConnector = <Model>(store: object, ownProps: object) => ARCM
  */
 export interface ARCStoreState<Model> {
     collection: ARCMetaCollectionMap<Model>;
-    temp: ARCMetaModel<Model>;
-    fetching: boolean;
-    loaded: boolean;
-    error: object | null;
 }
 export {};

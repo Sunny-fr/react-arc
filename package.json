@@ -1,7 +1,7 @@
 {
   "name": "react-arc",
   "version": "6.1.0",
-  "description": "React Abstract Redux Component",
+  "description": "React ARC is a powerful library for building React applications with Redux, providing a set of tools and utilities to enhance development.",
   "_main": "lib/index.js",
   "main": "./lib/cjs/index.js",
   "module": "./lib/esm/index.js",
@@ -36,21 +36,21 @@
     "react-dom": "^19.1.0",
     "react-redux": "^9.2.0",
     "redux": "^5.0.1",
-    "redux-thunk": "^3.1.0"
+    "@reduxjs/toolkit": "^2.8.2"
   },
   "dependencies": {
+    "@reduxjs/toolkit": "^2.8.2",
     "axios": "1.8.2",
     "deep-equal": "^1.1.1",
     "react-redux": "^9.2.0",
     "redux": "^5.0.1",
-    "redux-thunk": "^3.1.0"
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0"
   },
   "devDependencies": {
     "@types/deep-equal": "^1.0.4",
     "@types/react": "^19.1.8",
     "@types/react-dom": "^19.1.6",
-    "react": "^19.1.0",
-    "react-dom": "^19.1.0",
     "typescript": "~5.8.3"
   }
 }

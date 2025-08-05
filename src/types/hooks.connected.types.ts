@@ -1,5 +1,6 @@
 import { ARC } from "../hooks/arc"
 import { ComponentProps, ComponentPropsWithRequiredModelParams } from "./components.types"
+import {ARCConfig} from "./config.types";
 
 
 export type ARCResponse<Model> = Model | null | undefined
@@ -18,7 +19,7 @@ export interface UseARCState<Model> {
 /**
  * Interface pour les méthodes CRUD exposées par le hook useARC
  */
-export interface UseARCMethods<Model> {
+export interface UseDetachedARCMethods<Model> {
   /**
    * Instance ARC utilisée en interne
    */
@@ -78,9 +79,9 @@ export interface UseARCMethods<Model> {
  * Type de retour complet du hook useARC
  */
 export interface UseARC<Model> {
-  error: null | any
+  error: any
   loading: boolean
   loaded: boolean
-  response: ARCResponse<Model>
-  arc: UseARCMethods<Model>
+  data: ARCResponse<Model>
+  ARCConfig: ARCConfig<Model>
 }

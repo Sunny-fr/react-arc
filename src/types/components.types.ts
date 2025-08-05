@@ -8,7 +8,7 @@ import {ThunkDispatch} from "redux-thunk"
  */
 export interface ComponentProps extends React.ComponentProps<any> {
   dispatch?: ThunkDispatch<any, any, any>
-  Component?: React.ComponentType<any>
+  //Component?: React.ComponentType<any>
 }
 
 /**

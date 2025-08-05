@@ -1,5 +1,5 @@
 import React from "react";
-import { ReduxActionsList } from "../actions/ReduxActionsList";
+import { ReduxActions } from "../actions/ReduxActions";
 import { CoreMethods } from "../actions/core";
 import { ARCConfig } from "../types/config.types";
 import { ARCWrappedComponentProps, ComponentProps, ComponentWithStoreProps } from "../types/components.types";
@@ -8,7 +8,7 @@ export interface ContainerHookConfig<Model> {
 }
 export interface ContainerHookReturn<Model> {
     ARCConfig: ARCConfig<Model>;
-    actions: ReduxActionsList<Model>;
+    actions: ReduxActions<Model>;
     core: CoreMethods;
     abortController: React.MutableRefObject<AbortController | null>;
     getTrueStoreState: () => {
@@ -21,7 +21,7 @@ export declare function useContainer<Model>({ ARCConfig: initialConfig }: Contai
 export declare function Container<P, Model>(props: P & ARCWrappedComponentProps<Model>): {
     props: P & ARCWrappedComponentProps<Model>;
     ARCConfig: ARCConfig<Model>;
-    actions: ReduxActionsList<Model>;
+    actions: ReduxActions<Model>;
     core: CoreMethods;
     abortController: React.MutableRefObject<AbortController | null>;
     getTrueStoreState: () => {

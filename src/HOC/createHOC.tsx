@@ -2,6 +2,7 @@ import React from 'react'
 import {ARCConfig} from "../types/config.types";
 import {ARCMetaModel} from "../types/model.types";
 import {ModelContainer} from "../containers-next/ModelContainer";
+//import {ModelContainer} from '../containers/ModelContainer'
 import {withARC} from "./withARC";
 
 
@@ -14,18 +15,19 @@ export interface HOCBootstrapped<M> {
   loading?: boolean
   metas: object
   isNew: boolean
-  ARCConfig: ARCConfig<M>
+  // ARCConfig: ARCConfig<M>
 }
 
 
-interface CreateHOCParams<P, M> {
+interface CreateHOCParams<P extends object, M> {
   Container?: React.ComponentType<P>
   ARCConfig: ARCConfig<M>
 }
 
 
-export function createHOC<P, M>({Container = ModelContainer, ARCConfig}: CreateHOCParams<P, M> ) {
+export function createHOC<P extends object, M>({Container = ModelContainer, ARCConfig}: CreateHOCParams<P, M> ) {
 
+  // @ts-ignore
   const ARCContainer = withARC(ARCConfig)(Container) as React.ComponentType<P & HOCBootstrapped<M>>
   return (Wrapped: React.ComponentType<P & HOCBootstrapped<M>>) =>
     (props: P) => {

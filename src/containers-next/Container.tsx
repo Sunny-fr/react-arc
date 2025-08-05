@@ -1,16 +1,12 @@
-import React, {useRef, useCallback, useMemo} from "react"
-import {ReduxActionsList} from "../actions/ReduxActionsList"
+import React, {useCallback, useMemo, useRef} from "react"
+import {ReduxActions} from "../actions/ReduxActions"
 import {core, CoreMethods} from "../actions/core"
-import {getDefaultConfig} from "../utils"
+import {initializeConfig} from "../utils"
 import {useStore} from "react-redux"
 
 
 import {ARCConfig} from "../types/config.types"
-import {
-  ARCWrappedComponentProps,
-  ComponentProps,
-  ComponentWithStoreProps,
-} from "../types/components.types"
+import {ARCWrappedComponentProps, ComponentProps, ComponentWithStoreProps,} from "../types/components.types"
 import {ARCRootState} from "../types/connectors.types";
 
 export interface ContainerHookConfig<Model> {
@@ -19,7 +15,7 @@ export interface ContainerHookConfig<Model> {
 
 export interface ContainerHookReturn<Model> {
   ARCConfig: ARCConfig<Model>
-  actions: ReduxActionsList<Model>
+  actions: ReduxActions<Model>
   core: CoreMethods
   abortController: React.MutableRefObject<AbortController | null>
   getTrueStoreState: () => { collection: any }
@@ -33,8 +29,8 @@ export function useContainer<Model>({ARCConfig: initialConfig}: ContainerHookCon
 
   // Initialize ARC configuration with default values and provided configuration
   const [ARCConfig, actions] = useMemo(() => {
-    const config: ARCConfig<Model> = {...(getDefaultConfig()), ...initialConfig}
-    const actionsList = new ReduxActionsList({config})
+    const config: ARCConfig<Model> = initializeConfig(initialConfig)
+    const actionsList = new ReduxActions({config})
     return [config, actionsList]
   }, [initialConfig])
 

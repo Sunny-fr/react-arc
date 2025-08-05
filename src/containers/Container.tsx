@@ -1,20 +1,17 @@
 import React from "react"
-import { ReduxActionsList } from "../actions/ReduxActionsList"
-import {core, CoreMethods } from "../actions/core"
-import { getDefaultConfig } from "../utils"
-import { ReactReduxContext } from "react-redux"
-import { ARCConfig } from "../types/config.types"
-import {
-  ARCWrappedComponentProps,
-  ComponentProps, ComponentWithStoreProps,
-} from "../types/components.types"
+import {ReduxActions} from "../actions/ReduxActions"
+import {core, CoreMethods} from "../actions/core"
+import {initializeConfig} from "../utils"
+import {ReactReduxContext} from "react-redux"
+import {ARCConfig} from "../types/config.types"
+import {ARCWrappedComponentProps, ComponentProps, ComponentWithStoreProps,} from "../types/components.types"
 import {ARCRootState, ARCStoreState} from "../types/connectors.types";
 
 
 export class Container<P, S, Model> extends React.Component<P & ARCWrappedComponentProps<Model>, S> {
   static contextType = ReactReduxContext
   ARCConfig: ARCConfig<Model>
-  actions: ReduxActionsList<Model>
+  actions: ReduxActions<Model>
   core: CoreMethods
   abortController: null | AbortController
   props: P & ARCWrappedComponentProps<Model>
@@ -24,7 +21,7 @@ export class Container<P, S, Model> extends React.Component<P & ARCWrappedCompon
     //: ARCWrappedComponentProps<Model>
     super(props)
     this.updateARC(props.ARCConfig)
-    this.actions = new ReduxActionsList({
+    this.actions = new ReduxActions({
       config: this.ARCConfig,
     })
     this.core = core as CoreMethods
@@ -51,7 +48,7 @@ export class Container<P, S, Model> extends React.Component<P & ARCWrappedCompon
   }
 
   updateARC(config: ARCConfig<Model>) {
-    this.ARCConfig = { ...(this.ARCConfig || getDefaultConfig()), ...config }
+    this.ARCConfig = { ...(this.ARCConfig || initializeConfig(this.ARCConfig)), ...config }
     if (this.actions) this.actions.updateConfig(this.ARCConfig)
   }
 

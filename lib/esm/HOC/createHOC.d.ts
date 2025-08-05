@@ -10,11 +10,10 @@ export interface HOCBootstrapped<M> {
     loading?: boolean;
     metas: object;
     isNew: boolean;
-    ARCConfig: ARCConfig<M>;
 }
-interface CreateHOCParams<P, M> {
+interface CreateHOCParams<P extends object, M> {
     Container?: React.ComponentType<P>;
     ARCConfig: ARCConfig<M>;
 }
-export declare function createHOC<P, M>({ Container, ARCConfig }: CreateHOCParams<P, M>): (Wrapped: React.ComponentType<P & HOCBootstrapped<M>>) => (props: P) => React.JSX.Element;
+export declare function createHOC<P extends object, M>({ Container, ARCConfig }: CreateHOCParams<P, M>): (Wrapped: React.ComponentType<P & HOCBootstrapped<M>>) => (props: P) => React.JSX.Element;
 export {};

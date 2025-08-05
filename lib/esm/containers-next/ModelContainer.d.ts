@@ -30,7 +30,7 @@ export declare function useModelContainer<Model>({ ARCConfig, props: initialProp
         skipReFetchStep?: boolean | undefined;
     }) => void;
     ARCConfig: import("..").ARCConfig<Model>;
-    actions: import("..").ReduxActionsList<Model>;
+    actions: import("..").ReduxActions<Model>;
     core: import("../actions/core").CoreMethods;
     abortController: React.MutableRefObject<AbortController | null>;
     getTrueStoreState: () => {

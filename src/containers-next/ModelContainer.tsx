@@ -123,7 +123,8 @@ export function useModelContainer<Model>({
    * @returns The model data
    */
   const _getModel = useCallback((componentProps?: AnyArcComponentProps<Model>) => {
-    return core._getModel(ARCConfig, componentProps || props)
+
+    return core._getModel(ARCConfig, componentProps || props, container.getTrueStoreState())
   }, [core, ARCConfig, props])
 
   /**
@@ -240,7 +241,7 @@ export function useModelContainer<Model>({
    * @returns Boolean indicating if refetch is allowed
    */
   const allowReFetch = useCallback((componentProps?: ComponentWithStoreProps<Model>) => {
-    return core.allowReFetch(ARCConfig, componentProps || props)
+    return core.allowReFetch(ARCConfig, componentProps || props, container.getTrueStoreState())
   }, [core, ARCConfig, props])
 
   /**
@@ -249,7 +250,7 @@ export function useModelContainer<Model>({
    * @returns Boolean indicating if refetch on error is allowed
    */
   const errorReFetch = useCallback((componentProps?: ComponentWithStoreProps<Model>) => {
-    return core.errorReFetch(ARCConfig, componentProps || props)
+    return core.errorReFetch(ARCConfig, componentProps || props, container.getTrueStoreState())
   }, [core, ARCConfig, props])
 
   /**
@@ -259,6 +260,8 @@ export function useModelContainer<Model>({
    * @returns Boolean indicating if fetch is authorized
    */
   const _fetchAuthorization = useCallback((componentProps: ComponentWithStoreProps<Model>, { skipReFetchStep = false }) => {
+
+    const reducerState = container.getTrueStoreState()
     if (isNew(componentProps)) {
       return false
     }
@@ -267,17 +270,17 @@ export function useModelContainer<Model>({
       return false
     }
 
-    if (typeof core._getModel(ARCConfig, componentProps) === "undefined") {
+    if (typeof core._getModel(ARCConfig, componentProps, reducerState) === "undefined") {
       return true
     }
 
-    if (core.isSyncing(ARCConfig, componentProps)) {
+    if (core.isSyncing(ARCConfig, componentProps,reducerState)) {
       return false
     }
 
     if (
       !skipReFetchStep &&
-      core.isLoaded(ARCConfig, componentProps) &&
+      core.isLoaded(ARCConfig, componentProps,reducerState) &&
       allowReFetch(componentProps)
     ) {
       return true
@@ -285,7 +288,7 @@ export function useModelContainer<Model>({
 
     if (
       !skipReFetchStep &&
-      !!core.getError(ARCConfig, componentProps) &&
+      !!core.getError(ARCConfig, componentProps, reducerState) &&
       errorReFetch(componentProps)
     ) {
       return true
@@ -397,6 +400,7 @@ export function useModelContainer<Model>({
       prepareFetch({ skipReFetchStep: true })
     }
   }, [props, prepareFetch, fetchStatus.hasInitialFetch])
+
 
   return {
     ...container,

@@ -1,15 +1,8 @@
-import {
-  getParams as utilsGetParams,
-  interpolate as utilsInterpolate,
-} from "../utils"
-import {
-  ARCMetaModel, ARCMetas,
-  ARCModel,
-  ARCModelKey,
-} from "../types/model.types"
+import {getParams as utilsGetParams, interpolate as utilsInterpolate,} from "../utils"
+import {ARCMetaCollectionMap, ARCMetaModel, ARCMetas, ARCModel, ARCModelKey,} from "../types/model.types"
 import {ARCConfig} from "../types/config.types"
 import {
-  ARCContainerProps,
+  // ARCContainerProps,
   ComponentProps,
   ComponentPropsWithRequiredModelParams,
   ComponentWithStoreProps,
@@ -17,7 +10,7 @@ import {
 import {ARCRootState, ARCStoreState} from "../types/connectors.types"
 
 
-type AnyArcComponentProps<Model> = Omit<ComponentWithStoreProps<Model> | ARCContainerProps<Model>, 'dispatch'>
+// type AnyArcComponentProps<Model> = Omit<ComponentWithStoreProps<Model> | ARCContainerProps<Model>, 'dispatch'>
 
 type KeyGeneratorFn = (params: object) => ARCModelKey
 /**
@@ -28,6 +21,10 @@ const keyGenerator: KeyGeneratorFn = (params: object): ARCModelKey => {
   return utilsInterpolate(null, params)
 }
 
+
+function getCollection<Model>( reducerState:ARCStoreState<Model>) {
+  return reducerState.collection || {}
+}
 
 /**
  * returns true if the component has all the required props
@@ -92,13 +89,14 @@ function getParams<Model>(config: ARCConfig<Model>, props: ComponentProps) {
  * @param {ARCConfig} config
  * @param {string} [prop] - requested meta
  * @param {ComponentWithStoreProps} props - component props
+ * @param reducerState
  */
-function getMetas<Model>(config: ARCConfig<Model>, prop: string | undefined, props: AnyArcComponentProps<Model>): ARCMetas | any {
-  if (!_getModel(config, props)) return null
-  const metaModel = _getModel(config, props)
+function getMetas<Model>(config: ARCConfig<Model>, prop: string | undefined, props: ComponentPropsWithRequiredModelParams, reducerState: ARCStoreState<Model>): ARCMetas | any {
+  if (!_getModel(config, props,reducerState)) return null
+  const metaModel = _getModel(config, props, reducerState)
   if (!metaModel) return null
   if (typeof prop !== "undefined") {
-    return metaModel.metas[prop]
+    return metaModel.metas[prop as keyof ARCMetas] || null
   }
   return metaModel.metas
 }
@@ -109,8 +107,9 @@ function getMetas<Model>(config: ARCConfig<Model>, prop: string | undefined, pro
  * @param {ARCConfig} config
  * @param {ComponentWithStoreProps} props - component props
 
+ * @param reducerState
  */
-function _getModel<Model>(config: ARCConfig<Model>, props: AnyArcComponentProps<Model>) {
+function _getModel<Model>(config: ARCConfig<Model>, props: ComponentPropsWithRequiredModelParams, reducerState: ARCStoreState<Model>): ARCMetaModel<Model> | null {
   // WARNING:
   // DEPRECATED TO BE WARNED
   // if (isNew(config, props)) {
@@ -120,7 +119,7 @@ function _getModel<Model>(config: ARCConfig<Model>, props: AnyArcComponentProps<
   if (!key) {
     return null
   }
-  return props.collection[key]
+  return getCollection(reducerState)[key]
 }
 
 
@@ -128,10 +127,10 @@ function _getModel<Model>(config: ARCConfig<Model>, props: AnyArcComponentProps<
  * returns the model
  * @param {ARCConfig} config
  * @param {ComponentWithStoreProps} props - component props
-
+ * @param reducerState
  */
-function getModel<Model>(config: ARCConfig<Model>, props: AnyArcComponentProps<Model>) {
-  const metaModel = _getModel(config, props)
+function getModel<Model>(config: ARCConfig<Model>, props: ComponentPropsWithRequiredModelParams, reducerState: ARCStoreState<Model>) {
+  const metaModel = _getModel(config, props, reducerState)
   if (!metaModel) {
     return null
   }
@@ -139,8 +138,8 @@ function getModel<Model>(config: ARCConfig<Model>, props: AnyArcComponentProps<M
 }
 
 
-function getError<Model>(config: ARCConfig<Model>, props: ComponentWithStoreProps<Model>) {
-  const error = getMetas(config, "error", props)
+function getError<Model>(config: ARCConfig<Model>, props: ComponentPropsWithRequiredModelParams, reducerState: ARCStoreState<Model>) {
+  const error = getMetas(config, "error", props, reducerState)
   if (!error) return null
   return error
 }
@@ -150,10 +149,11 @@ function getError<Model>(config: ARCConfig<Model>, props: ComponentWithStoreProp
  * returns true if the component is syncing
  * @param {ARCConfig} config
  * @param {ComponentWithStoreProps} props - component props
+ * @param reducerState
  */
-function isSyncing<Model>(config: ARCConfig<Model>, props: ComponentWithStoreProps<Model>) {
+function isSyncing<Model>(config: ARCConfig<Model>, props: ComponentPropsWithRequiredModelParams, reducerState: ARCStoreState<Model>) {
   //TODO hard code metas
-  return !!getMetas(config, "fetching", props)
+  return !!getMetas(config, "fetching", props, reducerState)
 }
 
 
@@ -161,12 +161,13 @@ function isSyncing<Model>(config: ARCConfig<Model>, props: ComponentWithStorePro
  * returns true if the component is loaded
  * @param {ARCConfig} config
  * @param {ComponentWithStoreProps} props - component props
+ * @param reducerState
  */
-function isLoaded<Model>(config: ARCConfig<Model>, props: ComponentWithStoreProps<Model>) {
+function isLoaded<Model>(config: ARCConfig<Model>, props: ComponentPropsWithRequiredModelParams, reducerState: ARCStoreState<Model>) {
   if (isNew(config, props)) {
     return true
   }
-  return !(!_getModel(config, props) || !getMetas(config, "loaded", props))
+  return !(!_getModel(config, props,reducerState) || !getMetas(config, "loaded", props, reducerState))
 }
 
 /**
@@ -174,26 +175,28 @@ function isLoaded<Model>(config: ARCConfig<Model>, props: ComponentWithStoreProp
  * @param {ARCConfig} config
  * @param {ComponentWithStoreProps} props - component props
 
+ * @param reducerState
  */
-function allowReFetch<Model>(config: ARCConfig<Model>, props: ComponentWithStoreProps<Model>) {
-  return !(config.fetchOnce && isLoaded(config, props))
+function allowReFetch<Model>(config: ARCConfig<Model>, props: ComponentPropsWithRequiredModelParams, reducerState: ARCStoreState<Model>) {
+  return !(config.fetchOnce && isLoaded(config, props, reducerState))
 }
 
 /**
  * returns true if the component can re-refetch on error
  * @param {ARCConfig} config
  * @param {ComponentWithStoreProps} props - component props
+ * @param reducerState
  */
-function errorReFetch<Model>(config: ARCConfig<Model>, props: ComponentWithStoreProps<Model>) {
+function errorReFetch<Model>(config: ARCConfig<Model>, props: ComponentPropsWithRequiredModelParams, reducerState: ARCStoreState<Model>) {
   //canReFetchOnerror
   if (
     config.refetchOnError === true &&
-    !isSyncing(config, props) &&
-    !isLoaded(config, props) &&
-    !!getError(config, props)
+    !isSyncing(config, props, reducerState) &&
+    !isLoaded(config, props, reducerState) &&
+    !!getError(config, props, reducerState)
   )
     return true
-  return !getError(config, props)
+  return !getError(config, props, reducerState)
 }
 
 /**
@@ -216,28 +219,25 @@ function getStore<Model>(config: ARCConfig<Model>, reduxStoreState: ARCRootState
  * @param {ARCConfig} config
  * @param {ComponentWithStoreProps} props - component props
  * @param {array<ComponentPropsWithRequiredModelParams>} [listOfParams=[]] - list of model keys
+ * @param reducerState
  */
 function modelPicker<Model>(
   config: ARCConfig<Model>,
-  props: ComponentWithStoreProps<Model>,
-  listOfParams: ComponentPropsWithRequiredModelParams[] = []
+  //TODO: remove me
+  //@ts-ignore
+  props: ComponentPropsWithRequiredModelParams,
+  listOfParams: ComponentPropsWithRequiredModelParams[] = [],
+  reducerState: ARCStoreState<Model>
 ) {
   const models: ARCModel<Model>[] = []
-  const {collection} = props
-  //TODO REWRITE AS REDUCE FN
+
   //return listOfParams.reduce((acc, params) => {}, models)
   listOfParams.forEach((keyProps) => {
     const modelParams = getParams(config, keyProps)
-    const props: ComponentWithStoreProps<Model> = {
-      //TODO  REMOVE temp, error, loaded, fetching,
-      // temp,
-      // error,
-      // loaded,
-      // fetching,
-      collection,
+    const props: ComponentPropsWithRequiredModelParams = {
       ...modelParams,
     }
-    const model = getModel(config, props)
+    const model = getModel(config, props, reducerState)
     if (model) {
       models.push(model)
     }
@@ -256,20 +256,16 @@ function modelPicker<Model>(
 function freeModelPicker<Model>(
   config: ARCConfig<Model>,
   reduxStoreState: ARCRootState,
-  listOfParams: ComponentPropsWithRequiredModelParams[] = []
+  listOfParams: ComponentPropsWithRequiredModelParams[] = [],
+
 ) {
-  const {collection} = getStore(config, reduxStoreState)
+  const reducerState = getStore(config, reduxStoreState)
+
   return (modelPicker(
     config,
-    {
-      collection,
-      //DUMMY DATA MUST BE REMOVED  temp: null, error: null, loaded: false, fetching: false
-      // temp: null,
-      // error: null,
-      // loaded: false,
-      // fetching: false,
-    },
-    listOfParams
+    {},
+    listOfParams,
+    reducerState
   ) || []).filter(Boolean)
 }
 
@@ -285,50 +281,29 @@ function getFetchingCount<Model>(props:ComponentWithStoreProps<Model>) {
     .filter((model) => model.metas.fetching).length
 }
 
-/** COLLECTIONS
- * SOON TO BE DROPPED
- * **/
-
-
-function getCollectionError<Model>(props: ComponentWithStoreProps<Model>) {
-  const {error=false} = props
-  return error
-}
-//type IsCollectionLoadedFn = (props: ComponentWithStoreProps) => boolean
-function isCollectionLoaded<Model>(props: ComponentWithStoreProps<Model>) {
-  const {loaded= false} = props
-  return loaded
-}
-
-
-function isCollectionSyncing<Model>(props:ComponentWithStoreProps<Model>) {
-  const {fetching=false} = props
-  return fetching
-}
-
-function allowCollectionReFetch<Model>(config:ARCConfig<Model>, props: ComponentWithStoreProps<Model>) {
-  return !(config.fetchOnce && isCollectionLoaded(props))
-}
 
 export interface CoreMethods {
   keyGenerator: KeyGeneratorFn
+  getCollection<Model>(reducerState: ARCStoreState<Model>) : ARCMetaCollectionMap<Model>
   hasRequiredParams<Model>(config: ARCConfig<Model>, props: ComponentProps) : boolean
   missingParams<Model>(config: ARCConfig<Model>, props: ComponentProps) : string[]
   isNew<Model>(config: ARCConfig<Model>, props: ComponentProps) : boolean
   getKey<Model>(config: ARCConfig<Model>, props: ComponentProps) : string | null
-  getParams<Model>(config: ARCConfig<Model>, props: ComponentProps) : ComponentPropsWithRequiredModelParams | null
-  getMetas<Model>(config: ARCConfig<Model>, prop: string | undefined, props: ComponentProps) : any
-  _getModel<Model>(config: ARCConfig<Model>, props: AnyArcComponentProps<Model>) : ARCMetaModel<Model> | null
-  getModel<Model> (config: ARCConfig<Model>, props: AnyArcComponentProps<Model>) : Model | null
-  getError<Model>(config: ARCConfig<Model>, props: ComponentWithStoreProps<Model>) : any
-  isSyncing<Model>(config: ARCConfig<Model>, props: ComponentWithStoreProps<Model>) : boolean
-  isLoaded<Model>(config: ARCConfig<Model>, props: ComponentWithStoreProps<Model>) : boolean
-  allowReFetch<Model>(config: ARCConfig<Model>, props: ComponentWithStoreProps<Model>) : boolean
-  errorReFetch<Model>(config: ARCConfig<Model>, props: ComponentWithStoreProps<Model>) : boolean
+  getParams<Model>(config: ARCConfig<Model>, props: ComponentPropsWithRequiredModelParams) : ComponentPropsWithRequiredModelParams | null
+  getMetas<Model>(config: ARCConfig<Model>, prop: string | undefined, props: ComponentPropsWithRequiredModelParams, reducerState: ARCStoreState<Model>) : any
+  _getModel<Model>(config: ARCConfig<Model>, props: ComponentPropsWithRequiredModelParams, reducerState: ARCStoreState<Model>) : ARCMetaModel<Model> | null
+  getModel<Model> (config: ARCConfig<Model>, props: ComponentPropsWithRequiredModelParams, reducerState: ARCStoreState<Model>) : Model | null
+  getError<Model>(config: ARCConfig<Model>, props: ComponentPropsWithRequiredModelParams, reducerState: ARCStoreState<Model>) : any
+  isSyncing<Model>(config: ARCConfig<Model>, props: ComponentPropsWithRequiredModelParams, reducerState: ARCStoreState<Model>) : boolean
+  isLoaded<Model>(config: ARCConfig<Model>, props: ComponentPropsWithRequiredModelParams, reducerState: ARCStoreState<Model>) : boolean
+  allowReFetch<Model>(config: ARCConfig<Model>, props: ComponentPropsWithRequiredModelParams, reducerState: ARCStoreState<Model>) : boolean
+  errorReFetch<Model>(config: ARCConfig<Model>, props: ComponentPropsWithRequiredModelParams, reducerState: ARCStoreState<Model>) : boolean
   getStore<Model>(config: ARCConfig<Model>, reduxStoreState: object) : ARCStoreState<Model>
   modelPicker<Model>(config: ARCConfig<Model>,
                 props: ComponentWithStoreProps<Model>,
-                listOfParams: ComponentPropsWithRequiredModelParams[]) : Model[]
+                listOfParams: ComponentPropsWithRequiredModelParams[],
+                reducerState: ARCStoreState<Model>
+  ) : Model[]
   freeModelPicker<Model>(
     config: ARCConfig<Model>,
     reduxStoreState: object,
@@ -336,16 +311,10 @@ export interface CoreMethods {
   ) : ARCModel<Model>[]
   getFetchingCount<Model>(props:ComponentWithStoreProps<Model>) : number
 
-  /** COLLECTIONS
-   * SOON TO BE DROPPED
-   * **/
-  getCollectionError<Model>(props: ComponentWithStoreProps<Model>) : any
-  isCollectionLoaded<Model>(props: ComponentWithStoreProps<Model>) : boolean
-  isCollectionSyncing<Model>(props: ComponentWithStoreProps<Model>) : boolean
-  allowCollectionReFetch<Model>(config:ARCConfig<Model>, props: ComponentWithStoreProps<Model>) : boolean
 }
 
-export const core: CoreMethods = {
+export const core:CoreMethods = {
+  getCollection,
   keyGenerator,
   hasRequiredParams,
   missingParams,
@@ -365,13 +334,6 @@ export const core: CoreMethods = {
   freeModelPicker,
   getFetchingCount,
 
-  /** COLLECTIONS
-   * SOON TO BE DROPPED
-   * **/
-  getCollectionError,
-  isCollectionLoaded,
-  isCollectionSyncing,
-  allowCollectionReFetch,
-}
+} as const
 
 

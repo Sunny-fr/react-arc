@@ -1,15 +1,16 @@
 /**
  * ARCMappedProps
  */
-import { ARCConfig } from "./config.types"
-import {ARCCollectionMap, ARCMetaCollectionMap, ARCMetaModel} from "./model.types"
+import {ARCConfig} from "./config.types"
+import {ARCCollectionMap, ARCMetaCollectionMap} from "./model.types"
+
 // import {DefaultRootState} from "react-redux";
 
 interface DefaultRootState {}
 
 
 export interface ARCRootState extends DefaultRootState {
-  [key: string]: ARCStoreState<any>
+  [key: ARCConfig<any>['name']]: ARCStoreState<any>
 }
 
 export interface ARCMappedProps<Model> {
@@ -40,8 +41,4 @@ export type ARCStoreConnector = <Model>(
 
 export interface ARCStoreState<Model> {
   collection: ARCMetaCollectionMap<Model>
-  temp: ARCMetaModel<Model>
-  fetching: boolean
-  loaded: boolean
-  error: object | null
 }

@@ -11,7 +11,7 @@ import {
 import { ARCAxiosOptions } from "../types/actions.types"
 import {ARCMetas} from "../types/model.types";
 import React from "react"
-import {AXIOS_CANCEL_PAYLOAD} from "../actions/ReduxActionsList";
+import {AXIOS_CANCEL_PAYLOAD} from "../actions/ReduxActions";
 
 // import {changedProps} from '../utils/index'
 // import equal from 'deep-equal'
@@ -60,8 +60,9 @@ export class ModelContainer<P, S, Model> extends Container<P,S, Model> {
    */
 
   _getModel(props?: AnyArcComponentProps<Model>) {
+    const reducerState = (props || this.props).ARCReducerState
     //return (props || this.props).metaModel
-    return this.core._getModel(this.ARCConfig, props || this.props)
+    return this.core._getModel(this.ARCConfig, props || this.props, reducerState)
   }
 
   // checkDispatchAvailability() {
@@ -185,12 +186,14 @@ export class ModelContainer<P, S, Model> extends Container<P,S, Model> {
    */
 
   allowReFetch = (props?: ComponentWithStoreProps<Model>) => {
-    return this.core.allowReFetch(this.ARCConfig, props || this.props)
+    const reducerState = (props || this.props).ARCReducerState
+    return this.core.allowReFetch(this.ARCConfig, props || this.props, reducerState)
   }
 
   errorReFetch(props?: ComponentWithStoreProps<Model>) {
+    const reducerState = (props || this.props).ARCReducerState
     //can re fetch on error
-    return this.core.errorReFetch(this.ARCConfig, props || this.props)
+    return this.core.errorReFetch(this.ARCConfig, props || this.props, reducerState)
   }
 
   componentDidUpdate() {
@@ -236,6 +239,7 @@ export class ModelContainer<P, S, Model> extends Container<P,S, Model> {
   }
 
   _fetchAuthorization(props:ComponentWithStoreProps<Model>, { skipReFetchStep = false }) {
+    const reducerState = props.ARCReducerState
     if (this.isNew(props)) {
       //console.log('//model is new no data to be retrieved')
       return false
@@ -246,19 +250,19 @@ export class ModelContainer<P, S, Model> extends Container<P,S, Model> {
       return false
     }
 
-    if (typeof this.core._getModel(this.ARCConfig, props) === "undefined") {
+    if (typeof this.core._getModel(this.ARCConfig, props, reducerState) === "undefined") {
       // console.log('//model has never been fetch, its ok to fetch')
       return true
     }
 
-    if (this.core.isSyncing(this.ARCConfig, props)) {
+    if (this.core.isSyncing(this.ARCConfig, props, reducerState)) {
       // console.log('//model seems to be loading we dont allow to fetch it again')
       return false
     }
 
     if (
       !skipReFetchStep &&
-      this.core.isLoaded(this.ARCConfig, props) &&
+      this.core.isLoaded(this.ARCConfig, props, reducerState) &&
       this.allowReFetch(props)
     ) {
       // console.log('//model seems to be loaded but its ok to re-fetch it')
@@ -267,7 +271,7 @@ export class ModelContainer<P, S, Model> extends Container<P,S, Model> {
 
     if (
       !skipReFetchStep &&
-      !!this.core.getError(this.ARCConfig, props) &&
+      !!this.core.getError(this.ARCConfig, props, reducerState) &&
       this.errorReFetch(props)
     ) {
       // console.log('//model had an error previously, but its ok to refetch it')
@@ -288,9 +292,8 @@ export class ModelContainer<P, S, Model> extends Container<P,S, Model> {
     return !error && loaded && !this.isNew() ? this.getModel() : this.ARCConfig.defaultModel
   }
   render() {
-
     const Component = this.props.component as React.ComponentType<any>
-    const props = { ...omit(this.props, ['ARCConfig', 'component']) }
+    const props = { ...omit(this.props, ['ARCConfig', 'ARCReducerState',  'component']) }
     const loaded = this.isLoaded()
     const loading = this.isSyncing()
     const error = this.getError()
