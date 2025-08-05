@@ -1,11 +1,11 @@
-import {useCallback, useEffect, useMemo, useRef} from "react"
+import {useCallback, useContext, useEffect, useMemo, useRef} from "react"
 import {ComponentProps, ComponentPropsWithRequiredModelParams,} from "../types/components.types"
 import {ARCConfig} from "../types/config.types"
 import {ARCRootState} from "../types/connectors.types";
 
 import {core} from "../actions/core";
 import {ARCMetaModel} from "../types/model.types";
-import {useDispatch, useSelector} from "react-redux";
+import {ReactReduxContext, ReactReduxContextValue, useDispatch, useSelector} from "react-redux";
 import {AXIOS_CANCEL_PAYLOAD, ReduxActions} from "../actions/ReduxActions";
 import {initializeConfig} from "../utils";
 import {ARCAxiosOptions} from "../types/actions.types";
@@ -13,12 +13,14 @@ import {AxiosPromise} from "axios";
 import commons from "../commons";
 import {UseARC} from "../types/hooks.connected.types";
 import {fetchingCountSelector, metaModelSelector} from "./selectors";
+import {UnknownAction} from "redux";
 
 
 interface FetchAuthorizationProps<Model> {
   ARCConfig: ARCConfig<Model>
   metaModel?: ARCMetaModel<Model> | null
   props: ComponentProps,
+  reduxContext: ReactReduxContextValue<any, UnknownAction> | null
   options?: {
     skipReFetchStep?: boolean
   }
@@ -26,10 +28,14 @@ interface FetchAuthorizationProps<Model> {
 
 function fetchAuthorization<Model>({
                                      ARCConfig: config,
-                                     metaModel,
                                      props,
+                                     reduxContext,
                                      options = {}
                                    }: FetchAuthorizationProps<Model>): boolean {
+
+
+  const modelKey = core.getKey(config, props)
+  const metaModel = metaModelSelector(reduxContext?.store.getState(), config, modelKey)
   if (core.isNew(config, props)) {
     // console.log('//model is new no data to be retrieved')
     return false
@@ -40,12 +46,17 @@ function fetchAuthorization<Model>({
     return false
   }
 
+
+
+
   if (!metaModel) {
     // console.log('//model has never been fetch, its ok to fetch')
     return true
   }
+  //const trueMetaModel = core._getModel(metaModel, reduxContext)
 
   if (metaModel.metas.fetching) {
+
     // console.log('//model seems to be loading we dont allow to fetch it again')
     return false
   }
@@ -85,6 +96,7 @@ export function useARC<Model>({
   props: ComponentProps
 }): UseARC<Model> {
   const dispatch = useDispatch()
+  const reduxContext = useContext(ReactReduxContext)
   const isMountedRef = useRef(true)
   const abortControllerRef = useRef<AbortController | null>(null)
   const delayedTimeoutRef = useRef<number | undefined>(undefined)
@@ -111,9 +123,9 @@ export function useARC<Model>({
 
     return fetchAuthorization<Model>({
       ARCConfig: config,
-      metaModel,
       props,
       options: options,
+      reduxContext
     })
   }, [config, metaModel, props])
 

@@ -2,9 +2,13 @@ import {connect} from "react-redux"
 import {extendWithDefaultProps, getDefaultConfig} from "../utils"
 import {core} from "../actions/core"
 import {ARCConfig} from "../types/config.types"
-import {ComponentPropsWithRequiredModelParams} from "../types/components.types"
+import {ARCConnectedComponent, ComponentPropsWithRequiredModelParams} from "../types/components.types"
 import {ComponentType} from "react"
 import {ARCRootState, ARCStoreState} from "../types/connectors.types";
+
+import {metaModelSelector} from "../hooks/selectors";
+
+
 
 
 /**
@@ -12,36 +16,33 @@ import {ARCRootState, ARCStoreState} from "../types/connectors.types";
  * @param {ARCConfig} config
 
  */
-export function connectFn<Model>(config: ARCConfig<Model>) {
+export function connectFn<Model, P extends object = {}>(config: ARCConfig<Model>) {
   return function(
     store: ARCRootState,
-    ownProps: object
-  )  {
+    ownProps: P
+  ):ARCConnectedComponent<Model> & P {
     const namespace = config.name
     if (!store[namespace]) {
       throw new Error(`Namespace "${namespace}" not found in store. Please ensure the ARCConfig is correctly set up.`);
     }
 
-    const reducerState:ARCStoreState<Model> = store[namespace]
-
-    // const collection = reducerState.collection
-
     const mergedProps: ComponentPropsWithRequiredModelParams = {
       ...extendWithDefaultProps(config, ownProps),
-      //...removeMissingProps(ownProps),
-      // collection,
     }
-    const metaModel = core._getModel(config, mergedProps, reducerState)
-    const loaded = core.isLoaded(config, mergedProps, reducerState)
-    const model = core.getModel(config, mergedProps, reducerState)
-    const error = core.getError(config, mergedProps, reducerState)
-    const syncing = core.isSyncing(config, mergedProps, reducerState)
-    const metas = core.getMetas(config, undefined, mergedProps, reducerState)
-    const isNew = core.isNew(config, mergedProps)
+
+    const modelKey = core.getKey(config, mergedProps)
+
+    const metaModel = metaModelSelector(store, config, modelKey)
+
+    const loaded = metaModel?.metas?.loaded || false
+    const model = metaModel?.model || config.defaultModel || null
+    const error = metaModel?.metas?.error || null
+    const syncing = metaModel?.metas?.fetching || false
+    const metas = metaModel?.metas || {}
+    const isNew = !modelKey
     return {
-      ...extendWithDefaultProps(config, ownProps),
+      ...mergedProps,
       ARCConfig: config,
-      ARCReducerState: reducerState,
       loaded,
       metaModel,
       model,
@@ -49,7 +50,7 @@ export function connectFn<Model>(config: ARCConfig<Model>) {
       syncing,
       metas,
       isNew,
-    }
+    } as ARCConnectedComponent<Model> & P
   }
 }
 
@@ -61,14 +62,11 @@ export function connectFn<Model>(config: ARCConfig<Model>) {
 export function withARC<Model>(config: ARCConfig<Model>) {
 
   const extendedConfig:ARCConfig<Model> = { ...getDefaultConfig(), ...config }
-  /**
-   * @param {Component} Wrapped
-   * @return {function(ARCMappedProps)<ARCWrappedComponent>}
-   */
-  function ARCHoc<T>(Wrapped: ComponentType<T>) {
 
-    //@ts-ignore
-    return connect(connectFn(extendedConfig))(Wrapped)
+  function createHOC<P extends object = {}>(Wrapped: ComponentType<P
+    & ARCConnectedComponent<Model> & { ARCConfig: ARCConfig<Model> } & { ARCReducerState: ARCStoreState<Model> }
+  >) {
+    return connect(connectFn<Model, P>(extendedConfig))(Wrapped)
   }
-  return ARCHoc
+  return createHOC
 }

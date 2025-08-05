@@ -41,7 +41,16 @@ const config: ARCConfig<ARCModel<any>> = {
   //tries
   maxTries: 1,
 
-  // fetchers: {}
+  // fetchers: {
+  //   'fetch': (params, config1, props, axiosOptions) =>
+  //     Promise.resolve({
+  //       data: {},
+  //       status: 200,
+  //       statusText: "OK",
+  //       headers: {},
+  //       config: {},
+  //     }),
+  // }
 }
 
 export default config

@@ -1,14 +1,27 @@
 import {ARCConfig} from "./config.types"
-import {ARCMetaCollectionMap,} from "./model.types"
 import {ThunkDispatch} from "redux-thunk"
+import React from "react";
+import {ARCMetaModel} from "./model.types";
 
+
+export interface ARCConnectedComponent<Model> {
+  ARCConfig: ARCConfig<Model>
+  loaded: boolean
+  metaModel: ARCMetaModel<Model>
+  model: Model
+  error: any
+  syncing: boolean
+  metas: ARCMetaModel<Model>['metas']
+  isNew: boolean
+  dispatch: ThunkDispatch<any, any, any>
+  component?: React.ComponentType<any>
+}
 
 /**
  * Any Component Props
  */
 export interface ComponentProps extends React.ComponentProps<any> {
   dispatch?: ThunkDispatch<any, any, any>
-  //Component?: React.ComponentType<any>
 }
 
 /**
@@ -25,67 +38,17 @@ export interface ComponentPropsWithRequiredModelParams extends ComponentProps  {
  * for example model ARCConfig.modelParams = ['id','name']
  * expected ComponentPropsWithRequiredModelParams are  {id:'12', name:'Al', ...}
  */
-export interface ComponentWithStoreProps<Model>
+export interface ComponentWithStoreProps
   extends ComponentPropsWithRequiredModelParams {
-  //ARCConfig: ARCConfig
-  collection: ARCMetaCollectionMap<Model>
-  // temp?: ARCModel<Model> | null | undefined
-  // To be dropped
-  // fetching?: boolean
-  // To be dropped
-  // loaded?: boolean
-  // To be dropped
-  // error?:  null | any
-  // Other props
-  //[key: string]: any
 }
 export interface ARCContainerProps<Model>
-  extends ComponentPropsWithRequiredModelParams {
-  Component: React.ComponentType<any>
-  ARCConfig: ARCConfig<Model>
-  dispatch: ThunkDispatch<any, any, any>
-  collection: ARCMetaCollectionMap<Model>
-  // To be dropped
-  //temp?: ARCModel<Model>
-  // To be dropped
-  //fetching: boolean
-  // To be dropped
-  //loaded: boolean
-  // To be dropped
-  //error: null | any
+  extends ARCConnectedComponent<Model> {
+  component: React.ComponentType<any>
 }
 
 export interface ARCWrappedComponentProps<Model>
   extends ComponentPropsWithRequiredModelParams {
   ARCConfig: ARCConfig<Model>
-  //loaded: boolean
-  //metaModel: ARCMetaModel<Model> | null
-  //model: ARCModel<Model> |null
-  //error: any | null
-  //syncing: boolean
-  //metas: ARCMetasType
-  //isNew: boolean
-  collection: ARCMetaCollectionMap<Model>
-  // tempModel?: ARCModel<Model> | null | undefined
   dispatch: ThunkDispatch<any, any, any>
-
-  // To be dropped
-  //temp: ARCModel<Model> | null | undefined
-  // To be dropped
   // fetching: boolean
 }
-//
-// export interface ARCContainerProps
-//   extends ComponentPropsWithRequiredModelParams {
-//   ARCConfig: ARCConfig
-//   //retryConditionFn: RetryConditionFn
-//   //dispatch: ThunkDispatch<any, any, any>
-// }
-
-/**
- * ARC Wrapped Component
- */
-//
-// export type ARCWrappedComponent = (
-//   arg0: ARCWrappedComponentProps
-// ) => JSX.Element

@@ -36,7 +36,6 @@ export interface ARCMetaModel<Model> {
  */
 export type ARCModel<Model> = Model
 
-///export const ARCModelDefaults: ARCModel = {} as ARCModel
 
 export type ARCMetaCollectionMap<Model> = Record<ARCModelKey, ARCMetaModel<Model>>
 export type ARCCollectionMap<Model> = Record<ARCModelKey, ARCModel<Model>>

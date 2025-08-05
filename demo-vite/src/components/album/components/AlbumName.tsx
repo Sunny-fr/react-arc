@@ -1,9 +1,20 @@
 import React from 'react';
-import {type AlbumProps, withAlbum} from "../arc/album.arc.ts";
+import {album, type AlbumProps} from "../arc/album.arc.ts";
 import {cn} from "@/lib/utils.ts";
 
+import {useARC} from "../../../../../src";
 
-export const AlbumName: React.FC<AlbumProps> = withAlbum(({model, error, loaded}) => {
+
+export const AlbumName: React.FC<AlbumProps> = ((props) => {
+
+  const {
+    error,
+    data: model,
+    loaded
+  } = useARC({
+    ARCConfig: album,
+    props
+  })
   if (error) return (
     <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800 border border-red-200 shadow-sm">
     ! </span>

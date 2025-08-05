@@ -11,7 +11,7 @@ import {
 import {Dispatch} from "redux"
 
 import {ComponentPropsWithRequiredModelParams} from "../types/components.types"
-import {ARCAxiosOptions, ArcFetchError, ReduxActionsListOptions,} from "../types/actions.types"
+import {ARCAxiosOptions, ArcFetchError, ReduxActionsOptions,} from "../types/actions.types"
 import {ACTIONS} from "../reducers/action";
 
 
@@ -56,7 +56,7 @@ export class ReduxActions<Model>{
   headers: ARCConfigHeaders
   methods: ARCHttpRestMethodMap
 
-  constructor(options: ReduxActionsListOptions<Model>) {
+  constructor(options: ReduxActionsOptions<Model>) {
     this.config = initializeConfig(options.config)
     this.initialConfig = this.config
     this.retryConditionFn = this.config.retryConditionFn

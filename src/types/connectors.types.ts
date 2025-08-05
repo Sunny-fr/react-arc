@@ -26,14 +26,7 @@ export interface ARCMappedProps<Model> {
   tempModel?: Model | object
 }
 
-/**
- *  StoreConnector
- */
 
-export type ARCStoreConnector = <Model>(
-  store: object,
-  ownProps: object
-) => ARCMappedProps<Model>
 
 /**
  * ARC Store

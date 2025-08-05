@@ -2,12 +2,10 @@ import React, {useCallback, useMemo, useRef} from "react"
 import {ReduxActions} from "../actions/ReduxActions"
 import {core, CoreMethods} from "../actions/core"
 import {initializeConfig} from "../utils"
-import {useStore} from "react-redux"
 
 
 import {ARCConfig} from "../types/config.types"
-import {ARCWrappedComponentProps, ComponentProps, ComponentWithStoreProps,} from "../types/components.types"
-import {ARCRootState} from "../types/connectors.types";
+import {ARCWrappedComponentProps,} from "../types/components.types"
 
 export interface ContainerHookConfig<Model> {
   ARCConfig: ARCConfig<Model>
@@ -18,13 +16,10 @@ export interface ContainerHookReturn<Model> {
   actions: ReduxActions<Model>
   core: CoreMethods
   abortController: React.MutableRefObject<AbortController | null>
-  getTrueStoreState: () => { collection: any }
-  getPropsFromTrueStoreState: (props?: ComponentProps) => ComponentWithStoreProps<Model>
   updateARC: (config: ARCConfig<Model>) => void
 }
 
 export function useContainer<Model>({ARCConfig: initialConfig}: ContainerHookConfig<Model>): ContainerHookReturn<Model> {
-  const store = useStore()
   const abortControllerRef = useRef<AbortController | null>(null)
 
   // Initialize ARC configuration with default values and provided configuration
@@ -33,28 +28,6 @@ export function useContainer<Model>({ARCConfig: initialConfig}: ContainerHookCon
     const actionsList = new ReduxActions({config})
     return [config, actionsList]
   }, [initialConfig])
-
-  // Get current store state for the specific namespace
-  const getTrueStoreState = useCallback(() => {
-    const state = store.getState() as ARCRootState
-    const namespace = ARCConfig.name
-    if (!state[namespace]) {
-      console.error(`Namespace "${namespace}" not found in store. Please check ARCConfig setup.`)
-      return {collection: {}}
-    }
-    return {
-      collection: state[namespace].collection,
-    }
-  }, [store, ARCConfig])
-
-  // Get combined props from store state and provided props
-  const getPropsFromTrueStoreState = useCallback((props?: ComponentProps) => {
-    const ARCProps = getTrueStoreState()
-    return {
-      ...props,
-      ...ARCProps,
-    } as unknown as ComponentWithStoreProps<Model>
-  }, [getTrueStoreState])
 
   // Update ARC configuration
   const updateARC = useCallback((config: ARCConfig<Model>) => {
@@ -67,8 +40,6 @@ export function useContainer<Model>({ARCConfig: initialConfig}: ContainerHookCon
     actions,
     core: core as CoreMethods,
     abortController: abortControllerRef,
-    getTrueStoreState,
-    getPropsFromTrueStoreState,
     updateARC
   }
 }
@@ -77,7 +48,6 @@ export function useContainer<Model>({ARCConfig: initialConfig}: ContainerHookCon
 export function Container<P, Model>(props: P & ARCWrappedComponentProps<Model>) {
   const {ARCConfig} = props
   const container = useContainer<Model>({ARCConfig})
-
   return {
     ...container,
     props

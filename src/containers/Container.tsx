@@ -4,20 +4,20 @@ import {core, CoreMethods} from "../actions/core"
 import {initializeConfig} from "../utils"
 import {ReactReduxContext} from "react-redux"
 import {ARCConfig} from "../types/config.types"
-import {ARCWrappedComponentProps, ComponentProps, ComponentWithStoreProps,} from "../types/components.types"
+import {ARCConnectedComponent, ComponentProps, ComponentWithStoreProps,} from "../types/components.types"
 import {ARCRootState, ARCStoreState} from "../types/connectors.types";
 
 
-export class Container<P, S, Model> extends React.Component<P & ARCWrappedComponentProps<Model>, S> {
+export class Container<P, S, Model> extends React.Component<P & ARCConnectedComponent<Model>, S> {
   static contextType = ReactReduxContext
   ARCConfig: ARCConfig<Model>
   actions: ReduxActions<Model>
   core: CoreMethods
   abortController: null | AbortController
-  props: P & ARCWrappedComponentProps<Model>
+  props: P & ARCConnectedComponent<Model>
   delayedTimeout: number | undefined
 
-  constructor(props: (Readonly<P> | P) & ARCWrappedComponentProps<Model>) {
+  constructor(props: (Readonly<P> | P) & ARCConnectedComponent<Model>) {
     //: ARCWrappedComponentProps<Model>
     super(props)
     this.updateARC(props.ARCConfig)
@@ -29,7 +29,7 @@ export class Container<P, S, Model> extends React.Component<P & ARCWrappedCompon
   }
 
   getTrueStoreState() {
-    //@ts-ignore
+    // @ts-ignore
     const rootState:ARCRootState = this.context.store.getState()
     const namespace = this.ARCConfig.name
     const store: ARCStoreState<Model> = rootState[namespace]
@@ -44,7 +44,7 @@ export class Container<P, S, Model> extends React.Component<P & ARCWrappedCompon
     return {
       ...baseProps,
       ...ARCProps,
-    } as unknown as ComponentWithStoreProps<Model>
+    } as unknown as ComponentWithStoreProps
   }
 
   updateARC(config: ARCConfig<Model>) {
