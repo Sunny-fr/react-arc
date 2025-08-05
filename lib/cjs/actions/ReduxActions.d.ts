@@ -2,7 +2,7 @@ import { AxiosInstance, AxiosPromise } from "axios";
 import { ARCConfig, ARCConfigHeaders, ARCHttpRestMethodMap, RetryConditionFn } from "../types/config.types";
 import { Dispatch } from "redux";
 import { ComponentPropsWithRequiredModelParams } from "../types/components.types";
-import { ARCAxiosOptions, ReduxActionsListOptions } from "../types/actions.types";
+import { ARCAxiosOptions, ReduxActionsOptions } from "../types/actions.types";
 export declare const AXIOS_CANCEL_PAYLOAD: {
     readonly code: "ERR_CANCELED";
     readonly name: "CanceledError";
@@ -14,7 +14,7 @@ export declare class ReduxActions<Model> {
     axios: AxiosInstance;
     headers: ARCConfigHeaders;
     methods: ARCHttpRestMethodMap;
-    constructor(options: ReduxActionsListOptions<Model>);
+    constructor(options: ReduxActionsOptions<Model>);
     static GenerateAbortSignal<Model>(axiosOptions: ARCAxiosOptions<Model>): AbortSignal | undefined;
     getInitialConfig(): ARCConfig<Model>;
     generateAbortSignal(axiosOptions: ARCAxiosOptions<Model>): AbortSignal | undefined;

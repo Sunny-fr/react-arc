@@ -1,7 +1,7 @@
 import { ARCConfig } from "./config.types";
 import { ComponentPropsWithRequiredModelParams } from "./components.types";
 import { ComponentProps } from "react";
-export interface ReduxActionsListOptions<Model> {
+export interface ReduxActionsOptions<Model> {
     config: ARCConfig<Model>;
 }
 export interface RetryFnParams<Model> {

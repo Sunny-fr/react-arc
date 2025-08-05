@@ -3,16 +3,6 @@ import { ComponentProps, ComponentPropsWithRequiredModelParams } from "./compone
 import { ARCConfig } from "./config.types";
 export type ARCResponse<Model> = Model | null | undefined;
 /**
- * État interne du hook useARC
- */
-export interface UseARCState<Model> {
-    error: null | any;
-    loading: boolean;
-    loaded: boolean;
-    response?: ARCResponse<Model>;
-    pending: boolean;
-}
-/**
  * Interface pour les méthodes CRUD exposées par le hook useARC
  */
 export interface UseDetachedARCMethods<Model> {
