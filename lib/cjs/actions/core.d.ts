@@ -1,6 +1,6 @@
 import { ARCMetaCollectionMap, ARCMetaModel, ARCMetas, ARCModel, ARCModelKey } from "../types/model.types";
 import { ARCConfig } from "../types/config.types";
-import { ComponentProps, ComponentPropsWithRequiredModelParams, ComponentWithStoreProps } from "../types/components.types";
+import { ComponentProps, ComponentPropsWithRequiredModelParams } from "../types/components.types";
 import { ARCRootState, ARCStoreState } from "../types/connectors.types";
 type KeyGeneratorFn = (params: object) => ARCModelKey;
 export interface CoreMethods {
@@ -20,8 +20,8 @@ export interface CoreMethods {
     allowReFetch<Model>(config: ARCConfig<Model>, metaModel?: ARCMetaModel<Model> | null): boolean;
     errorReFetch<Model>(config: ARCConfig<Model>, metaModel?: ARCMetaModel<Model> | null): boolean;
     getStore<Model>(config: ARCConfig<Model>, reduxStoreState: object): ARCStoreState<Model>;
-    modelPicker<Model>(config: ARCConfig<Model>, props: ComponentWithStoreProps, listOfParams: ComponentPropsWithRequiredModelParams[], rootState: ARCRootState): Model[];
-    freeModelPicker<Model>(config: ARCConfig<Model>, rootState: ARCRootState, listOfParams: ComponentPropsWithRequiredModelParams[]): ARCModel<Model>[];
+    modelPicker<Model>(rootState: ARCRootState, config: ARCConfig<Model>, listOfParams: ComponentPropsWithRequiredModelParams[]): Model[];
+    freeModelPicker<Model>(rootState: ARCRootState, config: ARCConfig<Model>, listOfParams: ComponentPropsWithRequiredModelParams[]): ARCModel<Model>[];
     getFetchingCount<Model>(props: ARCMetaCollectionMap<Model>): number;
 }
 export declare const core: CoreMethods;
