@@ -1,18 +1,33 @@
 import { ARCConfig } from "./config.types";
 import { ThunkDispatch } from "redux-thunk";
 import React from "react";
-import { ARCMetaModel } from "./model.types";
+import { ARCMetaModel, ARCMetas } from "./model.types";
 export interface ARCConnectedComponent<Model> {
     ARCConfig: ARCConfig<Model>;
     loaded: boolean;
     metaModel: ARCMetaModel<Model>;
     model: Model;
     error: any;
-    syncing: boolean;
-    metas: ARCMetaModel<Model>['metas'];
+    loading: boolean;
+    metas: ARCMetas;
     isNew: boolean;
     dispatch: ThunkDispatch<any, any, any>;
     component?: React.ComponentType<any>;
+}
+export interface WithARCInjectProps<Model> {
+    ARCConfig: ARCConfig<Model>;
+    modelKey: string | null;
+    metaModel: ARCMetaModel<Model>;
+    metas: ARCMetas;
+    model: Model | null;
+    loaded: boolean;
+    error: any;
+    loading: boolean;
+    isNew: boolean;
+    dispatch: ThunkDispatch<any, any, any>;
+}
+export interface ARCContainer<Model, P extends object = {}> extends WithARCInjectProps<Model> {
+    component: React.ComponentType<P & WithARCInjectProps<Model>>;
 }
 /**
  * Any Component Props

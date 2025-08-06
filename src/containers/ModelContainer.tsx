@@ -261,7 +261,7 @@ export class ModelContainer<P, S, Model> extends Container<P,S, Model> {
   }
   render() {
 
-    const props = { ...omit(this.props, ['ARCConfig', 'ARCReducerState',  'component']) }
+    const props = { ...omit(this.props, ['ARCConfig', 'component']) }
     const loaded = this.isLoaded()
     const loading = this.isSyncing()
     const error = this.getError()

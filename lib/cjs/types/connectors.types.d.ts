@@ -13,7 +13,7 @@ export interface ARCMappedProps<Model> {
     metaModel: object;
     model: object;
     error: object;
-    syncing: boolean;
+    loading: boolean;
     metas: object;
     isNew: boolean;
     ARCConfig: ARCConfig<Model>;

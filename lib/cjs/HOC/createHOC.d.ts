@@ -1,19 +1,9 @@
 import React from 'react';
 import { ARCConfig } from "../types/config.types";
-import { ARCMetaModel } from "../types/model.types";
-export interface HOCBootstrapped<M> {
-    loaded: boolean;
-    metaModel: ARCMetaModel<M>;
-    model: M;
-    error: any;
-    syncing: boolean;
-    loading?: boolean;
-    metas: object;
-    isNew: boolean;
+import { ARCContainer } from "../types/components.types";
+interface CreateHOCParams<Model, P extends object> {
+    Container?: React.ComponentType<P & ARCContainer<Model, P>>;
+    ARCConfig: ARCConfig<Model>;
 }
-interface CreateHOCParams<P extends object, M> {
-    Container?: React.ComponentType<P>;
-    ARCConfig: ARCConfig<M>;
-}
-export declare function createHOC<P extends object, M>({ Container, ARCConfig }: CreateHOCParams<P, M>): (Wrapped: React.ComponentType<P & HOCBootstrapped<M>>) => (props: P) => React.JSX.Element;
+export declare function createHOC<Model, R extends object>({ Container, ARCConfig }: CreateHOCParams<Model, R>): (Wrapped: React.ComponentType<R & ARCContainer<Model, R>>) => (props: R) => React.JSX.Element;
 export {};
