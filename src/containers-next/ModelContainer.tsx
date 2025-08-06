@@ -68,7 +68,7 @@ export function useModelContainer<Model>({
    * @returns Boolean indicating if sync is in progress
    */
   const isSyncing = useCallback((componentProps?: ARCWrappedComponentProps<Model>) => {
-    return (componentProps || props).syncing
+    return (componentProps || props).loading
   }, [props])
 
   /**

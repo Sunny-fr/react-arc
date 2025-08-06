@@ -27,6 +27,6 @@ export const portfolioList: ARCConfig<Portfolios> = {
 }
 
 
-export const withPortfolioList = createHOC<PortfolioListProps, Portfolios>({
+export const withPortfolioList = createHOC<Portfolios, PortfolioListProps>({
   ARCConfig: portfolioList,
 })

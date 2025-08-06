@@ -95,7 +95,7 @@ const PortfolioItem = ({model}:{model:Portfolio}) => {
 //   return (
 //     <div className="portfolio">
 //       <Link to={"/create"} className="btn-float create" />
-//       {loading ? <Toast>syncing...</Toast> : null}
+//       {loading ? <Toast>Loading...</Toast> : null}
 //       {items}
 //     </div>
 //   )

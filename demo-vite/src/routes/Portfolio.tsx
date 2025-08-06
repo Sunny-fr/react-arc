@@ -29,7 +29,11 @@ export function Portfolio() {
             </Card>
           </div>
         </div>
-        <PortfolioComponent hello={'world'} start={0} limit={9}/>
+        <PortfolioComponent
+          hello={'world'}
+          start={0}
+          limit={9}
+        />
       </div>
     </div>
   </>)

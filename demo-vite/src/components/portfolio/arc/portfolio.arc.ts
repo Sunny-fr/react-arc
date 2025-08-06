@@ -49,6 +49,6 @@ export const portfolio: ARCConfig<Portfolio> = {
   }
 }
 
-export const withPortfolio = createHOC<PortfolioProps, Portfolio>({
+export const withPortfolio = createHOC<Portfolio, PortfolioProps>({
   ARCConfig: portfolio
 })

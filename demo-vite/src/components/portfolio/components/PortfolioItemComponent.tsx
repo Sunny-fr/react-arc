@@ -28,7 +28,7 @@ const PortfolioItemComponent: React.FC<PortfolioProps> = withPortfolio(({model, 
   return (
     <>
       <SiteHeader title={model.title} />
-      {loading ? <Toast>syncing...</Toast> : null}
+      {loading ? <Toast>Loading...</Toast> : null}
 
       <div className="flex flex-1 flex-col">
         <div className="@container/main flex flex-1 flex-col gap-2">

@@ -124,7 +124,7 @@ function getError<Model>( metaModel?: ARCMetaModel<Model> | null) {
 
 
 /**
- * returns true if the component is syncing
+ * returns true if the component is loading
  * @param metaModel
  */
 function isSyncing<Model>(metaModel?: ARCMetaModel<Model> | null) {

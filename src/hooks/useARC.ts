@@ -195,8 +195,7 @@ export function useARC<Model>({
     if (authorized) {
       const max = config.maxPendingRequestsPerReducer
       if (max && max > -1) {
-        const count = fetchingCount
-        if (count > max) {
+        if (fetchingCount > max) {
           return delayedFetch({skipReFetchStep})
         }
       }
@@ -230,10 +229,7 @@ export function useARC<Model>({
       isMountedRef.current = false
       clearTimeout(initTimeout)
       clearTimeout(delayedTimeoutRef.current)
-
-      // Only abort request if there's actually a fetch in progress
       if (abortControllerRef.current /*&& fetchStatus.inProgress*/) {
-        //console.log('ModelContainer unmounted, aborting ongoing request')
         abortControllerRef.current.abort(commons.cancelRequestPayload({ARCConfig: config}))
         abortControllerRef.current = null
       }

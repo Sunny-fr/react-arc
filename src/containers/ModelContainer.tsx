@@ -138,7 +138,7 @@ export class ModelContainer<P, S, Model> extends Container<P,S, Model> {
    * returns bool if there's any activity */
 
   isSyncing(props?: ARCWrappedComponentProps<Model>) {
-    return (props || this.props).syncing
+    return (props || this.props).loading
   }
 
   /* public
