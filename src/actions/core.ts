@@ -1,17 +1,12 @@
 import {getParams as utilsGetParams, interpolate as utilsInterpolate,} from "../utils"
 import {ARCMetaCollectionMap, ARCMetaModel, ARCMetas, ARCModel, ARCModelKey,} from "../types/model.types"
 import {ARCConfig} from "../types/config.types"
-import {
-  // ARCContainerProps,
-  ComponentProps,
-  ComponentPropsWithRequiredModelParams,
-  ComponentWithStoreProps,
-} from "../types/components.types"
+import {ComponentProps, ComponentPropsWithRequiredModelParams,} from "../types/components.types"
 import {ARCRootState, ARCStoreState} from "../types/connectors.types"
 import {metaModelSelector} from "../hooks/selectors";
 
 
-// type AnyArcComponentProps<Model> = Omit<ComponentWithStoreProps<Model> | ARCContainerProps<Model>, 'dispatch'>
+
 
 type KeyGeneratorFn = (params: object) => ARCModelKey
 /**
@@ -189,22 +184,17 @@ function getStore<Model>(config: ARCConfig<Model>, reduxStoreState: ARCRootState
 
 /**
  * Returns a list of fetched models
- * @param {ARCConfig} config
- * @param {ComponentWithStoreProps} props - component props
- * @param {array<ComponentPropsWithRequiredModelParams>} [listOfParams=[]] - list of model keys
  * @param rootState
+ * @param {ARCConfig} config
+ * @param {array<ComponentPropsWithRequiredModelParams>} [listOfParams=[]] - list of model keys
+
  */
 function modelPicker<Model>(
+  rootState: ARCRootState,
   config: ARCConfig<Model>,
-  //TODO: remove me
-  //@ts-ignore
-  props: ComponentPropsWithRequiredModelParams,
   listOfParams: ComponentPropsWithRequiredModelParams[] = [],
-  rootState: ARCRootState
 ) {
   const models: ARCModel<Model>[] = []
-
-  //return listOfParams.reduce((acc, params) => {}, models)
   listOfParams.forEach((keyProps) => {
     const modelParams = getParams(config, keyProps)
     const props: ComponentPropsWithRequiredModelParams = {
@@ -223,29 +213,27 @@ function modelPicker<Model>(
 
 /**
  * return a model
- * @param {ARCConfig} config
  * @param {object} rootState - redux's store.getState()
+ * @param {ARCConfig} config
  * @param {array<ComponentPropsWithRequiredModelParams>} [listOfParams=[]] - list of model params
 
  */
 function freeModelPicker<Model>(
-  config: ARCConfig<Model>,
   rootState: ARCRootState,
+  config: ARCConfig<Model>,
   listOfParams: ComponentPropsWithRequiredModelParams[] = [],
-
 ) {
   return (modelPicker(
+    rootState,
     config,
-    {},
     listOfParams,
-    rootState
   ) || []).filter(Boolean)
 }
 
 
 /**
  * Returns the number of fetching items
- * @param {ComponentWithStoreProps} props - component props
+ * @param {ARCMetaCollectionMap} collection
  */
 function getFetchingCount<Model>(collection: ARCMetaCollectionMap<Model>) {
   return Object.keys(collection)
@@ -272,14 +260,13 @@ export interface CoreMethods {
   errorReFetch<Model>(config: ARCConfig<Model>, metaModel?: ARCMetaModel<Model> | null) : boolean
   getStore<Model>(config: ARCConfig<Model>, reduxStoreState: object) : ARCStoreState<Model>
   modelPicker<Model>(
+    rootState: ARCRootState,
     config: ARCConfig<Model>,
-                props: ComponentWithStoreProps,
-                listOfParams: ComponentPropsWithRequiredModelParams[],
-                rootState: ARCRootState
+    listOfParams: ComponentPropsWithRequiredModelParams[],
   ) : Model[]
   freeModelPicker<Model>(
-    config: ARCConfig<Model>,
     rootState: ARCRootState,
+    config: ARCConfig<Model>,
     listOfParams: ComponentPropsWithRequiredModelParams[]
   ) : ARCModel<Model>[]
   getFetchingCount<Model>(props:ARCMetaCollectionMap<Model>) : number
