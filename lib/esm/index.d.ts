@@ -10,6 +10,7 @@ export { useARC } from "./hooks/useARC";
 export { useDetachedARC } from "./hooks/useDetachedARC";
 export { withARC } from "./HOC/withARC";
 export { withUseDetachedARC } from "./HOC/withUseDetachedARC";
+export * from './hooks/selectors';
 export { createHOC } from "./HOC/createHOC";
 export * from "./types/types";
 export { extractParams, interpolate, flatten, cleanParams, changedProps, getParams, } from "./utils";
