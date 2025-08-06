@@ -23,6 +23,7 @@ export {withARC} from "./HOC/withARC"
 
 export {withUseDetachedARC} from "./HOC/withUseDetachedARC"
 
+export * from './hooks/selectors'
 
 export {createHOC} from "./HOC/createHOC"
 
