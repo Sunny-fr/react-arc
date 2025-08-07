@@ -1,5 +1,5 @@
 
-import { ReduxActions } from '../../src/actions/ReduxActions';
+import { ReduxActions } from '../../src';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { configureStore } from '@reduxjs/toolkit';
 import { createReducer } from '../../src/reducers/createReducer';

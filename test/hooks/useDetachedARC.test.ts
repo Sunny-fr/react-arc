@@ -1,5 +1,5 @@
 import { renderHook, waitFor } from '@testing-library/react';
-import { useDetachedARC } from '../../src/hooks/useDetachedARC';
+import { useDetachedARC } from '../../src';
 import { describe, it, expect, vi } from 'vitest';
 
 vi.stubGlobal('fetch', vi.fn(() =>

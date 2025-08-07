@@ -84,10 +84,30 @@ const SampleComponentWithExtendedProps = withSample<SampleComponentWithExtendedP
 
 
 
-const SampleComponentWithoutExtendedWithChainingProps = withSample(withARCLoader((props) => {
+export const SampleComponentWithoutExtendedWithChainingProps = withSample(withARCLoader((props) => {
   const { error, loaded, loading} = props
 
   // type is not retrieved here
+  const model = props.model
+
+  if (error) return <div>Error: {error.message}</div>
+  if (!loaded) return <div>Loading...</div>
+  if(!model) return <div>No model found</div>
+
+  return (
+    <div>
+      {loading && <p>loading...</p>}
+      <h1>Animal</h1>
+      <p>id: {model.id}</p>
+      <p>kind: {model.kind}</p>
+    </div>
+  )
+}))
+
+const SampleComponentDeclarativeWithoutExtendedWithChainingProps = withSample<SampleProps>(withARCLoader((props) => {
+  const { error, loaded, loading} = props
+
+  // type is correctly retrieved here
   const model = props.model
 
   if (error) return <div>Error: {error.message}</div>
@@ -164,7 +184,10 @@ export const Demo = () => {
       <SampleComponentWithoutExtendedProps id="123" />
       <SampleComponentWithExtendedProps id="123" name="Gus" />
 
-      <SampleComponentWithoutExtendedWithChainingProps id="123"  />
+      {/* TODO: FIX THIS CASE */}
+      {/*<SampleComponentWithoutExtendedWithChainingProps id="123"  />*/}
+
+      <SampleComponentDeclarativeWithoutExtendedWithChainingProps id="123" />
       <SampleComponentWithExtendedPropsAndChaining id="123" name="Gus"  />
     </div>
   )
