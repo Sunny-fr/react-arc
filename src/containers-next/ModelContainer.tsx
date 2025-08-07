@@ -393,7 +393,7 @@ export type ModelContainerProps<P, Model, RequiredProps extends object = {}> = P
   component: React.ComponentType<any>
 }
 
-export function ModelContainer<P, Model>(props: ModelContainerProps<P, Model>) {
+export function ModelContainer<P, Model, RequiredProps extends object = {}>(props: ModelContainerProps<P, Model, RequiredProps>) {
   const { ARCConfig, component: Component } = props
   const dispatch = useDispatch()
 

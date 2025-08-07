@@ -34,5 +34,5 @@ export declare function useModelContainer<Model, RequiredProps extends object = 
 export type ModelContainerProps<P, Model, RequiredProps extends object = {}> = P & ARCContainerProps<Model, RequiredProps> & {
     component: React.ComponentType<any>;
 };
-export declare function ModelContainer<P, Model>(props: ModelContainerProps<P, Model>): React.JSX.Element | null;
+export declare function ModelContainer<P, Model, RequiredProps extends object = {}>(props: ModelContainerProps<P, Model, RequiredProps>): React.JSX.Element | null;
 export default ModelContainer;
