@@ -17,7 +17,7 @@ export interface PortfolioProps {
 }
 
 
-export const portfolio: ARCConfig<Portfolio> = {
+export const portfolio: ARCConfig<Portfolio, PortfolioProps> = {
   "name": "portfolio",
   "modelProps": [
     "id"

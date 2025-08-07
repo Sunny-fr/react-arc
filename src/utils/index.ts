@@ -1,11 +1,10 @@
 import equal from "deep-equal"
 import defaultConfig from "../defaultConfig"
 import {ARCMetaCollectionMap, ARCMetaModel, ARCModel} from "../types/model.types"
-import {ARCConfig, ARCHttpRestMethodMap, Fetcher} from "../types/config.types"
+import {ARCConfig, ARCHttpRestMethodMap, Fetcher, FetcherMap} from "../types/config.types"
 import {AnyProps, ComponentPropsWithRequiredModelParams,} from "../types/components.types"
 import axios from "axios";
 import {ReduxActions} from "../actions/ReduxActions";
-import {ARCAxiosOptions} from "../types/actions.types";
 
 
 export function flatten<Model>(
@@ -154,8 +153,8 @@ export function interpolate(str: string | null, params: object): string {
   return cleanParams(result)
 }
 
-export function getDefaultConfig<Model>() {
-  return defaultConfig as ARCConfig<Model>
+export function getDefaultConfig<Model, RequiredProps>() {
+  return defaultConfig as ARCConfig<Model, RequiredProps>
   // return JSON.parse(
   //   JSON.stringify(defaultConfig)
   // ) as ARCConfig<Model>
@@ -177,18 +176,18 @@ export const omit = (
   )
 }
 
-export function initializeConfig<Model>(
-  config: ARCConfig<Model>
+export function initializeConfig<Model, RequiredProps extends object>(
+  config: ARCConfig<Model, RequiredProps>
 ): ARCConfig<Model> {
   if (!config) {
-    return getDefaultConfig<Model>()
+    return getDefaultConfig<Model, RequiredProps>()
   }
 
-  const FETCHER_MAP= {
-    fetch: (_params: ComponentPropsWithRequiredModelParams,
-            config: ARCConfig<Model>,
-            _props: object,
-            axiosOptions: ARCAxiosOptions<Model>) => {
+  const FETCHER_MAP:FetcherMap<Model, RequiredProps>= {
+    fetch: (_params,
+            config,
+            _props,
+            axiosOptions) => {
       return axios({
         // methods are already lowercased in setupMethods
         method: (config.methods as ARCHttpRestMethodMap).read ,
@@ -202,8 +201,8 @@ export function initializeConfig<Model>(
 
   type FetcherKey = keyof typeof FETCHER_MAP
 
-  const extendedConfig:ARCConfig<Model> & {fetchers: Record<FetcherKey, Fetcher<Model>>} = {
-    ...getDefaultConfig<Model>(),
+  const extendedConfig:ARCConfig<Model, RequiredProps> & {fetchers: Record<FetcherKey, Fetcher<Model, RequiredProps>>} = {
+    ...getDefaultConfig<Model, RequiredProps>(),
     ...config,
     actionNamespace: config?.actionNamespace || config.name.toUpperCase(),
     fetchers: FETCHER_MAP

@@ -5,32 +5,39 @@ import {withARC} from "./withARC";
 import {ARCContainer} from "../types/components.types";
 
 
-interface CreateHOCParams<P, Model> {
-  Container?: React.ComponentType<P & ARCContainer<Model, P>>
-  ARCConfig: ARCConfig<Model>
+
+interface CreateHOCParams<R, Model> {
+  Container?: React.ComponentType<R & ARCContainer<Model, R>>
+  ARCConfig: ARCConfig<Model, R>
 }
 
 // R = Required Props
 // P = Props that are passed to the wrapped component
 
-export function createHOC<R extends object = {}, Model = any>({Container = ModelContainer, ARCConfig}: CreateHOCParams<R, Model> ) {
-  const ARCContainer = withARC<Model, R>(ARCConfig)(Container) as React.ComponentType<R>
+export function createHOC<R extends object, Model = any>({Container = ModelContainer, ARCConfig}: CreateHOCParams<R, Model> ) {
+
   return function GeneratedHOC<P>(Wrapped: React.ComponentType<R & ARCContainer<Model, R> & P>)  {
+    const ARCContainer = withARC<Model, R>(ARCConfig)(Container) as React.ComponentType<R>
     return function Component(props: R & P) {
       const extendedProps = {
         ...props,
         component: Wrapped,
-      } as R & P
-      return <ARCContainer {...extendedProps as R & P }/>
+      }
+      return <ARCContainer {...extendedProps }/>
     }
   }
 }
 
-// Example usage of createHOC
+// // Example usage of createHOC
+
 //
-//
-// const SampleContainer = () => {
-//   return <div>Sample Container</div>
+// const Demo = () => {
+//   return (
+//     <div>
+//       <h1>Demo Component</h1>
+//       <SampleComponent id="123" hello="World" />
+//     </div>
+//   )
 // }
 //
 // type SampleModel = {
@@ -38,7 +45,7 @@ export function createHOC<R extends object = {}, Model = any>({Container = Model
 //   id: string
 // }
 //
-// const sampleConfig: ARCConfig<SampleModel> = {
+// const sampleConfig: ARCConfig<SampleModel, SampleProps> = {
 //   name: 'sample',
 //   modelProps: ['id'],
 //   paths: {
@@ -51,13 +58,13 @@ export function createHOC<R extends object = {}, Model = any>({Container = Model
 //
 // }
 //
-// const withSample = createHOC<SampleProps>({
+// const withSample = createHOC<SampleProps, SampleModel>({
 //   //Container: SampleContainer,
 //   ARCConfig: sampleConfig
 // })
 //
 //
-// interface SampleComponentProps extends SampleProps{
+// interface SampleComponentProps extends SampleProps {
 //   hello: string
 // }
 //
@@ -78,15 +85,7 @@ export function createHOC<R extends object = {}, Model = any>({Container = Model
 //     </div>
 //   )
 // })
-//
-// const Demo = () => {
-//   return (
-//     <div>
-//       <h1>Demo Component</h1>
-//       <SampleComponent id="123" hello="World" />
-//     </div>
-//   )
-// }
+
 
 
 

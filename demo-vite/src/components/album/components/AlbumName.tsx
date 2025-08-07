@@ -26,13 +26,19 @@ export const AlbumName: React.FC<AlbumProps> = ((props) => {
     </span>
   );
 
+  if(!model) return (
+    <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800 border border-yellow-200 shadow-sm">
+      ...
+    </span>
+  );
+
   return (
     <span className={cn(
       "inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium",
       "bg-gradient-to-r from-blue-50 to-indigo-50 text-indigo-700 border border-indigo-200",
       "shadow-sm transition-all hover:shadow hover:bg-indigo-100 cursor-default"
     )}>
-      {model?.title}
+      {model.title}
     </span>
   );
 });

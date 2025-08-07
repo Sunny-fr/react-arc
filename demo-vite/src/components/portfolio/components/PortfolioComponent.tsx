@@ -114,7 +114,7 @@ const PortfolioComponent:React.FC<PortfolioComponentProps> = withPortfolioList((
   if (error) return <LargeError title={"!"} children={error?.message} />
   if (!loaded) return <Loader />
 
-  const items = (model || []).map((item) => {
+  const items = (model||[]).map((item) => {
     return (
       <PortfolioItem
         //remove={this.removeModel}

@@ -88,11 +88,11 @@ function fetchAuthorization<Model>({
 }
 
 
-export function useARC<Model>({
+export function useARC<Model, RequiredProps extends object>({
                                 ARCConfig: initialConfig,
                                 props,
                               }: {
-  ARCConfig: ARCConfig<Model>
+  ARCConfig: ARCConfig<Model, RequiredProps>
   props: AnyProps
 }): UseARC<Model> {
   const dispatch = useDispatch()
@@ -102,7 +102,7 @@ export function useARC<Model>({
   const delayedTimeoutRef = useRef<number | undefined>(undefined)
 
   const [config, actions] = useMemo(() => {
-    const config: ARCConfig<Model> = initializeConfig(initialConfig)
+    const config = initializeConfig(initialConfig)
     const actionsList = new ReduxActions({config})
     if(config.fetchers?.['fetch']) {
       actionsList.standAloneFetchOne = config.fetchers['fetch']
