@@ -1,14 +1,14 @@
 import Container from "./Container";
-import { ARCConnectedComponent, ARCContainerProps, ARCWrappedComponentProps, ComponentProps, ComponentPropsWithRequiredModelParams, ComponentWithStoreProps } from "../types/components.types";
+import { AnyProps, ARCConnectedComponent, ARCContainerProps, ARCWrappedComponentProps, ComponentPropsWithRequiredModelParams, ComponentWithStoreProps } from "../types/components.types";
 import { ARCMetas } from "../types/model.types";
 import React from "react";
 type AnyArcComponentProps<Model> = ComponentWithStoreProps | ARCContainerProps<Model>;
 export declare class ModelContainer<P, S, Model> extends Container<P, S, Model> {
     /** PUBLIC ACTIONS METHODS **/
-    isNew(props?: ComponentProps): boolean;
-    getKey(props?: ComponentProps): string | null;
-    getParams(props?: ComponentProps): ComponentPropsWithRequiredModelParams | null;
-    hasRequiredParams(props?: ComponentProps): boolean;
+    isNew(props?: AnyProps): boolean;
+    getKey(props?: AnyProps): string | null;
+    getParams(props?: AnyProps): ComponentPropsWithRequiredModelParams | null;
+    hasRequiredParams(props?: AnyProps): boolean;
     _getModel(props?: AnyArcComponentProps<Model>): any;
     fetch: (params: ComponentPropsWithRequiredModelParams) => import("axios").AxiosPromise<Model>;
     remove: () => void;

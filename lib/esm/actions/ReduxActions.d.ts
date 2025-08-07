@@ -16,7 +16,7 @@ export declare class ReduxActions<Model> {
     methods: ARCHttpRestMethodMap;
     constructor(options: ReduxActionsOptions<Model>);
     static GenerateAbortSignal<Model>(axiosOptions: ARCAxiosOptions<Model>): AbortSignal | undefined;
-    getInitialConfig(): ARCConfig<Model>;
+    getInitialConfig(): ARCConfig<Model, {}>;
     generateAbortSignal(axiosOptions: ARCAxiosOptions<Model>): AbortSignal | undefined;
     decorateHeaders(props?: {}): ARCConfigHeaders;
     setHeaders(): void;

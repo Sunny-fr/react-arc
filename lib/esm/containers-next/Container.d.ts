@@ -16,10 +16,10 @@ export interface ContainerHookReturn<Model> {
 export declare function useContainer<Model>({ ARCConfig: initialConfig }: ContainerHookConfig<Model>): ContainerHookReturn<Model>;
 export declare function Container<P, Model>(props: P & ARCWrappedComponentProps<Model>): {
     props: P & ARCWrappedComponentProps<Model>;
-    ARCConfig: ARCConfig<Model>;
+    ARCConfig: ARCConfig<Model, {}>;
     actions: ReduxActions<Model>;
     core: CoreMethods;
     abortController: React.MutableRefObject<AbortController | null>;
-    updateARC: (config: ARCConfig<Model>) => void;
+    updateARC: (config: ARCConfig<Model, {}>) => void;
 };
 export default Container;

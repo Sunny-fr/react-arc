@@ -2,7 +2,7 @@ import React from "react";
 import { ReduxActions } from "../actions/ReduxActions";
 import { CoreMethods } from "../actions/core";
 import { ARCConfig } from "../types/config.types";
-import { ARCConnectedComponent, ComponentProps, ComponentWithStoreProps } from "../types/components.types";
+import { ARCConnectedComponent, AnyProps, ComponentWithStoreProps } from "../types/components.types";
 export declare class Container<P, S, Model> extends React.Component<P & ARCConnectedComponent<Model>, S> {
     static contextType: React.Context<import("react-redux").ReactReduxContextValue<any, import("redux").UnknownAction> | null>;
     ARCConfig: ARCConfig<Model>;
@@ -15,7 +15,7 @@ export declare class Container<P, S, Model> extends React.Component<P & ARCConne
     getTrueStoreState(): {
         collection: import("..").ARCMetaCollectionMap<Model>;
     };
-    getPropsFromTrueStoreState: (props?: ComponentProps) => ComponentWithStoreProps;
+    getPropsFromTrueStoreState: (props?: AnyProps) => ComponentWithStoreProps;
     updateARC(config: ARCConfig<Model>): void;
 }
 export default Container;

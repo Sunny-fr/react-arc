@@ -61,7 +61,7 @@ export interface RetryConditionFnCallbackParams<Model, RequiredProps> {
   axiosOptions: ARCAxiosOptions<Model>
   tryNumber: number
 }
-export type RetryConditionFn<Model, RequiredProps> = (
+export type RetryConditionFn<Model, RequiredProps = {}> = (
   // error
   arg0: any,
   // retry fn

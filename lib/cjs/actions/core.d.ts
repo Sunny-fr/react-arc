@@ -1,15 +1,15 @@
 import { ARCMetaCollectionMap, ARCMetaModel, ARCMetas, ARCModel, ARCModelKey } from "../types/model.types";
 import { ARCConfig } from "../types/config.types";
-import { ComponentProps, ComponentPropsWithRequiredModelParams } from "../types/components.types";
+import { AnyProps, ComponentPropsWithRequiredModelParams } from "../types/components.types";
 import { ARCRootState, ARCStoreState } from "../types/connectors.types";
 type KeyGeneratorFn = (params: object) => ARCModelKey;
 export interface CoreMethods {
     keyGenerator: KeyGeneratorFn;
     getCollection<Model>(reducerState: ARCStoreState<Model>): ARCMetaCollectionMap<Model>;
-    hasRequiredParams<Model>(config: ARCConfig<Model>, props: ComponentProps): boolean;
-    missingParams<Model>(config: ARCConfig<Model>, props: ComponentProps): string[];
-    isNew<Model>(config: ARCConfig<Model>, props: ComponentProps): boolean;
-    getKey<Model>(config: ARCConfig<Model>, props: ComponentProps): string | null;
+    hasRequiredParams<Model>(config: ARCConfig<Model>, props: AnyProps): boolean;
+    missingParams<Model>(config: ARCConfig<Model>, props: AnyProps): string[];
+    isNew<Model>(config: ARCConfig<Model>, props: AnyProps): boolean;
+    getKey<Model>(config: ARCConfig<Model>, props: AnyProps): string | null;
     getParams<Model>(config: ARCConfig<Model>, props: ComponentPropsWithRequiredModelParams): ComponentPropsWithRequiredModelParams | null;
     getMetas<Model>(prop: keyof ARCMetas | undefined, metaModel?: ARCMetaModel<Model> | null): ARCMetas | any | null;
     _getModel<Model>(metaModel: ARCMetaModel<Model> | null): ARCMetaModel<Model> | null;
