@@ -176,9 +176,9 @@ export const omit = (
   )
 }
 
-export function initializeConfig<Model, RequiredProps extends object>(
+export function initializeConfig<Model, RequiredProps>(
   config: ARCConfig<Model, RequiredProps>
-): ARCConfig<Model> {
+): ARCConfig<Model,RequiredProps> {
   if (!config) {
     return getDefaultConfig<Model, RequiredProps>()
   }

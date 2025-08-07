@@ -2,24 +2,25 @@ import {ARCConfig} from "./config.types"
 import {ThunkDispatch} from "redux-thunk"
 import React from "react";
 import {ARCMetaModel, ARCMetas} from "./model.types";
+import {ARCAxiosOptions} from "./actions.types";
 
 
-export interface ARCConnectedComponent<Model> {
-  ARCConfig: ARCConfig<Model>
-  loaded: boolean
-  metaModel: ARCMetaModel<Model>
-  model: Model | null
-  error: any
-  loading: boolean
-  metas: ARCMetas
-  isNew: boolean
-  dispatch: ThunkDispatch<any, any, any>
-  component?: React.ComponentType<any>
-}
+// export interface ARCConnectedComponent<Model> {
+//   ARCConfig: ARCConfig<Model>
+//   loaded: boolean
+//   metaModel: ARCMetaModel<Model>
+//   model: Model | null
+//   error: any
+//   loading: boolean
+//   metas: ARCMetas
+//   isNew: boolean
+//   dispatch: ThunkDispatch<any, any, any>
+//   component?: React.ComponentType<any>
+// }
 
 
-export interface WithARCInjectProps<Model> {
-  ARCConfig: ARCConfig<Model>
+export interface WithARCInjectProps<Model, RequiredProps = {}> {
+  ARCConfig: ARCConfig<Model, RequiredProps>
   modelKey: string | null
   metaModel: ARCMetaModel<Model>
   metas: ARCMetas
@@ -30,8 +31,8 @@ export interface WithARCInjectProps<Model> {
   isNew: boolean
   dispatch: ThunkDispatch<any, any, any>
 }
-export interface ARCContainer<Model, P> extends WithARCInjectProps<Model> {
-  component: React.ComponentType<P & WithARCInjectProps<Model>>
+export interface ARCContainer<P, Model, RequiredProps = {}> extends WithARCInjectProps<Model, RequiredProps> {
+  component: React.ComponentType<P & WithARCInjectProps<Model, RequiredProps>>
 }
 
 
@@ -58,11 +59,13 @@ export interface ComponentPropsWithRequiredModelParams extends AnyProps {
 export interface ComponentWithStoreProps
   extends ComponentPropsWithRequiredModelParams {
 }
-export interface ARCContainerProps<Model> extends ARCConnectedComponent<Model> {
-  component: React.ComponentType<any>
+export interface ARCContainerProps<Model, RequiredProps = {}, P = {}> extends WithARCInjectProps<Model, RequiredProps> {
+  component: React.ComponentType<P & WithARCInjectProps<Model, RequiredProps> & {
+    fetch?:(params?: RequiredProps, axiosOptions?: ARCAxiosOptions<Model, RequiredProps>) => void
+  }>
 }
-
-export interface ARCWrappedComponentProps<Model> extends ComponentPropsWithRequiredModelParams {
-  ARCConfig: ARCConfig<Model>
-  dispatch: ThunkDispatch<any, any, any>
-}
+//
+// export interface ARCWrappedComponentProps<Model> extends ComponentPropsWithRequiredModelParams {
+//   ARCConfig: ARCConfig<Model>
+//   dispatch: ThunkDispatch<any, any, any>
+// }

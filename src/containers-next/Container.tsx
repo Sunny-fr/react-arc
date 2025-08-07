@@ -5,10 +5,10 @@ import {initializeConfig} from "../utils"
 
 
 import {ARCConfig} from "../types/config.types"
-import {ARCWrappedComponentProps,} from "../types/components.types"
+import {ARCContainerProps} from "../types/components.types"
 
-export interface ContainerHookConfig<Model> {
-  ARCConfig: ARCConfig<Model>
+export interface ContainerHookConfig<Model, RequiredProps> {
+  ARCConfig: ARCConfig<Model, RequiredProps>
 }
 
 export interface ContainerHookReturn<Model> {
@@ -19,13 +19,13 @@ export interface ContainerHookReturn<Model> {
   updateARC: (config: ARCConfig<Model>) => void
 }
 
-export function useContainer<Model>({ARCConfig: initialConfig}: ContainerHookConfig<Model>): ContainerHookReturn<Model> {
+export function useContainer<Model,RequiredProps extends object = {}>({ARCConfig: initialConfig}: ContainerHookConfig<Model, RequiredProps>): ContainerHookReturn<Model> {
   const abortControllerRef = useRef<AbortController | null>(null)
 
   // Initialize ARC configuration with default values and provided configuration
   const [ARCConfig, actions] = useMemo(() => {
-    const config: ARCConfig<Model> = initializeConfig(initialConfig)
-    const actionsList = new ReduxActions({config})
+    const config: ARCConfig<Model, RequiredProps> = initializeConfig(initialConfig)
+    const actionsList = new ReduxActions<Model, RequiredProps>({config})
     return [config, actionsList]
   }, [initialConfig])
 
@@ -45,9 +45,9 @@ export function useContainer<Model>({ARCConfig: initialConfig}: ContainerHookCon
 }
 
 // Container functional component that uses the useContainer hook
-export function Container<P, Model>(props: P & ARCWrappedComponentProps<Model>) {
+export function Container<P, Model, RequiredProps extends object = {}>(props: P & ARCContainerProps<Model, RequiredProps>) {
   const {ARCConfig} = props
-  const container = useContainer<Model>({ARCConfig})
+  const container = useContainer<Model, RequiredProps>({ARCConfig})
   return {
     ...container,
     props

@@ -1,20 +1,19 @@
-import { ARCConfig } from "./config.types"
-import { ComponentPropsWithRequiredModelParams } from "./components.types"
-import {ComponentProps} from "react";
+import {ARCConfig} from "./config.types"
+import {AnyProps, ComponentPropsWithRequiredModelParams} from "./components.types"
 
-export interface ReduxActionsOptions<Model> {
-  config: ARCConfig<Model>
+export interface ReduxActionsOptions<Model, RequiredProps> {
+  config: ARCConfig<Model, RequiredProps>
 }
-export interface RetryFnParams<Model> {
+export interface RetryFnParams<Model, RequiredProps> {
   params: ComponentPropsWithRequiredModelParams
-  config: ARCConfig<Model>
-  props: Partial<ComponentProps<any>>
-  axiosOptions: ARCAxiosOptions<Model>
+  config: ARCConfig<Model, RequiredProps>
+  props: AnyProps
+  axiosOptions: ARCAxiosOptions<Model, RequiredProps>
   tryNumber: number
 }
-export interface ARCAxiosOptions<Model> {
+export interface ARCAxiosOptions<Model, RequiredProps> {
   abortController?: AbortController
-  retryConditionFn?: (error: any, params: RetryFnParams<Model>) => boolean
+  retryConditionFn?: (error: any, params: RetryFnParams<Model, RequiredProps>) => boolean
 }
 
 

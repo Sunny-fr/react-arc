@@ -12,4 +12,4 @@ export declare function stringIsReplaceable(str: string): boolean;
 export declare function interpolate(str: string | null, params: object): string;
 export declare function getDefaultConfig<Model, RequiredProps>(): ARCConfig<Model, RequiredProps>;
 export declare const omit: (props: Record<string, any>, prop: string | string[]) => Record<string, any>;
-export declare function initializeConfig<Model, RequiredProps extends object>(config: ARCConfig<Model, RequiredProps>): ARCConfig<Model>;
+export declare function initializeConfig<Model, RequiredProps>(config: ARCConfig<Model, RequiredProps>): ARCConfig<Model, RequiredProps>;

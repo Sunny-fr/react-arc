@@ -10,7 +10,7 @@ import {
 //import { ARCStoreState } from "../types/connectors.types"
 import {Dispatch} from "redux"
 
-import {ComponentPropsWithRequiredModelParams} from "../types/components.types"
+import {AnyProps, ComponentPropsWithRequiredModelParams} from "../types/components.types"
 import {ARCAxiosOptions, ArcFetchError, ReduxActionsOptions,} from "../types/actions.types"
 import {ACTIONS} from "../reducers/action";
 
@@ -48,15 +48,15 @@ export const AXIOS_CANCEL_PAYLOAD = {
   name: "CanceledError"
 } as const
 
-export class ReduxActions<Model>{
-  config: ARCConfig<Model>
-  initialConfig: ARCConfig<Model>
-  retryConditionFn: RetryConditionFn<Model> | undefined
+export class ReduxActions<Model, RequiredProps extends object = {}>{
+  config: ARCConfig<Model,RequiredProps>
+  initialConfig: ARCConfig<Model,RequiredProps>
+  retryConditionFn: RetryConditionFn<Model, RequiredProps> | undefined
   axios: AxiosInstance
   headers: ARCConfigHeaders
   methods: ARCHttpRestMethodMap
 
-  constructor(options: ReduxActionsOptions<Model>) {
+  constructor(options: ReduxActionsOptions<Model, RequiredProps>) {
     this.config = initializeConfig(options.config)
     this.initialConfig = this.config
     this.retryConditionFn = this.config.retryConditionFn
@@ -65,7 +65,7 @@ export class ReduxActions<Model>{
     this.axios = axios.create()
   }
 
-  static GenerateAbortSignal<Model>(axiosOptions: ARCAxiosOptions<Model>) {
+  static GenerateAbortSignal<Model, RequiredProps>(axiosOptions: ARCAxiosOptions<Model, RequiredProps>) {
     return axiosOptions?.abortController?.signal
   }
 
@@ -73,7 +73,7 @@ export class ReduxActions<Model>{
     return this.initialConfig
   }
 
-  generateAbortSignal(axiosOptions: ARCAxiosOptions<Model>) {
+  generateAbortSignal(axiosOptions: ARCAxiosOptions<Model,RequiredProps>) {
     return axiosOptions?.abortController?.signal
   }
 
@@ -97,7 +97,7 @@ export class ReduxActions<Model>{
     this.headers = { ...headers }
   }
 
-  updateConfig(config: ARCConfig<Model>) {
+  updateConfig(config: ARCConfig<Model, RequiredProps>) {
     this.config = { ...this.config, ...config }
     this.setHeaders()
     this.setupMethods()
@@ -127,10 +127,10 @@ export class ReduxActions<Model>{
     props = {},
     params,
   }: {
-    config: ARCConfig<Model>
-    props: object
+    config: ARCConfig<Model,RequiredProps>
+    props: AnyProps
     params: ComponentPropsWithRequiredModelParams
-  }): ARCConfig<Model> {
+  }): ARCConfig<Model, RequiredProps> {
     const paths: ARCConfigPaths = {
       item: "",
     }
@@ -166,9 +166,9 @@ export class ReduxActions<Model>{
 
   standAloneFetchOne(
     _params: ComponentPropsWithRequiredModelParams,
-    config: ARCConfig<Model>,
-    _props: object,
-    axiosOptions: ARCAxiosOptions<Model>
+    config: ARCConfig<Model,RequiredProps>,
+    _props: AnyProps,
+    axiosOptions: ARCAxiosOptions<Model, RequiredProps>
   ): AxiosPromise<Model> {
     return this.axios({
       // methods are already lowercased in setupMethods
@@ -182,8 +182,8 @@ export class ReduxActions<Model>{
 
   fetchOne(
     params: ComponentPropsWithRequiredModelParams,
-    props: object = {},
-    axiosOptions: ARCAxiosOptions<Model>
+    props: AnyProps = {},
+    axiosOptions: ARCAxiosOptions<Model, RequiredProps>
   ) {
     return (dispatch: Dispatch) => {
       const retryConditionFn =

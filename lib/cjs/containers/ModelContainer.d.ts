@@ -1,9 +1,9 @@
 import Container from "./Container";
-import { AnyProps, ARCConnectedComponent, ARCContainerProps, ARCWrappedComponentProps, ComponentPropsWithRequiredModelParams, ComponentWithStoreProps } from "../types/components.types";
+import { AnyProps, ARCContainerProps, ComponentPropsWithRequiredModelParams, ComponentWithStoreProps } from "../types/components.types";
 import { ARCMetas } from "../types/model.types";
 import React from "react";
 type AnyArcComponentProps<Model> = ComponentWithStoreProps | ARCContainerProps<Model>;
-export declare class ModelContainer<P, S, Model> extends Container<P, S, Model> {
+export declare class ModelContainer<P, Model, RequiredProps extends object = {}> extends Container<P, Model, RequiredProps> {
     /** PUBLIC ACTIONS METHODS **/
     isNew(props?: AnyProps): boolean;
     getKey(props?: AnyProps): string | null;
@@ -11,16 +11,15 @@ export declare class ModelContainer<P, S, Model> extends Container<P, S, Model> 
     hasRequiredParams(props?: AnyProps): boolean;
     _getModel(props?: AnyArcComponentProps<Model>): any;
     fetch: (params: ComponentPropsWithRequiredModelParams) => import("axios").AxiosPromise<Model>;
-    remove: () => void;
     /** PUBLIC METHODS **/
     getFetchingCount: () => number;
-    getModel(props?: ARCWrappedComponentProps<Model>): any;
-    getMetas(prop: keyof ARCMetas, props?: ARCWrappedComponentProps<Model>): any;
-    getError(props?: ARCWrappedComponentProps<Model>): any;
-    isSyncing(props?: ARCWrappedComponentProps<Model>): any;
-    isLoaded(props?: ARCWrappedComponentProps<Model>): any;
-    allowReFetch: (props?: ARCConnectedComponent<Model>) => boolean;
-    errorReFetch(props?: ARCConnectedComponent<Model>): boolean;
+    getModel(props?: ARCContainerProps<Model, RequiredProps>): Model | null;
+    getMetas(prop: keyof ARCMetas, props?: ARCContainerProps<Model, RequiredProps>): any;
+    getError(props?: ARCContainerProps<Model, RequiredProps>): any;
+    isSyncing(props?: ARCContainerProps<Model, RequiredProps>): boolean;
+    isLoaded(props?: ARCContainerProps<Model, RequiredProps>): boolean;
+    allowReFetch: (props?: ARCContainerProps<Model, RequiredProps>) => boolean;
+    errorReFetch(props?: ARCContainerProps<Model, RequiredProps>): boolean;
     componentDidUpdate(): void;
     prepareFetch({ skipReFetchStep }: {
         skipReFetchStep?: boolean | undefined;
@@ -29,11 +28,11 @@ export declare class ModelContainer<P, S, Model> extends Container<P, S, Model> 
     delayedFetch({ skipReFetchStep }: {
         skipReFetchStep?: boolean | undefined;
     }): void;
-    _fetchAuthorization(props: ARCConnectedComponent<Model>, { skipReFetchStep }: {
+    _fetchAuthorization(props: ARCContainerProps<Model, RequiredProps>, { skipReFetchStep }: {
         skipReFetchStep?: boolean | undefined;
     }): boolean;
     componentDidMount(): void;
-    getModelDataTyped(): any;
+    getModelDataTyped(): Model | null;
     render(): React.JSX.Element | null;
 }
 export {};

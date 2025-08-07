@@ -2,20 +2,19 @@ import React from "react";
 import { ReduxActions } from "../actions/ReduxActions";
 import { CoreMethods } from "../actions/core";
 import { ARCConfig } from "../types/config.types";
-import { ARCConnectedComponent, AnyProps, ComponentWithStoreProps } from "../types/components.types";
-export declare class Container<P, S, Model> extends React.Component<P & ARCConnectedComponent<Model>, S> {
+import { AnyProps, ComponentWithStoreProps, ARCContainer } from "../types/components.types";
+export declare class Container<P, Model, RequiredProps extends object = {}> extends React.Component<ARCContainer<P, Model, RequiredProps>, any> {
     static contextType: React.Context<import("react-redux").ReactReduxContextValue<any, import("redux").UnknownAction> | null>;
-    ARCConfig: ARCConfig<Model>;
-    actions: ReduxActions<Model>;
+    ARCConfig: ARCConfig<Model, RequiredProps>;
+    actions: ReduxActions<Model, RequiredProps>;
     core: CoreMethods;
     abortController: null | AbortController;
-    props: P & ARCConnectedComponent<Model>;
     delayedTimeout: number | undefined;
-    constructor(props: (Readonly<P> | P) & ARCConnectedComponent<Model>);
+    constructor(props: ARCContainer<P, Model, RequiredProps>);
     getTrueStoreState(): {
         collection: import("..").ARCMetaCollectionMap<Model>;
     };
     getPropsFromTrueStoreState: (props?: AnyProps) => ComponentWithStoreProps;
-    updateARC(config: ARCConfig<Model>): void;
+    updateARC(config: ARCConfig<Model, RequiredProps>): void;
 }
 export default Container;

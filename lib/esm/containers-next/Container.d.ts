@@ -2,9 +2,9 @@ import React from "react";
 import { ReduxActions } from "../actions/ReduxActions";
 import { CoreMethods } from "../actions/core";
 import { ARCConfig } from "../types/config.types";
-import { ARCWrappedComponentProps } from "../types/components.types";
-export interface ContainerHookConfig<Model> {
-    ARCConfig: ARCConfig<Model>;
+import { ARCContainerProps } from "../types/components.types";
+export interface ContainerHookConfig<Model, RequiredProps> {
+    ARCConfig: ARCConfig<Model, RequiredProps>;
 }
 export interface ContainerHookReturn<Model> {
     ARCConfig: ARCConfig<Model>;
@@ -13,11 +13,11 @@ export interface ContainerHookReturn<Model> {
     abortController: React.MutableRefObject<AbortController | null>;
     updateARC: (config: ARCConfig<Model>) => void;
 }
-export declare function useContainer<Model>({ ARCConfig: initialConfig }: ContainerHookConfig<Model>): ContainerHookReturn<Model>;
-export declare function Container<P, Model>(props: P & ARCWrappedComponentProps<Model>): {
-    props: P & ARCWrappedComponentProps<Model>;
+export declare function useContainer<Model, RequiredProps extends object = {}>({ ARCConfig: initialConfig }: ContainerHookConfig<Model, RequiredProps>): ContainerHookReturn<Model>;
+export declare function Container<P, Model, RequiredProps extends object = {}>(props: P & ARCContainerProps<Model, RequiredProps>): {
+    props: P & ARCContainerProps<Model, RequiredProps, {}>;
     ARCConfig: ARCConfig<Model, {}>;
-    actions: ReduxActions<Model>;
+    actions: ReduxActions<Model, {}>;
     core: CoreMethods;
     abortController: React.MutableRefObject<AbortController | null>;
     updateARC: (config: ARCConfig<Model, {}>) => void;

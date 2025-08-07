@@ -61,7 +61,7 @@ interface SampleComponentWithExtendedPropsProps extends SampleProps{
   name: string
 }
 
-const SampleComponentWithExtendedProps = withSample<SampleComponentWithExtendedPropsProps>(withARCLoader((props) => {
+const SampleComponentWithExtendedProps = withSample<SampleComponentWithExtendedPropsProps>((props) => {
   const {error, loaded, loading, name} = props
 
   // type is correctly retrieved here
@@ -80,7 +80,7 @@ const SampleComponentWithExtendedProps = withSample<SampleComponentWithExtendedP
       <p>name: {name}</p>
     </div>
   )
-}))
+})
 
 
 

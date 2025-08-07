@@ -5,7 +5,6 @@ import {ContainerHookConfig, useContainer} from "./Container"
 import {
   AnyProps,
   ARCContainerProps,
-  ARCWrappedComponentProps,
   ComponentPropsWithRequiredModelParams,
   ComponentWithStoreProps,
 } from "../types/components.types"
@@ -17,14 +16,14 @@ import {fetchingCountSelector, metaModelSelector} from "../hooks/selectors";
 
 type AnyArcComponentProps<Model> = ComponentWithStoreProps | ARCContainerProps<Model>
 
-export interface ModelContainerHookProps<Model> extends ContainerHookConfig<Model> {
+export interface ModelContainerHookProps<Model, RequiredProps> extends ContainerHookConfig<Model,RequiredProps> {
   props: AnyProps
 }
 
-export function useModelContainer<Model>({
+export function useModelContainer<Model,RequiredProps extends object = {}>({
   ARCConfig,
   props
-}: ModelContainerHookProps<Model>) {
+}: ModelContainerHookProps<Model, RequiredProps>) {
   const dispatch = useDispatch<ThunkDispatch<any, any, any>>()
   const reduxContext = useContext(ReactReduxContext)
   const container = useContainer<Model>({ ARCConfig })
@@ -49,7 +48,7 @@ export function useModelContainer<Model>({
    * @param componentProps Optional component props
    * @returns The model data
    */
-  const getModel = useCallback((componentProps?: ARCWrappedComponentProps<Model>) => {
+  const getModel = useCallback((componentProps?: ARCContainerProps<Model, RequiredProps>) => {
     return (componentProps || props).model
   }, [props])
 
@@ -58,7 +57,7 @@ export function useModelContainer<Model>({
    * @param componentProps Optional component props
    * @returns Error information
    */
-  const getError = useCallback((componentProps?: ARCWrappedComponentProps<Model>) => {
+  const getError = useCallback((componentProps?: ARCContainerProps<Model, RequiredProps>) => {
     return (componentProps || props).error
   }, [props])
 
@@ -67,7 +66,7 @@ export function useModelContainer<Model>({
    * @param componentProps Optional component props
    * @returns Boolean indicating if sync is in progress
    */
-  const isSyncing = useCallback((componentProps?: ARCWrappedComponentProps<Model>) => {
+  const isSyncing = useCallback((componentProps?: ARCContainerProps<Model, RequiredProps>) => {
     return (componentProps || props).loading
   }, [props])
 
@@ -76,7 +75,7 @@ export function useModelContainer<Model>({
    * @param componentProps Optional component props
    * @returns Boolean indicating if model is loaded
    */
-  const isLoaded = useCallback((componentProps?: ARCWrappedComponentProps<Model>) => {
+  const isLoaded = useCallback((componentProps?: ARCContainerProps<Model, RequiredProps>) => {
     return (componentProps || props).loaded
   }, [props])
 
@@ -133,7 +132,7 @@ export function useModelContainer<Model>({
    * @param componentProps Optional component props
    * @returns The requested meta information
    */
-  const getMetas = useCallback((prop: keyof ARCMetas, componentProps?: ARCWrappedComponentProps<Model>) => {
+  const getMetas = useCallback((prop: keyof ARCMetas, componentProps?: ARCContainerProps<Model, RequiredProps>) => {
     const metas = (componentProps || props).metas
     if (!metas) {
       return metas
@@ -162,7 +161,7 @@ export function useModelContainer<Model>({
     // Mark fetch as in progress
     setFetchStatus(prev => ({ ...prev, inProgress: true }))
 
-    const axiosOptions: ARCAxiosOptions<Model> = {
+    const axiosOptions: ARCAxiosOptions<Model, RequiredProps> = {
       abortController: abortControllerRef.current
     }
 
@@ -184,37 +183,8 @@ export function useModelContainer<Model>({
       })
   }, [dispatch, actions, props, abortControllerRef])
 
-  /**
-   * Edit a model without sending it to the server
-   * @param model The model data to edit
-   */
-  const edit = useCallback((model: object) => {
-    const fetchParams = getParams()
-    if (!fetchParams) return
-    dispatch(actions.edit(model, fetchParams))
-  }, [dispatch, actions, getParams])
 
-  /**
-   * Save a model to the server
-   */
-  const save = useCallback(() => {
-    const currentIsNew = isNew(props)
-    const model = getModel()
-    const extracted = getParams(props)
-    const params = {
-      ...extracted,
-      ...(currentIsNew ? getParams(model || undefined) : getParams()),
-    }
-    dispatch(actions.save(model || {}, params, currentIsNew, props))
-  }, [dispatch, actions, isNew, getParams, props, ARCConfig, getModel])
 
-  /**
-   * Delete a model from the server
-   */
-  const remove = useCallback(() => {
-    const params = getParams()
-    params && dispatch(actions.remove(params, props))
-  }, [dispatch, actions, isNew, getParams, props])
 
   /** ADDITIONAL METHODS **/
 
@@ -405,9 +375,6 @@ export function useModelContainer<Model>({
     hasRequiredParams,
     _getModel,
     fetch,
-    edit,
-    save,
-    remove,
     getFetchingCount,
     getModel,
     getMetas,
@@ -422,7 +389,7 @@ export function useModelContainer<Model>({
 }
 
 
-export type ModelContainerProps<P, Model> = P & ARCWrappedComponentProps<Model> & {
+export type ModelContainerProps<P, Model, RequiredProps extends object = {}> = P & ARCContainerProps<Model, RequiredProps> & {
   component: React.ComponentType<any>
 }
 
@@ -444,7 +411,7 @@ export function ModelContainer<P, Model>(props: ModelContainerProps<P, Model>) {
     fetch
   } = modelContainer
 
-  const componentProps = omit(props, ['ARCConfig', 'component'])
+  const componentProps = omit(props, ['ARCConfig', 'component']) as P & ARCContainerProps<Model>
   const loaded = isLoaded()
   const loading = isSyncing()
   const error = getError()

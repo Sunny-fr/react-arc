@@ -144,7 +144,7 @@ export function useARC<Model, RequiredProps extends object>({
     // Mark fetch as in progress
     // setFetchStatus(prev => ({ ...prev, inProgress: true }))
 
-    const axiosOptions: ARCAxiosOptions<Model> = {
+    const axiosOptions: ARCAxiosOptions<Model, RequiredProps> = {
       abortController: abortControllerRef.current
     }
 

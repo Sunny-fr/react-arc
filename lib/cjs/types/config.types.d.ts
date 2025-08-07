@@ -1,7 +1,7 @@
 /**
  * Config
  */
-import { AnyProps } from "./components.types";
+import { AnyProps, ComponentPropsWithRequiredModelParams } from "./components.types";
 import { ARCModel } from "./model.types";
 import { ComponentProps } from "react";
 import { ARCAxiosOptions } from "./actions.types";
@@ -45,14 +45,14 @@ export interface ARCConfigPaths extends Partial<Record<string, string>> {
     create?: string;
 }
 export interface RetryConditionFnCallbackParams<Model, RequiredProps> {
-    params: RequiredProps;
+    params: ComponentPropsWithRequiredModelParams;
     config: ARCConfig<Model>;
     props: ComponentProps<any>;
-    axiosOptions: ARCAxiosOptions<Model>;
+    axiosOptions: ARCAxiosOptions<Model, RequiredProps>;
     tryNumber: number;
 }
 export type RetryConditionFn<Model, RequiredProps = {}> = (arg0: any, arg1: RetryConditionFnCallbackParams<Model, RequiredProps>) => boolean;
-export type Fetcher<Model, RequiredProps> = (params: RequiredProps, config: ARCConfig<Model>, props: AnyProps, axiosOptions: ARCAxiosOptions<Model>) => AxiosPromise<Model>;
+export type Fetcher<Model, RequiredProps> = (params: RequiredProps, config: ARCConfig<Model>, props: AnyProps, axiosOptions: ARCAxiosOptions<Model, RequiredProps>) => AxiosPromise<Model>;
 export interface FetcherMap<Model, RequiredProps> {
     'fetch': Fetcher<Model, RequiredProps>;
     [key: string]: Fetcher<Model, RequiredProps>;

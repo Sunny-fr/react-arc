@@ -4,22 +4,23 @@ import {core, CoreMethods} from "../actions/core"
 import {initializeConfig} from "../utils"
 import {ReactReduxContext} from "react-redux"
 import {ARCConfig} from "../types/config.types"
-import {ARCConnectedComponent, AnyProps, ComponentWithStoreProps,} from "../types/components.types"
+import {AnyProps, ComponentWithStoreProps, ARCContainer,} from "../types/components.types"
 import {ARCRootState, ARCStoreState} from "../types/connectors.types";
 
 
-export class Container<P, S, Model> extends React.Component<P & ARCConnectedComponent<Model>, S> {
+export class Container<P, Model, RequiredProps extends object = {}> extends React.Component<ARCContainer<P, Model, RequiredProps>, any> {
   static contextType = ReactReduxContext
-  ARCConfig: ARCConfig<Model>
-  actions: ReduxActions<Model>
+  ARCConfig: ARCConfig<Model, RequiredProps>
+  actions: ReduxActions<Model, RequiredProps>
   core: CoreMethods
   abortController: null | AbortController
-  props: P & ARCConnectedComponent<Model>
+  //props: ARCContainer<P, Model, RequiredProps>
   delayedTimeout: number | undefined
 
-  constructor(props: (Readonly<P> | P) & ARCConnectedComponent<Model>) {
-    //: ARCWrappedComponentProps<Model>
+  constructor(props:  ARCContainer<P, Model, RequiredProps>) {
+
     super(props)
+
     this.updateARC(props.ARCConfig)
     this.actions = new ReduxActions({
       config: this.ARCConfig,
@@ -47,9 +48,11 @@ export class Container<P, S, Model> extends React.Component<P & ARCConnectedComp
     } as unknown as ComponentWithStoreProps
   }
 
-  updateARC(config: ARCConfig<Model>) {
+  updateARC(config: ARCConfig<Model, RequiredProps>) {
     this.ARCConfig = { ...(this.ARCConfig || initializeConfig(this.ARCConfig)), ...config }
-    if (this.actions) this.actions.updateConfig(this.ARCConfig)
+    if (this.actions) {
+      this.actions.updateConfig(this.ARCConfig)
+    }
   }
 
 }
