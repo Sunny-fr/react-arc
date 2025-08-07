@@ -107,3 +107,46 @@ const Portfolio = ({ id }) => {
 
 export default Portfolio;
 ```
+
+## `useDetachedARC` Hook Example
+
+This example shows how to use the `useDetachedARC` hook to fetch data.
+
+```javascript
+import React, { useEffect } from 'react';
+import { useDetachedARC } from 'react-arc';
+
+const portfolioConfig = {
+    name: 'portfolio',
+    uppercaseName: 'PORTFOLIO',
+    modelProps: ['id'],
+    paths: {
+        item: '/api/portfolio/{id}',
+    },
+};
+
+const Portfolio = ({ id }) => {
+    const { loading, response, arc } = useDetachedARC({
+        ARCConfig: portfolioConfig,
+        props: { id },
+    });
+
+    useEffect(() => {
+        arc.get({ params: { id } });
+    }, [id]);
+
+    if (loading) return <div>Loading...</div>;
+    if (!response) return null;
+
+    const { model } = response;
+
+    return (
+        <div>
+            <h1>{model.title}</h1>
+            <p>{model.description}</p>
+        </div>
+    );
+};
+
+export default Portfolio;
+```

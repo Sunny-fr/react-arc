@@ -12,6 +12,10 @@
 *   **Optimistic Updates:** Improve user experience with optimistic updates for create, update, and delete operations.
 *   **Server-Side Rendering (SSR) Support:** Build universal applications with SSR support.
 *   **Extensible and Customizable:** `react-arc` is highly extensible and customizable to fit your specific needs.
+*   **New Components:** `Container` and `ModelContainer` for building complex UI.
+*   **New Hooks:** `useDetachedARC` for more control over data fetching.
+*   **New HOCs:** `withUseDetachedARC` and `createHOC` for creating custom HOCs.
+*   **New Utils:** A set of utility functions for common tasks.
 
 ## Getting Started
 
