@@ -1,18 +1,15 @@
-import { useEffect, useRef, useState } from "react"
-import { ARC } from "./arc"
-import {
-  ComponentProps,
-  ComponentPropsWithRequiredModelParams,
-} from "../types/components.types"
-import { ARCConfig } from "../types/config.types"
-import {UseDetachedARCMethods, UseDetachedARC, UseDetachedARCState, ARCResponse} from "../types/hooks.detached.types"
+import {useEffect, useRef, useState} from "react"
+import {ARC} from "./arc"
+import {AnyProps, ComponentPropsWithRequiredModelParams,} from "../types/components.types"
+import {ARCConfig} from "../types/config.types"
+import {ARCResponse, UseDetachedARC, UseDetachedARCMethods, UseDetachedARCState} from "../types/hooks.detached.types"
 
 export function useDetachedARC<Model>({
   ARCConfig,
   props,
 }: {
   ARCConfig: ARCConfig<Model>
-  props: ComponentProps
+  props: AnyProps
 }): UseDetachedARC<Model> {
   const arc = new ARC({ ARCConfig })
   const defaultProps = props
@@ -67,14 +64,14 @@ export function useDetachedARC<Model>({
   const arcMethods: UseDetachedARCMethods<Model> = {
     arc,
     get: (args: {
-      props?: ComponentProps
+      props?: AnyProps
       params: ComponentPropsWithRequiredModelParams
     }) => {
       const { props = {}, params = {} } = args
       return handle(() => arc.get({ props: props || defaultProps, params }))
     },
     remove: (args: {
-      props?: ComponentProps
+      props?: AnyProps
       params: ComponentPropsWithRequiredModelParams
     }) => {
       const { props, params } = args
@@ -83,7 +80,7 @@ export function useDetachedARC<Model>({
       )
     },
     create: (args: {
-      props?: ComponentProps
+      props?: AnyProps
       params: ComponentPropsWithRequiredModelParams
       body: any
     }) => {
@@ -93,7 +90,7 @@ export function useDetachedARC<Model>({
       )
     },
     update: (args: {
-      props?: ComponentProps
+      props?: AnyProps
       params: ComponentPropsWithRequiredModelParams
       body: any
     }) => {
@@ -102,9 +99,9 @@ export function useDetachedARC<Model>({
         arc.update({ props: props || defaultProps, params, body })
       )
     },
-    extract: (props: ComponentProps) =>
+    extract: (props: AnyProps) =>
       arc.extractParams(props || defaultProps),
-    extractParams: (props: ComponentProps) =>
+    extractParams: (props: AnyProps) =>
       arc.extractParams(props || defaultProps),
     custom: (fetcher: () => Promise<ARCResponse<Model>>) => {
       return handle(fetcher)

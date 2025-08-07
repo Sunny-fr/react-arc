@@ -1,6 +1,6 @@
 import {ARCConfig, ARCConfigHeaders, ARCHttpRestMethodMap,} from "../types/config.types"
 import {getParams, initializeConfig, interpolate} from "../utils"
-import {ComponentProps, ComponentPropsWithRequiredModelParams,} from "../types/components.types"
+import {AnyProps, ComponentPropsWithRequiredModelParams,} from "../types/components.types"
 
 interface ARCParams<Model> {
   ARCConfig: ARCConfig<Model>
@@ -43,19 +43,19 @@ export class ARC<Model> {
     }
   }
 
-  hasRequiredParams(props: ComponentProps): boolean {
+  hasRequiredParams(props: AnyProps): boolean {
     return this.config.modelProps.every((prop) => {
       return typeof props[prop] !== "undefined"
     })
   }
 
-  extractParams(props: ComponentProps): ComponentPropsWithRequiredModelParams {
+  extractParams(props: AnyProps): ComponentPropsWithRequiredModelParams {
     return getParams(this.config, props)
   }
 
   applyHeaders(
     headers: ARCConfigHeaders = {},
-    props: ComponentProps
+    props: AnyProps
   ): ARCConfigHeaders {
     // MUST BE PROPS !!!
     // OR PARAMS MUST TAKE THE CHARGE OF HAVING SPECIALS PROPS SUCH AS TOKEN/BEARERS
@@ -72,7 +72,7 @@ export class ARC<Model> {
     params,
     options
   }: {
-    props: ComponentProps
+    props: AnyProps
     params: ComponentPropsWithRequiredModelParams
     options?: {
       signal?: AbortSignal
@@ -95,7 +95,7 @@ export class ARC<Model> {
     props,
     params,
   }: {
-    props: ComponentProps
+    props: AnyProps
     params: ComponentPropsWithRequiredModelParams
   }) {
     const p = params || this.extractParams(props)
@@ -114,7 +114,7 @@ export class ARC<Model> {
     body,
     params,
   }: {
-    props: ComponentProps
+    props: AnyProps
     body: any
     params: ComponentPropsWithRequiredModelParams
   }) {
@@ -136,7 +136,7 @@ export class ARC<Model> {
     body,
     params,
   }: {
-    props: ComponentProps
+    props: AnyProps
     body: any
     params: ComponentPropsWithRequiredModelParams
   }) {

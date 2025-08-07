@@ -1,12 +1,5 @@
-import {
-  type ARCAxiosOptions,
-  type ARCConfig,
-  type ComponentPropsWithRequiredModelParams,
-  createHOC,
-  ReduxActions
-} from "../../../../../src";
+import {type ARCConfig, createHOC, ReduxActions} from "../../../../../src";
 import axios from "axios";
-import type {ComponentProps} from "react-arc";
 
 
 export interface Portfolio {
@@ -35,10 +28,10 @@ export const portfolio: ARCConfig<Portfolio> = {
 
   fetchOnce: true,
   fetchers: {
-    'fetch':(_params: ComponentPropsWithRequiredModelParams,
-             config: ARCConfig<Portfolio>,
-             _props: ComponentProps,
-             axiosOptions: ARCAxiosOptions<Portfolio>) => {
+    'fetch': (_params,
+              config,
+              _props,
+              axiosOptions) => {
       return axios({
         method: 'GET',
         url: config.paths.item,
@@ -49,6 +42,6 @@ export const portfolio: ARCConfig<Portfolio> = {
   }
 }
 
-export const withPortfolio = createHOC<Portfolio, PortfolioProps>({
+export const withPortfolio = createHOC<PortfolioProps>({
   ARCConfig: portfolio
 })

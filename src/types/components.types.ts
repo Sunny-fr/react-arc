@@ -8,7 +8,7 @@ export interface ARCConnectedComponent<Model> {
   ARCConfig: ARCConfig<Model>
   loaded: boolean
   metaModel: ARCMetaModel<Model>
-  model: Model
+  model: Model | null
   error: any
   loading: boolean
   metas: ARCMetas
@@ -30,26 +30,24 @@ export interface WithARCInjectProps<Model> {
   isNew: boolean
   dispatch: ThunkDispatch<any, any, any>
 }
-export interface ARCContainer<Model, P extends object = {} > extends WithARCInjectProps<Model> {
+export interface ARCContainer<Model, P> extends WithARCInjectProps<Model> {
   component: React.ComponentType<P & WithARCInjectProps<Model>>
 }
 
 
-
-/**
- * Any Component Props
- */
-export interface ComponentProps extends React.ComponentProps<any> {
-  dispatch?: ThunkDispatch<any, any, any>
+export interface AnyProps extends React.ComponentProps<any> {
+  [key: string]: any
 }
 
+
 /**
+ * Utility (not necessary, but helps with type safety)
  * Component Props with required params
  * for example model ARCConfig.modelParams = ['id','name']
  * expected ComponentPropsWithRequiredModelParams are  {id:'12', name:'Al', ...}
  */
-export interface ComponentPropsWithRequiredModelParams extends ComponentProps  {
-  [key: string]: any
+export interface ComponentPropsWithRequiredModelParams extends AnyProps {
+
 }
 
 /**
@@ -60,14 +58,11 @@ export interface ComponentPropsWithRequiredModelParams extends ComponentProps  {
 export interface ComponentWithStoreProps
   extends ComponentPropsWithRequiredModelParams {
 }
-export interface ARCContainerProps<Model>
-  extends ARCConnectedComponent<Model> {
+export interface ARCContainerProps<Model> extends ARCConnectedComponent<Model> {
   component: React.ComponentType<any>
 }
 
-export interface ARCWrappedComponentProps<Model>
-  extends ComponentPropsWithRequiredModelParams {
+export interface ARCWrappedComponentProps<Model> extends ComponentPropsWithRequiredModelParams {
   ARCConfig: ARCConfig<Model>
   dispatch: ThunkDispatch<any, any, any>
-  // fetching: boolean
 }

@@ -2,10 +2,10 @@ import {omit} from "../utils"
 import commons from "../commons"
 import Container from "./Container"
 import {
+  AnyProps,
   ARCConnectedComponent,
   ARCContainerProps,
   ARCWrappedComponentProps,
-  ComponentProps,
   ComponentPropsWithRequiredModelParams,
   ComponentWithStoreProps,
 } from "../types/components.types"
@@ -29,7 +29,7 @@ export class ModelContainer<P, S, Model> extends Container<P,S, Model> {
 
   /* public
    * if the component has not the required params it will be set as new */
-  isNew(props?: ComponentProps) {
+  isNew(props?: AnyProps) {
     //return (props || this.props).isNew
     return this.core.isNew(this.ARCConfig, props || this.props)
   }
@@ -37,21 +37,21 @@ export class ModelContainer<P, S, Model> extends Container<P,S, Model> {
   /* public
    * returns null or string
    * acts as unique identifier (based on required props) */
-  getKey(props?: ComponentProps) {
+  getKey(props?: AnyProps) {
     return this.core.getKey(this.ARCConfig, props || this.props)
   }
 
   /* public
    * retrieve params from props or model */
   /* CUSTOMIZE HERE FOR ADVANCED USAGE */
-  getParams(props?: ComponentProps) {
+  getParams(props?: AnyProps) {
     return this.core.getParams(this.ARCConfig, props || this.props)
   }
 
   /* private
    * checks if the component has the required params based on modelProps in config
    */
-  hasRequiredParams(props?: ComponentProps) {
+  hasRequiredParams(props?: AnyProps) {
     return this.core.hasRequiredParams(this.ARCConfig, props || this.props)
   }
 

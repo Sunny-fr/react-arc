@@ -2,10 +2,11 @@ import equal from "deep-equal"
 import defaultConfig from "../defaultConfig"
 import {ARCMetaCollectionMap, ARCMetaModel, ARCModel} from "../types/model.types"
 import {ARCConfig, ARCHttpRestMethodMap, Fetcher} from "../types/config.types"
-import {ComponentProps, ComponentPropsWithRequiredModelParams,} from "../types/components.types"
+import {AnyProps, ComponentPropsWithRequiredModelParams,} from "../types/components.types"
 import axios from "axios";
 import {ReduxActions} from "../actions/ReduxActions";
 import {ARCAxiosOptions} from "../types/actions.types";
+
 
 export function flatten<Model>(
   arcCollectionMap: ARCMetaCollectionMap<Model>,
@@ -16,17 +17,18 @@ export function flatten<Model>(
   return withMetas ? metaModels : metaModels.map((metaModel) => metaModel.model)
 }
 
-export function extendWithDefaultProps<Model>(
+export function extendWithDefaultProps<Model, P>(
   config: ARCConfig<Model>,
-  ownProps: ComponentProps
-): ComponentProps {
-  const defaultProps = config.defaultProps || {}
+  ownProps: P
+): P {
+  const defaultProps = (config.defaultProps || {}) as AnyProps
   return Object.keys(defaultProps).reduce((state, prop) => {
-    if (typeof ownProps[prop] === "undefined") {
+    const originalProps = ownProps as AnyProps
+    if (typeof originalProps[prop] === "undefined") {
       state[prop] = defaultProps[prop]
     }
     return state
-  }, ownProps)
+  }, ownProps as AnyProps) as P
 }
 
 export type ObjectValues<T> = T[keyof T]
@@ -60,7 +62,7 @@ export type ObjectValues<T> = T[keyof T]
 
 export function extractParams(
   props: string[] = [],
-  source: ComponentProps = {}
+  source: AnyProps = {}
 ) {
   return props.reduce(
     (params, prop) => ({
@@ -73,12 +75,12 @@ export function extractParams(
 
 export function getParams<Model>(
   config: ARCConfig<Model>,
-  source: ComponentProps = {}
+  source: AnyProps = {}
 ): ComponentPropsWithRequiredModelParams {
   const props = config.modelProps
   const defaultProps = config.defaultProps || {}
   const merged = { ...defaultProps, ...source }
-  const componentProps: ComponentProps = {}
+  const componentProps: AnyProps = {}
   return props.reduce(
     (params, prop) => ({
       ...params,
@@ -89,8 +91,8 @@ export function getParams<Model>(
 }
 
 export const changedProps = function (
-  prevProps: ComponentProps,
-  nextProps: ComponentProps
+  prevProps: AnyProps,
+  nextProps: AnyProps
 ): string[] {
   const changed: string[] = []
   if (!prevProps) return changed

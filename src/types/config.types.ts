@@ -2,7 +2,7 @@
  * Config
  */
 
-import { ComponentPropsWithRequiredModelParams } from "./components.types"
+import {AnyProps, ComponentPropsWithRequiredModelParams} from "./components.types"
 import { ARCModel } from "./model.types"
 import { ComponentProps } from "react"
 import {ARCAxiosOptions} from "./actions.types";
@@ -74,7 +74,7 @@ export type RetryConditionFn<Model> = (
 
 export type Fetcher<Model>  = (params: ComponentPropsWithRequiredModelParams,
                                config: ARCConfig<Model>,
-                               props: object,
+                               props: AnyProps,
                                axiosOptions: ARCAxiosOptions<Model>) => AxiosPromise<Model>
 
 
@@ -83,9 +83,7 @@ export type FetcherMap<Model> = {
   'fetch': Fetcher<Model>
   [key: string]: Fetcher<Model>
 }
-/**
- * ARCConfig V1
- */
+
 export interface ARCConfig<Model> {
   // Reducer Name
   name: string

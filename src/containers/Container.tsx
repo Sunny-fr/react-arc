@@ -4,7 +4,7 @@ import {core, CoreMethods} from "../actions/core"
 import {initializeConfig} from "../utils"
 import {ReactReduxContext} from "react-redux"
 import {ARCConfig} from "../types/config.types"
-import {ARCConnectedComponent, ComponentProps, ComponentWithStoreProps,} from "../types/components.types"
+import {ARCConnectedComponent, AnyProps, ComponentWithStoreProps,} from "../types/components.types"
 import {ARCRootState, ARCStoreState} from "../types/connectors.types";
 
 
@@ -38,7 +38,7 @@ export class Container<P, S, Model> extends React.Component<P & ARCConnectedComp
     }
   }
 
-  getPropsFromTrueStoreState = (props?: ComponentProps) => {
+  getPropsFromTrueStoreState = (props?: AnyProps) => {
     const ARCProps = this.getTrueStoreState()
     const baseProps = props || this.props
     return {

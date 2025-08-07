@@ -3,9 +3,9 @@ import {omit} from "../utils"
 import commons from "../commons"
 import {ContainerHookConfig, useContainer} from "./Container"
 import {
+  AnyProps,
   ARCContainerProps,
   ARCWrappedComponentProps,
-  ComponentProps,
   ComponentPropsWithRequiredModelParams,
   ComponentWithStoreProps,
 } from "../types/components.types"
@@ -18,7 +18,7 @@ import {fetchingCountSelector, metaModelSelector} from "../hooks/selectors";
 type AnyArcComponentProps<Model> = ComponentWithStoreProps | ARCContainerProps<Model>
 
 export interface ModelContainerHookProps<Model> extends ContainerHookConfig<Model> {
-  props: ComponentProps
+  props: AnyProps
 }
 
 export function useModelContainer<Model>({
@@ -87,7 +87,7 @@ export function useModelContainer<Model>({
    * @param componentProps Optional props to check against instead of current props
    * @returns boolean indicating if the model is new
    */
-  const isNew = useCallback((componentProps?: ComponentProps) => {
+  const isNew = useCallback((componentProps?: AnyProps) => {
     return core.isNew(ARCConfig, componentProps || props)
   }, [core, ARCConfig, props])
 
@@ -96,7 +96,7 @@ export function useModelContainer<Model>({
    * @param componentProps Optional props to generate key from
    * @returns A string key or null
    */
-  const getKey = useCallback((componentProps?: ComponentProps) => {
+  const getKey = useCallback((componentProps?: AnyProps) => {
     return core.getKey(ARCConfig, componentProps || props)
   }, [core, ARCConfig, props])
 
@@ -105,7 +105,7 @@ export function useModelContainer<Model>({
    * @param componentProps Optional props to get params from
    * @returns The extracted params
    */
-  const getParams = useCallback((componentProps?: ComponentProps) => {
+  const getParams = useCallback((componentProps?: AnyProps) => {
     return core.getParams(ARCConfig, componentProps || props)
   }, [core, ARCConfig, props])
 
@@ -114,7 +114,7 @@ export function useModelContainer<Model>({
    * @param componentProps Optional props to check against
    * @returns Boolean indicating if required params are present
    */
-  const hasRequiredParams = useCallback((componentProps?: ComponentProps) => {
+  const hasRequiredParams = useCallback((componentProps?: AnyProps) => {
     return core.hasRequiredParams(ARCConfig, componentProps || props)
   }, [core, ARCConfig, props])
 

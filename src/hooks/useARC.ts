@@ -1,5 +1,5 @@
 import {useCallback, useContext, useEffect, useMemo, useRef} from "react"
-import {ComponentProps, ComponentPropsWithRequiredModelParams,} from "../types/components.types"
+import {AnyProps, ComponentPropsWithRequiredModelParams,} from "../types/components.types"
 import {ARCConfig} from "../types/config.types"
 import {ARCRootState} from "../types/connectors.types";
 
@@ -19,7 +19,7 @@ import {UnknownAction} from "redux";
 interface FetchAuthorizationProps<Model> {
   ARCConfig: ARCConfig<Model>
   metaModel?: ARCMetaModel<Model> | null
-  props: ComponentProps,
+  props: AnyProps,
   reduxContext: ReactReduxContextValue<any, UnknownAction> | null
   options?: {
     skipReFetchStep?: boolean
@@ -93,7 +93,7 @@ export function useARC<Model>({
                                 props,
                               }: {
   ARCConfig: ARCConfig<Model>
-  props: ComponentProps
+  props: AnyProps
 }): UseARC<Model> {
   const dispatch = useDispatch()
   const reduxContext = useContext(ReactReduxContext)
@@ -119,7 +119,7 @@ export function useARC<Model>({
   const metaModel = useSelector<ARCRootState, ARCMetaModel<Model> | null>((state) => {
     return metaModelSelector(state, config, modelKey)
   })
-  const _fetchAuthorization = useCallback((props: ComponentProps, options: FetchAuthorizationProps<Model>['options']): boolean => {
+  const _fetchAuthorization = useCallback((props: AnyProps, options: FetchAuthorizationProps<Model>['options']): boolean => {
 
     return fetchAuthorization<Model>({
       ARCConfig: config,

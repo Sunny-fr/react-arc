@@ -14,7 +14,7 @@ import {metaModelSelector} from "../hooks/selectors";
  * @param {ARCConfig} config
 
  */
-export function connectFn<Model, P extends object = {}>(config: ARCConfig<Model>) {
+export function connectFn<Model, P>(config: ARCConfig<Model>) {
   return function(
     store: ARCRootState,
     ownProps: P
@@ -24,9 +24,9 @@ export function connectFn<Model, P extends object = {}>(config: ARCConfig<Model>
       throw new Error(`Namespace "${namespace}" not found in store. Please ensure the ARCConfig is correctly set up.`);
     }
 
-    const mergedProps: ComponentPropsWithRequiredModelParams = {
+    const mergedProps = {
       ...extendWithDefaultProps(config, ownProps),
-    }
+    } as ComponentPropsWithRequiredModelParams
 
     const modelKey = core.getKey(config, mergedProps)
 
@@ -53,7 +53,7 @@ export function connectFn<Model, P extends object = {}>(config: ARCConfig<Model>
 }
 
 
-export function withARC<Model, P extends object ={}>(config: ARCConfig<Model>) {
+export function withARC<Model, P>(config: ARCConfig<Model>) {
   const extendedConfig:ARCConfig<Model> = { ...getDefaultConfig(), ...config }
   function createHOC(Wrapped: ComponentType<P & WithARCInjectProps<Model>>) {
     return connect(connectFn<Model, P>(extendedConfig))(Wrapped)

@@ -1,7 +1,7 @@
 import {getParams as utilsGetParams, interpolate as utilsInterpolate,} from "../utils"
 import {ARCMetaCollectionMap, ARCMetaModel, ARCMetas, ARCModel, ARCModelKey,} from "../types/model.types"
 import {ARCConfig} from "../types/config.types"
-import {ComponentProps, ComponentPropsWithRequiredModelParams,} from "../types/components.types"
+import {AnyProps, ComponentPropsWithRequiredModelParams,} from "../types/components.types"
 import {ARCRootState, ARCStoreState} from "../types/connectors.types"
 import {metaModelSelector} from "../hooks/selectors";
 
@@ -25,9 +25,9 @@ function getCollection<Model>( reducerState:ARCStoreState<Model>) {
 /**
  * returns true if the component has all the required props
  * @param {ARCConfig} config
- * @param {ComponentProps} props - component props
+ * @param {AnyProps} props - component props
  */
-function hasRequiredParams<Model>(config: ARCConfig<Model>, props: ComponentProps) {
+function hasRequiredParams<Model>(config: ARCConfig<Model>, props: AnyProps) {
   return config.modelProps.every((prop) => {
     return typeof props[prop] !== "undefined"
   })
@@ -37,9 +37,9 @@ function hasRequiredParams<Model>(config: ARCConfig<Model>, props: ComponentProp
 /**
  * returns the missing required props (useful for debugging)
  * @param {ARCConfig} config
- * @param {ComponentProps} props - component props
+ * @param {AnyProps} props - component props
  */
-function missingParams<Model>(config: ARCConfig<Model>, props: ComponentProps) {
+function missingParams<Model>(config: ARCConfig<Model>, props: AnyProps) {
   const missing: string[] = []
   return config.modelProps.reduce((state, prop) => {
     if (typeof props[prop] === "undefined") {
@@ -53,9 +53,9 @@ function missingParams<Model>(config: ARCConfig<Model>, props: ComponentProps) {
 /**
  * Is the data fetched or a new model is created ?
  * @param {ARCConfig} config
- * @param {ComponentProps} props - component props
+ * @param {AnyProps} props - component props
  */
-function isNew<Model>(config: ARCConfig<Model>, props: ComponentProps) {
+function isNew<Model>(config: ARCConfig<Model>, props: AnyProps) {
   return !getKey(config, props)
 }
 
@@ -63,9 +63,9 @@ function isNew<Model>(config: ARCConfig<Model>, props: ComponentProps) {
 /**
  * returns the reducer key
  * @param {ARCConfig} config
- * @param {ComponentProps} props - component props
+ * @param {AnyProps} props - component props
  */
-function getKey<Model>(config: ARCConfig<Model>, props: ComponentProps) {
+function getKey<Model>(config: ARCConfig<Model>, props: AnyProps) {
   const params = getParams(config, props)
   return !params ? null : keyGenerator(params)
 }
@@ -73,9 +73,9 @@ function getKey<Model>(config: ARCConfig<Model>, props: ComponentProps) {
 /**
  * returns only the required params from the component props
  * @param {ARCConfig} config
- * @param {ComponentProps} props - component props
+ * @param {AnyProps} props - component props
  */
-function getParams<Model>(config: ARCConfig<Model>, props: ComponentProps) {
+function getParams<Model>(config: ARCConfig<Model>, props: AnyProps) {
   if (!hasRequiredParams(config, props)) return null
   return utilsGetParams(config, props)
 }
@@ -245,10 +245,10 @@ function getFetchingCount<Model>(collection: ARCMetaCollectionMap<Model>) {
 export interface CoreMethods {
   keyGenerator: KeyGeneratorFn
   getCollection<Model>(reducerState: ARCStoreState<Model>) : ARCMetaCollectionMap<Model>
-  hasRequiredParams<Model>(config: ARCConfig<Model>, props: ComponentProps) : boolean
-  missingParams<Model>(config: ARCConfig<Model>, props: ComponentProps) : string[]
-  isNew<Model>(config: ARCConfig<Model>, props: ComponentProps) : boolean
-  getKey<Model>(config: ARCConfig<Model>, props: ComponentProps) : string | null
+  hasRequiredParams<Model>(config: ARCConfig<Model>, props: AnyProps) : boolean
+  missingParams<Model>(config: ARCConfig<Model>, props: AnyProps) : string[]
+  isNew<Model>(config: ARCConfig<Model>, props: AnyProps) : boolean
+  getKey<Model>(config: ARCConfig<Model>, props: AnyProps) : string | null
   getParams<Model>(config: ARCConfig<Model>, props: ComponentPropsWithRequiredModelParams) : ComponentPropsWithRequiredModelParams | null
   getMetas<Model>(prop: keyof ARCMetas | undefined, metaModel?: ARCMetaModel<Model> | null) : ARCMetas | any | null
   _getModel<Model>(metaModel: ARCMetaModel<Model> | null) : ARCMetaModel<Model> | null
