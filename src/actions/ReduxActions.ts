@@ -118,8 +118,8 @@ export class ReduxActions<Model>{
     }
   }
 
-  decorate = (str: string, options?: object): string => {
-    return interpolate(str, options || this.config)
+  decorate = (str: string): string => {
+    return interpolate(str, { ...this.config, actionNamespace: this.config.name.toUpperCase() })
   }
 
   beforeFetch({
@@ -143,7 +143,7 @@ export class ReduxActions<Model>{
         if(!_path) {
           throw new Error(`Path ${path} in your ARCConfig  is not defined in config`)
         }
-        const value = this.decorate(_path, params)
+        const value = this.decorate(_path)
         return {
           ...s,
           [path]: value,
@@ -258,114 +258,6 @@ export class ReduxActions<Model>{
 
 
 
-  /**  SAVE **/
-
-  standAloneSave(
-    data: object,
-    params: ComponentPropsWithRequiredModelParams,
-    create: boolean,
-    config: ARCConfig<Model>,
-    _props: object
-  ) {
-    // @ts-ignore
-    const method = create ? config.methods.create : config.methods.update
-    const url = this.decorate(
-      this.config.paths.item,
-      method === "post" ? {} : params
-    )
-    return this.axios({
-      method,
-      url,
-      headers: config.headers,
-      data,
-    })
-  }
-
-  save(
-    data: object,
-    params: ComponentPropsWithRequiredModelParams,
-    create: boolean = false,
-    props: object = {}
-  ) {
-    return (dispatch: Dispatch): AxiosPromise => {
-      const config = this.beforeFetch({ config: this.config, params, props })
-      dispatch({
-        type: this.decorate(ACTIONS.SAVE),
-        payload: { data, params, create },
-      })
-      return this.standAloneSave(data, params, create, config, props)
-        .then((response) => {
-          dispatch({
-            type: this.decorate(ACTIONS.SAVE_FULFILLED),
-            payload: { params, data: response.data, create },
-          })
-          return Promise.resolve(response)
-        })
-        .catch((error) => {
-          dispatch({
-            type: this.decorate(ACTIONS.SAVE_REJECTED),
-            payload: {
-              error: errorSerializer(error),
-              data, params, create },
-          })
-          return Promise.reject(error)
-        })
-    }
-  }
-
-  /** REMOVE **/
-
-  standAloneRemove(
-    _params: ComponentPropsWithRequiredModelParams,
-    config: ARCConfig<Model>,
-    _props: object
-  ): AxiosPromise {
-    const url = config.paths.item
-    return this.axios({
-      // @ts-ignore
-      method: config.methods.delete,
-      url,
-      headers: config.headers,
-    })
-  }
-
-  remove(params: ComponentPropsWithRequiredModelParams, props: object = {}) {
-    return (dispatch: Dispatch): AxiosPromise => {
-      const config = this.beforeFetch({ config: this.config, params, props })
-      dispatch({
-        type: this.decorate(ACTIONS.DELETE),
-        payload: { params },
-      })
-      return this.standAloneRemove(params, config, props)
-        .then((response) => {
-          dispatch({
-            type: this.decorate(ACTIONS.DELETE_FULFILLED),
-            payload: { params, data: response.data },
-          })
-          return Promise.resolve(response)
-        })
-        .catch((error) => {
-          dispatch({
-            type: this.decorate(ACTIONS.DELETE_REJECTED),
-            payload: {
-              error: errorSerializer(error),
-              params
-            },
-          })
-          return Promise.reject(error)
-        })
-    }
-  }
-
-
-
-
-
-  resetTemp() {
-    return (dispatch: Dispatch): void => {
-      dispatch({ type: this.decorate(ACTIONS.RESET) })
-    }
-  }
 }
 
 

@@ -1,6 +1,6 @@
 import {initializeConfig, interpolate} from "../utils"
 import {ARCConfig} from "../types/config.types"
-import {ARCMetaModel, ARCModel, ARCModelKey,} from "../types/model.types"
+import {ARCMetaCollectionMap, ARCMetaModel, ARCModel, ARCModelKey,} from "../types/model.types"
 import {ARCStoreState} from "../types/connectors.types"
 import {ACTIONS} from "./action";
 
@@ -13,7 +13,7 @@ const time = (): number => {
 // when we update the store
 // if the data retrieved is an object
 // we'll clone it
-function sanitizeData<M>(data: M): any {
+function sanitizeData<M>(data: M): M {
   if (data && typeof data === "object") {
     return JSON.parse(JSON.stringify(data))
   }
@@ -22,8 +22,8 @@ function sanitizeData<M>(data: M): any {
 
 
 
-interface MixerStoreParams<Model> {
-  config: ARCConfig<Model>
+interface MixerStoreParams<Model, Props> {
+  config: ARCConfig<Model, Props>
 }
 
 interface ReduxActionPayload {
@@ -42,9 +42,9 @@ interface ReduxAction {
 
 
 
-export function createReducer<Model>(options: MixerStoreParams<Model>) {
+export function createReducer<Model, Props extends object>(options: MixerStoreParams<Model, Props>) {
   const config = options?.config || {}
-  const extendedConfig = initializeConfig(config)
+  const extendedConfig = initializeConfig<Model, Props>(config)
   const defaultModelObject = JSON.parse(
     JSON.stringify(extendedConfig.defaultModel)
   ) as ARCModel<Model>
@@ -91,13 +91,13 @@ export function createReducer<Model>(options: MixerStoreParams<Model>) {
     action: ReduxAction
   ) {
     function previousItem(key: ARCModelKey) {
-      const collection = { ...state.collection }
+      const collection: ARCMetaCollectionMap<Model> = { ...state.collection }
       return collection[key]
     }
 
-    function update(item: ARCMetaModel<Model>, key: ARCModelKey) {
-      return { ...state.collection, [key]: item }
-    }
+    // function update(item: ARCMetaModel<Model>, key: ARCModelKey): ARCMetaCollectionMap<Model> {
+    //   return { ...state.collection, [key]: item }
+    // }
 
 
     switch (action.type) {
@@ -107,7 +107,7 @@ export function createReducer<Model>(options: MixerStoreParams<Model>) {
 
       // NEVER USED
       case t(ACTIONS.INIT): {
-        const collection = { ...state.collection }
+        const collection: ARCMetaCollectionMap<Model> = { ...state.collection }
         const key = keyGen(action.payload.params)
 
         const previous = previousItem(key)
@@ -127,7 +127,7 @@ export function createReducer<Model>(options: MixerStoreParams<Model>) {
       }
 
       case t(ACTIONS.FETCH): {
-        const collection = { ...state.collection }
+        const collection: ARCMetaCollectionMap<Model> = { ...state.collection }
         const key = keyGen(action.payload.params)
 
         const previous = previousItem(key)
@@ -164,7 +164,7 @@ export function createReducer<Model>(options: MixerStoreParams<Model>) {
       }
 
       case t(ACTIONS.FETCH_REJECTED): {
-        const collection = { ...state.collection }
+        const collection: ARCMetaCollectionMap<Model> = { ...state.collection }
         const key = keyGen(action.payload.params)
         collection[key] = {
           metas: {
@@ -184,7 +184,7 @@ export function createReducer<Model>(options: MixerStoreParams<Model>) {
       }
 
       case t(ACTIONS.FETCH_CANCELLED): {
-        const collection = { ...state.collection }
+        const collection: ARCMetaCollectionMap<Model> = { ...state.collection }
         const key = keyGen(action.payload.params)
 
         //HAS A PREVIOUS VALID STATE
@@ -218,7 +218,7 @@ export function createReducer<Model>(options: MixerStoreParams<Model>) {
       }
 
       case t(ACTIONS.FETCH_FULFILLED): {
-        const collection = { ...state.collection }
+        const collection: ARCMetaCollectionMap<Model> = { ...state.collection }
         const key = keyGen(action.payload.params)
         collection[key] = {
           metas: {
@@ -239,121 +239,6 @@ export function createReducer<Model>(options: MixerStoreParams<Model>) {
       /*** END FETCHING MODEL ***/
 
 
-
-      /** TODO: DEPRECATED ACTIONS ***/
-
-      case t(ACTIONS.SAVE): {
-        const key = keyGen(action.payload.params)
-        const prev = previousItem(key)
-        const updated:ARCMetaModel<Model> = {
-          ...prev,
-          metas: {
-            ...prev.metas,
-            error: null,
-            saving: true,
-            start: time(),
-            saved: false,
-          },
-        }
-        if (action.payload.create) {
-          //model is new
-          return { ...state, temp: updated }
-        } else {
-          const collection = update(updated, key)
-          return { ...state, collection }
-        }
-      }
-
-      case t(ACTIONS.SAVE_REJECTED): {
-        const key = keyGen(action.payload.params)
-        const prev = previousItem(key)
-        const updated = {
-          ...prev,
-          metas: {
-            ...prev.metas,
-            error: action.payload.error,
-            end: time(),
-            saving: false,
-            saved: false,
-          },
-        }
-        if (action.payload.create) {
-          //model is new
-          return { ...state, temp: updated }
-        } else {
-          const collection = update(updated, key)
-          return {
-            ...state,
-            collection,
-          }
-        }
-      }
-
-      case t(ACTIONS.SAVE_FULFILLED): {
-        const key = keyGen(action.payload.params)
-        const prev = previousItem(key)
-        const updated = {
-          ...prev,
-          metas: { ...prev.metas, saving: false, end: time(), saved: true },
-          model: action.payload.data,
-        }
-        if (action.payload.create) {
-          //model is new
-          return { ...state, temp: updated }
-        } else {
-          const collection = update(updated, key)
-          return {
-            ...state,
-            collection,
-          }
-        }
-      }
-
-      case t(ACTIONS.DELETE): {
-        const key = keyGen(action.payload.params)
-        const prev = previousItem(key)
-        const updated = {
-          ...prev,
-          metas: {
-            ...prev.metas,
-            deleting: true,
-            start: time(),
-            fetching: true,
-          },
-        }
-        const collection = update(updated, key)
-        return { ...state, collection }
-      }
-
-      case t(ACTIONS.DELETE_REJECTED): {
-        const key = keyGen(action.payload.params)
-        const prev = previousItem(key)
-        const updated = {
-          ...prev,
-          metas: {
-            ...prev.metas,
-            error: action.payload.error,
-            end: time(),
-            deleting: false,
-            fetching: false,
-          },
-        }
-        const collection = update(updated, key)
-        return {
-          ...state,
-          collection,
-        }
-      }
-
-      case t(ACTIONS.DELETE_FULFILLED): {
-        const key = keyGen(action.payload.params)
-        const collection = { ...state.collection }
-        delete collection[key]
-        return {
-          ...state,
-          collection,
-        }
-      }
 
       default:
         return state

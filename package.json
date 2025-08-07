@@ -12,7 +12,9 @@
   "scripts": {
     "build": "npm run build:esm && npm run build:cjs",
     "build:esm": "tsc",
-    "build:cjs": "tsc --module commonjs --outDir lib/cjs"
+    "build:cjs": "tsc --module commonjs --outDir lib/cjs",
+    "test": "vitest",
+    "test:ui": "vitest --ui"
   },
   "prettier": {
     "semi": false
@@ -32,25 +34,34 @@
   },
   "homepage": "https://github.com/Sunny-fr/react-arc#readme",
   "peerDependencies": {
+    "@reduxjs/toolkit": "^2.8.2",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-redux": "^9.2.0",
-    "redux": "^5.0.1",
-    "@reduxjs/toolkit": "^2.8.2"
+    "redux": "^5.0.1"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.8.2",
     "axios": "1.8.2",
     "deep-equal": "^1.1.1",
-    "react-redux": "^9.2.0",
-    "redux": "^5.0.1",
     "react": "^19.1.0",
-    "react-dom": "^19.1.0"
+    "react-dom": "^19.1.0",
+    "react-redux": "^9.2.0",
+    "redux": "^5.0.1"
   },
   "devDependencies": {
+    "@testing-library/jest-dom": "^6.6.4",
+    "@testing-library/react": "^16.3.0",
     "@types/deep-equal": "^1.0.4",
     "@types/react": "^19.1.8",
     "@types/react-dom": "^19.1.6",
-    "typescript": "~5.8.3"
+    "@types/redux-mock-store": "^1.5.0",
+    "@vitest/ui": "^3.2.4",
+    "jsdom": "^26.1.0",
+    "react-dom": "^19.1.1",
+    "redux-mock-store": "^1.5.5",
+    "redux-thunk": "^3.1.0",
+    "typescript": "~5.8.3",
+    "vitest": "^3.2.4"
   }
 }
