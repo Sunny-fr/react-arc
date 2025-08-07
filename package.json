@@ -1,6 +1,6 @@
 {
   "name": "react-arc",
-  "version": "6.9.9",
+  "version": "6.9.10",
   "description": "React ARC is a powerful library for building React applications with Redux, providing a set of tools and utilities to enhance development.",
   "_main": "lib/index.js",
   "main": "./lib/cjs/index.js",
