@@ -1,5 +1,5 @@
 import { AxiosInstance, AxiosPromise } from "axios";
-import { ARCConfig, ARCConfigHeaders, ARCHttpRestMethodMap, RetryConditionFn } from "../types/config.types";
+import { ARCConfig, ARCConfigHeaders, ARCConfigPaths, ARCHttpRestMethodMap, RetryConditionFn } from "../types/config.types";
 import { Dispatch } from "redux";
 import { AnyProps, ComponentPropsWithRequiredModelParams } from "../types/components.types";
 import { ARCAxiosOptions, ReduxActionsOptions } from "../types/actions.types";
@@ -13,13 +13,16 @@ export declare class ReduxActions<Model, RequiredProps extends object = {}> {
     retryConditionFn: RetryConditionFn<Model, RequiredProps> | undefined;
     axios: AxiosInstance;
     headers: ARCConfigHeaders;
+    paths: ARCConfigPaths;
     methods: ARCHttpRestMethodMap;
     constructor(options: ReduxActionsOptions<Model, RequiredProps>);
     static GenerateAbortSignal<Model, RequiredProps>(axiosOptions: ARCAxiosOptions<Model, RequiredProps>): AbortSignal | undefined;
     getInitialConfig(): ARCConfig<Model, RequiredProps>;
     generateAbortSignal(axiosOptions: ARCAxiosOptions<Model, RequiredProps>): AbortSignal | undefined;
     decorateHeaders(props?: {}): ARCConfigHeaders;
+    decoratePaths(props?: {}): ARCConfigPaths;
     setHeaders(): void;
+    setPaths(): void;
     updateConfig(config: ARCConfig<Model, RequiredProps>): void;
     setupMethods(): void;
     decorate: (str: string) => string;

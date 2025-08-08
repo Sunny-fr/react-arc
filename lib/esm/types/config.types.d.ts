@@ -44,11 +44,11 @@ export interface ARCConfigPaths extends Partial<Record<string, string>> {
     update?: string;
     create?: string;
 }
-export interface RetryConditionFnCallbackParams<Model, RequiredProps> {
+export interface RetryConditionFnCallbackParams<Model, RequiredProps = {}> {
     params: ComponentPropsWithRequiredModelParams;
-    config: ARCConfig<Model>;
+    config: ARCConfig<Model, RequiredProps>;
     props: ComponentProps<any>;
-    axiosOptions: ARCAxiosOptions<Model, RequiredProps>;
+    axiosOptions?: ARCAxiosOptions<Model, RequiredProps>;
     tryNumber: number;
 }
 export type RetryConditionFn<Model, RequiredProps = {}> = (arg0: any, arg1: RetryConditionFnCallbackParams<Model, RequiredProps>) => boolean;
