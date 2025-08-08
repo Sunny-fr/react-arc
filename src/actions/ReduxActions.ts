@@ -53,7 +53,10 @@ export class ReduxActions<Model, RequiredProps extends object = {}>{
   initialConfig: ARCConfig<Model,RequiredProps>
   retryConditionFn: RetryConditionFn<Model, RequiredProps> | undefined
   axios: AxiosInstance
-  headers: ARCConfigHeaders
+  headers: ARCConfigHeaders = {}
+  paths: ARCConfigPaths = {
+    item: "",
+  }
   methods: ARCHttpRestMethodMap
 
   constructor(options: ReduxActionsOptions<Model, RequiredProps>) {
@@ -61,6 +64,7 @@ export class ReduxActions<Model, RequiredProps extends object = {}>{
     this.initialConfig = this.config
     this.retryConditionFn = this.config.retryConditionFn
     this.setHeaders()
+    this.setPaths()
     this.setupMethods()
     this.axios = axios.create()
   }
@@ -92,9 +96,27 @@ export class ReduxActions<Model, RequiredProps extends object = {}>{
     }, {})
   }
 
+  decoratePaths(props = {}): ARCConfigPaths {
+    const { paths } = this
+    return Object.keys(paths).reduce((state, path) => {
+      if (!paths[path]) return state
+      return {
+        ...state,
+        [path]: interpolate(paths[path], props),
+      }
+    }, {
+      item: "",
+    })
+  }
+
   setHeaders(): void {
     const headers = this.config.headers || {}
     this.headers = { ...headers }
+  }
+
+  setPaths(): void {
+    const paths = this.config.paths || {}
+    this.paths = { ...paths }
   }
 
   updateConfig(config: ARCConfig<Model, RequiredProps>) {
@@ -119,7 +141,7 @@ export class ReduxActions<Model, RequiredProps extends object = {}>{
   }
 
   decorate = (str: string): string => {
-    return interpolate(str, { ...this.config, actionNamespace: this.config.name.toUpperCase() })
+    return interpolate(str, this.config)
   }
 
   beforeFetch({
@@ -131,24 +153,11 @@ export class ReduxActions<Model, RequiredProps extends object = {}>{
     props: AnyProps
     params: ComponentPropsWithRequiredModelParams
   }): ARCConfig<Model, RequiredProps> {
-    const paths: ARCConfigPaths = {
-      item: "",
-    }
     //DECORATE URLS
     return {
       ...config,
       headers: this.decorateHeaders({ ...props, ...params }),
-      paths: Object.keys(config.paths).reduce((s, path) => {
-        const _path = config.paths[path]
-        if(!_path) {
-          throw new Error(`Path ${path} in your ARCConfig  is not defined in config`)
-        }
-        const value = this.decorate(_path)
-        return {
-          ...s,
-          [path]: value,
-        }
-      }, paths),
+      paths: this.decoratePaths({ ...props, ...params }),
     }
   }
 

@@ -233,7 +233,7 @@ const ArticleWithExtendedPropsAndChaining = withArticle<ArticleWithExtendedProps
  */
 
 const ArticleWithMultipleChainingHOCs = withToken(
-  withArticle<RequiredArticleProps>(
+  withArticle(
     withARCLoader((props) => {
         const {error, loaded, loading} = props
 
