@@ -2,7 +2,6 @@
  * Config
  */
 
-import {AnyProps, ComponentPropsWithRequiredModelParams} from "./components.types"
 import {ARCModel} from "./model.types"
 import {ComponentProps} from "react"
 import {ARCAxiosOptions} from "./actions.types";
@@ -54,25 +53,25 @@ export interface ARCConfigPaths extends Partial<Record<string, string>>{
   create?: string
 }
 
-export interface RetryConditionFnCallbackParams<Model, RequiredProps = {}> {
-  params: ComponentPropsWithRequiredModelParams
+export interface RetryConditionFnCallbackParams<Model, RequiredProps = {}, OwnProps= {}> {
+  params: RequiredProps
   config: ARCConfig<Model, RequiredProps>
   props: ComponentProps<any>
-  axiosOptions?: ARCAxiosOptions<Model, RequiredProps>
+  axiosOptions?: ARCAxiosOptions<Model, RequiredProps, OwnProps>
   tryNumber: number
 }
-export type RetryConditionFn<Model, RequiredProps = {}> = (
+export type RetryConditionFn<Model, RequiredProps = {}, OwnProps extends object= {}> = (
   // error
   arg0: any,
   // retry fn
-  arg1: RetryConditionFnCallbackParams<Model, RequiredProps>
+  arg1: RetryConditionFnCallbackParams<Model, RequiredProps, OwnProps>
 ) => boolean
 
 
-export type Fetcher<Model, RequiredProps>  = (params: RequiredProps,
+export type Fetcher<Model, RequiredProps, OwnProps = {}>  = (params: RequiredProps,
                                config: ARCConfig<Model>,
-                               props: AnyProps,
-                               axiosOptions: ARCAxiosOptions<Model,RequiredProps>) => AxiosPromise<Model>
+                               props: RequiredProps & OwnProps,
+                               axiosOptions: ARCAxiosOptions<Model,RequiredProps, OwnProps>) => AxiosPromise<Model>
 
 
 export interface FetcherMap<Model, RequiredProps>  {
@@ -95,7 +94,7 @@ export interface ARCConfig<Model, RequiredProps = {}> {
   // default model
   defaultModel?: ARCModel<Model>
   // defaults props passed to a component
-  defaultProps?: Partial<ComponentProps<any>>
+  defaultProps?: any
   // will fetch the data only one time
   fetchOnce?: boolean
   // if fetching data fails when the component is remounted, it will try to fetch again the data

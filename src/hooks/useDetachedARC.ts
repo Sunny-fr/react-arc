@@ -1,16 +1,15 @@
 import {useEffect, useRef, useState} from "react"
 import {ARC} from "./arc"
-import {AnyProps, ComponentPropsWithRequiredModelParams,} from "../types/components.types"
 import {ARCConfig} from "../types/config.types"
 import {ARCResponse, UseDetachedARC, UseDetachedARCMethods, UseDetachedARCState} from "../types/hooks.detached.types"
 
-export function useDetachedARC<Model>({
+export function useDetachedARC<Model, RequiredProps extends object, OwnProps={}>({
   ARCConfig,
   props,
 }: {
-  ARCConfig: ARCConfig<Model>
-  props: AnyProps
-}): UseDetachedARC<Model> {
+  ARCConfig: ARCConfig<Model, RequiredProps>
+  props: RequiredProps & OwnProps
+}): UseDetachedARC<Model,RequiredProps> {
   const arc = new ARC({ ARCConfig })
   const defaultProps = props
   const defaultState: UseDetachedARCState<Model> = {
@@ -61,18 +60,18 @@ export function useDetachedARC<Model>({
     }
   }, [params])
 
-  const arcMethods: UseDetachedARCMethods<Model> = {
+  const arcMethods: UseDetachedARCMethods<Model, RequiredProps> = {
     arc,
     get: (args: {
-      props?: AnyProps
-      params: ComponentPropsWithRequiredModelParams
+      props?: RequiredProps & OwnProps
+      params: RequiredProps
     }) => {
-      const { props = {}, params = {} } = args
+      const { props , params  } = args
       return handle(() => arc.get({ props: props || defaultProps, params }))
     },
     remove: (args: {
-      props?: AnyProps
-      params: ComponentPropsWithRequiredModelParams
+      props?: RequiredProps & OwnProps
+      params: RequiredProps
     }) => {
       const { props, params } = args
       return handle(() =>
@@ -80,8 +79,8 @@ export function useDetachedARC<Model>({
       )
     },
     create: (args: {
-      props?: AnyProps
-      params: ComponentPropsWithRequiredModelParams
+      props?: RequiredProps & OwnProps
+      params: RequiredProps
       body: any
     }) => {
       const { props, params, body } = args
@@ -90,8 +89,8 @@ export function useDetachedARC<Model>({
       )
     },
     update: (args: {
-      props?: AnyProps
-      params: ComponentPropsWithRequiredModelParams
+      props?: RequiredProps & OwnProps
+      params: RequiredProps
       body: any
     }) => {
       const { props, params, body } = args
@@ -99,9 +98,9 @@ export function useDetachedARC<Model>({
         arc.update({ props: props || defaultProps, params, body })
       )
     },
-    extract: (props: AnyProps) =>
+    extract: (props: RequiredProps) =>
       arc.extractParams(props || defaultProps),
-    extractParams: (props: AnyProps) =>
+    extractParams: (props: RequiredProps) =>
       arc.extractParams(props || defaultProps),
     custom: (fetcher: () => Promise<ARCResponse<Model>>) => {
       return handle(fetcher)

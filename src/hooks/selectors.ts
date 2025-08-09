@@ -1,14 +1,15 @@
 import {createSelector} from "@reduxjs/toolkit";
 import {ARCRootState} from "../types/connectors.types";
-import {ARCConfig} from "../types/config.types";
 
-export const metaModelSelector = createSelector([
-    (state: ARCRootState, ARCConfig: ARCConfig<any>) => state[ARCConfig.name] || null,
-    (_, arcConfig: ARCConfig<any>) => arcConfig,
+const createAppSelector = createSelector.withTypes<ARCRootState>()
+
+export const metaModelSelector = createAppSelector([
+    (state, ARCReducerName: string) => state[ARCReducerName as keyof ARCRootState],
+  (_, ARCReducerName: string) => ARCReducerName,
     (_, __, key: string | number | null) => key,
-  ], (store, arcConfig, key) => {
+  ], (store, reducerName, key) => {
     if (!store) {
-      console.error(`ARC ERROR: Store not found for the given ARCConfig: ${arcConfig.name}`)
+      console.error(`ARC ERROR: Store not found for the given ARCConfig: ${reducerName}`)
       return null
     }
     if (!key) {
@@ -19,13 +20,13 @@ export const metaModelSelector = createSelector([
   }
 )
 
-export const fetchingCountSelector = createSelector([
-  (state: ARCRootState, ARCConfig: ARCConfig<any>) => state[ARCConfig.name] || null,
-  (_, arcConfig: ARCConfig<any>) => arcConfig,
-], (store, arcConfig) => {
-  if (!store) {
-    console.error(`ARC ERROR: Store not found for the given ARCConfig: ${arcConfig.name}`)
-    return 0
+
+
+export const fetchingCountSelector = createAppSelector([
+  (state, ARCReducerName: string) => state[ARCReducerName],
+], (store) => {
+  if(!store || !store.collection) {
+    return  0
   }
   return Object.values(store.collection).filter((metaModel) => metaModel.metas.fetching).length
 })

@@ -1,19 +1,18 @@
 import {ARCConfig} from "./config.types"
-import {AnyProps, ComponentPropsWithRequiredModelParams} from "./components.types"
 
 export interface ReduxActionsOptions<Model, RequiredProps> {
   config: ARCConfig<Model, RequiredProps>
 }
-export interface RetryFnParams<Model, RequiredProps> {
-  params: ComponentPropsWithRequiredModelParams
+export interface RetryFnParams<Model, RequiredProps, OwnProps = {}> {
+  params: RequiredProps
   config: ARCConfig<Model, RequiredProps>
-  props: AnyProps
-  axiosOptions: ARCAxiosOptions<Model, RequiredProps>
+  props: OwnProps
+  axiosOptions: ARCAxiosOptions<Model, RequiredProps, OwnProps>
   tryNumber: number
 }
-export interface ARCAxiosOptions<Model, RequiredProps> {
+export interface ARCAxiosOptions<Model, RequiredProps, OwnProps = {}> {
   abortController?: AbortController
-  retryConditionFn?: (error: any, params: RetryFnParams<Model, RequiredProps>) => boolean
+  retryConditionFn?: (error: any, params: RetryFnParams<Model, RequiredProps, OwnProps>) => boolean
 }
 
 

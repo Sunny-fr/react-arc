@@ -4,20 +4,20 @@ import {core, CoreMethods} from "../actions/core"
 import {initializeConfig} from "../utils"
 import {ReactReduxContext} from "react-redux"
 import {ARCConfig} from "../types/config.types"
-import {AnyProps, ComponentWithStoreProps, ARCContainer,} from "../types/components.types"
+import {AnyProps, ARCContainerProps} from "../types/components.types"
 import {ARCRootState, ARCStoreState} from "../types/connectors.types";
 
 
-export class Container<P, Model, RequiredProps extends object = {}> extends React.Component<ARCContainer<P, Model, RequiredProps>, any> {
+export class Container<Model, RequiredProps, OwnProps, State = any> extends React.Component<ARCContainerProps<Model, RequiredProps, OwnProps>, State> {
   static contextType = ReactReduxContext
   ARCConfig: ARCConfig<Model, RequiredProps>
   actions: ReduxActions<Model, RequiredProps>
   core: CoreMethods
   abortController: null | AbortController
-  //props: ARCContainer<P, Model, RequiredProps>
+  // props: ARCContainerProps<OwnProps, Model, RequiredProps>
   delayedTimeout: number | undefined
 
-  constructor(props:  ARCContainer<P, Model, RequiredProps>) {
+  constructor(props: ARCContainerProps<Model, RequiredProps, OwnProps>) {
 
     super(props)
 
@@ -45,7 +45,7 @@ export class Container<P, Model, RequiredProps extends object = {}> extends Reac
     return {
       ...baseProps,
       ...ARCProps,
-    } as unknown as ComponentWithStoreProps
+    }
   }
 
   updateARC(config: ARCConfig<Model, RequiredProps>) {

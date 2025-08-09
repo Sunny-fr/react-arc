@@ -29,7 +29,7 @@ interface RequiredArticleProps {
   id: string
 }
 
-const withArticle = createHOC<RequiredArticleProps, Article>({
+const withArticle = createHOC<Article, RequiredArticleProps>({
   ARCConfig: articleConfig
 })
 
@@ -60,19 +60,19 @@ export function withToken<P>(
 
 // HOC THAT DEPENDS/RELIES ON ARC
 
-interface ErrorAndLoaderHandler<Model, P> extends Omit<WithARCInjectProps<Model,P>, 'model'> {
+interface ErrorAndLoaderHandler<Model, P> extends Omit<WithARCInjectProps<Model,any, P>, 'model'> {
   model: Model
 }
 
 export function withARCLoader<P , Model = any>(
   Wrapped: React.ComponentType<P & ErrorAndLoaderHandler<Model, P>>
 ) {
-  function WithARCLoader(ownProps:  WithARCInjectProps<Model, P>) {
-    const {loaded, error} = ownProps as ErrorAndLoaderHandler<Model,P>
+  function WithARCLoader(ownProps:  P) {
+    const {loaded, error, model} = ownProps as ErrorAndLoaderHandler<Model,P>
 
     if (error) return <div>Error: {error.message}</div>
     if (!loaded) return <div>Loading...</div>
-    return <Wrapped {...ownProps as  P & ErrorAndLoaderHandler<Model, P>} model={ownProps.model as Model}/>
+    return <Wrapped {...ownProps as  P & ErrorAndLoaderHandler<Model, P>} model={model as Model}/>
   }
   WithARCLoader.displayName = `WithARCLoader(${Wrapped.displayName || Wrapped.name})`
   return WithARCLoader
@@ -235,7 +235,7 @@ const ArticleWithExtendedPropsAndChaining = withArticle<ArticleWithExtendedProps
 const ArticleWithMultipleChainingHOCs = withToken(
   withArticle(
     withARCLoader((props) => {
-        const {error, loaded, loading} = props
+        const {error, loaded, loading, id} = props
 
         // type is not correctly retrieved here
         const article = props.model
@@ -247,7 +247,7 @@ const ArticleWithMultipleChainingHOCs = withToken(
         return (
           <div>
             {loading && <p>loading...</p>}
-            <h1>{article.title}</h1>
+            <h1>{article.title} {id}</h1>
             <p>id: {article.id}</p>
             <p>content: {article.content}</p>
           </div>
@@ -265,7 +265,8 @@ const ArticleWithMultipleChainingHOCs = withToken(
  *  - The `withARCLoader` HOC is
  */
 
-const withSampleTokenized = createHOC<RequiredArticleProps, Article>({
+//const CustomContainerIncludingToken = withToken(ModelContainer)
+const withSampleTokenized = createHOC<Article, RequiredArticleProps>({
   ARCConfig: articleConfig,
   Container: withToken(ModelContainer)
 })

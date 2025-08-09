@@ -1,23 +1,14 @@
 import {omit} from "../utils"
 import commons from "../commons"
 import Container from "./Container"
-import {
-  AnyProps,
-  ARCContainerProps,
-  ComponentPropsWithRequiredModelParams,
-  ComponentWithStoreProps,
-  WithARCInjectProps,
-} from "../types/components.types"
+import {ARCContainerProps, RenderComponent, WithARCInjectProps,} from "../types/components.types"
 import {ARCAxiosOptions} from "../types/actions.types"
 import {ARCMetas} from "../types/model.types";
 import React from "react"
 import {AXIOS_CANCEL_PAYLOAD} from "../actions/ReduxActions";
 
 
-// TODO: map inherited props
-type AnyArcComponentProps<Model> = ComponentWithStoreProps | ARCContainerProps<Model>
-
-export class ModelContainer<P, Model, RequiredProps extends object = {}> extends Container<P, Model, RequiredProps> {
+export class ModelContainer<Model, RequiredProps = {}, OwnProps extends object ={}, State = any> extends Container<Model, RequiredProps, OwnProps, State> {
 
   // static propTypes = {
   //   dispatch: PropTypes.func.isRequired,
@@ -28,38 +19,37 @@ export class ModelContainer<P, Model, RequiredProps extends object = {}> extends
 
   /* public
    * if the component has not the required params it will be set as new */
-  isNew(props?: AnyProps) {
-    //return (props || this.props).isNew
-    return this.core.isNew(this.ARCConfig, props || this.props)
+  isNew(props: ARCContainerProps<Model, RequiredProps, OwnProps> = this.props) {
+    return this.core.isNew(this.ARCConfig, props)
   }
 
   /* public
    * returns null or string
    * acts as unique identifier (based on required props) */
-  getKey(props?: AnyProps) {
-    return this.core.getKey(this.ARCConfig, props || this.props)
+  getKey(props: ARCContainerProps<Model, RequiredProps, OwnProps> = this.props) {
+    return this.core.getKey(this.ARCConfig, props)
   }
 
   /* public
    * retrieve params from props or model */
   /* CUSTOMIZE HERE FOR ADVANCED USAGE */
-  getParams(props?: AnyProps) {
-    return this.core.getParams(this.ARCConfig, props || this.props)
+  getParams(props: ARCContainerProps<Model, RequiredProps, OwnProps> = this.props) {
+    return this.core.getParams(this.ARCConfig, props)
   }
 
   /* private
    * checks if the component has the required params based on modelProps in config
    */
-  hasRequiredParams(props?: AnyProps) {
-    return this.core.hasRequiredParams(this.ARCConfig, props || this.props)
+  hasRequiredParams(props: ARCContainerProps<Model, RequiredProps, OwnProps> = this.props) {
+    return this.core.hasRequiredParams(this.ARCConfig, props)
   }
 
   /* private
    * get a model and its metas data
    */
 
-  _getModel(props?: AnyArcComponentProps<Model>) {
-    return (props || this.props).metaModel
+  _getModel(props: ARCContainerProps<Model, RequiredProps, OwnProps> = this.props) {
+    return (props).metaModel
   }
 
   // checkDispatchAvailability() {
@@ -72,11 +62,11 @@ export class ModelContainer<P, Model, RequiredProps extends object = {}> extends
 
   /* public
    * Fetch a model */
-  fetch = (params: ComponentPropsWithRequiredModelParams) => {
+  fetch = (params: RequiredProps) => {
 
 
     this.abortController = new AbortController()
-    const axiosOptions: ARCAxiosOptions<Model, RequiredProps> = {
+    const axiosOptions: ARCAxiosOptions<Model, RequiredProps, OwnProps> = {
       abortController: this.abortController
     }
 
@@ -106,49 +96,49 @@ export class ModelContainer<P, Model, RequiredProps extends object = {}> extends
     return this.core.getFetchingCount(collection)
   }
 
-  getModel(props?:  ARCContainerProps<Model, RequiredProps>) {
-    return (props || this.props).model
+  getModel(props: ARCContainerProps<Model, RequiredProps, OwnProps> = this.props) {
+    return props.model
   }
 
   /* public
    * returns metas (loaded, error, etc.) */
 
-  getMetas(prop:keyof ARCMetas, props?: ARCContainerProps<Model, RequiredProps>) {
-    return this.core.getMetas(prop, (props || this.props).metaModel)
+  getMetas(prop:keyof ARCMetas, props: ARCContainerProps<Model, RequiredProps, OwnProps> = this.props) {
+    return this.core.getMetas(prop, props.metaModel)
   }
 
   /* public
    * returns  error */
 
-  getError(props?: ARCContainerProps<Model, RequiredProps>) {
-    return (props || this.props).error
+  getError(props: ARCContainerProps<Model, RequiredProps, OwnProps> = this.props) {
+    return props.error
   }
 
   /* public
    * returns bool if there's any activity */
 
-  isSyncing(props?: ARCContainerProps<Model, RequiredProps>) {
-    return (props || this.props).loading
+  isSyncing(props: ARCContainerProps<Model, RequiredProps, OwnProps> = this.props) {
+    return props.loading
   }
 
   /* public
    * returns bool if the model has been loaded at least one time */
 
-  isLoaded(props?: ARCContainerProps<Model, RequiredProps>) {
-    return (props || this.props).loaded
+  isLoaded(props: ARCContainerProps<Model, RequiredProps, OwnProps> = this.props) {
+    return props.loaded
   }
 
   /* private
    * performs a fetch if the flag fetchOnce is set to false
    */
 
-  allowReFetch = (props?: ARCContainerProps<Model, RequiredProps>) => {
-    const metaModel = (props || this.props).metaModel
+  allowReFetch = (props: ARCContainerProps<Model, RequiredProps, OwnProps> = this.props) => {
+    const metaModel = props.metaModel
     return this.core.allowReFetch(this.ARCConfig, metaModel)
   }
 
-  errorReFetch(props?: ARCContainerProps<Model, RequiredProps>) {
-    const metaModel = (props || this.props).metaModel
+  errorReFetch(props: ARCContainerProps<Model, RequiredProps, OwnProps> = this.props) {
+    const metaModel = props.metaModel
     //can re fetch on error
     return this.core.errorReFetch(this.ARCConfig,  metaModel)
   }
@@ -196,7 +186,7 @@ export class ModelContainer<P, Model, RequiredProps extends object = {}> extends
     }, this.ARCConfig.requestFetchDelay)
   }
 
-  _fetchAuthorization(props:ARCContainerProps<Model, RequiredProps>, { skipReFetchStep = false }) {
+  _fetchAuthorization(props:ARCContainerProps<Model, RequiredProps, OwnProps>, { skipReFetchStep = false }) {
     const metaModel = props.metaModel
     if (this.isNew(props)) {
       //console.log('//model is new no data to be retrieved')
@@ -243,41 +233,27 @@ export class ModelContainer<P, Model, RequiredProps extends object = {}> extends
     this.prepareFetch({ skipReFetchStep: false })
   }
 
-
-  getModelDataTyped() {
-    const loaded = this.isLoaded()
-    const error = this.getError()
-    return !error && loaded && !this.isNew() ? this.getModel() : (this.ARCConfig.defaultModel || null)
-  }
   render() {
 
-    const props = { ...omit(this.props, ['ARCConfig', 'component']) } as P & WithARCInjectProps<Model, RequiredProps>
-    const loaded = this.isLoaded()
-    const loading = this.isSyncing()
-    const error = this.getError()
+    const Component = this.props.component as RenderComponent<Model, RequiredProps, OwnProps>
+    const props = omit(this.props, ['ARCConfig', 'component']) as WithARCInjectProps<Model, RequiredProps, OwnProps>
 
-    const data = this.getModelDataTyped()
-    const Component = this.props?.component
 
     if( !Component ) {
       console.error('ModelContainer: component prop is required')
       return null
     }
-    const params = this.getParams(props)
+    const params = this.getParams(this.props)
     if(!params){
       console.error('ModelContainer: params are required')
       console.log('missing params for', this.ARCConfig.name)
-      console.log(this.core.missingParams(this.ARCConfig, props))
+      console.log(this.core.missingParams(this.ARCConfig, this.props))
       return null
     }
 
     return (
       <Component
         {...props}
-        loading={loading}
-        loaded={loaded}
-        model={data}
-        error={error}
         fetch={() => this.fetch(params)}
       />
     )

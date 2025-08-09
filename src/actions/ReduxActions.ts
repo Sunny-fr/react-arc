@@ -7,10 +7,8 @@ import {
   ARCHttpRestMethodMap,
   RetryConditionFn,
 } from "../types/config.types"
-//import { ARCStoreState } from "../types/connectors.types"
-import {Dispatch} from "redux"
 
-import {AnyProps, ComponentPropsWithRequiredModelParams} from "../types/components.types"
+import {Dispatch} from "redux"
 import {ARCAxiosOptions, ArcFetchError, ReduxActionsOptions,} from "../types/actions.types"
 import {ACTIONS} from "../reducers/action";
 
@@ -48,7 +46,7 @@ export const AXIOS_CANCEL_PAYLOAD = {
   name: "CanceledError"
 } as const
 
-export class ReduxActions<Model, RequiredProps extends object = {}>{
+export class ReduxActions<Model, RequiredProps, OwnProps extends object = {}> {
   config: ARCConfig<Model,RequiredProps>
   initialConfig: ARCConfig<Model,RequiredProps>
   retryConditionFn: RetryConditionFn<Model, RequiredProps> | undefined
@@ -69,7 +67,7 @@ export class ReduxActions<Model, RequiredProps extends object = {}>{
     this.axios = axios.create()
   }
 
-  static GenerateAbortSignal<Model, RequiredProps>(axiosOptions: ARCAxiosOptions<Model, RequiredProps>) {
+  static GenerateAbortSignal<Model, RequiredProps, OwnProps = {}>(axiosOptions: ARCAxiosOptions<Model, RequiredProps, OwnProps>) {
     return axiosOptions?.abortController?.signal
   }
 
@@ -77,11 +75,11 @@ export class ReduxActions<Model, RequiredProps extends object = {}>{
     return this.initialConfig
   }
 
-  generateAbortSignal(axiosOptions: ARCAxiosOptions<Model,RequiredProps>) {
+  generateAbortSignal(axiosOptions: ARCAxiosOptions<Model,RequiredProps, OwnProps>) {
     return axiosOptions?.abortController?.signal
   }
 
-  decorateHeaders(props = {}): ARCConfigHeaders {
+  decorateHeaders(props: RequiredProps & OwnProps = {} as RequiredProps & OwnProps  ): ARCConfigHeaders {
     const { headers } = this
     if (Object.keys(headers || {}).length < 1) {
       return {}
@@ -91,18 +89,18 @@ export class ReduxActions<Model, RequiredProps extends object = {}>{
 
       return {
         ...state,
-        [header]: interpolate(headers[header], props),
+        [header]: interpolate(headers[header], props as object),
       }
     }, {})
   }
 
-  decoratePaths(props = {}): ARCConfigPaths {
+  decoratePaths(props: RequiredProps & OwnProps = {} as RequiredProps & OwnProps ): ARCConfigPaths {
     const { paths } = this
     return Object.keys(paths).reduce((state, path) => {
       if (!paths[path]) return state
       return {
         ...state,
-        [path]: interpolate(paths[path], props),
+        [path]: interpolate(paths[path], props as object),
       }
     }, {
       item: "",
@@ -146,12 +144,12 @@ export class ReduxActions<Model, RequiredProps extends object = {}>{
 
   beforeFetch({
     config,
-    props = {},
+    props = {} as RequiredProps & OwnProps,
     params,
   }: {
     config: ARCConfig<Model,RequiredProps>
-    props: AnyProps
-    params: ComponentPropsWithRequiredModelParams
+    props: RequiredProps & OwnProps
+    params: RequiredProps
   }): ARCConfig<Model, RequiredProps> {
     //DECORATE URLS
     return {
@@ -162,7 +160,7 @@ export class ReduxActions<Model, RequiredProps extends object = {}>{
   }
 
   /** EDITING **/
-  edit(data: any, params: ComponentPropsWithRequiredModelParams) {
+  edit(data: any, params: RequiredProps) {
     return (dispatch: Dispatch) => {
       dispatch({
         type: this.decorate(ACTIONS.EDIT),
@@ -174,10 +172,10 @@ export class ReduxActions<Model, RequiredProps extends object = {}>{
   /** SINGLE ITEM **/
 
   standAloneFetchOne(
-    _params: ComponentPropsWithRequiredModelParams,
+    _params: RequiredProps,
     config: ARCConfig<Model,RequiredProps>,
-    _props: AnyProps,
-    axiosOptions: ARCAxiosOptions<Model, RequiredProps>
+    _props: RequiredProps & OwnProps,
+    axiosOptions: ARCAxiosOptions<Model, RequiredProps, OwnProps>
   ): AxiosPromise<Model> {
     return this.axios({
       // methods are already lowercased in setupMethods
@@ -190,9 +188,9 @@ export class ReduxActions<Model, RequiredProps extends object = {}>{
 
 
   fetchOne(
-    params: ComponentPropsWithRequiredModelParams,
-    props: AnyProps = {},
-    axiosOptions: ARCAxiosOptions<Model, RequiredProps>
+    params: RequiredProps,
+    props: RequiredProps & OwnProps,
+    axiosOptions: ARCAxiosOptions<Model, RequiredProps, OwnProps>
   ) {
     return (dispatch: Dispatch) => {
       const retryConditionFn =

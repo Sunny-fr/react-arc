@@ -5,7 +5,7 @@ import { configureStore } from '@reduxjs/toolkit';
 import { createReducer } from '../../src/reducers/createReducer';
 import axios from 'axios';
 import {combineReducers} from "redux";
-import {ARCConfig, ARCMetaCollectionMap, ARCStoreState, ComponentPropsWithRequiredModelParams, core} from "../../src";
+import {ARCConfig, ARCMetaCollectionMap, ARCStoreState, core} from "../../src";
 
 
 vi.mock('axios');
@@ -15,7 +15,10 @@ describe('ReduxActions', () => {
     id: number;
     name: string;
   }
-  const ARCConfig:ARCConfig<SampleModel> = {
+  type RequiredProps = {
+    id: string;
+  }
+  const ARCConfig:ARCConfig<SampleModel, RequiredProps> = {
     name: 'test',
     modelProps: ['id'],
     paths: {
@@ -43,14 +46,14 @@ describe('ReduxActions', () => {
     type RootState = ReturnType<typeof store.getState>
 
 
-    const actions = new ReduxActions({ config: ARCConfig });
+    const actions = new ReduxActions<SampleModel, RequiredProps>({ config: ARCConfig });
     const props = { id: '1' };
     // props are correct to we don't check null
     // for the sake of this test
-    const params = core.getParams(ARCConfig, props) as ComponentPropsWithRequiredModelParams
+    const params = core.getParams(ARCConfig, props) as RequiredProps;
     const modelKey = core.getKey(ARCConfig, params) as string as keyof ARCMetaCollectionMap<SampleModel>;
 
-    await store.dispatch(actions.fetchOne(params, {}, {}));
+    await store.dispatch(actions.fetchOne(params, params, {}));
 
     const state = store.getState() as RootState
     const reducerState = state.test as ARCStoreState<SampleModel>

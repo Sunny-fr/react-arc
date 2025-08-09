@@ -1,35 +1,34 @@
 import {ARCConfig, ARCConfigHeaders, ARCHttpRestMethodMap,} from "../types/config.types"
 import {getParams, initializeConfig, interpolate} from "../utils"
-import {AnyProps, ComponentPropsWithRequiredModelParams,} from "../types/components.types"
 
-interface ARCParams<Model> {
-  ARCConfig: ARCConfig<Model>
+interface ARCParams<Model, RequiredProps> {
+  ARCConfig: ARCConfig<Model, RequiredProps>
 }
 
-export class ARC<Model> {
-  config: ARCConfig<Model>
+export class ARC<Model, RequiredProps, OwnProps = {}> {
+  config: ARCConfig<Model, RequiredProps>
 
-  constructor({ ARCConfig }: ARCParams<Model>) {
+  constructor({ ARCConfig }: ARCParams<Model, RequiredProps>) {
     this.config = ARC.createConfig(ARCConfig)
   }
 
-  static createConfig<Model>(ARCConfig: ARCConfig<Model>): ARCConfig<Model> {
+  static createConfig<Model, RequiredProps>(ARCConfig: ARCConfig<Model, RequiredProps>): ARCConfig<Model, RequiredProps> {
     const config = ARC.extendConfig(ARCConfig)
     config.headers = ARC.extendHeaders(config)
     config.methods = ARC.extendMethods(config)
     return config
   }
 
-  static extendConfig<Model>(ARCConfig: ARCConfig<Model>): ARCConfig<Model> {
+  static extendConfig<Model, RequiredProps>(ARCConfig: ARCConfig<Model, RequiredProps>): ARCConfig<Model, RequiredProps> {
     return initializeConfig(ARCConfig)
   }
 
-  static extendHeaders<Model>(ARCConfig: ARCConfig<Model>): ARCConfigHeaders {
+  static extendHeaders<Model, RequiredProps>(ARCConfig: ARCConfig<Model,RequiredProps>): ARCConfigHeaders {
     const headers = ARCConfig.headers || {}
     return { ...headers }
   }
 
-  static extendMethods<Model>(extendedConfig: ARCConfig<Model>): ARCHttpRestMethodMap {
+  static extendMethods<Model,RequiredProps>(extendedConfig: ARCConfig<Model, RequiredProps>): ARCHttpRestMethodMap {
     const { methods } = extendedConfig
     return {
       // @ts-ignore Default methods are already extended
@@ -43,26 +42,26 @@ export class ARC<Model> {
     }
   }
 
-  hasRequiredParams(props: AnyProps): boolean {
+  hasRequiredParams(props: RequiredProps & OwnProps): boolean {
     return this.config.modelProps.every((prop) => {
-      return typeof props[prop] !== "undefined"
+      return typeof props[prop as keyof (RequiredProps & OwnProps)] !== "undefined"
     })
   }
 
-  extractParams(props: AnyProps): ComponentPropsWithRequiredModelParams {
+  extractParams(props: RequiredProps): RequiredProps {
     return getParams(this.config, props)
   }
 
   applyHeaders(
     headers: ARCConfigHeaders = {},
-    props: AnyProps
+    props: RequiredProps
   ): ARCConfigHeaders {
     // MUST BE PROPS !!!
     // OR PARAMS MUST TAKE THE CHARGE OF HAVING SPECIALS PROPS SUCH AS TOKEN/BEARERS
     return Object.keys(headers).reduce((state, header) => {
       return {
         ...state,
-        [header]: interpolate(headers[header], props),
+        [header]: interpolate(headers[header], props as object),
       }
     }, {})
   }
@@ -72,16 +71,16 @@ export class ARC<Model> {
     params,
     options
   }: {
-    props: AnyProps
-    params: ComponentPropsWithRequiredModelParams
+    props: RequiredProps & OwnProps
+    params: RequiredProps
     options?: {
       signal?: AbortSignal
     }
   }) {
-    const p: ComponentPropsWithRequiredModelParams =
+    const p: RequiredProps  =
       params || this.extractParams(props)
     return fetch(
-      interpolate(this.config.paths.read || this.config.paths.item, p),
+      interpolate(this.config.paths.read || this.config.paths.item, p as object),
       {
         // @ts-ignore
         method: this.config.methods.read,
@@ -95,12 +94,12 @@ export class ARC<Model> {
     props,
     params,
   }: {
-    props: AnyProps
-    params: ComponentPropsWithRequiredModelParams
+    props: RequiredProps & OwnProps
+    params: RequiredProps
   }) {
     const p = params || this.extractParams(props)
     return fetch(
-      interpolate(this.config.paths.delete || this.config.paths.item, p),
+      interpolate(this.config.paths.delete || this.config.paths.item, p as object),
       {
         // @ts-ignore
         method: this.config.methods.delete,
@@ -114,14 +113,14 @@ export class ARC<Model> {
     body,
     params,
   }: {
-    props: AnyProps
+    props: RequiredProps & OwnProps
     body: any
-    params: ComponentPropsWithRequiredModelParams
+    params: RequiredProps
   }) {
     const p = params || this.extractParams(props)
     // WARNING !!
     return fetch(
-      interpolate(this.config.paths.create || this.config.paths.item, p),
+      interpolate(this.config.paths.create || this.config.paths.item, p as object),
       {
         // @ts-ignore
         method: this.config.methods.create,
@@ -136,13 +135,13 @@ export class ARC<Model> {
     body,
     params,
   }: {
-    props: AnyProps
+    props: RequiredProps & OwnProps
     body: any
-    params: ComponentPropsWithRequiredModelParams
+    params: RequiredProps
   }) {
     const p = params || this.extractParams(props)
     return fetch(
-      interpolate(this.config.paths.update || this.config.paths.item, p),
+      interpolate(this.config.paths.update || this.config.paths.item, p as object),
       {
         // @ts-ignore
         method: this.config.methods.update,

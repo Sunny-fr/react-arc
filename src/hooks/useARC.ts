@@ -1,5 +1,4 @@
 import {useCallback, useContext, useEffect, useMemo, useRef} from "react"
-import {AnyProps, ComponentPropsWithRequiredModelParams,} from "../types/components.types"
 import {ARCConfig} from "../types/config.types"
 import {ARCRootState} from "../types/connectors.types";
 
@@ -12,26 +11,25 @@ import {ARCAxiosOptions} from "../types/actions.types";
 import {AxiosPromise} from "axios";
 import commons from "../commons";
 import {UseARC} from "../types/hooks.connected.types";
-import {fetchingCountSelector, metaModelSelector} from "./selectors";
-import {UnknownAction} from "redux";
+import {metaModelSelector} from "./selectors";
 
 
-interface FetchAuthorizationProps<Model> {
-  ARCConfig: ARCConfig<Model>
+interface FetchAuthorizationProps<Model, RequiredProps> {
+  ARCConfig: ARCConfig<Model,RequiredProps>
   metaModel?: ARCMetaModel<Model> | null
-  props: AnyProps,
-  reduxContext: ReactReduxContextValue<any, UnknownAction> | null
+  props:  RequiredProps,
+  reduxContext: ReactReduxContextValue | null
   options?: {
     skipReFetchStep?: boolean
   }
 }
 
-function fetchAuthorization<Model>({
+function fetchAuthorization<Model, RequiredProps = {}>({
                                      ARCConfig: config,
                                      props,
                                      reduxContext,
                                      options = {}
-                                   }: FetchAuthorizationProps<Model>): boolean {
+                                   }: FetchAuthorizationProps<Model, RequiredProps>): boolean {
 
 
   const modelKey = core.getKey(config, props)
@@ -88,13 +86,13 @@ function fetchAuthorization<Model>({
 }
 
 
-export function useARC<Model, RequiredProps extends object>({
+export function useARC<Model, RequiredProps extends object = {}, OwnProps extends object ={}>({
                                 ARCConfig: initialConfig,
                                 props,
                               }: {
   ARCConfig: ARCConfig<Model, RequiredProps>
-  props: AnyProps
-}): UseARC<Model> {
+  props: RequiredProps & OwnProps
+}): UseARC<Model, RequiredProps> {
   const dispatch = useDispatch()
   const reduxContext = useContext(ReactReduxContext)
   const isMountedRef = useRef(true)
@@ -103,25 +101,28 @@ export function useARC<Model, RequiredProps extends object>({
 
   const [config, actions] = useMemo(() => {
     const config = initializeConfig(initialConfig)
-    const actionsList = new ReduxActions({config})
-    if(config.fetchers?.['fetch']) {
-      actionsList.standAloneFetchOne = config.fetchers['fetch']
+    const reduxActions = new ReduxActions<Model, RequiredProps, OwnProps>({config})
+    if(config.fetchers?.fetch) {
+      reduxActions.standAloneFetchOne = config.fetchers?.fetch
     }
-    return [config, actionsList]
+    return [config, reduxActions]
   }, [initialConfig])
 
   const modelKey = core.getKey(config, props)
   const params = core.getParams(config, props)
 
   const fetchingCount = useSelector<ARCRootState, number>((state) => {
-    return fetchingCountSelector(state, config)
+    if(!state[config.name] || !state[config.name].collection) {
+      return 0
+    }
+    return Object.values(state[config.name].collection).filter((metaModel) => metaModel.metas.fetching).length
   })
   const metaModel = useSelector<ARCRootState, ARCMetaModel<Model> | null>((state) => {
-    return metaModelSelector(state, config, modelKey)
+    return metaModelSelector(state, config.name, modelKey)
   })
-  const _fetchAuthorization = useCallback((props: AnyProps, options: FetchAuthorizationProps<Model>['options']): boolean => {
+  const _fetchAuthorization = useCallback((props: RequiredProps & OwnProps, options: FetchAuthorizationProps<Model, RequiredProps>['options']): boolean => {
 
-    return fetchAuthorization<Model>({
+    return fetchAuthorization<Model, RequiredProps>({
       ARCConfig: config,
       props,
       options: options,
@@ -130,7 +131,7 @@ export function useARC<Model, RequiredProps extends object>({
   }, [config, metaModel, props])
 
 
-  const arcFetch = useCallback((params: ComponentPropsWithRequiredModelParams) => {
+  const arcFetch = useCallback((params: RequiredProps) => {
     // Don't fetch if the component is unmounted
     if (!isMountedRef.current) {
       return Promise.resolve()
@@ -144,7 +145,7 @@ export function useARC<Model, RequiredProps extends object>({
     // Mark fetch as in progress
     // setFetchStatus(prev => ({ ...prev, inProgress: true }))
 
-    const axiosOptions: ARCAxiosOptions<Model, RequiredProps> = {
+    const axiosOptions: ARCAxiosOptions<Model, RequiredProps, OwnProps> = {
       abortController: abortControllerRef.current
     }
 
