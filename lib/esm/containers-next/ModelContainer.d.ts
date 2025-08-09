@@ -1,38 +1,35 @@
 import React from "react";
-import { ContainerHookConfig } from "./Container";
-import { AnyProps, ARCContainerProps, ComponentPropsWithRequiredModelParams, ComponentWithStoreProps } from "../types/components.types";
+import { UseContainerParams } from "./Container";
+import { ARCContainerProps } from "../types/components.types";
 import { ARCMetas } from "../types/model.types";
-type AnyArcComponentProps<Model> = ComponentWithStoreProps | ARCContainerProps<Model>;
-export interface ModelContainerHookProps<Model, RequiredProps> extends ContainerHookConfig<Model, RequiredProps> {
-    props: AnyProps;
+export interface UseModelContainer<Model, RequiredProps = {}, OwnProps = {}> extends UseContainerParams<Model, RequiredProps> {
+    props: ARCContainerProps<Model, RequiredProps, OwnProps>;
 }
-export declare function useModelContainer<Model, RequiredProps extends object = {}>({ ARCConfig, props }: ModelContainerHookProps<Model, RequiredProps>): {
-    isNew: (componentProps?: AnyProps) => boolean;
-    getKey: (componentProps?: AnyProps) => string | null;
-    getParams: (componentProps?: AnyProps) => ComponentPropsWithRequiredModelParams | null;
-    hasRequiredParams: (componentProps?: AnyProps) => boolean;
-    _getModel: (componentProps?: AnyArcComponentProps<Model>) => import("../types/model.types").ARCMetaModel<unknown> | null;
-    fetch: (params: ComponentPropsWithRequiredModelParams) => Promise<void> | Promise<import("axios").AxiosResponse<Model, any>>;
+export declare function useModelContainer<Model, RequiredProps = {}, OwnProps extends object = {}>({ ARCConfig, props }: UseModelContainer<Model, RequiredProps, OwnProps>): {
+    isNew: (componentProps?: ARCContainerProps<Model, RequiredProps, OwnProps>) => boolean;
+    getKey: (componentProps?: ARCContainerProps<Model, RequiredProps, OwnProps>) => string | null;
+    getParams: (componentProps?: ARCContainerProps<Model, RequiredProps, OwnProps>) => RequiredProps | null;
+    hasRequiredParams: (componentProps?: ARCContainerProps<Model, RequiredProps, OwnProps>) => boolean;
+    _getModel: (componentProps: ARCContainerProps<Model, RequiredProps, OwnProps>) => import("../types/model.types").ARCMetaModel<Model> | null;
+    fetch: (params: RequiredProps) => Promise<void> | Promise<import("axios").AxiosResponse<Model, any>>;
     getFetchingCount: () => number;
-    getModel: (componentProps?: ARCContainerProps<Model, RequiredProps>) => any;
-    getMetas: (prop: keyof ARCMetas, componentProps?: ARCContainerProps<Model, RequiredProps>) => any;
-    getError: (componentProps?: ARCContainerProps<Model, RequiredProps>) => any;
-    isSyncing: (componentProps?: ARCContainerProps<Model, RequiredProps>) => any;
-    isLoaded: (componentProps?: ARCContainerProps<Model, RequiredProps>) => any;
-    allowReFetch: (componentProps?: AnyArcComponentProps<Model>) => boolean;
-    errorReFetch: (componentProps?: AnyArcComponentProps<Model>) => boolean;
-    getModelDataTyped: () => any;
+    getModel: (componentProps?: ARCContainerProps<Model, RequiredProps, OwnProps>) => Model | null;
+    getMetas: (prop: keyof ARCMetas, componentProps?: ARCContainerProps<Model, RequiredProps, OwnProps>) => any;
+    getError: (componentProps?: ARCContainerProps<Model, RequiredProps, OwnProps>) => any;
+    isSyncing: (componentProps?: ARCContainerProps<Model, RequiredProps, OwnProps>) => boolean;
+    isLoaded: (componentProps?: ARCContainerProps<Model, RequiredProps, OwnProps>) => boolean;
+    allowReFetch: (componentProps?: ARCContainerProps<Model, RequiredProps, OwnProps>) => boolean;
+    errorReFetch: (componentProps?: ARCContainerProps<Model, RequiredProps, OwnProps>) => boolean;
+    getModelDataTyped: () => Model | null | undefined;
     prepareFetch: ({ skipReFetchStep }: {
         skipReFetchStep?: boolean | undefined;
     }) => void;
-    ARCConfig: import("..").ARCConfig<Model, {}>;
-    actions: import("..").ReduxActions<Model, {}>;
+    ARCConfig: import("..").ARCConfig<Model, RequiredProps>;
+    actions: import("..").ReduxActions<Model, RequiredProps, {}>;
     core: import("../actions/core").CoreMethods;
-    abortController: React.MutableRefObject<AbortController | null>;
-    updateARC: (config: import("..").ARCConfig<Model, {}>) => void;
+    abortController: React.RefObject<AbortController | null>;
+    updateARC: (config: import("..").ARCConfig<Model, RequiredProps>) => void;
 };
-export type ModelContainerProps<P, Model, RequiredProps extends object = {}> = P & ARCContainerProps<Model, RequiredProps> & {
-    component: React.ComponentType<any>;
-};
-export declare function ModelContainer<P, Model, RequiredProps extends object = {}>(props: ModelContainerProps<P, Model, RequiredProps>): React.JSX.Element | null;
+export type ModelContainerProps<Model, RequiredProps = {}, OwnProps = {}> = OwnProps & ARCContainerProps<Model, RequiredProps, OwnProps> & {};
+export declare function ModelContainer<Model, RequiredProps = {}, OwnProps = {}>(props: ModelContainerProps<Model, RequiredProps, OwnProps>): React.JSX.Element | null;
 export default ModelContainer;

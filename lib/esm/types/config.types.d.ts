@@ -1,7 +1,6 @@
 /**
  * Config
  */
-import { AnyProps, ComponentPropsWithRequiredModelParams } from "./components.types";
 import { ARCModel } from "./model.types";
 import { ComponentProps } from "react";
 import { ARCAxiosOptions } from "./actions.types";
@@ -44,15 +43,15 @@ export interface ARCConfigPaths extends Partial<Record<string, string>> {
     update?: string;
     create?: string;
 }
-export interface RetryConditionFnCallbackParams<Model, RequiredProps = {}> {
-    params: ComponentPropsWithRequiredModelParams;
+export interface RetryConditionFnCallbackParams<Model, RequiredProps = {}, OwnProps = {}> {
+    params: RequiredProps;
     config: ARCConfig<Model, RequiredProps>;
     props: ComponentProps<any>;
-    axiosOptions?: ARCAxiosOptions<Model, RequiredProps>;
+    axiosOptions?: ARCAxiosOptions<Model, RequiredProps, OwnProps>;
     tryNumber: number;
 }
-export type RetryConditionFn<Model, RequiredProps = {}> = (arg0: any, arg1: RetryConditionFnCallbackParams<Model, RequiredProps>) => boolean;
-export type Fetcher<Model, RequiredProps> = (params: RequiredProps, config: ARCConfig<Model>, props: AnyProps, axiosOptions: ARCAxiosOptions<Model, RequiredProps>) => AxiosPromise<Model>;
+export type RetryConditionFn<Model, RequiredProps = {}, OwnProps extends object = {}> = (arg0: any, arg1: RetryConditionFnCallbackParams<Model, RequiredProps, OwnProps>) => boolean;
+export type Fetcher<Model, RequiredProps, OwnProps = {}> = (params: RequiredProps, config: ARCConfig<Model>, props: RequiredProps & OwnProps, axiosOptions: ARCAxiosOptions<Model, RequiredProps, OwnProps>) => AxiosPromise<Model>;
 export interface FetcherMap<Model, RequiredProps> {
     'fetch': Fetcher<Model, RequiredProps>;
     [key: string]: Fetcher<Model, RequiredProps>;
@@ -64,7 +63,7 @@ export interface ARCConfig<Model, RequiredProps = {}> {
     paths: ARCConfigPaths;
     methods?: ARCHttpRestMethodMap;
     defaultModel?: ARCModel<Model>;
-    defaultProps?: Partial<ComponentProps<any>>;
+    defaultProps?: any;
     fetchOnce?: boolean;
     refetchOnError?: boolean;
     retryOnError?: boolean;

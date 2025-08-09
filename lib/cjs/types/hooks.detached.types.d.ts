@@ -1,5 +1,4 @@
 import { ARC } from "../hooks/arc";
-import { AnyProps, ComponentPropsWithRequiredModelParams } from "./components.types";
 export type ARCResponse<Model> = Model | null | undefined;
 /**
  * État interne du hook useARC
@@ -14,49 +13,49 @@ export interface UseDetachedARCState<Model> {
 /**
  * Interface pour les méthodes CRUD exposées par le hook useARC
  */
-export interface UseDetachedARCMethods<Model> {
+export interface UseDetachedARCMethods<Model, RequiredProps, OwnProps = {}> {
     /**
      * Instance ARC utilisée en interne
      */
-    arc: ARC<Model>;
+    arc: ARC<Model, RequiredProps, OwnProps>;
     /**
      * Récupère une ressource
      */
     get: (args: {
-        props?: AnyProps;
-        params: ComponentPropsWithRequiredModelParams;
+        props?: RequiredProps & OwnProps;
+        params: RequiredProps;
     }) => Promise<ARCResponse<Model>>;
     /**
      * Supprime une ressource
      */
     remove: (args: {
-        props?: AnyProps;
-        params: ComponentPropsWithRequiredModelParams;
+        props?: RequiredProps & OwnProps;
+        params: RequiredProps;
     }) => Promise<ARCResponse<Model>>;
     /**
      * Crée une nouvelle ressource
      */
     create: (args: {
-        props?: AnyProps;
-        params: ComponentPropsWithRequiredModelParams;
+        props?: RequiredProps & OwnProps;
+        params: RequiredProps;
         body: any;
     }) => Promise<ARCResponse<Model>>;
     /**
      * Met à jour une ressource existante
      */
     update: (args: {
-        props?: AnyProps;
-        params: ComponentPropsWithRequiredModelParams;
+        props?: RequiredProps & OwnProps;
+        params: RequiredProps;
         body: any;
     }) => Promise<ARCResponse<Model>>;
     /**
      * Extrait les paramètres requis à partir des props
      */
-    extract: (props: AnyProps) => ComponentPropsWithRequiredModelParams;
+    extract: (props: RequiredProps) => RequiredProps;
     /**
      * Alias pour extract
      */
-    extractParams: (props: AnyProps) => ComponentPropsWithRequiredModelParams;
+    extractParams: (props: RequiredProps) => RequiredProps;
     /**
      * Permet d'exécuter une requête personnalisée
      */
@@ -65,10 +64,10 @@ export interface UseDetachedARCMethods<Model> {
 /**
  * Type de retour complet du hook useARC
  */
-export interface UseDetachedARC<Model> {
+export interface UseDetachedARC<Model, RequiredProps, OwnProps = {}> {
     error: null | any;
     loading: boolean;
     loaded: boolean;
     response: ARCResponse<Model>;
-    arc: UseDetachedARCMethods<Model>;
+    arc: UseDetachedARCMethods<Model, RequiredProps, OwnProps>;
 }
