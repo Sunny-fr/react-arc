@@ -25,6 +25,6 @@ export const album: ARCConfig<Album, AlbumProps> = {
 }
 
 
-export const withAlbum = createHOC<AlbumProps>({
+export const withAlbum = createHOC({
   ARCConfig: album,
 })
