@@ -14,7 +14,9 @@
     "build:esm": "tsc",
     "build:cjs": "tsc --module commonjs --outDir lib/cjs",
     "test": "vitest",
-    "test:ui": "vitest --ui"
+    "test:ui": "vitest --ui",
+    "lint": "eslint . --ext .ts,.tsx",
+    "lint:fix": "npm run lint -- --fix"
   },
   "prettier": {
     "semi": false
@@ -56,12 +58,18 @@
     "@types/react": "^19.1.8",
     "@types/react-dom": "^19.1.6",
     "@types/redux-mock-store": "^1.5.0",
+    "@typescript-eslint/eslint-plugin": "^8.39.0",
+    "@typescript-eslint/parser": "^8.39.0",
     "@vitest/ui": "^3.2.4",
+    "eslint": "^9.33.0",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-hooks": "^5.2.0",
     "jsdom": "^26.1.0",
     "react-dom": "^19.1.1",
     "redux-mock-store": "^1.5.5",
     "redux-thunk": "^3.1.0",
     "typescript": "~5.8.3",
+    "typescript-eslint": "^8.39.0",
     "vitest": "^3.2.4"
   }
 }
