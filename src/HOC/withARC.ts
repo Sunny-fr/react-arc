@@ -31,7 +31,7 @@ export function connectFn<Model, RequiredProps, OwnProps = {}>(config: ARCConfig
 
     const modelKey = core.getKey(config, mergedProps)
 
-    const metaModel = metaModelSelector(store, config, modelKey)
+    const metaModel = metaModelSelector(store, config.name, modelKey)
 
     const loaded = metaModel?.metas?.loaded || false
     const model = metaModel?.model || config.defaultModel || null

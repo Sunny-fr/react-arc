@@ -33,7 +33,7 @@ function fetchAuthorization<Model, RequiredProps = {}>({
 
 
   const modelKey = core.getKey(config, props)
-  const metaModel = metaModelSelector(reduxContext?.store.getState(), config, modelKey)
+  const metaModel = metaModelSelector(reduxContext?.store.getState(), config.name, modelKey)
   if (core.isNew(config, props)) {
     // console.log('//model is new no data to be retrieved')
     return false

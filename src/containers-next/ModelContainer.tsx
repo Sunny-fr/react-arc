@@ -219,7 +219,7 @@ export function useModelContainer<Model, RequiredProps = {}, OwnProps extends ob
 
 
     const modelKey = core.getKey(ARCConfig, props)
-    const metaModel = metaModelSelector(reduxContext?.store.getState(), ARCConfig, modelKey)
+    const metaModel = metaModelSelector(reduxContext?.store.getState(), ARCConfig.name, modelKey)
 
     //const metaModel = componentProps?.metaModel
     if (isNew(componentProps)) {

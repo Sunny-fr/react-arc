@@ -199,7 +199,7 @@ function modelPicker<Model, RequiredProps ={}, OwnProps = {}>(
       ...modelParams,
     } as RequiredProps
     const modelKey = getKey<Model, RequiredProps, OwnProps>(config, props as  ARCContainerProps<Model, RequiredProps, OwnProps>)
-    const metaModel = metaModelSelector(rootState, config, modelKey)
+    const metaModel = metaModelSelector(rootState, config.name, modelKey)
     const model = getModel(metaModel)
     if (model) {
       models.push(model)
