@@ -128,7 +128,9 @@ export function useARC<Model, RequiredProps extends object = {}, OwnProps extend
       options: options,
       reduxContext
     })
-  }, [config, metaModel, props])
+  },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [config, metaModel, props])
 
 
   const arcFetch = useCallback((params: RequiredProps) => {
@@ -174,7 +176,9 @@ export function useARC<Model, RequiredProps extends object = {}, OwnProps extend
     delayedTimeoutRef.current = window.setTimeout(() => {
       prepareFetch({skipReFetchStep})
     }, config.requestFetchDelay) as unknown as number
-  }, [config])
+  },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [config])
 
 
   const prepareFetch = useCallback(({skipReFetchStep = false}) => {
@@ -207,10 +211,9 @@ export function useARC<Model, RequiredProps extends object = {}, OwnProps extend
       }
       arcFetch(params)
     }
-  }, [
-    arcFetch,
-    params
-  ])
+  },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [arcFetch, params])
 
 
   useEffect(() => {
@@ -235,7 +238,9 @@ export function useARC<Model, RequiredProps extends object = {}, OwnProps extend
         abortControllerRef.current = null
       }
     }
-  }, [])
+  },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [])
 
   //
   // const arcMethods: UseARCMethods<Model> = {

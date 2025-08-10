@@ -30,7 +30,7 @@ export class Container<Model, RequiredProps, OwnProps, State = any> extends Reac
   }
 
   getTrueStoreState() {
-    // @ts-ignore
+    // @ts-ignore this.context.store.getState() is not typed yet
     const rootState:ARCRootState = this.context.store.getState()
     const namespace = this.ARCConfig.name
     const store: ARCStoreState<Model> = rootState[namespace]

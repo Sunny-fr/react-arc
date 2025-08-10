@@ -30,7 +30,7 @@ describe('ReduxActions', () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
-    // @ts-ignore
+    // @ts-expect-error mock axios create method
     axios.create = vi.fn(() => vi.fn().mockResolvedValue({ data: responseData }));
   });
 

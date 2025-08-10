@@ -118,7 +118,7 @@ export function useModelContainer<Model, RequiredProps = {}, OwnProps extends ob
    */
   const _getModel = useCallback((componentProps: ARCContainerProps<Model, RequiredProps, OwnProps>) => {
     return core._getModel(componentProps.metaModel)
-  }, [core, ARCConfig, props])
+  }, [core])
 
   /**
    * Returns meta information (loaded, error, etc.)
@@ -188,7 +188,9 @@ export function useModelContainer<Model, RequiredProps = {}, OwnProps extends ob
    */
   const getFetchingCount = useCallback(() => {
     return fetchingCountSelector(reduxContext?.store.getState(), ARCConfig.name)
-  }, [ARCConfig])
+  },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [ARCConfig])
 
   /**
    * Determines if a refetch is allowed based on the fetchOnce flag
@@ -197,7 +199,7 @@ export function useModelContainer<Model, RequiredProps = {}, OwnProps extends ob
    */
   const allowReFetch = useCallback((componentProps?: ARCContainerProps<Model, RequiredProps, OwnProps>) => {
     return core.allowReFetch(ARCConfig, componentProps?.metaModel)
-  }, [core, ARCConfig, props])
+  }, [core, ARCConfig])
 
   /**
    * Determines if a refetch is allowed on error
@@ -206,7 +208,7 @@ export function useModelContainer<Model, RequiredProps = {}, OwnProps extends ob
    */
   const errorReFetch = useCallback((componentProps?: ARCContainerProps<Model, RequiredProps, OwnProps>) => {
     return core.errorReFetch(ARCConfig, componentProps?.metaModel)
-  }, [core, ARCConfig, props])
+  }, [core, ARCConfig])
 
   /**
    * Determines if fetch is authorized based on several conditions
@@ -253,9 +255,10 @@ export function useModelContainer<Model, RequiredProps = {}, OwnProps extends ob
     ) {
       return true
     }
-
     return false
-  }, [core, isNew, hasRequiredParams, allowReFetch, errorReFetch, ARCConfig])
+  },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [core, isNew, hasRequiredParams, allowReFetch, errorReFetch, ARCConfig])
 
   /**
    * Get the model data with appropriate fallback
@@ -275,7 +278,9 @@ export function useModelContainer<Model, RequiredProps = {}, OwnProps extends ob
     delayedTimeoutRef.current = window.setTimeout(() => {
       prepareFetch({ skipReFetchStep })
     }, ARCConfig.requestFetchDelay) as unknown as number
-  }, [ARCConfig]) // Note: Will add prepareFetch to dependencies after it's defined
+  },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [ARCConfig]) // Note: Will add prepareFetch to dependencies after it's defined
 
   /**
    * Prepares a fetch with max pending request check
@@ -350,7 +355,9 @@ export function useModelContainer<Model, RequiredProps = {}, OwnProps extends ob
         abortControllerRef.current = null
       }
     }
-  }, []) // Empty deps array ensures this runs only on mount/unmount
+  },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []) // Empty deps array ensures this runs only on mount/unmount
 
   // Separate update effect for props changes - avoids restarting the complete lifecycle
   useEffect(() => {

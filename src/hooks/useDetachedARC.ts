@@ -58,7 +58,9 @@ export function useDetachedARC<Model, RequiredProps extends object, OwnProps={}>
       // initial fetch if required params are present
       handle(() => arc.get({ props, params: params.current }))
     }
-  }, [params])
+  },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [params])
 
   const arcMethods: UseDetachedARCMethods<Model, RequiredProps> = {
     arc,

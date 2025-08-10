@@ -82,8 +82,8 @@ export class ARC<Model, RequiredProps, OwnProps = {}> {
     return fetch(
       interpolate(this.config.paths.read || this.config.paths.item, p as object),
       {
-        // @ts-ignore
-        method: this.config.methods.read,
+
+        method: this.config.methods!.read,
         headers: this.applyHeaders(this.config.headers, props),
         signal: options?.signal
       }
@@ -101,8 +101,7 @@ export class ARC<Model, RequiredProps, OwnProps = {}> {
     return fetch(
       interpolate(this.config.paths.delete || this.config.paths.item, p as object),
       {
-        // @ts-ignore
-        method: this.config.methods.delete,
+        method: this.config.methods!.delete,
         headers: this.applyHeaders(this.config.headers, props),
       }
     ).then(ARC.json)
@@ -122,8 +121,7 @@ export class ARC<Model, RequiredProps, OwnProps = {}> {
     return fetch(
       interpolate(this.config.paths.create || this.config.paths.item, p as object),
       {
-        // @ts-ignore
-        method: this.config.methods.create,
+        method: this.config.methods!.create,
         headers: this.applyHeaders(this.config.headers, props),
         body: JSON.stringify(body),
       }
@@ -143,8 +141,7 @@ export class ARC<Model, RequiredProps, OwnProps = {}> {
     return fetch(
       interpolate(this.config.paths.update || this.config.paths.item, p as object),
       {
-        // @ts-ignore
-        method: this.config.methods.update,
+        method: this.config.methods!.update,
         headers: this.applyHeaders(this.config.headers, props),
         body: JSON.stringify(body),
       }
@@ -154,7 +151,7 @@ export class ARC<Model, RequiredProps, OwnProps = {}> {
   static jsonOrText(content: any) {
     try {
       return JSON.parse(content)
-    } catch (e) {
+    } catch  {
       return content
     }
   }

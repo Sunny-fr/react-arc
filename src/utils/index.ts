@@ -128,7 +128,7 @@ export function interpolate(str: string | null, params: object): string {
     if(!stringIsReplaceable(prev)){
       return prev
     }
-    // @ts-ignore
+    // @ts-ignore any type is fine here
     const elm_val:string|number = params[current]
     // skip functions
     if (typeof elm_val === "function") return prev
