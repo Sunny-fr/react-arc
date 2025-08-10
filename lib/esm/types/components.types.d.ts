@@ -29,7 +29,8 @@ export interface ContainerVitalProps<Model, RequiredProps = {}, OwnProps = {}> {
     ARCConfig: ARCConfig<Model, RequiredProps>;
     component: RenderComponent<Model, RequiredProps, OwnProps>;
 }
-export type RenderComponent<Model, RequiredProps, OwnProps> = React.ComponentType<WithARCInjectProps<Model, RequiredProps, OwnProps> & RenderFetchParams<Model, RequiredProps>>;
+export type RenderComponentProps<Model, RequiredProps = {}, OwnProps = {}> = WithARCInjectProps<Model, RequiredProps, OwnProps> & RenderFetchParams<Model, RequiredProps>;
+export type RenderComponent<Model, RequiredProps, OwnProps> = React.ComponentType<RenderComponentProps<Model, RequiredProps, OwnProps>>;
 type ARCContainerFetcher<Model, RequiredProps, OwnProps = {}> = (params?: AnyProps, axiosOptions?: ARCAxiosOptions<Model, RequiredProps, OwnProps>) => void;
 export type ARCContainerProps<Model, RequiredProps = {}, OwnProps = {}> = WithARCInjectProps<Model, RequiredProps, OwnProps> & ContainerVitalProps<Model, RequiredProps, OwnProps> & RequiredProps & OwnProps;
 export type ARCContainer<Model, RequiredProps = {}, OwnProps = {}> = React.ComponentType<ARCContainerProps<Model, RequiredProps, OwnProps>>;
