@@ -11,16 +11,32 @@ interface CreateHOCParams<Model, RequiredProps = {}, OwnProps = {}> {
 }
 
 export function createHOC<Model, RequiredProps = {} , OwnProps = {}>({Container = ModelContainer, ARCConfig}: CreateHOCParams<Model, RequiredProps, OwnProps> ) {
-  return function GeneratedHOC<OverriddenRequiredProps extends RequiredProps>(Wrapped: RenderComponent<Model, OverriddenRequiredProps, OwnProps>)  {
-    const GeneratedARCContainer = withARC<Model, RequiredProps, OwnProps>(ARCConfig)(Container)
-    return function Component<OwnPropsPassed extends OwnProps>(props: OverriddenRequiredProps & OwnPropsPassed) {
-      const extendedProps = {
-        ...props,
-        component: Wrapped
-      }
-      //@ts-ignore
+  return function GeneratedHOC<OverriddenRequiredProps extends RequiredProps = RequiredProps>(Wrapped: RenderComponent<Model, OverriddenRequiredProps, OwnProps>)  {
+    const GeneratedARCContainer = withARC<Model, RequiredProps, OwnProps>(ARCConfig)(Container) as ARCContainer<Model,OverriddenRequiredProps, OwnProps>
+    return function Component<OwnPropsPassed extends OwnProps = OwnProps>(visibleProps: OwnPropsPassed & OverriddenRequiredProps) {
+      const actualProps = visibleProps as ARCContainerProps<Model,RequiredProps, OwnProps>
+      // const extendedProps = {
+      //   ...actualProps,
+      //   component: Wrapped
+      // }
+      //{...extendedProps}
+
       return <GeneratedARCContainer
-        {...extendedProps}
+        {...actualProps as OverriddenRequiredProps & OwnPropsPassed}
+        ARCConfig={ARCConfig}
+        model={actualProps.model}
+        modelKey={actualProps.modelKey}
+        metaModel={actualProps.metaModel}
+        metas={actualProps.metas}
+        loaded={actualProps.loaded}
+        error={actualProps.error}
+        loading={actualProps.loading}
+        isNew={actualProps.isNew}
+        component={Wrapped}
+        dispatch={actualProps.dispatch}
+
+
+
       /> as unknown as React.ReactElement<ARCContainerProps<Model, OverriddenRequiredProps, OwnProps>>
     }
   }

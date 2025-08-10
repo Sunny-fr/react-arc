@@ -51,7 +51,7 @@ export function connectFn<Model, RequiredProps, OwnProps = {}>(config: ARCConfig
       loading,
       metas,
       isNew,
-    } as unknown as ConnectorProps<Model, RequiredProps, OwnProps>
+    } as ConnectorProps<Model, RequiredProps, OwnProps>
   }
 }
 
@@ -59,12 +59,14 @@ export function connectFn<Model, RequiredProps, OwnProps = {}>(config: ARCConfig
 export function withARC<Model, RequiredProps = {}, OwnProps = {}>(config: ARCConfig<Model, RequiredProps>) {
   const extendedConfig:ARCConfig<Model, RequiredProps> = { ...getDefaultConfig(), ...config }
   function createHOC(Wrapped: ARCContainer<Model, RequiredProps, OwnProps>) {
-    const Connector = connect<any, any, RequiredProps & OwnProps, ARCRootState>(
+    // connect<any, any, RequiredProps & OwnProps, ARCRootState>
+    const Connector = connect(
       connectFn<Model, RequiredProps, OwnProps>(extendedConfig)
     )(Wrapped)
     Connector.displayName = `withARC(${Wrapped.displayName || Wrapped.name || 'Component'})`
     //type PropsFromRedux = ConnectedProps<typeof Connector>
-    return Connector //as ARCContainer<Model, RequiredProps, OwnProps & PropsFromRedux>
+    //ConnectedComponent
+    return Connector //as React.ComponentType<PropsFromRedux & RequiredProps & OwnProps>
   }
   return createHOC
 }
