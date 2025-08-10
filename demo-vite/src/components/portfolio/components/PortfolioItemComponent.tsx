@@ -2,13 +2,13 @@ import {Loader} from "@/layout/components/loader/Loader.tsx"
 import {Toolbar} from "@/layout/components/toolbar/Toolbar.tsx"
 import {Toast} from "@/layout/components/toast/Toast.tsx"
 import {LargeError} from "@/layout/components/error/LargeError.tsx"
-import {type PortfolioProps, withPortfolio} from "../arc/portfolio.arc.ts";
+import {withPortfolio} from "../arc/portfolio.arc.ts";
 import {Link} from "react-router-dom";
 import {Button} from "@/layout/ui/button.tsx";
 import {Card, CardContent, CardFooter, CardHeader, CardTitle} from "@/layout/ui/card.tsx";
 import {SiteHeader} from "@/components/site-header.tsx";
 
-const PortfolioItemComponent: React.FC<PortfolioProps> = withPortfolio(({model, error, loaded, loading}) => {
+const PortfolioItemComponent = withPortfolio(({model, error, loaded, loading}) => {
   if (error) {
     return (
       <LargeError

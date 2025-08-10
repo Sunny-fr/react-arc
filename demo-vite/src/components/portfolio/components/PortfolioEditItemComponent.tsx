@@ -1,8 +1,8 @@
 import {Loader} from "@/layout/components/loader/Loader.tsx"
 import {Toast} from "@/layout/components/toast/Toast.tsx"
 import {Error} from "@/layout/components/error/Error.tsx"
-import {useARC} from "../../../../../src";
-import {type Portfolio, portfolio} from "../arc/portfolio.arc.ts";
+import {useARC, type ARCConfig} from "../../../../../src";
+import {type Portfolio, portfolio, type PortfolioProps} from "../arc/portfolio.arc.ts";
 import {useEffect, useState} from "react";
 import {Link} from "react-router-dom";
 import {SiteHeader} from "@/components/site-header.tsx";
@@ -12,6 +12,7 @@ import {Input} from "@/layout/ui/input.tsx";
 import {Textarea} from "@/layout/ui/textarea.tsx";
 import {Label} from "@/layout/ui/label.tsx";
 import LargeError from "@/layout/components/error/LargeError.tsx";
+
 
 interface FormRowProps {
   name: string;
@@ -30,7 +31,7 @@ function FormRow({name, label, children}: FormRowProps) {
   )
 }
 
-interface PortfolioEditItemComponentProps {
+interface PortfolioEditItemComponentProps extends Omit<PortfolioProps, 'id'>{
   id?: string
 }
 
@@ -42,8 +43,8 @@ const PortfolioEditItemComponent:React.FC<PortfolioEditItemComponentProps> = ((p
     data: model,
     error,
     loading,
-  } = useARC({
-    ARCConfig: portfolio,
+  } = useARC<Portfolio,PortfolioEditItemComponentProps>({
+    ARCConfig: portfolio as ARCConfig<Portfolio, PortfolioEditItemComponentProps>,
     props
   })
 

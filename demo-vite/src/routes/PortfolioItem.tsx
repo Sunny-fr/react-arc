@@ -11,7 +11,9 @@ interface PortfolioEditItemProps extends RouteComponentProps<MatchParams>{
 }
 
 export const PortfolioItem:React.FC<PortfolioEditItemProps> = (props) => {
-    return (<PortfolioItemComponent id={props.match.params.id} />)
+    return (<PortfolioItemComponent
+      id={props.match.params.id}
+    />)
 }
 
 export default PortfolioItem
