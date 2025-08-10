@@ -3,9 +3,11 @@ import react from 'eslint-plugin-react'
 import reactHooks from 'eslint-plugin-react-hooks'
 import { globalIgnores } from 'eslint/config'
 
-export default [
+export default tseslint.config([
   globalIgnores(['demo-vite', 'lib', 'node_modules']),
+  // Base recommended for all files (non type-aware)
   ...tseslint.configs.recommended,
+  // React rules for project source files (no type-aware parser)
   {
     files: ['src/**/*.{ts,tsx}'],
     languageOptions: {
@@ -30,4 +32,4 @@ export default [
       react: { version: 'detect' },
     },
   },
-]
+])

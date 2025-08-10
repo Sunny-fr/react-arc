@@ -303,8 +303,8 @@ export const Demo = () => {
       <ArticleWithoutExtendedProps id="123"/>
       <ArticleWithExtendedProps id="123" name="Gus"/>
 
-      {/* TODO: FIX THIS CASE */}
-      <ArticleWithoutExtendedWithChainingProps id="123"/>
+
+      <ArticleWithoutExtendedWithChainingProps />
 
       <ArticleDeclarativeWithoutExtendedWithChainingProps id="123"/>
       <ArticleWithExtendedPropsAndChaining id="123" name="Gus"/>
