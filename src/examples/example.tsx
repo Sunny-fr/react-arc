@@ -11,6 +11,10 @@ type Article = {
   id: string
   title: string
   content: string
+  meta: {
+    createdAt: string
+    updatedAt: string
+  }
 }
 
 const articleConfig: ARCConfig<Article, RequiredArticleProps> = {
@@ -47,7 +51,7 @@ export interface InjectedProps {
 }
 
 
-export function withToken<P>(
+export function withToken<P extends object>(
   Wrapped: React.ComponentType<P & InjectedProps>
 ) {
   function WithToken (ownProps: P) {
@@ -59,23 +63,19 @@ export function withToken<P>(
 }
 
 // HOC THAT DEPENDS/RELIES ON ARC
+export function withARCLoader<P>(
+  Wrapped: React.ComponentType<P>
+): React.ComponentType<P> {
+  function WithARCLoader(props: P & WithARCInjectProps<any>) {
+    const { loaded, error } = props;
 
-interface ErrorAndLoaderHandler<Model, P> extends Omit<WithARCInjectProps<Model,any, P>, 'model'> {
-  model: Model
-}
+    if (error) return <div>Error: {error.message}</div>;
+    if (!loaded) return <div>Loading...</div>;
 
-export function withARCLoader<P , Model = any>(
-  Wrapped: React.ComponentType<P & ErrorAndLoaderHandler<Model, P>>
-) {
-  function WithARCLoader(ownProps:  P) {
-    const {loaded, error, model} = ownProps as ErrorAndLoaderHandler<Model,P>
-
-    if (error) return <div>Error: {error.message}</div>
-    if (!loaded) return <div>Loading...</div>
-    return <Wrapped {...ownProps as  P & ErrorAndLoaderHandler<Model, P>} model={model as Model}/>
+    return <Wrapped {...props} />;
   }
-  WithARCLoader.displayName = `WithARCLoader(${Wrapped.displayName || Wrapped.name})`
-  return WithARCLoader
+  WithARCLoader.displayName = `WithARCLoader(${Wrapped.displayName || Wrapped.name})`;
+  return WithARCLoader as React.ComponentType<P>;
 }
 
 
@@ -145,10 +145,10 @@ const ArticleWithExtendedProps = withArticle<ArticleWithExtendedPropsProps>((pro
  *   example : See `ArticleDeclarativeWithoutExtendedWithChainingProps`
  */
 
-export const ArticleWithoutExtendedWithChainingProps = withArticle(withARCLoader((props) => {
+export const ArticleWithoutExtendedWithChainingProps = withArticle<RequiredArticleProps>(withARCLoader((props) => {
   const {error, loaded, loading} = props
 
-  // type is not retrieved here
+  // type is now retrieved here
   const article = props.model
 
   if (error) return <div>Error: {error.message}</div>
@@ -161,6 +161,8 @@ export const ArticleWithoutExtendedWithChainingProps = withArticle(withARCLoader
       <h1>{article.title}</h1>
       <p>id: {article.id}</p>
       <p>content: {article.content}</p>
+      <p>createdAt: {article.meta.createdAt}</p>
+      <p>updatedAt: {article.meta.updatedAt}</p>
     </div>
   )
 }))
@@ -237,7 +239,7 @@ const ArticleWithMultipleChainingHOCs = withToken(
     withARCLoader((props) => {
         const {error, loaded, loading, id} = props
 
-        // type is not correctly retrieved here
+        // type is now correctly retrieved here
         const article = props.model
 
         if (error) return <div>Error: {error.message}</div>
@@ -304,7 +306,7 @@ export const Demo = () => {
       <ArticleWithExtendedProps id="123" name="Gus"/>
 
 
-      <ArticleWithoutExtendedWithChainingProps />
+      <ArticleWithoutExtendedWithChainingProps id="123"/>
 
       <ArticleDeclarativeWithoutExtendedWithChainingProps id="123"/>
       <ArticleWithExtendedPropsAndChaining id="123" name="Gus"/>
