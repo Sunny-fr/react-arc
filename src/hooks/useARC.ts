@@ -1,6 +1,6 @@
 import {useCallback, useContext, useEffect, useMemo, useRef} from "react"
 import {ARCConfig} from "../types/config.types"
-import {ARCRootState} from "../types/connectors.types";
+import {ARCRootState, SelectorFn} from "../types/connectors.types";
 
 import {core} from "../actions/core";
 import {ARCMetaModel} from "../types/model.types";
@@ -89,15 +89,24 @@ function fetchAuthorization<Model, RequiredProps = {}>({
 export function useARC<Model, RequiredProps extends object = {}, OwnProps extends object ={}>({
                                 ARCConfig: initialConfig,
                                 props,
+  selectors = []
                               }: {
   ARCConfig: ARCConfig<Model, RequiredProps>
-  props: RequiredProps & OwnProps
+  props: RequiredProps & OwnProps,
+  selectors?: SelectorFn<OwnProps>[]
 }): UseARC<Model, RequiredProps> {
   const dispatch = useDispatch()
   const reduxContext = useContext(ReactReduxContext)
   const isMountedRef = useRef(true)
   const abortControllerRef = useRef<AbortController | null>(null)
   const delayedTimeoutRef = useRef<number | undefined>(undefined)
+
+  const extraPropsFromSelectors = useMemo(() => {
+    return selectors.reduce((acc, selector) => {
+      const selectedProps = selector(reduxContext?.store.getState() || {}, props)
+      return { ...acc, ...selectedProps }
+    }, {})
+  }, [reduxContext, props, selectors])
 
   const [config, actions] = useMemo(() => {
     const config = initializeConfig(initialConfig)
@@ -120,6 +129,7 @@ export function useARC<Model, RequiredProps extends object = {}, OwnProps extend
   const metaModel = useSelector<ARCRootState, ARCMetaModel<Model> | null>((state) => {
     return metaModelSelector(state, config.name, modelKey)
   })
+
   const _fetchAuthorization = useCallback((props: RequiredProps & OwnProps, options: FetchAuthorizationProps<Model, RequiredProps>['options']): boolean => {
 
     return fetchAuthorization<Model, RequiredProps>({
@@ -151,8 +161,13 @@ export function useARC<Model, RequiredProps extends object = {}, OwnProps extend
       abortController: abortControllerRef.current
     }
 
+    const extendedProps = {
+      ...props,
+      ...extraPropsFromSelectors,
+    }
+
     // Use then/catch instead of finally for better compatibility
-    return dispatch<any>(actions.fetchOne(params, props, axiosOptions))
+    return dispatch<any>(actions.fetchOne(params, extendedProps, axiosOptions))
       .then((result: AxiosPromise<Model>) => {
         // Once request is complete successfully, update status
         // if (isMountedRef.current) {
@@ -170,7 +185,7 @@ export function useARC<Model, RequiredProps extends object = {}, OwnProps extend
         }
         return;
       })
-  }, [dispatch, actions, props, abortControllerRef])
+  }, [dispatch, actions, props, abortControllerRef, extraPropsFromSelectors])
 
   const delayedFetch = useCallback(({skipReFetchStep = false}) => {
     delayedTimeoutRef.current = window.setTimeout(() => {

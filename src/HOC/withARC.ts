@@ -3,7 +3,7 @@ import {extendWithDefaultProps, getDefaultConfig} from "../utils"
 import {core} from "../actions/core"
 import {ARCConfig} from "../types/config.types"
 import {ARCContainer, ARCContainerProps, ConnectorProps} from "../types/components.types"
-import {ARCRootState} from "../types/connectors.types";
+import {ARCRootState, SelectorFn} from "../types/connectors.types";
 
 import {metaModelSelector} from "../hooks/selectors";
 
@@ -11,9 +11,12 @@ import {metaModelSelector} from "../hooks/selectors";
 /**
  * Store Connector
  * @param {ARCConfig} config
-
+ * @param selectors
  */
-export function connectFn<Model, RequiredProps, OwnProps = {}>(config: ARCConfig<Model, RequiredProps>) {
+export function connectFn<Model, RequiredProps, OwnProps = {}>(
+  config: ARCConfig<Model, RequiredProps>,
+  selectors: SelectorFn<OwnProps>[] = []
+) {
   return function(
     store: ARCRootState,
     ownProps: OwnProps
@@ -32,6 +35,10 @@ export function connectFn<Model, RequiredProps, OwnProps = {}>(config: ARCConfig
     const modelKey = core.getKey(config, mergedProps)
 
     const metaModel = metaModelSelector(store, config.name, modelKey)
+    const selectorProps = selectors.reduce((acc, selector) => {
+      const selectedProps = selector(store, ownProps)
+      return { ...acc, ...selectedProps }
+    }, {})
 
     const loaded = metaModel?.metas?.loaded || false
     const model = metaModel?.model || config.defaultModel || null
@@ -51,17 +58,25 @@ export function connectFn<Model, RequiredProps, OwnProps = {}>(config: ARCConfig
       loading,
       metas,
       isNew,
+      ...selectorProps,
     } as ConnectorProps<Model, RequiredProps, OwnProps>
   }
 }
 
 
-export function withARC<Model, RequiredProps = {}, OwnProps = {}>(config: ARCConfig<Model, RequiredProps>) {
+
+
+
+
+
+
+
+export function withARC<Model, RequiredProps = {}, OwnProps = {}>(config: ARCConfig<Model, RequiredProps>, selectors:SelectorFn<OwnProps>[] = []) {
   const extendedConfig:ARCConfig<Model, RequiredProps> = { ...getDefaultConfig(), ...config }
   function createHOC(Wrapped: ARCContainer<Model, RequiredProps, OwnProps>) {
     // connect<any, any, RequiredProps & OwnProps, ARCRootState>
     const Connector = connect(
-      connectFn<Model, RequiredProps, OwnProps>(extendedConfig)
+      connectFn<Model, RequiredProps, OwnProps>(extendedConfig, selectors)
     )(Wrapped)
     Connector.displayName = `withARC(${Wrapped.displayName || Wrapped.name || 'Component'})`
     //type PropsFromRedux = ConnectedProps<typeof Connector>
