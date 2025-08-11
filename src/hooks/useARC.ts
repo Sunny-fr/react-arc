@@ -93,7 +93,7 @@ export function useARC<Model, RequiredProps extends object = {}, OwnProps extend
                               }: {
   ARCConfig: ARCConfig<Model, RequiredProps>
   props: RequiredProps & OwnProps,
-  selectors?: SelectorFn<OwnProps>[]
+  selectors?: SelectorFn<any,OwnProps>[]
 }): UseARC<Model, RequiredProps> {
   const dispatch = useDispatch()
   const reduxContext = useContext(ReactReduxContext)

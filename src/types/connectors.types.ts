@@ -14,7 +14,7 @@ export interface ARCRootState extends DefaultRootState {
 }
 
 
-export type SelectorFn<OwnProps> = (store: ARCRootState, ownProps: OwnProps) => Record<string, any>;
+export type SelectorFn<TState,OwnProps> = (store: TState, ownProps: OwnProps) => Record<string, any>;
 
 /**
  * ARC Store

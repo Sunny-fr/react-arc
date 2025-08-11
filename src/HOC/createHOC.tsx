@@ -9,7 +9,7 @@ import {SelectorFn} from "../types/connectors.types";
 interface CreateHOCParams<Model, RequiredProps = {}, OwnProps = {}> {
   Container?: ARCContainer<Model, RequiredProps, OwnProps>
   ARCConfig: ARCConfig<Model, RequiredProps>,
-  selectors?: SelectorFn<OwnProps>[]
+  selectors?: SelectorFn<any, OwnProps>[]
 }
 
 

@@ -15,7 +15,7 @@ import {metaModelSelector} from "../hooks/selectors";
  */
 export function connectFn<Model, RequiredProps, OwnProps = {}>(
   config: ARCConfig<Model, RequiredProps>,
-  selectors: SelectorFn<OwnProps>[] = []
+  selectors: SelectorFn<any, OwnProps>[] = []
 ) {
   return function(
     store: ARCRootState,
@@ -71,7 +71,7 @@ export function connectFn<Model, RequiredProps, OwnProps = {}>(
 
 
 
-export function withARC<Model, RequiredProps = {}, OwnProps = {}>(config: ARCConfig<Model, RequiredProps>, selectors:SelectorFn<OwnProps>[] = []) {
+export function withARC<Model, RequiredProps = {}, OwnProps = {}>(config: ARCConfig<Model, RequiredProps>, selectors:SelectorFn<any,OwnProps>[] = []) {
   const extendedConfig:ARCConfig<Model, RequiredProps> = { ...getDefaultConfig(), ...config }
   function createHOC(Wrapped: ARCContainer<Model, RequiredProps, OwnProps>) {
     // connect<any, any, RequiredProps & OwnProps, ARCRootState>
