@@ -5,7 +5,7 @@ import { ARCMetas } from "../types/model.types";
 export interface UseModelContainer<Model, RequiredProps = {}, OwnProps = {}> extends UseContainerParams<Model, RequiredProps> {
     props: ARCContainerProps<Model, RequiredProps, OwnProps>;
 }
-export declare function useModelContainer<Model, RequiredProps = {}, OwnProps extends object = {}>({ ARCConfig, props }: UseModelContainer<Model, RequiredProps, OwnProps>): {
+export declare function useModelContainer<Model, RequiredProps extends object = {}, OwnProps extends object = {}>({ ARCConfig, props }: UseModelContainer<Model, RequiredProps, OwnProps>): {
     isNew: (componentProps?: ARCContainerProps<Model, RequiredProps, OwnProps>) => boolean;
     getKey: (componentProps?: ARCContainerProps<Model, RequiredProps, OwnProps>) => string | null;
     getParams: (componentProps?: ARCContainerProps<Model, RequiredProps, OwnProps>) => RequiredProps | null;
@@ -31,5 +31,5 @@ export declare function useModelContainer<Model, RequiredProps = {}, OwnProps ex
     updateARC: (config: import("..").ARCConfig<Model, RequiredProps>) => void;
 };
 export type ModelContainerProps<Model, RequiredProps = {}, OwnProps = {}> = OwnProps & ARCContainerProps<Model, RequiredProps, OwnProps> & {};
-export declare function ModelContainer<Model, RequiredProps = {}, OwnProps = {}>(props: ModelContainerProps<Model, RequiredProps, OwnProps>): React.JSX.Element | null;
+export declare function ModelContainer<Model, RequiredProps extends object = {}, OwnProps = {}>(props: ModelContainerProps<Model, RequiredProps, OwnProps>): React.JSX.Element | null;
 export default ModelContainer;
