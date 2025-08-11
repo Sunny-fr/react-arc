@@ -8,7 +8,7 @@ interface DefaultRootState {
 export interface ARCRootState extends DefaultRootState {
     [key: ARCConfig<any>['name']]: ARCStoreState<any>;
 }
-export type SelectorFn<TState, OwnProps> = (store: TState, ownProps: OwnProps) => Record<string, any>;
+export type SelectorFn<TState, OwnProps> = (store: TState, ownProps?: OwnProps) => Record<string, any>;
 /**
  * ARC Store
  */
