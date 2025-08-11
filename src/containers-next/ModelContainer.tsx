@@ -14,7 +14,7 @@ export interface UseModelContainer<Model, RequiredProps = {}, OwnProps = {}> ext
   props: ARCContainerProps<Model, RequiredProps, OwnProps>
 }
 
-export function useModelContainer<Model, RequiredProps = {}, OwnProps extends object = {}>({
+export function useModelContainer<Model, RequiredProps extends object = {}, OwnProps extends object = {}>({
   ARCConfig,
   props
 }: UseModelContainer<Model, RequiredProps, OwnProps>) {
@@ -394,7 +394,7 @@ export type ModelContainerProps<Model,RequiredProps = {}, OwnProps = {}> = OwnPr
   //component: React.ComponentType<OwnProps & ARCContainerProps<Model, RequiredProps>>
 }
 
-export function ModelContainer<Model, RequiredProps = {}, OwnProps = {}>(props: ModelContainerProps<Model, RequiredProps, OwnProps>) {
+export function ModelContainer<Model, RequiredProps extends object = {}, OwnProps = {}>(props: ModelContainerProps<Model, RequiredProps, OwnProps>) {
   const { ARCConfig, component: Component } = props
   const dispatch = useDispatch()
 
