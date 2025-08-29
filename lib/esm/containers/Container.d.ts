@@ -3,6 +3,10 @@ import { ReduxActions } from "../actions/ReduxActions";
 import { CoreMethods } from "../actions/core";
 import { ARCConfig } from "../types/config.types";
 import { AnyProps, ARCContainerProps } from "../types/components.types";
+/**
+ * DEPRECATED: Base Container class for ARC
+ * @deprecated Use ModelContainer from containers-next instead
+ */
 export declare class Container<Model, RequiredProps, OwnProps, State = any> extends React.Component<ARCContainerProps<Model, RequiredProps, OwnProps>, State> {
     static contextType: React.Context<import("react-redux").ReactReduxContextValue<any, import("redux").UnknownAction> | null>;
     ARCConfig: ARCConfig<Model, RequiredProps>;

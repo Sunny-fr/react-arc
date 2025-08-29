@@ -2,6 +2,10 @@ import Container from "./Container";
 import { ARCContainerProps } from "../types/components.types";
 import { ARCMetas } from "../types/model.types";
 import React from "react";
+/**
+ * DEPRECATED: Use containers-next instead
+ * @deprecated Use ModelContainer from containers-next instead
+ */
 export declare class ModelContainer<Model, RequiredProps = {}, OwnProps extends object = {}, State = any> extends Container<Model, RequiredProps, OwnProps, State> {
     /** PUBLIC ACTIONS METHODS **/
     isNew(props?: ARCContainerProps<Model, RequiredProps, OwnProps>): boolean;
