@@ -5,8 +5,6 @@ import {Card, CardContent, CardFooter, CardHeader, CardTitle} from "@/layout/ui/
 
 export function Portfolio() {
   return (<>
-
-
     <SiteHeader title="Portfolio"/>
     <div className="flex flex-1 flex-col">
       <div className="@container/main flex flex-1 flex-col gap-2">
@@ -31,13 +29,13 @@ export function Portfolio() {
             </Card>
           </div>
         </div>
-        <PortfolioComponent hello={'world'} start={0} limit={9}/>
-
-
+        <PortfolioComponent
+          hello={'world'}
+          start={0}
+          limit={9}
+        />
       </div>
     </div>
-
-
   </>)
 }
 

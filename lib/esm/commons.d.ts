@@ -1,13 +1,13 @@
 import { ARCConfig } from "./types/config.types";
-interface CancelRequestParams<Model> {
-    ARCConfig: ARCConfig<Model>;
+interface CancelRequestParams<Model, RequiredProps> {
+    ARCConfig: ARCConfig<Model, RequiredProps>;
 }
 declare const commons: {
     /**
      * @param {ARCConfig} ARCConfig
      * @return {{type: string, message: string}}
      */
-    cancelRequestPayload<Model>({ ARCConfig }: CancelRequestParams<Model>): {
+    cancelRequestPayload<Model, RequiredProps>({ ARCConfig }: CancelRequestParams<Model, RequiredProps>): {
         type: string;
         message: string;
     };

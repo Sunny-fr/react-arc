@@ -1,5 +1,5 @@
 import axios, {AxiosError, AxiosInstance, AxiosPromise} from "axios"
-import {getDefaultConfig, interpolate} from "../utils"
+import {initializeConfig, interpolate} from "../utils"
 import {
   ARCConfig,
   ARCConfigHeaders,
@@ -7,11 +7,9 @@ import {
   ARCHttpRestMethodMap,
   RetryConditionFn,
 } from "../types/config.types"
-//import { ARCStoreState } from "../types/connectors.types"
-import {Dispatch} from "redux"
 
-import {ComponentPropsWithRequiredModelParams} from "../types/components.types"
-import {ARCAxiosOptions, ArcFetchError, ReduxActionsListOptions,} from "../types/actions.types"
+import {Dispatch} from "redux"
+import {ARCAxiosOptions, ArcFetchError, ReduxActionsOptions,} from "../types/actions.types"
 import {ACTIONS} from "../reducers/action";
 
 
@@ -48,24 +46,28 @@ export const AXIOS_CANCEL_PAYLOAD = {
   name: "CanceledError"
 } as const
 
-export class ReduxActionsList<Model>{
-  config: ARCConfig<Model>
-  initialConfig: ARCConfig<Model>
-  retryConditionFn: RetryConditionFn<Model> | undefined
+export class ReduxActions<Model, RequiredProps, OwnProps extends object = {}> {
+  config: ARCConfig<Model,RequiredProps>
+  initialConfig: ARCConfig<Model,RequiredProps>
+  retryConditionFn: RetryConditionFn<Model, RequiredProps> | undefined
   axios: AxiosInstance
-  headers: ARCConfigHeaders
+  headers: ARCConfigHeaders = {}
+  paths: ARCConfigPaths = {
+    item: "",
+  }
   methods: ARCHttpRestMethodMap
 
-  constructor(options: ReduxActionsListOptions<Model>) {
-    this.config = { ...getDefaultConfig(), ...(options.config || {}) }
+  constructor(options: ReduxActionsOptions<Model, RequiredProps>) {
+    this.config = initializeConfig(options.config)
     this.initialConfig = this.config
     this.retryConditionFn = this.config.retryConditionFn
     this.setHeaders()
+    this.setPaths()
     this.setupMethods()
     this.axios = axios.create()
   }
 
-  static GenerateAbortSignal<Model>(axiosOptions: ARCAxiosOptions<Model>) {
+  static GenerateAbortSignal<Model, RequiredProps, OwnProps = {}>(axiosOptions: ARCAxiosOptions<Model, RequiredProps, OwnProps>) {
     return axiosOptions?.abortController?.signal
   }
 
@@ -73,11 +75,11 @@ export class ReduxActionsList<Model>{
     return this.initialConfig
   }
 
-  generateAbortSignal(axiosOptions: ARCAxiosOptions<Model>) {
+  generateAbortSignal(axiosOptions: ARCAxiosOptions<Model,RequiredProps, OwnProps>) {
     return axiosOptions?.abortController?.signal
   }
 
-  decorateHeaders(props = {}): ARCConfigHeaders {
+  decorateHeaders(props: RequiredProps & OwnProps = {} as RequiredProps & OwnProps  ): ARCConfigHeaders {
     const { headers } = this
     if (Object.keys(headers || {}).length < 1) {
       return {}
@@ -87,9 +89,22 @@ export class ReduxActionsList<Model>{
 
       return {
         ...state,
-        [header]: interpolate(headers[header], props),
+        [header]: interpolate(headers[header], props as object),
       }
     }, {})
+  }
+
+  decoratePaths(props: RequiredProps & OwnProps = {} as RequiredProps & OwnProps ): ARCConfigPaths {
+    const { paths } = this
+    return Object.keys(paths).reduce((state, path) => {
+      if (!paths[path]) return state
+      return {
+        ...state,
+        [path]: interpolate(paths[path], props as object),
+      }
+    }, {
+      item: "",
+    })
   }
 
   setHeaders(): void {
@@ -97,7 +112,12 @@ export class ReduxActionsList<Model>{
     this.headers = { ...headers }
   }
 
-  updateConfig(config: ARCConfig<Model>) {
+  setPaths(): void {
+    const paths = this.config.paths || {}
+    this.paths = { ...paths }
+  }
+
+  updateConfig(config: ARCConfig<Model, RequiredProps>) {
     this.config = { ...this.config, ...config }
     this.setHeaders()
     this.setupMethods()
@@ -118,42 +138,29 @@ export class ReduxActionsList<Model>{
     }
   }
 
-  decorate = (str: string, options?: object): string => {
-    return interpolate(str, options || this.config)
+  decorate = (str: string): string => {
+    return interpolate(str, this.config)
   }
 
   beforeFetch({
     config,
-    props = {},
+    props = {} as RequiredProps & OwnProps,
     params,
   }: {
-    config: ARCConfig<Model>
-    props: object
-    params: ComponentPropsWithRequiredModelParams
-  }): ARCConfig<Model> {
-    const paths: ARCConfigPaths = {
-      item: "",
-    }
+    config: ARCConfig<Model,RequiredProps>
+    props: RequiredProps & OwnProps
+    params: RequiredProps
+  }): ARCConfig<Model, RequiredProps> {
     //DECORATE URLS
     return {
       ...config,
       headers: this.decorateHeaders({ ...props, ...params }),
-      paths: Object.keys(config.paths).reduce((s, path) => {
-        const _path = config.paths[path]
-        if(!_path) {
-          throw new Error(`Path ${path} in your ARCConfig  is not defined in config`)
-        }
-        const value = this.decorate(_path, params)
-        return {
-          ...s,
-          [path]: value,
-        }
-      }, paths),
+      paths: this.decoratePaths({ ...props, ...params }),
     }
   }
 
   /** EDITING **/
-  edit(data: any, params: ComponentPropsWithRequiredModelParams) {
+  edit(data: any, params: RequiredProps) {
     return (dispatch: Dispatch) => {
       dispatch({
         type: this.decorate(ACTIONS.EDIT),
@@ -165,10 +172,10 @@ export class ReduxActionsList<Model>{
   /** SINGLE ITEM **/
 
   standAloneFetchOne(
-    _params: ComponentPropsWithRequiredModelParams,
-    config: ARCConfig<Model>,
-    _props: object,
-    axiosOptions: ARCAxiosOptions<Model>
+    _params: RequiredProps,
+    config: ARCConfig<Model,RequiredProps>,
+    _props: RequiredProps & OwnProps,
+    axiosOptions: ARCAxiosOptions<Model, RequiredProps, OwnProps>
   ): AxiosPromise<Model> {
     return this.axios({
       // methods are already lowercased in setupMethods
@@ -181,12 +188,11 @@ export class ReduxActionsList<Model>{
 
 
   fetchOne(
-    params: ComponentPropsWithRequiredModelParams,
-    props: object = {},
-    axiosOptions: ARCAxiosOptions<Model>
+    params: RequiredProps,
+    props: RequiredProps & OwnProps,
+    axiosOptions: ARCAxiosOptions<Model, RequiredProps, OwnProps>
   ) {
     return (dispatch: Dispatch) => {
-
       const retryConditionFn =
         this.retryConditionFn || axiosOptions?.retryConditionFn
       const config = this.beforeFetch({ config: this.config, params, props })
@@ -259,114 +265,6 @@ export class ReduxActionsList<Model>{
 
 
 
-  /**  SAVE **/
-
-  standAloneSave(
-    data: object,
-    params: ComponentPropsWithRequiredModelParams,
-    create: boolean,
-    config: ARCConfig<Model>,
-    _props: object
-  ) {
-    // @ts-ignore
-    const method = create ? config.methods.create : config.methods.update
-    const url = this.decorate(
-      this.config.paths.item,
-      method === "post" ? {} : params
-    )
-    return this.axios({
-      method,
-      url,
-      headers: config.headers,
-      data,
-    })
-  }
-
-  save(
-    data: object,
-    params: ComponentPropsWithRequiredModelParams,
-    create: boolean = false,
-    props: object = {}
-  ) {
-    return (dispatch: Dispatch): AxiosPromise => {
-      const config = this.beforeFetch({ config: this.config, params, props })
-      dispatch({
-        type: this.decorate(ACTIONS.SAVE),
-        payload: { data, params, create },
-      })
-      return this.standAloneSave(data, params, create, config, props)
-        .then((response) => {
-          dispatch({
-            type: this.decorate(ACTIONS.SAVE_FULFILLED),
-            payload: { params, data: response.data, create },
-          })
-          return Promise.resolve(response)
-        })
-        .catch((error) => {
-          dispatch({
-            type: this.decorate(ACTIONS.SAVE_REJECTED),
-            payload: {
-              error: errorSerializer(error),
-              data, params, create },
-          })
-          return Promise.reject(error)
-        })
-    }
-  }
-
-  /** REMOVE **/
-
-  standAloneRemove(
-    _params: ComponentPropsWithRequiredModelParams,
-    config: ARCConfig<Model>,
-    _props: object
-  ): AxiosPromise {
-    const url = config.paths.item
-    return this.axios({
-      // @ts-ignore
-      method: config.methods.delete,
-      url,
-      headers: config.headers,
-    })
-  }
-
-  remove(params: ComponentPropsWithRequiredModelParams, props: object = {}) {
-    return (dispatch: Dispatch): AxiosPromise => {
-      const config = this.beforeFetch({ config: this.config, params, props })
-      dispatch({
-        type: this.decorate(ACTIONS.DELETE),
-        payload: { params },
-      })
-      return this.standAloneRemove(params, config, props)
-        .then((response) => {
-          dispatch({
-            type: this.decorate(ACTIONS.DELETE_FULFILLED),
-            payload: { params, data: response.data },
-          })
-          return Promise.resolve(response)
-        })
-        .catch((error) => {
-          dispatch({
-            type: this.decorate(ACTIONS.DELETE_REJECTED),
-            payload: {
-              error: errorSerializer(error),
-              params
-            },
-          })
-          return Promise.reject(error)
-        })
-    }
-  }
-
-
-
-
-
-  resetTemp() {
-    return (dispatch: Dispatch): void => {
-      dispatch({ type: this.decorate(ACTIONS.RESET) })
-    }
-  }
 }
 
 

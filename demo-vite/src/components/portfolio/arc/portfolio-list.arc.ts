@@ -11,7 +11,7 @@ export interface PortfolioListProps {
 
 
 
-export const portfolioList: ARCConfig<Portfolios> = {
+export const portfolioList: ARCConfig<Portfolios, PortfolioListProps> = {
   "name": "portfolioList",
   "actionNamespace": "PORTFOLIO_LIST",
   "modelProps": [
@@ -27,6 +27,6 @@ export const portfolioList: ARCConfig<Portfolios> = {
 }
 
 
-export const withPortfolioList = createHOC<PortfolioListProps, Portfolios>({
+export const withPortfolioList = createHOC<Portfolios, PortfolioListProps>({
   ARCConfig: portfolioList,
 })

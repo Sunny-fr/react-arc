@@ -1,36 +1,50 @@
 import React from 'react'
 import {ARCConfig} from "../types/config.types";
-import {ARCMetaModel} from "../types/model.types";
 import {ModelContainer} from "../containers-next/ModelContainer";
 import {withARC} from "./withARC";
+import {ARCContainer, ARCContainerProps, RenderComponent} from "../types/components.types";
+import {SelectorFn} from "../types/connectors.types";
 
 
-export interface HOCBootstrapped<M> {
-  loaded: boolean
-  metaModel: ARCMetaModel<M>
-  model: M
-  error: any
-  syncing: boolean
-  loading?: boolean
-  metas: object
-  isNew: boolean
-  ARCConfig: ARCConfig<M>
+interface CreateHOCParams<Model, RequiredProps extends object = {}, OwnProps extends object  = {}> {
+  Container?: ARCContainer<Model, RequiredProps, OwnProps>
+  ARCConfig: ARCConfig<Model, RequiredProps>,
+  selectors?: SelectorFn<any, OwnProps>[]
 }
 
 
-interface CreateHOCParams<P, M> {
-  Container?: React.ComponentType<P>
-  ARCConfig: ARCConfig<M>
-}
+export function createHOC<Model, RequiredProps extends object  = {} , OwnProps  extends object  = {}>({
+                                                                       Container = ModelContainer,
+                                                                       ARCConfig,
+                                                                        selectors = []
+                                                                     }: CreateHOCParams<Model, RequiredProps, OwnProps> ) {
+  return function GeneratedHOC<OverriddenRequiredProps extends RequiredProps = RequiredProps>(Wrapped: RenderComponent<Model, OverriddenRequiredProps, OwnProps>)  {
+    const GeneratedARCContainer = withARC<Model, RequiredProps, OwnProps>(ARCConfig, selectors)(Container) as ARCContainer<Model,OverriddenRequiredProps, OwnProps>
+    return function Component<OwnPropsPassed extends OwnProps = OwnProps>(visibleProps: OwnPropsPassed & OverriddenRequiredProps) {
+      const actualProps = visibleProps as unknown as ARCContainerProps<Model,RequiredProps, OwnProps>
+      // const extendedProps = {
+      //   ...actualProps,
+      //   component: Wrapped
+      // }
+      //{...extendedProps}
+
+      return <GeneratedARCContainer
+        {...actualProps as unknown as  OverriddenRequiredProps & OwnPropsPassed}
+        ARCConfig={ARCConfig}
+        model={actualProps.model}
+        modelKey={actualProps.modelKey}
+        metaModel={actualProps.metaModel}
+        metas={actualProps.metas}
+        loaded={actualProps.loaded}
+        error={actualProps.error}
+        loading={actualProps.loading}
+        isNew={actualProps.isNew}
+        component={Wrapped}
+        dispatch={actualProps.dispatch}
 
 
-export function createHOC<P, M>({Container = ModelContainer, ARCConfig}: CreateHOCParams<P, M> ) {
 
-  const ARCContainer = withARC(ARCConfig)(Container) as React.ComponentType<P & HOCBootstrapped<M>>
-  return (Wrapped: React.ComponentType<P & HOCBootstrapped<M>>) =>
-    (props: P) => {
-      return <ARCContainer {...props as P & HOCBootstrapped<M>} component={Wrapped}/>
+      /> as unknown as React.ReactElement<ARCContainerProps<Model, OverriddenRequiredProps, OwnProps>>
     }
+  }
 }
-
-

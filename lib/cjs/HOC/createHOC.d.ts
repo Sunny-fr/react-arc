@@ -1,20 +1,11 @@
 import React from 'react';
 import { ARCConfig } from "../types/config.types";
-import { ARCMetaModel } from "../types/model.types";
-export interface HOCBootstrapped<M> {
-    loaded: boolean;
-    metaModel: ARCMetaModel<M>;
-    model: M;
-    error: any;
-    syncing: boolean;
-    loading?: boolean;
-    metas: object;
-    isNew: boolean;
-    ARCConfig: ARCConfig<M>;
+import { ARCContainer, ARCContainerProps, RenderComponent } from "../types/components.types";
+import { SelectorFn } from "../types/connectors.types";
+interface CreateHOCParams<Model, RequiredProps extends object = {}, OwnProps extends object = {}> {
+    Container?: ARCContainer<Model, RequiredProps, OwnProps>;
+    ARCConfig: ARCConfig<Model, RequiredProps>;
+    selectors?: SelectorFn<any, OwnProps>[];
 }
-interface CreateHOCParams<P, M> {
-    Container?: React.ComponentType<P>;
-    ARCConfig: ARCConfig<M>;
-}
-export declare function createHOC<P, M>({ Container, ARCConfig }: CreateHOCParams<P, M>): (Wrapped: React.ComponentType<P & HOCBootstrapped<M>>) => (props: P) => React.JSX.Element;
+export declare function createHOC<Model, RequiredProps extends object = {}, OwnProps extends object = {}>({ Container, ARCConfig, selectors }: CreateHOCParams<Model, RequiredProps, OwnProps>): <OverriddenRequiredProps extends RequiredProps = RequiredProps>(Wrapped: RenderComponent<Model, OverriddenRequiredProps, OwnProps>) => <OwnPropsPassed extends OwnProps = OwnProps>(visibleProps: OwnPropsPassed & OverriddenRequiredProps) => React.ReactElement<ARCContainerProps<Model, OverriddenRequiredProps, OwnProps>>;
 export {};

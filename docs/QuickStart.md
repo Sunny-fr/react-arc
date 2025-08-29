@@ -1,4 +1,3 @@
-
 # Quick Start
 
 This guide will walk you through the basic steps of setting up and using `react-arc` in your React application.
@@ -8,60 +7,75 @@ This guide will walk you through the basic steps of setting up and using `react-
 First, install `react-arc` and its peer dependencies:
 
 ```bash
-npm install react-arc react react-dom react-redux redux redux-thunk
-```
-
-## Configuration
-
-Create a configuration file for your data models. This file will define the API endpoints, model properties, and other settings.
-
-**`src/config.js`**
-
-```javascript
-export const portfolioConfig = {
-    name: 'portfolio',
-    uppercaseName: 'PORTFOLIO',
-    modelProps: ['id'],
-    collectionProps: ['size', 'page'],
-    paths: {
-        item: '/api/portfolio/{id}',
-        collection: '/api/portfolio?page={page}&size={size}',
-    },
-};
+npm install react-arc @reduxjs/toolkit react react-dom react-redux redux
 ```
 
 ## Store Setup
 
-Set up your Redux store using `createReducer` from `react-arc`.
+Set up your Redux store using `@reduxjs/toolkit` and `createReducer` from `react-arc`.
 
-**`src/store.js`**
+**`src/store.ts`**
 
-```javascript
-import { createStore, combineReducers } from 'redux';
+```typescript
+import { configureStore } from '@reduxjs/toolkit';
 import { createReducer } from 'react-arc';
-import { portfolioConfig } from './config';
+import { portfolioConfig } from './portfolio.arc.ts';
 
-const rootReducer = combineReducers({
-    portfolio: createReducer({ config: portfolioConfig }),
+const reducers = {
+  portfolio: createReducer({ config: portfolioConfig }),
+}
+
+export const store = configureStore({
+    reducer: reducers
 });
 
-const store = createStore(rootReducer);
+export type RootState = ReturnType<typeof store.getState>;
+export type AppDispatch = typeof store.dispatch;
+```
 
-export default store;
+## ARC Configuration
+
+Create a configuration file for your data model. This file will define the API endpoint, model properties, and other settings.
+
+**`src/portfolio.arc.ts`**
+
+```typescript
+import { ARCConfig, createHOC } from 'react-arc';
+
+export interface Portfolio {
+    id: number;
+    title: string;
+    description: string;
+}
+
+export const portfolioConfig: ARCConfig<Portfolio> = {
+    name: 'portfolio',
+    actionNamespace: 'PORTFOLIO',
+    modelProps: ['id'],
+    paths: {
+        item: 'https://jsonplaceholder.typicode.com/photos/{id}',
+    },
+};
+
+export const withPortfolio = createHOC<Portfolio>({ ARCConfig: portfolioConfig });
 ```
 
 ## Component Usage
 
-Use the `withARC` higher-order component to connect your components to the Redux store.
+Use the `withPortfolio` higher-order component to connect your component to the Redux store.
 
-**`src/Portfolio.js`**
+**`src/Portfolio.tsx`**
 
-```javascript
+```tsx
 import React from 'react';
-import { withARC } from 'react-arc';
-import { portfolioConfig } from './config';
+import { withPortfolio } from './portfolio.arc.ts';
 
-const Portfolio = ({ model }) => {
+interface PortfolioProps {
+    model?: Portfolio;
+    id: number;
+}
+
+const Portfolio: React.FC<PortfolioProps> = ({ model }) => {
     if (!model) return <div>Loading...</div>;
     return (
         <div>
@@ -71,27 +85,32 @@ const Portfolio = ({ model }) => {
     );
 };
 
-export default withARC(portfolioConfig)(Portfolio);
+export default withPortfolio(Portfolio);
 ```
 
 ## App Entry Point
 
 Wrap your application with the `Provider` from `react-redux`.
 
-**`src/index.js`**
+**`src/index.tsx`**
 
-```javascript
+```tsx
 import React from 'react';
-import ReactDOM from 'react-dom';
+import ReactDOM from 'react-dom/client';
 import { Provider } from 'react-redux';
-import store from './store';
+import { store } from './store';
 import Portfolio from './Portfolio';
 
-ReactDOM.render(
-    <Provider store={store}>
-        <Portfolio id="1" />
-    </Provider>,
-    document.getElementById('root')
+const root = ReactDOM.createRoot(
+    document.getElementById('root') as HTMLElement
+);
+
+root.render(
+    <React.StrictMode>
+        <Provider store={store}>
+            <Portfolio id={1} />
+        </Provider>
+    </React.StrictMode>
 );
 ```
 

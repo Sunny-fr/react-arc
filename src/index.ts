@@ -1,19 +1,29 @@
 
-export {ModelContainer} from "./containers/ModelContainer"
+export {Container} from "./containers-next/Container"
 
-export {Container} from "./containers/Container"
+export {ModelContainer} from "./containers-next/ModelContainer"
 
-export {ReduxActionsList} from "./actions/ReduxActionsList"
+export {Container as LegacyContainer} from "./containers/Container"
+
+export {ModelContainer as LegacyModelContainer} from "./containers/ModelContainer"
+
+export {ReduxActions} from "./actions/ReduxActions"
+
+export {ReduxActions as ReduxActionsList} from "./actions/ReduxActions"
 
 export {core} from "./actions/core"
 
 export {createReducer} from "./reducers/createReducer"
 
-export {useARC} from "./hooks/useARC"
+export {useARC } from "./hooks/useARC"
+
+export {useDetachedARC} from "./hooks/useDetachedARC"
 
 export {withARC} from "./HOC/withARC"
 
-export {withUseARC} from "./HOC/withUseARC"
+export {withUseDetachedARC} from "./HOC/withUseDetachedARC"
+
+export * from './hooks/selectors'
 
 export {createHOC} from "./HOC/createHOC"
 

@@ -1,16 +1,18 @@
 import {Loader} from "@/layout/components/loader/Loader.tsx"
 import {Toast} from "@/layout/components/toast/Toast.tsx"
 import {Error} from "@/layout/components/error/Error.tsx"
-import {useARC} from "../../../../../src";
-import {type Portfolio, portfolio} from "../arc/portfolio.arc.ts";
+import {useARC, type ARCConfig} from "../../../../../src";
+import {type Portfolio, portfolio, type PortfolioProps} from "../arc/portfolio.arc.ts";
 import {useEffect, useState} from "react";
-import {Link, useHistory} from "react-router-dom";
+import {Link} from "react-router-dom";
 import {SiteHeader} from "@/components/site-header.tsx";
 import {Button} from "@/layout/ui/button.tsx";
 import {Card, CardContent, CardFooter, CardHeader, CardTitle} from "@/layout/ui/card.tsx";
 import {Input} from "@/layout/ui/input.tsx";
 import {Textarea} from "@/layout/ui/textarea.tsx";
 import {Label} from "@/layout/ui/label.tsx";
+import LargeError from "@/layout/components/error/LargeError.tsx";
+
 
 interface FormRowProps {
   name: string;
@@ -29,21 +31,20 @@ function FormRow({name, label, children}: FormRowProps) {
   )
 }
 
-interface PortfolioEditItemComponentProps {
+interface PortfolioEditItemComponentProps extends Omit<PortfolioProps, 'id'>{
   id?: string
 }
 
 const PortfolioEditItemComponent:React.FC<PortfolioEditItemComponentProps> = ((props) => {
-  const history = useHistory()
+  //const history = useHistory()
   const isNew = !props.id || props.id === "new"
   const {
     loaded,
-    response: model,
+    data: model,
     error,
     loading,
-    arc
-  } = useARC({
-    ARCConfig: portfolio,
+  } = useARC<Portfolio,PortfolioEditItemComponentProps>({
+    ARCConfig: portfolio as ARCConfig<Portfolio, PortfolioEditItemComponentProps>,
     props
   })
 
@@ -69,18 +70,27 @@ const PortfolioEditItemComponent:React.FC<PortfolioEditItemComponentProps> = ((p
   }
 
   const handleSave = () => {
-    const method = isNew ? "create" : "update"
-    arc[method]({
-      props,
-      params: arc.extractParams(props),
-      body: formModel,
-    }).then((response) => {
-      if (response) {
-        history.push("/view/" + response.id)
-      } else {
-        console.error("Error saving portfolio item")
-      }
-    })
+
+    // const method = isNew ? "create" : "update"
+    // arc[method]({
+    //   props,
+    //   params: arc.extractParams(props),
+    //   body: formModel,
+    // }).then((response) => {
+    //   if (response) {
+    //     history.push("/view/" + response.id)
+    //   } else {
+    //     console.error("Error saving portfolio item")
+    //   }
+    // })
+  }
+  if (error) {
+    return (
+      <LargeError
+        title={error?.response?.status || "Error"}
+        children={"...mmm, something wrong happened..."}
+      />
+    )
   }
 
   if (!loaded) return <Loader className="min-h-screen" />
@@ -106,7 +116,7 @@ const PortfolioEditItemComponent:React.FC<PortfolioEditItemComponentProps> = ((p
               <Card>
                 <CardHeader>
                   <CardTitle>
-                    {isNew ? "Create Portfolio Item" : `Edit ${formModel?.title}`}
+                    {isNew ? "Create Portfolio Item" : `Edit ${formModel?.title}`} #{props.id}
                   </CardTitle>
                 </CardHeader>
                 <CardContent>

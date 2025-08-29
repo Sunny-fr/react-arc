@@ -1,7 +1,7 @@
 {
   "name": "react-arc",
-  "version": "6.1.0",
-  "description": "React Abstract Redux Component",
+  "version": "6.9.19",
+  "description": "React ARC is a powerful library for building React applications with Redux, providing a set of tools and utilities to enhance development.",
   "_main": "lib/index.js",
   "main": "./lib/cjs/index.js",
   "module": "./lib/esm/index.js",
@@ -12,7 +12,13 @@
   "scripts": {
     "build": "npm run build:esm && npm run build:cjs",
     "build:esm": "tsc",
-    "build:cjs": "tsc --module commonjs --outDir lib/cjs"
+    "build:cjs": "tsc --module commonjs --outDir lib/cjs",
+    "test": "vitest",
+    "test:ui": "vitest --ui",
+    "lint": "eslint . --ext .ts,.tsx",
+    "lint:fix": "npm run lint -- --fix",
+    "typecheck": "tsc -p tsconfig.typecheck.json --noEmit",
+    "check": "npm run typecheck && npm run lint"
   },
   "prettier": {
     "semi": false
@@ -32,25 +38,40 @@
   },
   "homepage": "https://github.com/Sunny-fr/react-arc#readme",
   "peerDependencies": {
+    "@reduxjs/toolkit": "^2.8.2",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-redux": "^9.2.0",
-    "redux": "^5.0.1",
-    "redux-thunk": "^3.1.0"
+    "redux": "^5.0.1"
   },
   "dependencies": {
+    "@reduxjs/toolkit": "^2.8.2",
     "axios": "1.8.2",
     "deep-equal": "^1.1.1",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
     "react-redux": "^9.2.0",
-    "redux": "^5.0.1",
-    "redux-thunk": "^3.1.0"
+    "redux": "^5.0.1"
   },
   "devDependencies": {
+    "@testing-library/jest-dom": "^6.6.4",
+    "@testing-library/react": "^16.3.0",
     "@types/deep-equal": "^1.0.4",
     "@types/react": "^19.1.8",
     "@types/react-dom": "^19.1.6",
-    "react": "^19.1.0",
-    "react-dom": "^19.1.0",
-    "typescript": "~5.8.3"
+    "@types/redux-mock-store": "^1.5.0",
+    "@typescript-eslint/eslint-plugin": "^8.39.0",
+    "@typescript-eslint/parser": "^8.39.0",
+    "@vitest/ui": "^3.2.4",
+    "eslint": "^9.33.0",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-hooks": "^5.2.0",
+    "jsdom": "^26.1.0",
+    "react-dom": "^19.1.1",
+    "redux-mock-store": "^1.5.5",
+    "redux-thunk": "^3.1.0",
+    "typescript": "~5.8.3",
+    "typescript-eslint": "^8.39.0",
+    "vitest": "^3.2.4"
   }
 }

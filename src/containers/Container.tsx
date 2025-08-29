@@ -1,30 +1,32 @@
 import React from "react"
-import { ReduxActionsList } from "../actions/ReduxActionsList"
-import {core, CoreMethods } from "../actions/core"
-import { getDefaultConfig } from "../utils"
-import { ReactReduxContext } from "react-redux"
-import { ARCConfig } from "../types/config.types"
-import {
-  ARCWrappedComponentProps,
-  ComponentProps, ComponentWithStoreProps,
-} from "../types/components.types"
+import {ReduxActions} from "../actions/ReduxActions"
+import {core, CoreMethods} from "../actions/core"
+import {initializeConfig} from "../utils"
+import {ReactReduxContext} from "react-redux"
+import {ARCConfig} from "../types/config.types"
+import {AnyProps, ARCContainerProps} from "../types/components.types"
 import {ARCRootState, ARCStoreState} from "../types/connectors.types";
 
+/**
+ * DEPRECATED: Base Container class for ARC
+ * @deprecated Use ModelContainer from containers-next instead
+ */
 
-export class Container<P, S, Model> extends React.Component<P & ARCWrappedComponentProps<Model>, S> {
+export class Container<Model, RequiredProps, OwnProps, State = any> extends React.Component<ARCContainerProps<Model, RequiredProps, OwnProps>, State> {
   static contextType = ReactReduxContext
-  ARCConfig: ARCConfig<Model>
-  actions: ReduxActionsList<Model>
+  ARCConfig: ARCConfig<Model, RequiredProps>
+  actions: ReduxActions<Model, RequiredProps>
   core: CoreMethods
   abortController: null | AbortController
-  props: P & ARCWrappedComponentProps<Model>
+  // props: ARCContainerProps<OwnProps, Model, RequiredProps>
   delayedTimeout: number | undefined
 
-  constructor(props: (Readonly<P> | P) & ARCWrappedComponentProps<Model>) {
-    //: ARCWrappedComponentProps<Model>
+  constructor(props: ARCContainerProps<Model, RequiredProps, OwnProps>) {
+
     super(props)
+
     this.updateARC(props.ARCConfig)
-    this.actions = new ReduxActionsList({
+    this.actions = new ReduxActions({
       config: this.ARCConfig,
     })
     this.core = core as CoreMethods
@@ -32,7 +34,7 @@ export class Container<P, S, Model> extends React.Component<P & ARCWrappedCompon
   }
 
   getTrueStoreState() {
-    //@ts-ignore
+    // @ts-ignore this.context.store.getState() is not typed yet
     const rootState:ARCRootState = this.context.store.getState()
     const namespace = this.ARCConfig.name
     const store: ARCStoreState<Model> = rootState[namespace]
@@ -41,18 +43,20 @@ export class Container<P, S, Model> extends React.Component<P & ARCWrappedCompon
     }
   }
 
-  getPropsFromTrueStoreState = (props?: ComponentProps) => {
+  getPropsFromTrueStoreState = (props?: AnyProps) => {
     const ARCProps = this.getTrueStoreState()
     const baseProps = props || this.props
     return {
       ...baseProps,
       ...ARCProps,
-    } as unknown as ComponentWithStoreProps<Model>
+    }
   }
 
-  updateARC(config: ARCConfig<Model>) {
-    this.ARCConfig = { ...(this.ARCConfig || getDefaultConfig()), ...config }
-    if (this.actions) this.actions.updateConfig(this.ARCConfig)
+  updateARC(config: ARCConfig<Model, RequiredProps>) {
+    this.ARCConfig = { ...(this.ARCConfig || initializeConfig(this.ARCConfig)), ...config }
+    if (this.actions) {
+      this.actions.updateConfig(this.ARCConfig)
+    }
   }
 
 }

@@ -1,19 +1,17 @@
 import { ARCConfig } from "./config.types";
-import { ComponentPropsWithRequiredModelParams } from "./components.types";
-import { ComponentProps } from "react";
-export interface ReduxActionsListOptions<Model> {
-    config: ARCConfig<Model>;
+export interface ReduxActionsOptions<Model, RequiredProps> {
+    config: ARCConfig<Model, RequiredProps>;
 }
-export interface RetryFnParams<Model> {
-    params: ComponentPropsWithRequiredModelParams;
-    config: ARCConfig<Model>;
-    props: Partial<ComponentProps<any>>;
-    axiosOptions: ARCAxiosOptions<Model>;
+export interface RetryFnParams<Model, RequiredProps, OwnProps = {}> {
+    params: RequiredProps;
+    config: ARCConfig<Model, RequiredProps>;
+    props: OwnProps;
+    axiosOptions: ARCAxiosOptions<Model, RequiredProps, OwnProps>;
     tryNumber: number;
 }
-export interface ARCAxiosOptions<Model> {
+export interface ARCAxiosOptions<Model, RequiredProps, OwnProps = {}> {
     abortController?: AbortController;
-    retryConditionFn?: (error: any, params: RetryFnParams<Model>) => boolean;
+    retryConditionFn?: (error: any, params: RetryFnParams<Model, RequiredProps, OwnProps>) => boolean;
 }
 export interface ArcFetchError {
     message: string;

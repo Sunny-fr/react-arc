@@ -1,91 +1,65 @@
 import {ARCConfig} from "./config.types"
-import {ARCMetaCollectionMap,} from "./model.types"
-import {ThunkDispatch} from "redux-thunk"
+import React from "react";
+import {ARCMetaModel, ARCMetas} from "./model.types";
+import {ARCAxiosOptions} from "./actions.types";
+
+import {ThunkDispatch} from "redux-thunk";
 
 
-/**
- * Any Component Props
- */
-export interface ComponentProps extends React.ComponentProps<any> {
-  dispatch?: ThunkDispatch<any, any, any>
-  Component?: React.ComponentType<any>
+
+
+export type CommonConnectorProps<Model> = {
+  modelKey: string | null
+  metaModel: ARCMetaModel<Model>
+  metas: ARCMetas
+  model: Model | null
+  loaded: boolean
+  error: any
+  loading: boolean
+  isNew: boolean
+} & {
+  dispatch: ThunkDispatch<any, any, any> //& DispatchProp<any>
 }
 
-/**
- * Component Props with required params
- * for example model ARCConfig.modelParams = ['id','name']
- * expected ComponentPropsWithRequiredModelParams are  {id:'12', name:'Al', ...}
- */
-export interface ComponentPropsWithRequiredModelParams extends ComponentProps  {
+
+export type ConnectorProps<Model, RequiredProps = {}, OwnProps = {}> = {
+  ARCConfig: ARCConfig<Model, RequiredProps>,
+} & CommonConnectorProps<Model> & OwnProps & RequiredProps
+
+
+export type WithARCInjectProps<Model, RequiredProps = {}, OwnProps = {}> = CommonConnectorProps<Model> & RequiredProps & OwnProps
+
+
+export interface AnyProps extends React.ComponentProps<any> {
   [key: string]: any
 }
 
-/**
- * Component Props with required params
- * for example model ARCConfig.modelParams = ['id','name']
- * expected ComponentPropsWithRequiredModelParams are  {id:'12', name:'Al', ...}
- */
-export interface ComponentWithStoreProps<Model>
-  extends ComponentPropsWithRequiredModelParams {
-  //ARCConfig: ARCConfig
-  collection: ARCMetaCollectionMap<Model>
-  // temp?: ARCModel<Model> | null | undefined
-  // To be dropped
-  // fetching?: boolean
-  // To be dropped
-  // loaded?: boolean
-  // To be dropped
-  // error?:  null | any
-  // Other props
-  //[key: string]: any
-}
-export interface ARCContainerProps<Model>
-  extends ComponentPropsWithRequiredModelParams {
-  Component: React.ComponentType<any>
-  ARCConfig: ARCConfig<Model>
-  dispatch: ThunkDispatch<any, any, any>
-  collection: ARCMetaCollectionMap<Model>
-  // To be dropped
-  //temp?: ARCModel<Model>
-  // To be dropped
-  //fetching: boolean
-  // To be dropped
-  //loaded: boolean
-  // To be dropped
-  //error: null | any
+
+export interface RenderFetchParams<Model, RequiredProps> {
+  fetch?: ARCContainerFetcher<Model, RequiredProps>
 }
 
-export interface ARCWrappedComponentProps<Model>
-  extends ComponentPropsWithRequiredModelParams {
-  ARCConfig: ARCConfig<Model>
-  //loaded: boolean
-  //metaModel: ARCMetaModel<Model> | null
-  //model: ARCModel<Model> |null
-  //error: any | null
-  //syncing: boolean
-  //metas: ARCMetasType
-  //isNew: boolean
-  collection: ARCMetaCollectionMap<Model>
-  // tempModel?: ARCModel<Model> | null | undefined
-  dispatch: ThunkDispatch<any, any, any>
-
-  // To be dropped
-  //temp: ARCModel<Model> | null | undefined
-  // To be dropped
-  // fetching: boolean
+export interface ContainerVitalProps<Model, RequiredProps = {}, OwnProps = {}> {
+  ARCConfig: ARCConfig<Model, RequiredProps>
+  component: RenderComponent<Model, RequiredProps, OwnProps>
 }
-//
-// export interface ARCContainerProps
-//   extends ComponentPropsWithRequiredModelParams {
-//   ARCConfig: ARCConfig
-//   //retryConditionFn: RetryConditionFn
-//   //dispatch: ThunkDispatch<any, any, any>
-// }
 
-/**
- * ARC Wrapped Component
- */
-//
-// export type ARCWrappedComponent = (
-//   arg0: ARCWrappedComponentProps
-// ) => JSX.Element
+export type RenderComponentProps<Model, RequiredProps ={}, OwnProps={}> =
+  WithARCInjectProps<Model, RequiredProps, OwnProps> &
+  RenderFetchParams<Model, RequiredProps>
+
+export type RenderComponent<Model, RequiredProps, OwnProps> = React.ComponentType<RenderComponentProps<Model, RequiredProps, OwnProps>>
+
+
+type ARCContainerFetcher<Model, RequiredProps, OwnProps = {}> = (params?: AnyProps, axiosOptions?: ARCAxiosOptions<Model, RequiredProps, OwnProps>) => void
+
+export type ARCContainerProps<Model, RequiredProps = {}, OwnProps = {}> =
+  WithARCInjectProps<Model, RequiredProps, OwnProps> &
+  ContainerVitalProps<Model, RequiredProps, OwnProps>
+  & RequiredProps & OwnProps
+
+
+
+export type ARCContainer<Model, RequiredProps = {}, OwnProps = {}> = React.ComponentType<ARCContainerProps<Model, RequiredProps, OwnProps>>
+
+

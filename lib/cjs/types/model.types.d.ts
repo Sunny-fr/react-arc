@@ -18,7 +18,6 @@ export interface ARCMetas {
     end: number;
     error?: any;
 }
-export type ARCMetasType = ARCMetas;
 /**
  * Meta Model
  * @export

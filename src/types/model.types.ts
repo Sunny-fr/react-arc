@@ -20,7 +20,7 @@ export interface ARCMetas {
   error?: any
 }
 
-export type ARCMetasType = ARCMetas //| object | string | number | boolean | null
+
 
 /**
  * Meta Model
@@ -36,7 +36,6 @@ export interface ARCMetaModel<Model> {
  */
 export type ARCModel<Model> = Model
 
-///export const ARCModelDefaults: ARCModel = {} as ARCModel
 
 export type ARCMetaCollectionMap<Model> = Record<ARCModelKey, ARCMetaModel<Model>>
 export type ARCCollectionMap<Model> = Record<ARCModelKey, ARCModel<Model>>

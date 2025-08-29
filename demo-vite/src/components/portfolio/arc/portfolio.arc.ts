@@ -1,4 +1,5 @@
-import {type ARCConfig, createHOC} from "../../../../../src";
+import {type ARCConfig, createHOC, ReduxActions} from "../../../../../src";
+import axios from "axios";
 
 
 export interface Portfolio {
@@ -16,19 +17,31 @@ export interface PortfolioProps {
 }
 
 
-export const portfolio: ARCConfig<Portfolio> = {
+export const portfolio: ARCConfig<Portfolio, PortfolioProps> = {
   "name": "portfolio",
-  "actionNamespace": "PORTFOLIO",
   "modelProps": [
     "id"
   ],
   "paths": {
     "item": "https://jsonplaceholder.typicode.com/photos/{id}"
   },
-  "maxTries": 3,
+
   fetchOnce: true,
+  fetchers: {
+    'fetch': (_params,
+              config,
+              _props,
+              axiosOptions) => {
+      return axios({
+        method: 'GET',
+        url: config.paths.item,
+        headers: config.headers,
+        signal: axiosOptions ? ReduxActions.GenerateAbortSignal(axiosOptions) : undefined,
+      })
+    },
+  }
 }
 
-export const withPortfolio = createHOC<PortfolioProps, Portfolio>({
+export const withPortfolio = createHOC({
   ARCConfig: portfolio
 })

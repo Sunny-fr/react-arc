@@ -12,7 +12,7 @@ export interface AlbumProps {
 }
 
 
-export const album: ARCConfig<Album> = {
+export const album: ARCConfig<Album, AlbumProps> = {
   "name": "album",
   "actionNamespace": "ALBUM",
   "modelProps": [
@@ -25,6 +25,6 @@ export const album: ARCConfig<Album> = {
 }
 
 
-export const withAlbum = createHOC<AlbumProps, Album>({
+export const withAlbum = createHOC({
   ARCConfig: album,
 })

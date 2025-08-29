@@ -2,75 +2,86 @@ import {connect} from "react-redux"
 import {extendWithDefaultProps, getDefaultConfig} from "../utils"
 import {core} from "../actions/core"
 import {ARCConfig} from "../types/config.types"
-import {ComponentWithStoreProps} from "../types/components.types"
-import {ComponentType} from "react"
-import {ARCRootState, ARCStoreState} from "../types/connectors.types";
+import {ARCContainer, ARCContainerProps, ConnectorProps} from "../types/components.types"
+import {ARCRootState, SelectorFn} from "../types/connectors.types";
+
+import {metaModelSelector} from "../hooks/selectors";
 
 
 /**
  * Store Connector
  * @param {ARCConfig} config
-
+ * @param selectors
  */
-export function connectFn<Model>(config: ARCConfig<Model>) {
+export function connectFn<Model, RequiredProps, OwnProps = {}>(
+  config: ARCConfig<Model, RequiredProps>,
+  selectors: SelectorFn<any, OwnProps>[] = []
+) {
   return function(
     store: ARCRootState,
-    ownProps: object
-  )  {
+    ownProps: OwnProps
+  ):ConnectorProps<Model, RequiredProps, OwnProps> {
     const namespace = config.name
     if (!store[namespace]) {
       throw new Error(`Namespace "${namespace}" not found in store. Please ensure the ARCConfig is correctly set up.`);
     }
 
-    const reducerState:ARCStoreState<Model> = store[namespace]
+    const mergedProps = {
+      ...extendWithDefaultProps(config, ownProps),
+    } as ARCContainerProps<Model, RequiredProps, OwnProps>
 
-    const collection = reducerState.collection
-    const arcProps = {
-      collection,
-      tempModel: reducerState.temp,
-    }
-    const mergedProps: ComponentWithStoreProps<Model> = {
-      ...extendWithDefaultProps(config, ownProps),
-      //...removeMissingProps(ownProps),
-      ...arcProps,
-    }
-    const metaModel = core._getModel(config, mergedProps)
-    const loaded = core.isLoaded(config, mergedProps)
-    const model = core.getModel(config, mergedProps)
-    const error = core.getError(config, mergedProps)
-    const syncing = core.isSyncing(config, mergedProps)
-    const metas = core.getMetas(config, undefined, mergedProps)
-    const isNew = core.isNew(config, mergedProps)
+    // const mergedProps = ownProps as ComponentPropsWithRequiredModelParams & AnyProps
+
+    const modelKey = core.getKey(config, mergedProps)
+
+    const metaModel = metaModelSelector(store, config.name, modelKey)
+    const selectorProps = selectors.reduce((acc, selector) => {
+      const selectedProps = selector(store, ownProps)
+      return { ...acc, ...selectedProps }
+    }, {})
+
+    const loaded = metaModel?.metas?.loaded || false
+    const model = metaModel?.model || config.defaultModel || null
+    const error = metaModel?.metas?.error || null
+    const loading = metaModel?.metas?.fetching || false
+    const metas = metaModel?.metas || {}
+    const isNew = !modelKey
+
     return {
-      ...extendWithDefaultProps(config, ownProps),
+      ...mergedProps,
       ARCConfig: config,
+      modelKey,
       loaded,
       metaModel,
       model,
       error,
-      syncing,
+      loading,
       metas,
       isNew,
-    }
+      ...selectorProps,
+    } as ConnectorProps<Model, RequiredProps, OwnProps>
   }
 }
 
-/**
- *
- * @param {ARCConfig} config
- * @return {function(Component)<ARCWrappedComponent>}
- */
-export function withARC<Model>(config: ARCConfig<Model>) {
 
-  const extendedConfig:ARCConfig<Model> = { ...getDefaultConfig(), ...config }
-  /**
-   * @param {Component} Wrapped
-   * @return {function(ARCMappedProps)<ARCWrappedComponent>}
-   */
-  function ARCHoc<T>(Wrapped: ComponentType<T>) {
 
-    //@ts-ignore
-    return connect(connectFn(extendedConfig))(Wrapped)
+
+
+
+
+
+
+export function withARC<Model, RequiredProps = {}, OwnProps = {}>(config: ARCConfig<Model, RequiredProps>, selectors:SelectorFn<any,OwnProps>[] = []) {
+  const extendedConfig:ARCConfig<Model, RequiredProps> = { ...getDefaultConfig(), ...config }
+  function createHOC(Wrapped: ARCContainer<Model, RequiredProps, OwnProps>) {
+    // connect<any, any, RequiredProps & OwnProps, ARCRootState>
+    const Connector = connect(
+      connectFn<Model, RequiredProps, OwnProps>(extendedConfig, selectors)
+    )(Wrapped)
+    Connector.displayName = `withARC(${Wrapped.displayName || Wrapped.name || 'Component'})`
+    //type PropsFromRedux = ConnectedProps<typeof Connector>
+    //ConnectedComponent
+    return Connector //as React.ComponentType<PropsFromRedux & RequiredProps & OwnProps>
   }
-  return ARCHoc
+  return createHOC
 }

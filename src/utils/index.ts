@@ -1,11 +1,11 @@
 import equal from "deep-equal"
 import defaultConfig from "../defaultConfig"
-import { ARCMetaCollectionMap, ARCMetaModel, ARCModel} from "../types/model.types"
-import { ARCConfig } from "../types/config.types"
-import {
-  ComponentProps,
-  ComponentPropsWithRequiredModelParams,
-} from "../types/components.types"
+import {ARCMetaCollectionMap, ARCMetaModel, ARCModel} from "../types/model.types"
+import {ARCConfig, ARCHttpRestMethodMap, Fetcher, FetcherMap} from "../types/config.types"
+import {AnyProps,} from "../types/components.types"
+import axios from "axios";
+import {ReduxActions} from "../actions/ReduxActions";
+
 
 export function flatten<Model>(
   arcCollectionMap: ARCMetaCollectionMap<Model>,
@@ -16,17 +16,18 @@ export function flatten<Model>(
   return withMetas ? metaModels : metaModels.map((metaModel) => metaModel.model)
 }
 
-export function extendWithDefaultProps<Model>(
-  config: ARCConfig<Model>,
-  ownProps: ComponentProps
-): ComponentProps {
-  const defaultProps = config.defaultProps || {}
+export function extendWithDefaultProps<Model,RequiredProps = {}, P ={}>(
+  config: ARCConfig<Model,RequiredProps>,
+  ownProps: P
+) {
+  const defaultProps = (config.defaultProps || {}) as AnyProps //keyof ARCConfig<Model,RequiredProps>['defaultProps']
   return Object.keys(defaultProps).reduce((state, prop) => {
-    if (typeof ownProps[prop] === "undefined") {
+    const originalProps = ownProps as AnyProps
+    if (typeof originalProps[prop] === "undefined") {
       state[prop] = defaultProps[prop]
     }
     return state
-  }, ownProps)
+  }, ownProps as AnyProps)
 }
 
 export type ObjectValues<T> = T[keyof T]
@@ -60,7 +61,7 @@ export type ObjectValues<T> = T[keyof T]
 
 export function extractParams(
   props: string[] = [],
-  source: ComponentProps = {}
+  source: AnyProps = {}
 ) {
   return props.reduce(
     (params, prop) => ({
@@ -71,26 +72,26 @@ export function extractParams(
   )
 }
 
-export function getParams<Model>(
-  config: ARCConfig<Model>,
-  source: ComponentProps = {}
-): ComponentPropsWithRequiredModelParams {
+export function getParams<Model, RequiredProps ={}>(
+  config: ARCConfig<Model, RequiredProps>,
+  source: RequiredProps = {} as RequiredProps
+): RequiredProps {
   const props = config.modelProps
   const defaultProps = config.defaultProps || {}
   const merged = { ...defaultProps, ...source }
-  const componentProps: ComponentProps = {}
+  const componentProps = {}
   return props.reduce(
     (params, prop) => ({
       ...params,
       [prop]: merged[prop],
     }),
     componentProps
-  )
+  ) as RequiredProps
 }
 
 export const changedProps = function (
-  prevProps: ComponentProps,
-  nextProps: ComponentProps
+  prevProps: AnyProps,
+  nextProps: AnyProps
 ): string[] {
   const changed: string[] = []
   if (!prevProps) return changed
@@ -127,7 +128,7 @@ export function interpolate(str: string | null, params: object): string {
     if(!stringIsReplaceable(prev)){
       return prev
     }
-    // @ts-ignore
+    // @ts-ignore any type is fine here
     const elm_val:string|number = params[current]
     // skip functions
     if (typeof elm_val === "function") return prev
@@ -152,24 +153,61 @@ export function interpolate(str: string | null, params: object): string {
   return cleanParams(result)
 }
 
-export function getDefaultConfig<Model>() {
-  return JSON.parse(
-    JSON.stringify(defaultConfig)
-  ) as ARCConfig<Model>
+export function getDefaultConfig<Model, RequiredProps>() {
+  return defaultConfig as ARCConfig<Model, RequiredProps>
+  // return JSON.parse(
+  //   JSON.stringify(defaultConfig)
+  // ) as ARCConfig<Model>
 }
-export const omit = (
-  props: Record<string, any>,
-  prop: string | string[]
-): Record<string, any> => {
-  const omitted = typeof prop === 'string' ? [prop] : prop
-  return Object.keys(props).reduce(
-    (state, current) =>
-      omitted.includes(current)
-        ? state
-        : {
-            ...state,
-            [current]: props[current],
-          },
-    {}
-  )
+
+export function omit<T extends object, K extends keyof T>(
+  obj: T,
+  keysToOmit: K | K[] = [] as unknown as K
+): Omit<T, K> {
+  const keys = Array.isArray(keysToOmit) ? keysToOmit : [keysToOmit];
+  const result: Partial<T> = {};
+  const objKeys = Object.keys(obj) as Array<keyof T>;
+  for (const key of objKeys) {
+    if (!keys.includes(key as K)) {
+      result[key] = obj[key];
+    }
+  }
+
+  return result as Omit<T, K>;
+}
+
+
+export function initializeConfig<Model, RequiredProps>(
+  config: ARCConfig<Model, RequiredProps>
+): ARCConfig<Model,RequiredProps> {
+  if (!config) {
+    return getDefaultConfig<Model, RequiredProps>()
+  }
+
+  const FETCHER_MAP:FetcherMap<Model, RequiredProps>= {
+    fetch: (_params,
+            config,
+            _props,
+            axiosOptions) => {
+      return axios({
+        // methods are already lowercased in setupMethods
+        method: (config.methods as ARCHttpRestMethodMap).read ,
+        url: config.paths.item,
+        headers: config.headers,
+        signal: axiosOptions ? ReduxActions.GenerateAbortSignal(axiosOptions) : undefined,
+      })
+    },
+    ...config.fetchers
+  } as const
+
+  type FetcherKey = keyof typeof FETCHER_MAP
+
+  const extendedConfig:ARCConfig<Model, RequiredProps> & {fetchers: Record<FetcherKey, Fetcher<Model, RequiredProps>>} = {
+    ...getDefaultConfig<Model, RequiredProps>(),
+    ...config,
+    actionNamespace: config?.actionNamespace || config.name.toUpperCase(),
+    fetchers: FETCHER_MAP
+  }
+
+  return extendedConfig
 }
