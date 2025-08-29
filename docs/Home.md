@@ -28,3 +28,7 @@
 ## Getting Started
 
 To get started with `react-arc`, check out the [Quick Start](./QuickStart.md) guide.
+
+## Advanced Usage
+
+For advanced usage, including cascading requests, custom fetchers, and data transformation, please refer to the [Advanced Usage](./AdvancedUsage.md) guide.

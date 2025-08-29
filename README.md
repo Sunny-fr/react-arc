@@ -26,6 +26,7 @@ For detailed documentation, please visit the [docs](./docs/Home.md) directory.
 *   [Quick Start](./docs/QuickStart.md)
 *   [API Reference](./docs/APIReference.md)
 *   [Examples](./docs/Examples.md)
+*   [Advanced Usage](./docs/AdvancedUsage.md)
 
 ## Live Demo
 
