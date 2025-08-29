@@ -7,6 +7,10 @@ import {ARCConfig} from "../types/config.types"
 import {AnyProps, ARCContainerProps} from "../types/components.types"
 import {ARCRootState, ARCStoreState} from "../types/connectors.types";
 
+/**
+ * DEPRECATED: Base Container class for ARC
+ * @deprecated Use ModelContainer from containers-next instead
+ */
 
 export class Container<Model, RequiredProps, OwnProps, State = any> extends React.Component<ARCContainerProps<Model, RequiredProps, OwnProps>, State> {
   static contextType = ReactReduxContext

@@ -8,6 +8,11 @@ import React from "react"
 import {AXIOS_CANCEL_PAYLOAD} from "../actions/ReduxActions";
 
 
+/**
+ * DEPRECATED: Use containers-next instead
+ * @deprecated Use ModelContainer from containers-next instead
+ */
+
 export class ModelContainer<Model, RequiredProps = {}, OwnProps extends object ={}, State = any> extends Container<Model, RequiredProps, OwnProps, State> {
 
   // static propTypes = {

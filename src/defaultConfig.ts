@@ -6,7 +6,7 @@ const config: ARCConfig<ARCModel<any>> = {
   name: "",
   //namespace
   actionNamespace: "",
-  // useful to map objects in collection
+
   modelProps: [],
   // path to your rest server
   paths: {
