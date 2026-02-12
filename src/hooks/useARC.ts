@@ -15,9 +15,9 @@ import {metaModelSelector} from "./selectors";
 
 
 interface FetchAuthorizationProps<Model, RequiredProps> {
-  ARCConfig: ARCConfig<Model,RequiredProps>
+  ARCConfig: ARCConfig<Model, RequiredProps>
   metaModel?: ARCMetaModel<Model> | null
-  props:  RequiredProps,
+  props: RequiredProps,
   reduxContext: ReactReduxContextValue | null
   options?: {
     skipReFetchStep?: boolean
@@ -25,11 +25,11 @@ interface FetchAuthorizationProps<Model, RequiredProps> {
 }
 
 function fetchAuthorization<Model, RequiredProps = {}>({
-                                     ARCConfig: config,
-                                     props,
-                                     reduxContext,
-                                     options = {}
-                                   }: FetchAuthorizationProps<Model, RequiredProps>): boolean {
+                                                         ARCConfig: config,
+                                                         props,
+                                                         reduxContext,
+                                                         options = {}
+                                                       }: FetchAuthorizationProps<Model, RequiredProps>): boolean {
 
 
   const modelKey = core.getKey(config, props)
@@ -43,8 +43,6 @@ function fetchAuthorization<Model, RequiredProps = {}>({
     // console.log("// model has not the required params, we don't fetch it")
     return false
   }
-
-
 
 
   if (!metaModel) {
@@ -86,14 +84,14 @@ function fetchAuthorization<Model, RequiredProps = {}>({
 }
 
 
-export function useARC<Model, RequiredProps extends object = {}, OwnProps extends object ={}>({
-                                ARCConfig: initialConfig,
-                                props,
-  selectors = []
-                              }: {
+export function useARC<Model, RequiredProps extends object = {}, OwnProps extends object = {}>({
+                                                                                                 ARCConfig: initialConfig,
+                                                                                                 props,
+                                                                                                 selectors = []
+                                                                                               }: {
   ARCConfig: ARCConfig<Model, RequiredProps>
   props: RequiredProps & OwnProps,
-  selectors?: SelectorFn<any,OwnProps>[]
+  selectors?: SelectorFn<any, OwnProps>[]
 }): UseARC<Model, RequiredProps> {
   const dispatch = useDispatch()
   const reduxContext = useContext(ReactReduxContext)
@@ -104,24 +102,24 @@ export function useARC<Model, RequiredProps extends object = {}, OwnProps extend
   const extraPropsFromSelectors = useMemo(() => {
     return selectors.reduce((acc, selector) => {
       const selectedProps = selector(reduxContext?.store.getState() || {}, props)
-      return { ...acc, ...selectedProps }
+      return {...acc, ...selectedProps}
     }, {})
   }, [reduxContext, props, selectors])
 
   const [config, actions] = useMemo(() => {
     const config = initializeConfig(initialConfig)
     const reduxActions = new ReduxActions<Model, RequiredProps, OwnProps>({config})
-    if(config.fetchers?.fetch) {
+    if (config.fetchers?.fetch) {
       reduxActions.standAloneFetchOne = config.fetchers?.fetch
     }
     return [config, reduxActions]
   }, [initialConfig])
 
   const modelKey = core.getKey(config, props)
-  const params = core.getParams(config, props)
+  const computedParams = core.getParams(config, props)
 
   const fetchingCount = useSelector<ARCRootState, number>((state) => {
-    if(!state[config.name] || !state[config.name].collection) {
+    if (!state[config.name] || !state[config.name].collection) {
       return 0
     }
     return Object.values(state[config.name].collection).filter((metaModel) => metaModel.metas.fetching).length
@@ -132,13 +130,13 @@ export function useARC<Model, RequiredProps extends object = {}, OwnProps extend
 
   const _fetchAuthorization = useCallback((props: RequiredProps & OwnProps, options: FetchAuthorizationProps<Model, RequiredProps>['options']): boolean => {
 
-    return fetchAuthorization<Model, RequiredProps>({
-      ARCConfig: config,
-      props,
-      options: options,
-      reduxContext
-    })
-  },
+      return fetchAuthorization<Model, RequiredProps>({
+        ARCConfig: config,
+        props,
+        options: options,
+        reduxContext
+      })
+    },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [config, metaModel, props])
 
@@ -188,72 +186,72 @@ export function useARC<Model, RequiredProps extends object = {}, OwnProps extend
   }, [dispatch, actions, props, abortControllerRef, extraPropsFromSelectors])
 
   const delayedFetch = useCallback(({skipReFetchStep = false}) => {
-    delayedTimeoutRef.current = window.setTimeout(() => {
-      prepareFetch({skipReFetchStep})
-    }, config.requestFetchDelay) as unknown as number
-  },
+      delayedTimeoutRef.current = window.setTimeout(() => {
+        prepareFetch({skipReFetchStep})
+      }, config.requestFetchDelay) as unknown as number
+    },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [config])
 
 
   const prepareFetch = useCallback(({skipReFetchStep = false}) => {
-    // Don't trigger a fetch if the component is unmounted
-    if (!isMountedRef.current) return
+      // Don't trigger a fetch if the component is unmounted
+      if (!isMountedRef.current) return
 
-    // For initial fetch on mount, check if we've already done it
-    // if (!skipReFetchStep && fetchStatus.hasInitialFetch) return
+      // For initial fetch on mount, check if we've already done it
+      // if (!skipReFetchStep && fetchStatus.hasInitialFetch) return
 
-    // If this is the initial fetch, mark it as done
-    // if (!skipReFetchStep) {
-    //   setFetchStatus(prev => ({ ...prev, hasInitialFetch: true }))
-    // }
+      // If this is the initial fetch, mark it as done
+      // if (!skipReFetchStep) {
+      //   setFetchStatus(prev => ({ ...prev, hasInitialFetch: true }))
+      // }
 
 
-    const authorized = _fetchAuthorization(props, {
-      skipReFetchStep,
-    })
-    if (authorized) {
-      const max = config.maxPendingRequestsPerReducer
-      if (max && max > -1) {
-        if (fetchingCount > max) {
-          return delayedFetch({skipReFetchStep})
+      const authorized = _fetchAuthorization(props, {
+        skipReFetchStep,
+      })
+      if (authorized) {
+        const max = config.maxPendingRequestsPerReducer
+        if (max && max > -1) {
+          if (fetchingCount > max) {
+            return delayedFetch({skipReFetchStep})
+          }
         }
-      }
 
-      if (!params) {
-        console.error('Fetch params are missing')
-        return
+        if (!computedParams) {
+          console.error('Fetch params are missing')
+          return
+        }
+        arcFetch(computedParams)
       }
-      arcFetch(params)
-    }
-  },
+    },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [arcFetch, params])
+    [arcFetch, computedParams])
 
 
   useEffect(() => {
 
-    isMountedRef.current = true
+      isMountedRef.current = true
 
-    // Use a small delay to ensure state stability before initial fetch
-    const initTimeout = setTimeout(() => {
-      if (isMountedRef.current) {
-        prepareFetch({skipReFetchStep: false})
-      }
-    }, 0)
+      // Use a small delay to ensure state stability before initial fetch
+      const initTimeout = setTimeout(() => {
+        if (isMountedRef.current) {
+          prepareFetch({skipReFetchStep: false})
+        }
+      }, 0)
 
-    // Cleanup function executed only on real unmount
-    return () => {
-      //console.log('ModelContainer unmounting - cleanup phase')
-      isMountedRef.current = false
-      clearTimeout(initTimeout)
-      clearTimeout(delayedTimeoutRef.current)
-      if (abortControllerRef.current /*&& fetchStatus.inProgress*/) {
-        abortControllerRef.current.abort(commons.cancelRequestPayload({ARCConfig: config}))
-        abortControllerRef.current = null
+      // Cleanup function executed only on real unmount
+      return () => {
+        //console.log('ModelContainer unmounting - cleanup phase')
+        isMountedRef.current = false
+        clearTimeout(initTimeout)
+        clearTimeout(delayedTimeoutRef.current)
+        if (abortControllerRef.current /*&& fetchStatus.inProgress*/) {
+          abortControllerRef.current.abort(commons.cancelRequestPayload({ARCConfig: config}))
+          abortControllerRef.current = null
+        }
       }
-    }
-  },
+    },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [])
 
@@ -306,6 +304,13 @@ export function useARC<Model, RequiredProps extends object = {}, OwnProps extend
   // }
 
 
+  const fetchHandler = ({params}: { params?: RequiredProps } = {}) => {
+    if (typeof params !== 'undefined') {
+      return arcFetch(params)
+    }
+    return arcFetch(computedParams || config.defaultProps)
+  }
+
   return {
     //data: metaModel?.model,
     data: metaModel?.model || null,
@@ -313,6 +318,7 @@ export function useARC<Model, RequiredProps extends object = {}, OwnProps extend
     loaded: metaModel?.metas.loaded || false,
     loading: metaModel?.metas.fetching || false,
     ARCConfig: config,
+    fetch: fetchHandler
     // error: state.error,
     // loading: state.loading,
     // loaded: state.loaded,
