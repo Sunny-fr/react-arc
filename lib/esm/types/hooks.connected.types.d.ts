@@ -9,4 +9,7 @@ export interface UseARC<Model, RequiredProps> {
     loaded: boolean;
     data: ARCResponse<Model>;
     ARCConfig: ARCConfig<Model, RequiredProps>;
+    fetch: ({ params }?: {
+        params?: RequiredProps;
+    }) => Promise<any>;
 }
